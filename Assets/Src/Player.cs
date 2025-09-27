@@ -32,8 +32,6 @@ public class Player : MonoBehaviour{
         Vector3 cameraForwardXZ = new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized;
         Vector3 cameraRightXZ   = new Vector3(cam.transform.right.x, 0, cam.transform.right.z).normalized;
         movement.moveDirection  = moveDirection.x * cameraRightXZ + moveDirection.y * cameraForwardXZ;
-        // jumpSpeed = 2;
-        // float x = jumpDecay;
     }
     
 

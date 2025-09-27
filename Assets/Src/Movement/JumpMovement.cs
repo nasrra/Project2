@@ -1,8 +1,10 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Movement))]
 public class JumpMovement : MonoBehaviour{
     [Header("Components")]
+    [SerializeField] private CharacterController controller;
     [SerializeField] private Movement movement;
 
     [Header("Data")]
@@ -35,18 +37,25 @@ public class JumpMovement : MonoBehaviour{
     }
 
     public void UpdateInitialJumpVelocity(){
-        initialJumpVelocity = jumpSpeed * Vector3.up;  
+        initialJumpVelocity = jumpSpeed * Vector3.up;
+        // initialJumpVelocity.y += movement.AntiBump; // add anti bump for correct jumping.  
     }
 
     public void StartJumping(){
-        jumpVelocity = initialJumpVelocity;
         isJumping = true;
+        if(movement.IsGrounded ==true){
+            jumpVelocity = initialJumpVelocity;
+        }
     }
 
     public void HandleJumping(){
-        if(isJumping == true &&jumpVelocity.sqrMagnitude > 0){
-            movement.AddOneFrameVelocity(jumpVelocity);
-            jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpDecay * Time.deltaTime);
+        if(isJumping == true && jumpVelocity.sqrMagnitude > 0){
+            jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpDecay * Time.deltaTime);        
+            controller.Move(jumpVelocity * Time.deltaTime);
+            movement.SnapToGround = false;
+        }
+        else{
+            movement.SnapToGround = true;
         }
     }
 

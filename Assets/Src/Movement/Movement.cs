@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Entropek.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Movement : MonoBehaviour{
@@ -12,12 +13,11 @@ public class Movement : MonoBehaviour{
 
     [Header("Data")]
     private SwapbackList<ForceVelocity> forceVelocities = new SwapbackList<ForceVelocity>(); // forces applied overtime (automatic).
-    private List<Vector3> oneFrameVelocities = new List<Vector3>(); // forces applied for one frame (manual).
     
     private Vector3 gravityVelocity;            // gravity.
     private Vector3 moveDirectionVelocity;      // desired move direction by entity.
     
-    [HideInInspector] public Vector3 moveDirection;    
+    [HideInInspector] public Vector3 moveDirection;
 
     [SerializeField] private float acceleration;
     public float Acceleration => acceleration;
@@ -31,15 +31,19 @@ public class Movement : MonoBehaviour{
     [SerializeField] private float gravityModifier;
     private float gravity;
 
-    [SerializeField] private float jumpSpeed;
-    public float JumpSpeed => jumpSpeed;
-    Vector3 initialJumpVelocity;
+    private float stickToFloorForce;
 
-    [SerializeField] private float jumpDecay;
-    public float JumpDecay => jumpDecay;
+    [SerializeField] private LayerMask groundLayers;
 
-    
     [SerializeField] private bool useGravity;
+    public bool SnapToGround = true;
+    public bool IsGrounded {get;private set;}
+    private bool IsGroundedLastFrame;
+
+    #if UNITY_EDITOR
+    [Header("Editor Tools")]
+    [SerializeField] private bool showGroundCheck = false;
+    #endif
 
 
     /// 
@@ -49,13 +53,17 @@ public class Movement : MonoBehaviour{
 
     void Awake(){
         UpdateGravity();
-        // UpdateInitialJumpVelocity();
+        stickToFloorForce=-maxSpeed;
+    }
+
+    void FixedUpdate(){
+        CheckGrounded();
     }
 
     void Update(){
         HandleMoveDirection();
         HandleGravity();
-        Vector3 velocity = moveDirectionVelocity + gravityVelocity + GetTotalForceVelocity() + GetTotalOneFrameVelocity();
+        Vector3 velocity = moveDirectionVelocity + gravityVelocity + GetTotalForceVelocity();
         controller.Move(velocity * Time.deltaTime);
     }
 
@@ -83,7 +91,7 @@ public class Movement : MonoBehaviour{
             targetVelocity = Vector3.zero;
             rate = deceleration;
         }
-
+        
         moveDirectionVelocity = Vector3.MoveTowards(moveDirectionVelocity, targetVelocity, rate * Time.deltaTime);
     }
 
@@ -92,49 +100,71 @@ public class Movement : MonoBehaviour{
             return;
         }
 
-        if(controller.isGrounded == true){
+        if(SnapToGround == true && IsGrounded == true && forceVelocities.Count == 0){
+
+            // snap to floor when grounded and no forces are being applied to us.
+
+            gravityVelocity.y = stickToFloorForce;
+        }
+        else if(IsGroundedLastFrame == true){
+
+            // unsnap from floor when we were grounded last frame and,
+            // currently not grounded or a force acting upon us.
+            // So the force isnt cancelled out immediately by ground checks.
+
             gravityVelocity.y = 0;
         }
         else{
+            
+            // apply gravity if we are not grounded.
+
             gravityVelocity.y += gravity * Time.deltaTime; 
         }
     }
 
     public void Impulse(Vector3 direction, float force, float decaySpeed){
-        forceVelocities.Add(new ForceVelocity(direction, force, decaySpeed));
+        Vector3 velocity = direction * force;
+        if(IsGrounded==true){
+            velocity += Vector3.up * maxSpeed;
+        }
+        forceVelocities.Add(new ForceVelocity(velocity, decaySpeed));
     }
 
     private Vector3 GetTotalForceVelocity(){
         
         Vector3 totalForceVelocity = Vector3.zero;
-        int count = forceVelocities.Count;
-
-        if(count > 0){
          
-            for(int i = 0; i < count; i++){
-                
-                // apply the current force.
-                
-                ForceVelocity currentVelocity = forceVelocities[i]; 
-                totalForceVelocity += currentVelocity.Velocity;
+        for(int i = 0; i < forceVelocities.Count; i++){
+            
+            // get current force.
 
+            ForceVelocity currentVelocity = forceVelocities[i]; 
 
-                // decay the current force.            
+            // floor force when returning to ground.
 
-                Vector3 decayedVelocity = Vector3.MoveTowards(forceVelocities[i].Velocity, Vector3.zero, forceVelocities[i].DecaySpeed * Time.deltaTime);
-                if(decayedVelocity.sqrMagnitude > 0){
-                    
-                    // if the force has not completely decayed, add the decayed force.
-                    forceVelocities.Add(new ForceVelocity(decayedVelocity, currentVelocity.DecaySpeed));
-                }
-
-                // remove the current force.
-
-                forceVelocities.RemoveAt(i);
+            if(IsGrounded==true & IsGroundedLastFrame == false){
+                currentVelocity.Velocity.y = 0;
             }
-        
-        }
 
+            // apply the current force.
+
+            totalForceVelocity += currentVelocity.Velocity;
+
+
+            // decay the current force.            
+
+            Vector3 decayedVelocity = Vector3.MoveTowards(forceVelocities[i].Velocity, Vector3.zero, forceVelocities[i].DecaySpeed * Time.deltaTime);
+            if(decayedVelocity.sqrMagnitude > 0){
+                
+                // if the force has not completely decayed, add the decayed force.
+                forceVelocities.Add(new ForceVelocity(decayedVelocity, currentVelocity.DecaySpeed));
+            }
+
+            // remove the current force.
+
+            forceVelocities.RemoveAt(i);
+        }
+        
         return totalForceVelocity;
     }
 
@@ -147,23 +177,29 @@ public class Movement : MonoBehaviour{
         gravity = -9.81f * gravityModifier;
     }
 
-    public void AddOneFrameVelocity(Vector3 velocity){
-        oneFrameVelocities.Add(velocity);
+    private void CheckGrounded(){
+        
+        // check a sphere at the bottom of the character controller at a radius of the character controller.
+        // check if there is ground there or not.
+
+        float radius = controller.radius; 
+        Vector3 controllerPosition = controller.transform.position;
+        Vector3 spherePosition = new Vector3(controllerPosition.x, controllerPosition.y - (controller.height * 0.6f) + radius, controllerPosition.z);
+        IsGroundedLastFrame = IsGrounded;
+        IsGrounded = Physics.CheckSphere(spherePosition, radius, groundLayers, QueryTriggerInteraction.Ignore); // ignore trigger colliders.
     }
 
-    private Vector3 GetTotalOneFrameVelocity(){
-        
-        Vector3 totalVelocity = Vector3.zero;
-        
-        int count = oneFrameVelocities.Count;
-        if(count > 0){
-            for(int i = 0; i < count; i++){
-                totalVelocity+=oneFrameVelocities[i];
-            }
-            
-            oneFrameVelocities.Clear();
+    #if UNITY_EDITOR
+
+    void OnDrawGizmos(){
+        if(showGroundCheck==true){
+            Gizmos.color = Color.green;
+            float radius = controller.radius; 
+            Vector3 controllerPosition = controller.transform.position;
+            Vector3 spherePosition = new Vector3(controllerPosition.x, controllerPosition.y - (controller.height * 0.5f) + radius, controllerPosition.z);
+            Gizmos.DrawSphere(spherePosition, radius);
         }
-        
-        return totalVelocity;
     }
+
+    #endif
 }
