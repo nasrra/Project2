@@ -38,7 +38,6 @@ public class JumpMovement : MonoBehaviour{
 
     public void UpdateInitialJumpVelocity(){
         initialJumpVelocity = jumpSpeed * Vector3.up;
-        // initialJumpVelocity.y += movement.AntiBump; // add anti bump for correct jumping.  
     }
 
     public void StartJumping(){

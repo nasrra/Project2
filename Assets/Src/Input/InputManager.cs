@@ -1,20 +1,18 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 [DefaultExecutionOrder(-10)]
 public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
     
-    public static InputManager Singleton;
+    public static InputManager Singleton {get;private set;}
+
     public InputActions inputActions {get; private set;}
 
-    public void Awake(){
-        if(Singleton==null){
-            Singleton=this;
-        }
-        else{
-            throw new Exception("Only one Input Manager can be active!");
-        }
+    void Awake(){
+        Singleton=this;
         inputActions = new InputActions();
         inputActions.Enable();
         EnableGameplayInput();
@@ -31,9 +29,11 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
     }
 
     public event Action<Vector2> Move;
-    public Vector2 moveInput;
+    public Vector2 moveInput {get; private set;}
+    public float moveInputSqrMagnitude {get;private set;}
     void InputActions.IGameplayActions.OnMove(InputAction.CallbackContext context){
         moveInput = context.ReadValue<Vector2>();
+        moveInputSqrMagnitude = moveInput.sqrMagnitude;
         Move?.Invoke(moveInput);
     }
 
@@ -50,6 +50,51 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
         }
         else if(context.canceled==true){
             JumpStop?.Invoke();
+        }
+    }
+
+    public event Action Attack;
+    void InputActions.IGameplayActions.OnAttack(InputAction.CallbackContext context){
+        if(context.performed==true){
+            Attack?.Invoke();
+        }
+    }
+
+    public event Action Dodge;
+    void InputActions.IGameplayActions.OnDodge(InputAction.CallbackContext context){
+        if(context.performed==true){
+            Dodge?.Invoke();
+        }
+    }
+    
+    public event Action LockOnToggle;
+    void InputActions.IGameplayActions.OnLockOnToggle(InputAction.CallbackContext context){
+        if(context.performed==true){
+            LockOnToggle?.Invoke();
+        }
+    }
+
+    public event Action LockOnNext;
+    void InputActions.IGameplayActions.OnLockOnNext(InputAction.CallbackContext context){
+        if(context.performed==true){
+            LockOnNext?.Invoke();
+        }
+    }
+
+    public event Action LockOnPrevious;
+    void InputActions.IGameplayActions.OnLockOnPrevious(InputAction.CallbackContext context){
+        if(context.performed==true){
+            LockOnPrevious?.Invoke();
+        }
+    }
+
+    private static class Bootstrap{
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void Initialise(){            
+            GameObject main = new();
+            main.name = "InputManager";
+            main.AddComponent<InputManager>();
+            DontDestroyOnLoad(main);
         }
     }
 }

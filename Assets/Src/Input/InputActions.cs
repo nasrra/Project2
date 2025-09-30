@@ -118,6 +118,51 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a40ec49-da34-46fd-bf71-69bf560ac598"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""703ddbaa-e236-42a9-ad58-43097cca1270"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOnToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""14956980-bfd3-48ff-ad08-a0ab09fa4644"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOnNext"",
+                    ""type"": ""Button"",
+                    ""id"": ""297fdd37-1c5b-4259-b677-97014ee3fe78"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LockOnPrevious"",
+                    ""type"": ""Button"",
+                    ""id"": ""7091320e-2418-4b1e-9049-b7b4af219284"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -197,6 +242,61 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da196023-1d65-40f9-bd46-1867600210c8"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77d482b5-a458-4647-add9-2055c963a98b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Tap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b775b2ed-b376-48eb-a9e4-a20b813f9924"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90d0d352-216b-4013-8f89-b7e2f7a713c2"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnNext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b20a1c17-8013-4bb0-8bc7-ec9a3a67db51"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnPrevious"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +308,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
+        m_Gameplay_Dodge = m_Gameplay.FindAction("Dodge", throwIfNotFound: true);
+        m_Gameplay_LockOnToggle = m_Gameplay.FindAction("LockOnToggle", throwIfNotFound: true);
+        m_Gameplay_LockOnNext = m_Gameplay.FindAction("LockOnNext", throwIfNotFound: true);
+        m_Gameplay_LockOnPrevious = m_Gameplay.FindAction("LockOnPrevious", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -291,6 +396,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_Jump;
+    private readonly InputAction m_Gameplay_Attack;
+    private readonly InputAction m_Gameplay_Dodge;
+    private readonly InputAction m_Gameplay_LockOnToggle;
+    private readonly InputAction m_Gameplay_LockOnNext;
+    private readonly InputAction m_Gameplay_LockOnPrevious;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -314,6 +424,26 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Jump".
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Attack".
+        /// </summary>
+        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Dodge".
+        /// </summary>
+        public InputAction @Dodge => m_Wrapper.m_Gameplay_Dodge;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/LockOnToggle".
+        /// </summary>
+        public InputAction @LockOnToggle => m_Wrapper.m_Gameplay_LockOnToggle;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/LockOnNext".
+        /// </summary>
+        public InputAction @LockOnNext => m_Wrapper.m_Gameplay_LockOnNext;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/LockOnPrevious".
+        /// </summary>
+        public InputAction @LockOnPrevious => m_Wrapper.m_Gameplay_LockOnPrevious;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -349,6 +479,21 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Dodge.started += instance.OnDodge;
+            @Dodge.performed += instance.OnDodge;
+            @Dodge.canceled += instance.OnDodge;
+            @LockOnToggle.started += instance.OnLockOnToggle;
+            @LockOnToggle.performed += instance.OnLockOnToggle;
+            @LockOnToggle.canceled += instance.OnLockOnToggle;
+            @LockOnNext.started += instance.OnLockOnNext;
+            @LockOnNext.performed += instance.OnLockOnNext;
+            @LockOnNext.canceled += instance.OnLockOnNext;
+            @LockOnPrevious.started += instance.OnLockOnPrevious;
+            @LockOnPrevious.performed += instance.OnLockOnPrevious;
+            @LockOnPrevious.canceled += instance.OnLockOnPrevious;
         }
 
         /// <summary>
@@ -369,6 +514,21 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Dodge.started -= instance.OnDodge;
+            @Dodge.performed -= instance.OnDodge;
+            @Dodge.canceled -= instance.OnDodge;
+            @LockOnToggle.started -= instance.OnLockOnToggle;
+            @LockOnToggle.performed -= instance.OnLockOnToggle;
+            @LockOnToggle.canceled -= instance.OnLockOnToggle;
+            @LockOnNext.started -= instance.OnLockOnNext;
+            @LockOnNext.performed -= instance.OnLockOnNext;
+            @LockOnNext.canceled -= instance.OnLockOnNext;
+            @LockOnPrevious.started -= instance.OnLockOnPrevious;
+            @LockOnPrevious.performed -= instance.OnLockOnPrevious;
+            @LockOnPrevious.canceled -= instance.OnLockOnPrevious;
         }
 
         /// <summary>
@@ -430,5 +590,40 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAttack(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Dodge" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDodge(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LockOnToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLockOnToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LockOnNext" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLockOnNext(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LockOnPrevious" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLockOnPrevious(InputAction.CallbackContext context);
     }
 }

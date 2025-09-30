@@ -1,0 +1,12 @@
++ Character Controller.
++ Camera Controller.
++ Melee Attacks.
++ Health.
++ Camera Shake.
++ Player States.
++ Lerp following target, camera controller.
++ lock on to tagets
+
+^^======== TODO ========^^
+
+- Lock on targets ui indcator (d-souls)

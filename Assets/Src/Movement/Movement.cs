@@ -16,6 +16,7 @@ public class Movement : MonoBehaviour{
     
     private Vector3 gravityVelocity;            // gravity.
     private Vector3 moveDirectionVelocity;      // desired move direction by entity.
+    private Vector3 groundNormal;
     
     [HideInInspector] public Vector3 moveDirection;
 
@@ -130,6 +131,16 @@ public class Movement : MonoBehaviour{
         forceVelocities.Add(new ForceVelocity(velocity, decaySpeed));
     }
 
+    public void ImpulseRelativeToGround(Vector3 direction, float force, float decaySpeed){
+        Vector3 velocity = Vector3.zero;
+        if(IsGrounded==true){
+            direction = Vector3.ProjectOnPlane(direction, groundNormal).normalized;
+            // velocity += Vector3.up * maxSpeed;
+        }
+        velocity += direction * force;
+        forceVelocities.Add(new ForceVelocity(velocity, decaySpeed));
+    }
+
     private Vector3 GetTotalForceVelocity(){
         
         Vector3 totalForceVelocity = Vector3.zero;
@@ -184,10 +195,25 @@ public class Movement : MonoBehaviour{
 
         float radius = controller.radius; 
         Vector3 controllerPosition = controller.transform.position;
-        Vector3 spherePosition = new Vector3(controllerPosition.x, controllerPosition.y - (controller.height * 0.6f) + radius, controllerPosition.z);
+
+        // start at just above the very bottom of the character controller collider.
+        
+        Vector3 startPosition = new Vector3(controllerPosition.x, controllerPosition.y - (controller.height * 0.495f) + radius, controllerPosition.z);
+
+        // set last frame data. 
+
         IsGroundedLastFrame = IsGrounded;
-        IsGrounded = Physics.CheckSphere(spherePosition, radius, groundLayers, QueryTriggerInteraction.Ignore); // ignore trigger colliders.
+        
+        if(Physics.SphereCast(startPosition, radius, Vector3.down, out RaycastHit hit, 0.1f, groundLayers, QueryTriggerInteraction.Ignore)==true){
+            IsGrounded = true;
+            groundNormal = hit.normal;
+        }
+        else{
+            IsGrounded = false;
+            groundNormal = Vector3.up;
+        }
     }
+
 
     #if UNITY_EDITOR
 
