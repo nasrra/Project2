@@ -18,7 +18,8 @@ public class Player : MonoBehaviour{
         Attack,
         Dodge,
         Run,
-        Jump
+        Jump,
+        Fall
     }
 
 
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour{
     [SerializeField] private Hitbox slash2Hitbox;
     [SerializeField] private Timer attackTimer; 
     [SerializeField] private Timer dodgeTimer;
+    [SerializeField] private Animator animator;
     
 
     /// 
@@ -48,9 +50,17 @@ public class Player : MonoBehaviour{
     [SerializeField]private State state = State.Idle;
     private event Action FaceChosenDirection;
 
+    private const string IdleAnimation      = "Rig_Sword_Idle";
+    private const string WalkAnimation      = "Rig_Jog_Fwd_Loop";
+    private const string DodgeAnimation     = "Rig_Roll";
+    private const string JumpStartAnimation = "Rig_Jump_Start";
+    private const string FallAnimation      = "Rig_Jump_Loop";
+    private const string GroundedAnimation  = "Rig_Jump_Land";
+    private const string AttackAnimation    = "Rig_Sword_Attack";
+
     private const float AttackLungeForce            = 3.33f;
     private const float AttackLungeDecaySpeed       = AttackLungeForce * 3f;
-    private const float DodgeForce                  = 25;
+    private const float DodgeForce                  = 33;
     private const float DodgeDecaySpeed             = DodgeForce * 3f;
     private const float FaceMoveDirectionSpeed      = 16.7f;
     private const float FaceAttackDirectionSpeed    = 16.7f;
@@ -107,10 +117,12 @@ public class Player : MonoBehaviour{
     public void Idle(){
         state = State.Idle;
         UpdateMoveDirection(Vector3.zero);
+        animator.Play(IdleAnimation);
     }
 
     private void Run(){
         Run(InputManager.Singleton.moveInput);
+        animator.Play(WalkAnimation);
     }
 
     public void Run(Vector3 directtion){
@@ -122,6 +134,7 @@ public class Player : MonoBehaviour{
     public void JumpStart(){
         state = State.Jump;
         jumpMovement.StartJumping();
+        animator.Play(JumpStartAnimation);
     }
 
     public void JumpStop(){
@@ -143,8 +156,10 @@ public class Player : MonoBehaviour{
     public void Dodge(){
         state = State.Dodge;
         movement.moveDirection = Vector3.zero;
+        movement.HaltMoveDirectionVelocity();
         movement.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
         dodgeTimer.Begin();
+        animator.Play(DodgeAnimation);
     }
 
     bool slashFlag = false;
@@ -174,12 +189,21 @@ public class Player : MonoBehaviour{
         // stop moving.
 
         movement.moveDirection = Vector3.zero;
+        movement.HaltMoveDirectionVelocity();
 
         // apply a forward force.
 
         movement.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
+        
+        animator.Play(AttackAnimation);
 
         attackTimer.Begin();
+
+    }
+
+    public void Fall(){
+        state = State.Fall;
+        animator.Play(FallAnimation);
     }
     
 
@@ -193,6 +217,7 @@ public class Player : MonoBehaviour{
         LinkInputEvents();
         LinkHitboxEvents();
         LinkTimerEvents();
+        LinkMovementEvents();
     }
 
     private void UnlinkEvents(){
@@ -200,6 +225,33 @@ public class Player : MonoBehaviour{
         UnlinkInputEvents();
         UnlinkHitboxEvents();
         UnlinkTimerEvents();
+        UnlinkMovementEvents();
+    }
+
+
+    ///
+    /// Movement event linkage.
+    /// 
+
+
+    private void LinkMovementEvents(){
+        movement.Grounded += OnGrounded;
+    }
+
+    private void UnlinkMovementEvents(){
+        movement.Grounded -= OnGrounded;
+    }
+
+    private void OnGrounded(){
+        if(state != State.Dodge){
+            if(InputManager.Singleton.moveInputSqrMagnitude>0){
+                Run();
+            }
+            else{
+                // animator.Play(GroundedAnimation);
+                Idle();
+            }
+        }
     }
 
 
@@ -220,28 +272,31 @@ public class Player : MonoBehaviour{
 
     private void OnDodgeTimerTimeout(){
         
-        // TODO:
-        //  Add a falling state evalutation.
-        
-        if(InputManager.Singleton.moveInputSqrMagnitude>0){
-            Run();
+        if(movement.IsGrounded==true){
+            if(InputManager.Singleton.moveInputSqrMagnitude>0){
+                Run();
+            }
+            else{
+                Idle();
+            }
         }
         else{
-            Idle();
+            Fall();
         }
-
     }
 
     private void OnAttackTimerTimeout(){
         
-        // TODO:
-        //  Add a falling state evalutation.
-        
-        if(InputManager.Singleton.moveInputSqrMagnitude>0){
-            Run();
+        if(movement.IsGrounded==true){
+            if(InputManager.Singleton.moveInputSqrMagnitude>0){
+                Run();
+            }
+            else{
+                Idle();
+            }
         }
         else{
-            Idle();
+            Fall();
         }
 
     }
@@ -283,8 +338,7 @@ public class Player : MonoBehaviour{
     private void OnCameraRotated(){
         
         if(state != State.Run 
-        && state != State.Jump 
-        && state != State.Dodge){
+        && state != State.Jump){
             return;
         }
         

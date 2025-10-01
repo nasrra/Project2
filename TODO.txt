@@ -6,7 +6,11 @@
 + Player States.
 + Lerp following target, camera controller.
 + lock on to tagets
++ Enemy Path Finding.
++ Fixed dashing movement.
++ Added Placeholder character for player.
 
 ^^======== TODO ========^^
 
-- Lock on targets ui indcator (d-souls)
+- Interaction. 
+- Heal Ability.

@@ -17,11 +17,15 @@ public class LockOnTargetDetector : MonoBehaviour{
 
     void OnTriggerEnter(Collider other){
     
+        VerifyDetectedTransforms();
+
         detectedTransforms.Add(other.transform);
     }
 
     void OnTriggerExit(Collider other){
         
+        VerifyDetectedTransforms();
+
         if(other.transform==currentTarget){
             TargetLeftRange?.Invoke();
         }
@@ -89,11 +93,7 @@ public class LockOnTargetDetector : MonoBehaviour{
         // to check if any are null after being call Destroy() on;
         // removing it if so.
 
-        for(int i = 0; i < detectedTransforms.Count; i++){
-            if(detectedTransforms[i]==null){
-                detectedTransforms.RemoveAt(i);
-            }
-        }    
+        detectedTransforms.RemoveAll(t => t == null);
     }
 
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour{
 
+    public event Action Grounded;
 
     [Header("Components")]
     [SerializeField] private CharacterController controller;
@@ -30,12 +31,12 @@ public class Movement : MonoBehaviour{
     public float MaxSpeed => maxSpeed;
 
     [SerializeField] private float gravityModifier;
+    private const float GravityForce = -9.81f;
     private float gravity;
 
     private float stickToFloorForce;
 
     [SerializeField] private LayerMask groundLayers;
-
     [SerializeField] private bool useGravity;
     public bool SnapToGround = true;
     public bool IsGrounded {get;private set;}
@@ -73,6 +74,9 @@ public class Movement : MonoBehaviour{
     /// Functions.
     /// 
 
+    public void HaltMoveDirectionVelocity(){
+        moveDirectionVelocity = Vector3.zero;
+    }
 
     private void HandleMoveDirection(){
         Vector3 targetVelocity  = Vector3.zero; 
@@ -92,6 +96,8 @@ public class Movement : MonoBehaviour{
             targetVelocity = Vector3.zero;
             rate = deceleration;
         }
+
+        Debug.Log(moveDirectionVelocity);
         
         moveDirectionVelocity = Vector3.MoveTowards(moveDirectionVelocity, targetVelocity, rate * Time.deltaTime);
     }
@@ -185,7 +191,7 @@ public class Movement : MonoBehaviour{
     }
 
     private void UpdateGravity(){
-        gravity = -9.81f * gravityModifier;
+        gravity = GravityForce * gravityModifier;
     }
 
     private void CheckGrounded(){
@@ -207,6 +213,10 @@ public class Movement : MonoBehaviour{
         if(Physics.SphereCast(startPosition, radius, Vector3.down, out RaycastHit hit, 0.1f, groundLayers, QueryTriggerInteraction.Ignore)==true){
             IsGrounded = true;
             groundNormal = hit.normal;
+
+            if(IsGroundedLastFrame==false){
+                Grounded?.Invoke();
+            }
         }
         else{
             IsGrounded = false;
