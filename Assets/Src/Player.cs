@@ -144,12 +144,17 @@ public class Player : MonoBehaviour{
         // TODO:
         //  Will need an extra check here later down the line to check if the player
         //  is grounded or not. The player should enter a falling state when not grounded.
+        if(movement.IsGrounded==true){
 
-        if(InputManager.Singleton.moveInputSqrMagnitude == 0){
-            Idle();
+            if(InputManager.Singleton.moveInputSqrMagnitude == 0){
+                Idle();
+            }
+            else{
+                Run();
+            }
         }
         else{
-            Run();
+            Fall();
         }
     }
 
@@ -203,7 +208,6 @@ public class Player : MonoBehaviour{
 
     public void Fall(){
         state = State.Fall;
-        animator.Play(FallAnimation);
     }
     
 

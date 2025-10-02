@@ -25,6 +25,7 @@ public class Timer : MonoBehaviour{
     public float CurrentTime => currentTime;
     public bool BeginOnAwake;
     public bool Loop;
+    public bool IsTimedout => CurrentTime == 0;
 
     void OnEnable(){
         TimerManager.RegisterTimer(this);

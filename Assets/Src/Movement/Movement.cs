@@ -96,8 +96,6 @@ public class Movement : MonoBehaviour{
             targetVelocity = Vector3.zero;
             rate = deceleration;
         }
-
-        Debug.Log(moveDirectionVelocity);
         
         moveDirectionVelocity = Vector3.MoveTowards(moveDirectionVelocity, targetVelocity, rate * Time.deltaTime);
     }

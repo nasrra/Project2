@@ -31,10 +31,11 @@ public class CameraController : MonoBehaviour{
 
     private const float FollowSpeed             = 13.33f;
     private const float MouseInputSmoothSpeed   = 100f;
-    private const float LockOnTargetSmoothSpeed = 77f;
+    private const float LockOnTargetSmoothSpeed = 16.7f;
     private const float UpperPitchLimit         = 70f;
     private const float LowerPitchLimit         = -35f;
     private const float CameraRadius            = 0.33f;
+    private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
 
 
     /// 
@@ -111,19 +112,15 @@ public class CameraController : MonoBehaviour{
         if(lockOnTarget!=null){
             
             // offset the camera in relation to the lock on target.
+            // otherwise offset the camera in relation to the mouse input.
 
             Vector3 directionToLockOnTarget = (lockOnTarget.position - transform.position).normalized;
             
             lookRotation = Quaternion.LookRotation(directionToLockOnTarget, Vector3.up); 
             
-            offset =  lookRotation * followOffset;
+        }        
 
-        }
-        else{
-            // offset the camera in relation to the mouse input.
-            
-            offset = lookRotation * followOffset;
-        }
+        offset = lookRotation * followOffset;
 
         desiredWorldPosition    = smoothedfollowTargetPosition + offset; // apply the player camera input as positional offset.
         Vector3 distance        = smoothedfollowTargetPosition - desiredWorldPosition;
@@ -184,7 +181,7 @@ public class CameraController : MonoBehaviour{
                 Quaternion.Slerp(
                     transform.rotation, 
                     Quaternion.LookRotation(desiredFollowDirection, Vector3.up), 
-                    16.7f * Time.deltaTime
+                    LookAtLockOnTargetSmoothSpeed * Time.deltaTime
                 );
         }
         else{

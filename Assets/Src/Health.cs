@@ -13,6 +13,7 @@ public class Health : MonoBehaviour{
     public float Value => value;
     [SerializeField] private float maxValue;
     public float MaxValue => maxValue;
+    public float NormalisedValue => value/maxValue;
 
     public void Damage(float amount){
         value-=amount;

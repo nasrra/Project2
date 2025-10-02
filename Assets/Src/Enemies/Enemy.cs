@@ -1,29 +1,51 @@
+using Entropek.Systems.Ai.Combat;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour{
-    [Header("Components")]
-    [SerializeField] Health health;
-    [SerializeField] Transform target;
-    [SerializeField] NavMeshAgent navAgent;
+public abstract class Enemy : MonoBehaviour{
+    [Header("Enemy Components")]
+    [SerializeField] protected Health health;
+    [SerializeField] protected NavMeshAgent navAgent;
+    [SerializeField] protected AiCombatAgent combatAgent;
 
     void OnEnable(){
         LinkEvents();
     }
 
-    private void FixedUpdate(){
-        navAgent.destination = target.position;
+    void OnDisable(){
+        UnlinkEvents();
     }
 
     protected virtual void LinkEvents(){
-        health.Death += Kill;
+        LinkHealthEvents();
+        LinkCombatAgentEvents();
     }
 
     protected virtual void UnlinkEvents(){
-        health.Death -= Kill;
+        UnlinkHealthEvents();
+        UnlinkCombatAgentEvents();
     }
 
-    public void Kill(){
-        Destroy(gameObject);
+    private void LinkCombatAgentEvents(){
+        combatAgent.ActionChosen += OnCombatActionChosen;
+        combatAgent.EngagedOpponent += OnOpponentEngaged;
     }
+
+    private void UnlinkCombatAgentEvents(){
+        combatAgent.ActionChosen -= OnCombatActionChosen;
+        combatAgent.EngagedOpponent -= OnOpponentEngaged;        
+    }
+
+    private void LinkHealthEvents(){
+        health.Death += OnHealthDeath;
+    }
+
+    private void UnlinkHealthEvents(){
+        health.Death -= OnHealthDeath;
+    }
+
+    protected abstract void OnCombatActionChosen(string actionName); 
+    protected abstract void OnOpponentEngaged(Transform opponent);
+    protected abstract void OnHealthDeath();
+    public abstract void Kill();
 }
