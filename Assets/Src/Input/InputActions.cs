@@ -163,6 +163,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""58fdf14f-73fc-4ded-ae17-3822bda72abf"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextInteractable"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c2b9df5-8ac2-417d-a395-5f3d38e3673f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousInteractable"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad9ea2d8-901b-474c-abee-0d243c664949"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -297,6 +324,39 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""LockOnPrevious"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e725741-3208-46f0-be3c-4170b9311ae3"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef975ea2-4550-4fec-87eb-f59103673d89"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextInteractable"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40a70a60-feb4-48c0-b4fe-15bdff109084"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PreviousInteractable"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -313,6 +373,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_LockOnToggle = m_Gameplay.FindAction("LockOnToggle", throwIfNotFound: true);
         m_Gameplay_LockOnNext = m_Gameplay.FindAction("LockOnNext", throwIfNotFound: true);
         m_Gameplay_LockOnPrevious = m_Gameplay.FindAction("LockOnPrevious", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_NextInteractable = m_Gameplay.FindAction("NextInteractable", throwIfNotFound: true);
+        m_Gameplay_PreviousInteractable = m_Gameplay.FindAction("PreviousInteractable", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -401,6 +464,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_LockOnToggle;
     private readonly InputAction m_Gameplay_LockOnNext;
     private readonly InputAction m_Gameplay_LockOnPrevious;
+    private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_NextInteractable;
+    private readonly InputAction m_Gameplay_PreviousInteractable;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -444,6 +510,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/LockOnPrevious".
         /// </summary>
         public InputAction @LockOnPrevious => m_Wrapper.m_Gameplay_LockOnPrevious;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Interact".
+        /// </summary>
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/NextInteractable".
+        /// </summary>
+        public InputAction @NextInteractable => m_Wrapper.m_Gameplay_NextInteractable;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/PreviousInteractable".
+        /// </summary>
+        public InputAction @PreviousInteractable => m_Wrapper.m_Gameplay_PreviousInteractable;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -494,6 +572,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LockOnPrevious.started += instance.OnLockOnPrevious;
             @LockOnPrevious.performed += instance.OnLockOnPrevious;
             @LockOnPrevious.canceled += instance.OnLockOnPrevious;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @NextInteractable.started += instance.OnNextInteractable;
+            @NextInteractable.performed += instance.OnNextInteractable;
+            @NextInteractable.canceled += instance.OnNextInteractable;
+            @PreviousInteractable.started += instance.OnPreviousInteractable;
+            @PreviousInteractable.performed += instance.OnPreviousInteractable;
+            @PreviousInteractable.canceled += instance.OnPreviousInteractable;
         }
 
         /// <summary>
@@ -529,6 +616,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @LockOnPrevious.started -= instance.OnLockOnPrevious;
             @LockOnPrevious.performed -= instance.OnLockOnPrevious;
             @LockOnPrevious.canceled -= instance.OnLockOnPrevious;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @NextInteractable.started -= instance.OnNextInteractable;
+            @NextInteractable.performed -= instance.OnNextInteractable;
+            @NextInteractable.canceled -= instance.OnNextInteractable;
+            @PreviousInteractable.started -= instance.OnPreviousInteractable;
+            @PreviousInteractable.performed -= instance.OnPreviousInteractable;
+            @PreviousInteractable.canceled -= instance.OnPreviousInteractable;
         }
 
         /// <summary>
@@ -625,5 +721,26 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLockOnPrevious(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "NextInteractable" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNextInteractable(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PreviousInteractable" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPreviousInteractable(InputAction.CallbackContext context);
     }
 }

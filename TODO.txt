@@ -9,8 +9,10 @@
 + Enemy Path Finding.
 + Fixed dashing movement.
 + Added Placeholder character for player.
++ Utility Agents for Ai combat evaluation.
++ Interaction. 
 
 ^^======== TODO ========^^
 
-- Interaction. 
 - Heal Ability.
+- Hades 2 style of dash.

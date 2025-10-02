@@ -1,6 +1,7 @@
 using System;
 using Entropek.Systems;
 using Entropek.Systems.Autoload;
+using Entropek.Systems.Interaction;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour{
     [SerializeField] private Timer attackTimer; 
     [SerializeField] private Timer dodgeTimer;
     [SerializeField] private Animator animator;
+    [SerializeField] private Interactor interactor;
     
 
     /// 
@@ -287,6 +289,10 @@ public class Player : MonoBehaviour{
         else{
             Fall();
         }
+
+        // set move direction back to the player input.
+        
+        UpdateMoveDirection(InputManager.Singleton.moveInput);
     }
 
     private void OnAttackTimerTimeout(){
@@ -359,22 +365,28 @@ public class Player : MonoBehaviour{
         
         InputManager input = InputManager.Singleton; 
         
-        input.Move          += OnMoveInput;
-        input.JumpStart     += OnJumpStartInput;
-        input.JumpStop      += OnJumpStopInput;
-        input.Attack        += OnAttackInput;
-        input.Dodge         += OnDodgeInput;
+        input.Move                  += OnMoveInput;
+        input.JumpStart             += OnJumpStartInput;
+        input.JumpStop              += OnJumpStopInput;
+        input.Attack                += OnAttackInput;
+        input.Dodge                 += OnDodgeInput;
+        input.Interact              += OnInteractInput;
+        input.NextInteractable      += OnNextInteractable;
+        input.PreviousInteractable  += OnPreviousInteractable;
     }
 
     private void UnlinkInputEvents(){
         
         InputManager input = InputManager.Singleton; 
         
-        input.Move          -= OnMoveInput;
-        input.JumpStart     -= OnJumpStartInput;
-        input.JumpStop      -= OnJumpStopInput;
-        input.Attack        -= OnAttackInput;
-        input.Dodge         -= OnDodgeInput;
+        input.Move                  -= OnMoveInput;
+        input.JumpStart             -= OnJumpStartInput;
+        input.JumpStop              -= OnJumpStopInput;
+        input.Attack                -= OnAttackInput;
+        input.Dodge                 -= OnDodgeInput;
+        input.Interact              -= OnInteractInput;
+        input.NextInteractable      -= OnNextInteractable;
+        input.PreviousInteractable  -= OnPreviousInteractable;
     }
 
     private void OnMoveInput(Vector2 moveInput){
@@ -435,5 +447,17 @@ public class Player : MonoBehaviour{
         }
     
         Attack();
+    }
+
+    private void OnInteractInput(){
+        interactor.Interact();
+    }
+
+    private void OnPreviousInteractable(){
+        interactor.PreviousInteractable();
+    }
+
+    private void OnNextInteractable(){
+        interactor.NextInteractable();
     }
 }

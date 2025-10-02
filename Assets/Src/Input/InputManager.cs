@@ -88,6 +88,27 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
         }
     }
 
+    public event Action Interact;
+    void InputActions.IGameplayActions.OnInteract(InputAction.CallbackContext context){
+        if(context.performed==true){
+            Interact?.Invoke();
+        }
+    }
+
+    public event Action NextInteractable;
+    void InputActions.IGameplayActions.OnNextInteractable(InputAction.CallbackContext context){
+        if(context.performed){
+            NextInteractable?.Invoke();
+        }
+    }
+
+    public event Action PreviousInteractable;
+    void InputActions.IGameplayActions.OnPreviousInteractable(InputAction.CallbackContext context){
+        if(context.performed){
+            PreviousInteractable?.Invoke();
+        }
+    }
+
     private static class Bootstrap{
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialise(){            
