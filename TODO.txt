@@ -12,7 +12,13 @@
 + Utility Agents for Ai combat evaluation.
 + Interaction. 
 
-^^======== TODO ========^^
+======== TODO ========
+
 
 - Heal Ability.
 - Hades 2 style of dash.
+
+
+==== BACK BURNER =====
+
+- World Streaming (Open World)

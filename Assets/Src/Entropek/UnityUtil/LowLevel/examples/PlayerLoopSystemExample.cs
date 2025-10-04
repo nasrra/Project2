@@ -1,10 +1,5 @@
 using System.Collections.Generic;
 using Entropek.Collections;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.LowLevel;
-using UnityEngine.PlayerLoop;
 
 ///
 /// This is an example class for a custom player loop system.

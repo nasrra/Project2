@@ -138,7 +138,7 @@ public class AiCombatAgent : MonoBehaviour{
             
             // if the action is currently on cooldown.
 
-            if(currentEvaluation.CooldownTimer.IsTimedout == false){
+            if(currentEvaluation.CooldownTimer.HasTimedOut == false){
                 continue;
             }
 

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ac68709f01de374e95dad0da6b7b81e, type: 3}
+  m_Name: ArcGhost
+  m_EditorClassIdentifier: 
+  scriptsToAdd:
+  - typeName: ArcGhostMaterialController
+  materialOverride: {fileID: -876546973899608171, guid: 1593b3f5ee792494ab73171fa5f5485e, type: 3}
+  lifetime: 1

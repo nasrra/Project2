@@ -2,7 +2,7 @@ using System;
 using Entropek.Systems;
 using Entropek.Systems.Autoload;
 using Entropek.Systems.Interaction;
-using UnityEditor.Timeline;
+using Entropek.Systems.Trails;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -39,9 +39,12 @@ public class Player : MonoBehaviour{
     [SerializeField] private Hitbox slash1Hitbox;
     [SerializeField] private Hitbox slash2Hitbox;
     [SerializeField] private Timer attackTimer; 
-    [SerializeField] private Timer dodgeTimer;
+    [SerializeField] private Timer dodgeStateTimer;
+    [SerializeField] private Timer dodgeCooldownTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
+    [SerializeField] private SkinnedMeshTrailSystem arcGhost;
+    [SerializeField] private DodgeTrailController dodgeTrail;
     
 
     /// 
@@ -63,7 +66,7 @@ public class Player : MonoBehaviour{
     private const float AttackLungeForce            = 3.33f;
     private const float AttackLungeDecaySpeed       = AttackLungeForce * 3f;
     private const float DodgeForce                  = 33;
-    private const float DodgeDecaySpeed             = DodgeForce * 3f;
+    private const float DodgeDecaySpeed             = DodgeForce * 4f;
     private const float FaceMoveDirectionSpeed      = 16.7f;
     private const float FaceAttackDirectionSpeed    = 16.7f;
     private const float AttackHitCameraShakeForce   = 3.33f;
@@ -119,18 +122,22 @@ public class Player : MonoBehaviour{
     public void Idle(){
         state = State.Idle;
         UpdateMoveDirection(Vector3.zero);
-        animator.Play(IdleAnimation);
+        if(state!=State.Jump && state!=State.Fall){
+            animator.Play(IdleAnimation);
+        }
     }
 
     private void Run(){
         Run(InputManager.Singleton.moveInput);
-        animator.Play(WalkAnimation);
     }
 
     public void Run(Vector3 directtion){
         state = State.Run;
         UpdateMoveDirection(directtion);
         FaceChosenDirection = FaceMoveDirection;
+        if(state != State.Fall && state != State.Jump){
+            animator.Play(WalkAnimation);
+        }
     }
 
     public void JumpStart(){
@@ -160,13 +167,36 @@ public class Player : MonoBehaviour{
         }
     }
 
-    public void Dodge(){
+    public void DodgeStart(){
         state = State.Dodge;
         movement.moveDirection = Vector3.zero;
         movement.HaltMoveDirectionVelocity();
         movement.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
-        dodgeTimer.Begin();
+        dodgeStateTimer.Begin();
+        arcGhost.SpawnMeshes();
+        dodgeTrail.EnableTrail();
         animator.Play(DodgeAnimation);
+    }
+
+    public void DodgeStop(){
+
+        dodgeCooldownTimer.Begin();
+
+        if(movement.IsGrounded==true){
+            if(InputManager.Singleton.moveInputSqrMagnitude>0){
+                Run();
+            }
+            else{
+                Idle();
+            }
+        }
+        else{
+            Fall();
+        }
+
+        // set move direction back to the player input.
+        
+        UpdateMoveDirection(InputManager.Singleton.moveInput);
     }
 
     bool slashFlag = false;
@@ -267,32 +297,17 @@ public class Player : MonoBehaviour{
 
     
     private void LinkTimerEvents(){
-        dodgeTimer.Timeout += OnDodgeTimerTimeout;
+        dodgeStateTimer.Timeout += OnDodgeStateTimerTimeout;
         attackTimer.Timeout += OnAttackTimerTimeout;
     }
 
     private void UnlinkTimerEvents(){
-        dodgeTimer.Timeout -= OnDodgeTimerTimeout;
+        dodgeStateTimer.Timeout -= OnDodgeStateTimerTimeout;
         attackTimer.Timeout -= OnAttackTimerTimeout;
     }
 
-    private void OnDodgeTimerTimeout(){
-        
-        if(movement.IsGrounded==true){
-            if(InputManager.Singleton.moveInputSqrMagnitude>0){
-                Run();
-            }
-            else{
-                Idle();
-            }
-        }
-        else{
-            Fall();
-        }
-
-        // set move direction back to the player input.
-        
-        UpdateMoveDirection(InputManager.Singleton.moveInput);
+    private void OnDodgeStateTimerTimeout(){
+        DodgeStop();        
     }
 
     private void OnAttackTimerTimeout(){
@@ -392,8 +407,8 @@ public class Player : MonoBehaviour{
     private void OnMoveInput(Vector2 moveInput){
         
         if(state!=State.Idle 
-        && state!=State.Run 
-        && state!=State.Jump){
+        && state!=State.Run
+        && state!=State.Fall){
             return;
         }
 
@@ -432,11 +447,12 @@ public class Player : MonoBehaviour{
     private void OnDodgeInput(){
         
         if(state==State.Attack 
-        || state==State.Dodge){
+        || state==State.Dodge
+        || dodgeCooldownTimer.HasTimedOut == false){
             return;
         }
 
-        Dodge();
+        DodgeStart();
     }
 
     private void OnAttackInput(){

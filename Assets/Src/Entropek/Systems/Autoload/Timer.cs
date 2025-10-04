@@ -21,11 +21,16 @@ public class Timer : MonoBehaviour{
     [Header("Data")]
     [SerializeField] private float initialTime;
     public float InitialTime => initialTime;
-    [SerializeField] private float currentTime;
+    
+    private float currentTime;
     public float CurrentTime => currentTime;
+    
+    private float normalisedCurrentTime;
+    public float NormalisedCurrentTime => normalisedCurrentTime;
+    
     public bool BeginOnAwake;
     public bool Loop;
-    public bool IsTimedout => CurrentTime == 0;
+    public bool HasTimedOut => CurrentTime == 0;
 
     void OnEnable(){
         TimerManager.RegisterTimer(this);
@@ -40,8 +45,10 @@ public class Timer : MonoBehaviour{
 
     public void Tick(){
         currentTime -= Time.deltaTime;
+        normalisedCurrentTime = currentTime / initialTime;
         if(CurrentTime <= 0){
             currentTime = 0;
+            normalisedCurrentTime = 0;
             Timeout?.Invoke();
             if(Loop==false){
                 Halt();
