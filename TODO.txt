@@ -11,13 +11,16 @@
 + Added Placeholder character for player.
 + Utility Agents for Ai combat evaluation.
 + Interaction. 
++ Hades 2 style of dash.
++ Health bar.
++ New Animation Event System.
 
 ======== TODO ========
 
 
 - Heal Ability.
-- Hades 2 style of dash.
-
+    - Jar refills upon each hit.
+    - full jar means you can heal.
 
 ==== BACK BURNER =====
 

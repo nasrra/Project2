@@ -8,6 +8,7 @@ public class TRex : Enemy{
     Transform target;
 
     private const string BiteAnimation = "Armature_TRex_Attack";
+    private const int BiteAttackId = 0;
     
     /// 
     /// base.
@@ -43,5 +44,12 @@ public class TRex : Enemy{
 
     protected override void OnOpponentEngaged(Transform opponent){
         target = opponent;
+    }
+
+    protected override void OnAnimationEventTriggered(string eventName){
+        switch(eventName){
+            case "BiteAttack":  attackManager.BeginAttack(BiteAttackId); break;
+            default:            throw new Exception("Animation Event Not Implemented "+eventName);
+        }
     }
 }

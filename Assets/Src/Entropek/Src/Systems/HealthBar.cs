@@ -1,0 +1,85 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Entropek.Systems{
+
+
+public class HealthBar : MonoBehaviour{
+    
+    [Header("Components")]
+    [SerializeField] private Slider slider;
+    private Health health;
+
+
+    /// 
+    /// Base.
+    /// 
+
+
+    private void OnEnable(){
+        if(health!=null){
+            LinkEvents();
+        }
+    }
+
+    private void OnDisable(){
+        if(health!=null){
+            UnlinkEvents();        
+        }
+    }
+
+
+    /// 
+    /// Functions.
+    /// 
+
+
+    public void DisplayHealth(Health health){
+
+        if(this.health!=null){
+            UnlinkHealth();
+        }
+
+        this.health     = health;
+        slider.maxValue = health.MaxValue;
+        slider.value    = health.Value;
+
+        LinkHealth();
+    }
+
+
+    /// 
+    /// Linkage.
+    /// 
+
+
+    private void LinkEvents(){
+        LinkHealth();
+    }
+
+    private void UnlinkEvents(){
+        UnlinkHealth();
+    }
+
+    private void LinkHealth(){
+        health.Damaged  += OnHealthDamaged;
+        health.Healed   += OnHealthHealed;
+    }
+
+    private void UnlinkHealth(){
+        health.Damaged  -= OnHealthDamaged;
+        health.Healed   -= OnHealthHealed;
+    }
+
+    private void OnHealthHealed(float amount){
+        slider.value = health.Value;
+    }
+
+    private void OnHealthDamaged(float amount){
+        slider.value = health.Value;
+    }
+}
+
+
+}
+

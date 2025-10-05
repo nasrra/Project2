@@ -19,11 +19,11 @@ namespace Entropek.Systems.Trails{
         [SerializeField] private SkinnedMeshRenderer[] skinnedMeshes;
         [SerializeField] SkinnedMeshTrailProperty trailProperty;
 
-        private void Awake(){
+        private void OnEnable(){
             LinkEvents();
         }
 
-        private void OnDestroy(){
+        private void OnDisable(){
             UnlinkEvents();
         }
 

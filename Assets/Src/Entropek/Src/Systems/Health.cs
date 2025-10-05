@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+namespace Entropek.Systems{
+
+
 public class Health : MonoBehaviour{
     
     public event Action<float> Healed;
@@ -37,3 +40,7 @@ public class Health : MonoBehaviour{
         }
     }
 }
+
+
+}
+

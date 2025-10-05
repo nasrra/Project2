@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Entropek.Systems.Autoload;
 using UnityEngine;
 
-namespace Entropek.Systems{
+namespace Entropek.Systems.Combat{
     
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Timer))]
@@ -14,7 +14,7 @@ public class Hitbox : MonoBehaviour{
     [Header("Components")]
     [SerializeField] private Collider col;
     [SerializeField] private Timer timer;
-    [SerializeField] private float damage;
+    public Timer Timer => timer;
 
     [Header("Data")]
     private HashSet<int> hitGameObjectInstanceIds = new HashSet<int>(); 
@@ -45,21 +45,9 @@ public class Hitbox : MonoBehaviour{
 
         GameObject otherGameObject = other.gameObject;
 
-        ApplyDamage(otherGameObject);
-
         hitGameObjectInstanceIds.Add(otherId);
         Hit?.Invoke(otherGameObject);
     }
-
-    private void ApplyDamage(GameObject other){
-        if(damage <= 0){
-            return;
-        }
-
-        Health health = other.GetComponent<Health>();
-        health.Damage(damage);
-    }
-
 
     /// 
     /// Functions.

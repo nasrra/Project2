@@ -1,5 +1,6 @@
 using System;
 using Entropek.Systems;
+using Entropek.Systems.Combat;
 using Entropek.Systems.Autoload;
 using Entropek.Systems.Interaction;
 using Entropek.Systems.Trails;
@@ -34,18 +35,14 @@ public class Player : MonoBehaviour{
     [SerializeField] private Health health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private Movement movement;
-    [SerializeField] private VisualEffect slash1Vfx;
-    [SerializeField] private VisualEffect slash2Vfx;
-    [SerializeField] private Hitbox slash1Hitbox;
-    [SerializeField] private Hitbox slash2Hitbox;
-    [SerializeField] private Timer attackTimer; 
+    [SerializeField] private AttackManager attackManager;
+    [SerializeField] private Timer attackStateTimer; 
     [SerializeField] private Timer dodgeStateTimer;
     [SerializeField] private Timer dodgeCooldownTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
     [SerializeField] private DodgeTrailController dodgeTrail;
-    
 
     /// 
     /// Data.
@@ -72,6 +69,8 @@ public class Player : MonoBehaviour{
     private const float AttackHitCameraShakeForce   = 3.33f;
     private const float AttackHitCameraShakeTime    = 0.167f;
 
+    private const int Slash1AttackId = 0;
+    private const int Slash2AttackId = 1;
 
     /// 
     /// Base.
@@ -80,6 +79,7 @@ public class Player : MonoBehaviour{
 
     private void OnEnable(){
         LinkEvents();
+        HealthBarHud.Singleton.HealthBar.DisplayHealth(health);
     }
 
     private void Update(){
@@ -205,16 +205,8 @@ public class Player : MonoBehaviour{
         
         state = State.Attack;
         
-        // get the next slash vfx and hitbox.
+        attackManager.BeginAttack(slashFlag==true?Slash1AttackId:Slash2AttackId);
 
-        VisualEffect slash = slashFlag==true? slash1Vfx : slash2Vfx;
-        Hitbox hitbox = slashFlag==true? slash1Hitbox : slash2Hitbox;
-        
-        // enablethe slash.
-
-        slash.Play();
-        hitbox.Enable();
-        
         // swap slashes for next time.
 
         slashFlag=!slashFlag;
@@ -234,7 +226,7 @@ public class Player : MonoBehaviour{
         
         animator.Play(AttackAnimation);
 
-        attackTimer.Begin();
+        attackStateTimer.Begin();
 
     }
 
@@ -251,7 +243,7 @@ public class Player : MonoBehaviour{
     private void LinkEvents(){
         LinkCameraEvents();
         LinkInputEvents();
-        LinkHitboxEvents();
+        LinkAttackManagerEvents();
         LinkTimerEvents();
         LinkMovementEvents();
     }
@@ -259,7 +251,7 @@ public class Player : MonoBehaviour{
     private void UnlinkEvents(){
         UnlinkCameraEvents();
         UnlinkInputEvents();
-        UnlinkHitboxEvents();
+        UnlinkAttackManagerEvents();
         UnlinkTimerEvents();
         UnlinkMovementEvents();
     }
@@ -298,19 +290,19 @@ public class Player : MonoBehaviour{
     
     private void LinkTimerEvents(){
         dodgeStateTimer.Timeout += OnDodgeStateTimerTimeout;
-        attackTimer.Timeout += OnAttackTimerTimeout;
+        attackStateTimer.Timeout += OnAttackStateTimerTimeout;
     }
 
     private void UnlinkTimerEvents(){
         dodgeStateTimer.Timeout -= OnDodgeStateTimerTimeout;
-        attackTimer.Timeout -= OnAttackTimerTimeout;
+        attackStateTimer.Timeout -= OnAttackStateTimerTimeout;
     }
 
     private void OnDodgeStateTimerTimeout(){
         DodgeStop();        
     }
 
-    private void OnAttackTimerTimeout(){
+    private void OnAttackStateTimerTimeout(){
         
         if(movement.IsGrounded==true){
             if(InputManager.Singleton.moveInputSqrMagnitude>0){
@@ -332,17 +324,15 @@ public class Player : MonoBehaviour{
     /// 
 
 
-    private void LinkHitboxEvents(){
-        slash1Hitbox.Hit += OnHitboxHit;
-        slash2Hitbox.Hit += OnHitboxHit;    
+    private void LinkAttackManagerEvents(){
+        attackManager.AttackHit += OnAttackHit;
+    }   
+
+    private void UnlinkAttackManagerEvents(){
+        attackManager.AttackHit -= OnAttackHit;    
     }
 
-    private void UnlinkHitboxEvents(){
-        slash1Hitbox.Hit -= OnHitboxHit;
-        slash2Hitbox.Hit -= OnHitboxHit;    
-    }
-
-    private void OnHitboxHit(GameObject other){
+    private void OnAttackHit(){
         cam.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
     }
 

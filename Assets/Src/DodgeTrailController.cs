@@ -18,7 +18,7 @@ public class DodgeTrailController : MonoBehaviour{
     /// 
 
 
-    private void Awake(){
+    private void OnEnable(){
         LinkEvents();
     }
 
@@ -28,7 +28,7 @@ public class DodgeTrailController : MonoBehaviour{
         }
     }
 
-    private void OnDestroy(){
+    private void OnDisable(){
         UnlinkEvents();
     }
 

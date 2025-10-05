@@ -1,12 +1,29 @@
 using Entropek.Systems.Ai.Combat;
+using Entropek.Systems;
 using UnityEngine;
 using UnityEngine.AI;
+using Entropek.Systems.Combat;
+using Entropek.UnityUtils.AnimatorUtils;
 
 public abstract class Enemy : MonoBehaviour{
-    [Header("Enemy Components")]
+    
+    /// 
+    /// Components.
+    /// 
+    
+
+    [Header(nameof(Enemy)+" Components")]
     [SerializeField] protected Health health;
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] protected AiCombatAgent combatAgent;
+    [SerializeField] protected AttackManager attackManager;
+    [SerializeField] protected AnimationEventReciever animationEventReciever;
+
+
+    /// 
+    /// Base.
+    /// 
+
 
     void OnEnable(){
         LinkEvents();
@@ -16,15 +33,37 @@ public abstract class Enemy : MonoBehaviour{
         UnlinkEvents();
     }
 
+
+    /// 
+    /// Functions. 
+    /// 
+
+
+    public abstract void Kill();
+
+
+    /// 
+    /// Linkage.
+    /// 
+
+
     protected virtual void LinkEvents(){
         LinkHealthEvents();
         LinkCombatAgentEvents();
+        LinkAnimationEventRecieverEvents();
     }
 
     protected virtual void UnlinkEvents(){
         UnlinkHealthEvents();
         UnlinkCombatAgentEvents();
+        UnlinkAnimationEventRecieverEvents();
     }
+
+
+    /// 
+    /// Combat Agent Linkage.
+    /// 
+
 
     private void LinkCombatAgentEvents(){
         combatAgent.ActionChosen += OnCombatActionChosen;
@@ -36,6 +75,15 @@ public abstract class Enemy : MonoBehaviour{
         combatAgent.EngagedOpponent -= OnOpponentEngaged;        
     }
 
+    protected abstract void OnCombatActionChosen(string actionName); 
+    protected abstract void OnOpponentEngaged(Transform opponent);
+
+
+    /// 
+    /// Health Linkage.
+    /// 
+
+
     private void LinkHealthEvents(){
         health.Death += OnHealthDeath;
     }
@@ -44,8 +92,22 @@ public abstract class Enemy : MonoBehaviour{
         health.Death -= OnHealthDeath;
     }
 
-    protected abstract void OnCombatActionChosen(string actionName); 
-    protected abstract void OnOpponentEngaged(Transform opponent);
     protected abstract void OnHealthDeath();
-    public abstract void Kill();
+    
+
+    /// 
+    /// Animation Event Reciever Linkage.
+    /// 
+
+
+    private void LinkAnimationEventRecieverEvents(){
+        animationEventReciever.AnimationEventTriggered += OnAnimationEventTriggered;
+    }
+
+    private void UnlinkAnimationEventRecieverEvents(){
+        animationEventReciever.AnimationEventTriggered -= OnAnimationEventTriggered;
+    }
+
+    protected abstract void OnAnimationEventTriggered(string eventName);
+
 }
