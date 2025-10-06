@@ -37,7 +37,7 @@ public class Movement : MonoBehaviour{
     private float stickToFloorForce;
 
     [SerializeField] private LayerMask groundLayers;
-    [SerializeField] private bool useGravity;
+    [SerializeField] public bool UseGravity;
     public bool SnapToGround = true;
     public bool IsGrounded {get;private set;}
     private bool IsGroundedLastFrame;
@@ -78,6 +78,10 @@ public class Movement : MonoBehaviour{
         moveDirectionVelocity = Vector3.zero;
     }
 
+    public void ClearGravityVelocity(){
+        gravityVelocity = Vector3.zero;
+    }
+
     private void HandleMoveDirection(){
         Vector3 targetVelocity  = Vector3.zero; 
         float rate              = 0;
@@ -101,7 +105,7 @@ public class Movement : MonoBehaviour{
     }
 
     private void HandleGravity(){
-        if(useGravity==false){
+        if(UseGravity==false){
             return;
         }
 

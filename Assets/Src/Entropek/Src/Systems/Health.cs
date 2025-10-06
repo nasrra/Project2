@@ -1,46 +1,133 @@
 using System;
+using Unity.XR.OpenVR;
 using UnityEngine;
 
 namespace Entropek.Systems{
 
 
-public class Health : MonoBehaviour{
+public class Health : HealthSystem{
     
-    public event Action<float> Healed;
-    public event Action<float> Damaged;
-    public event Action Death;
-    public event Action FullyHealed;
+
+    /// 
+    /// Data.
+    /// 
+
 
     [Header("Data")]
-    [SerializeField] private float value;
-    public float Value => value;
-    [SerializeField] private float maxValue;
-    public float MaxValue => maxValue;
-    public float NormalisedValue => value/maxValue;
+    [SerializeField] protected float healthValue;
+    [SerializeField] protected float maxHealthValue;
+    [HideInInspector] protected HealthState healthState;
+    public HealthState HealthState => healthState;
 
-    public void Damage(float amount){
-        value-=amount;
-        if(value<=0){
-            value=0;
-            Death?.Invoke();
+
+    /// 
+    /// Base.
+    /// 
+
+
+    protected virtual void OnEnable(){
+        SetInitialHealthState();
+    }
+
+
+    /// 
+    /// State Machine.
+    /// 
+
+
+    private void SetInitialHealthState(){
+        if(healthValue <= 0){
+            healthState = HealthState.Dead;
+        }
+        else if(healthValue >= maxHealthValue){
+            healthState = HealthState.Full;
         }
         else{
-            Damaged?.Invoke(amount);
+            healthState = HealthState.Alive;
         }
     }
 
-    public void Heal(float amount){
-        value+=amount;
-        if(value>=maxValue){
-            value=maxValue;
-            FullyHealed?.Invoke();
+    protected void HealthAliveState(){
+        if(healthState==HealthState.Alive){
+            return;
+        }
+        healthState=HealthState.Alive;
+    }
+
+    protected void HealthFullState(){
+        if(healthState==HealthState.Full){
+            return;
+        }
+        healthState=HealthState.Full;
+        InvokeHealthFull();
+    }
+
+    protected void HealthDeadState(){
+        if(healthState==HealthState.Dead){
+            return;
+        }
+        healthState=HealthState.Dead;
+        InvokeDeath();
+    }
+
+
+    /// 
+    /// Util Functions.
+    /// 
+
+
+    public override bool Damage(float amount){
+        return DamageHealth(amount);
+    }
+
+    protected bool DamageHealth(float amount){
+        if(Vulnerable == false || healthState == HealthState.Dead){
+            return false;
+        }
+
+        healthValue -= amount;
+        if(maxHealthValue<=0){
+            HealthDeadState();
         }
         else{
-            Healed?.Invoke(amount);
+            HealthAliveState();
+            InvokeHealthDamaged(amount);
+        }
+
+        return true;
+    }
+
+    public override void Heal(float amount){
+        healthValue += amount;
+        if(healthValue >= maxHealthValue){
+            HealthFullState();
+        }
+        else{
+            HealthAliveState();
+            InvokeHealed(amount);
         }
     }
+
+
+    /// 
+    /// Getters.
+    /// 
+
+
+    public override float GetHealthValue(){
+        return healthValue;
+    }
+
+    public override float GetMaxHealthValue(){
+        return maxHealthValue;
+    }
+
+    public override float GetNormalisedHealthValue(){
+        return healthValue / maxHealthValue;
+    }
+
+
 }
 
 
 }
-

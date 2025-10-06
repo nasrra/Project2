@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour{
     private const float MouseInputSmoothSpeed   = 100f;
     private const float LockOnTargetSmoothSpeed = 16.7f;
     private const float UpperPitchLimit         = 70f;
-    private const float LowerPitchLimit         = -35f;
+    private const float LowerPitchLimit         = -45f;
     private const float CameraRadius            = 0.33f;
     private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
 

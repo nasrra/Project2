@@ -32,13 +32,13 @@ public class Player : MonoBehaviour{
 
     [Header("Components")]
     [SerializeField] private CameraController cam;
-    [SerializeField] private Health health;
+    [SerializeField] private ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private Movement movement;
     [SerializeField] private AttackManager attackManager;
     [SerializeField] private Timer attackStateTimer; 
     [SerializeField] private Timer dodgeStateTimer;
-    [SerializeField] private Timer dodgeCooldownTimer;
+    [SerializeField] private Timer iFrameStateTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
@@ -51,6 +51,13 @@ public class Player : MonoBehaviour{
     [Header("Data")]
     [SerializeField]private State state = State.Idle;
     private event Action FaceChosenDirection;
+    private bool canDodge = true;
+
+
+    /// 
+    /// Animations.
+    /// 
+
 
     private const string IdleAnimation      = "Rig_Sword_Idle";
     private const string WalkAnimation      = "Rig_Jog_Fwd_Loop";
@@ -60,17 +67,31 @@ public class Player : MonoBehaviour{
     private const string GroundedAnimation  = "Rig_Jump_Land";
     private const string AttackAnimation    = "Rig_Sword_Attack";
 
-    private const float AttackLungeForce            = 3.33f;
-    private const float AttackLungeDecaySpeed       = AttackLungeForce * 3f;
-    private const float DodgeForce                  = 33;
-    private const float DodgeDecaySpeed             = DodgeForce * 4f;
-    private const float FaceMoveDirectionSpeed      = 16.7f;
-    private const float FaceAttackDirectionSpeed    = 16.7f;
-    private const float AttackHitCameraShakeForce   = 3.33f;
-    private const float AttackHitCameraShakeTime    = 0.167f;
+
+    /// 
+    /// Data constants.
+    /// 
+
+
+    private const float AttackLungeForce                = 3.33f;
+    private const float AttackLungeDecaySpeed           = AttackLungeForce * 3f;
+    private const float DodgeForce                      = 25;
+    private const float DodgeDecaySpeed                 = DodgeForce * 3.33f;
+    private const float FaceMoveDirectionSpeed          = 16.7f;
+    private const float FaceAttackDirectionSpeed        = 16.7f;
+    private const float AttackHitCameraShakeForce       = 3.33f;
+    private const float AttackHitCameraShakeTime        = 0.167f;
+    private const float AttackShieldRestorationAmount   = 5f;
+
+
+    /// 
+    /// Attack Ids.
+    /// 
+
 
     private const int Slash1AttackId = 0;
     private const int Slash2AttackId = 1;
+
 
     /// 
     /// Base.
@@ -79,7 +100,7 @@ public class Player : MonoBehaviour{
 
     private void OnEnable(){
         LinkEvents();
-        HealthBarHud.Singleton.HealthBar.DisplayHealth(health);
+        ShieldedHealthBarHud.Singleton.ShieldedHealthBar.DisplayShieldedHealth(health);
     }
 
     private void Update(){
@@ -168,21 +189,43 @@ public class Player : MonoBehaviour{
     }
 
     public void DodgeStart(){
-        state = State.Dodge;
+
+        // enter state.
+
+        dodgeStateTimer.Begin();
+        state       = State.Dodge;
+        canDodge    = false;
+
+        // move only in the direction of our dodge.
+        
         movement.moveDirection = Vector3.zero;
         movement.HaltMoveDirectionVelocity();
+        
+        movement.ClearGravityVelocity();
+        
+        jumpMovement.StopJumping();
+
         movement.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
-        dodgeStateTimer.Begin();
+        
+        // play animations and vfx.
+        
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
         animator.Play(DodgeAnimation);
+        
+        // enable i-frames.
+
+        EnterIFrames();
     }
 
     public void DodgeStop(){
 
-        dodgeCooldownTimer.Begin();
-
         if(movement.IsGrounded==true){
+            
+            // only reset out dodge when grounded.
+            
+            canDodge = true;
+            
             if(InputManager.Singleton.moveInputSqrMagnitude>0){
                 Run();
             }
@@ -197,6 +240,9 @@ public class Player : MonoBehaviour{
         // set move direction back to the player input.
         
         UpdateMoveDirection(InputManager.Singleton.moveInput);
+        
+        // re-enable gravity.
+        
     }
 
     bool slashFlag = false;
@@ -232,6 +278,15 @@ public class Player : MonoBehaviour{
 
     public void Fall(){
         state = State.Fall;
+    }
+
+    public void EnterIFrames(){
+        health.Vulnerable = false;
+        iFrameStateTimer.Begin();
+    }
+
+    public void ExitIFrames(){
+        health.Vulnerable = true;
     }
     
 
@@ -280,6 +335,10 @@ public class Player : MonoBehaviour{
                 Idle();
             }
         }
+
+        // reset our dodge whenever grounded.
+        
+        canDodge = true;
     }
 
 
@@ -289,13 +348,15 @@ public class Player : MonoBehaviour{
 
     
     private void LinkTimerEvents(){
-        dodgeStateTimer.Timeout += OnDodgeStateTimerTimeout;
-        attackStateTimer.Timeout += OnAttackStateTimerTimeout;
+        dodgeStateTimer.Timeout         += OnDodgeStateTimerTimeout;
+        attackStateTimer.Timeout        += OnAttackStateTimerTimeout;
+        iFrameStateTimer.Timeout        += OnIFrameStateTimeout;
     }
 
     private void UnlinkTimerEvents(){
-        dodgeStateTimer.Timeout -= OnDodgeStateTimerTimeout;
-        attackStateTimer.Timeout -= OnAttackStateTimerTimeout;
+        dodgeStateTimer.Timeout         -= OnDodgeStateTimerTimeout;
+        attackStateTimer.Timeout        -= OnAttackStateTimerTimeout;
+        iFrameStateTimer.Timeout        -= OnIFrameStateTimeout;
     }
 
     private void OnDodgeStateTimerTimeout(){
@@ -318,6 +379,10 @@ public class Player : MonoBehaviour{
 
     }
 
+    private void OnIFrameStateTimeout(){
+        ExitIFrames();
+    }
+
 
     /// 
     /// Hitbox Linkage.
@@ -333,6 +398,7 @@ public class Player : MonoBehaviour{
     }
 
     private void OnAttackHit(){
+        health.RestoreShield(AttackShieldRestorationAmount);
         cam.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
     }
 
@@ -438,7 +504,7 @@ public class Player : MonoBehaviour{
         
         if(state==State.Attack 
         || state==State.Dodge
-        || dodgeCooldownTimer.HasTimedOut == false){
+        || canDodge == false){
             return;
         }
 

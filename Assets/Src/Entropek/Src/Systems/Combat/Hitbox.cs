@@ -38,7 +38,7 @@ public class Hitbox : MonoBehaviour{
         int otherId = other.GetInstanceID();
         
         // short-circuit if we've already hit the object.
-        
+
         if(hitGameObjectInstanceIds.Contains(otherId)==true){
             return;
         }

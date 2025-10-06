@@ -14,14 +14,18 @@
 + Hades 2 style of dash.
 + Health bar.
 + New Animation Event System.
++ Shield Bar.
++ Reworked Dash.
++ Reworked Health.
++ Fixed Animation Event System triggering multiple times.
++ Added I-frames to player dash.
 
 ======== TODO ========
 
 
-- Heal Ability.
-    - Jar refills upon each hit.
-    - full jar means you can heal.
-
 ==== BACK BURNER =====
 
 - World Streaming (Open World)
+- Fmod Intergration.
+- Prototype First Boss 3D Model.
+- Prototype Player 3D Model.

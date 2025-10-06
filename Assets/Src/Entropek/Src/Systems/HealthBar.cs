@@ -36,13 +36,17 @@ public class HealthBar : MonoBehaviour{
 
     public void DisplayHealth(Health health){
 
+        // unlink from the previous health if there was any.
+
         if(this.health!=null){
             UnlinkHealth();
         }
 
         this.health     = health;
-        slider.maxValue = health.MaxValue;
-        slider.value    = health.Value;
+        slider.maxValue = health.GetMaxHealthValue();
+        slider.value    = health.GetHealthValue();
+
+        // link to this new one.
 
         LinkHealth();
     }
@@ -62,21 +66,21 @@ public class HealthBar : MonoBehaviour{
     }
 
     private void LinkHealth(){
-        health.Damaged  += OnHealthDamaged;
-        health.Healed   += OnHealthHealed;
+        health.HealthDamaged += OnHealthDamaged;
+        health.Healed        += OnHealthHealed;
     }
 
     private void UnlinkHealth(){
-        health.Damaged  -= OnHealthDamaged;
-        health.Healed   -= OnHealthHealed;
+        health.HealthDamaged -= OnHealthDamaged;
+        health.Healed        -= OnHealthHealed;
     }
 
     private void OnHealthHealed(float amount){
-        slider.value = health.Value;
+        slider.value = health.GetHealthValue();
     }
 
     private void OnHealthDamaged(float amount){
-        slider.value = health.Value;
+        slider.value = health.GetHealthValue();
     }
 }
 

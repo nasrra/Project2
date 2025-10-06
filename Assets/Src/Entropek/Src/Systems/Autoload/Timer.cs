@@ -12,11 +12,9 @@ public class Timer : MonoBehaviour{
     public event Action Halted;
     public event Action Paused;
     public event Action Resumed;
-    
-    #if UNITY_EDITOR
-    [Header("Editor")]
-    [SerializeField]private string editorTag;
-    #endif
+
+
+
 
     [Header("Data")]
     [SerializeField] private float initialTime;
@@ -31,6 +29,11 @@ public class Timer : MonoBehaviour{
     public bool BeginOnAwake;
     public bool Loop;
     public bool HasTimedOut => CurrentTime == 0;
+
+    #if UNITY_EDITOR
+    [Header("Editor")]
+    public string EditorNameTag;
+    #endif
 
     void OnEnable(){
         TimerManager.RegisterTimer(this);

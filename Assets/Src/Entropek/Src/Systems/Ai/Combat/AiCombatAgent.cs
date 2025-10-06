@@ -26,11 +26,11 @@ public class AiCombatAgent : MonoBehaviour{
 
 
     [Header("Components")]
-    [SerializeField] private Health selfHealth;
+    [SerializeField] private HealthSystem selfHealth;
     [SerializeField] private Timer damageTakenIntervalTimer;
     [SerializeField] private Timer evaluationIntervalTimer;
     private Transform opponentTransform;
-    private Health opponentHealth;
+    private HealthSystem opponentHealth;
 
 
     /// 
@@ -81,7 +81,7 @@ public class AiCombatAgent : MonoBehaviour{
         if((otherLayerValue & opponentLayerValue) != 0){
             
             Transform otherTransform = other.transform;
-            Health otherHealth = other.GetComponent<Health>();
+            HealthSystem otherHealth = other.GetComponent<HealthSystem>();
             
             if(ValidateOpponent(otherTransform, otherHealth) == true){
                 EngageOpponent(otherTransform, otherHealth);
@@ -103,7 +103,7 @@ public class AiCombatAgent : MonoBehaviour{
         return ValidateOpponent(opponentTransform, opponentHealth);
     }
 
-    private bool ValidateOpponent(Transform opponentTransform, Health opponentHealth){
+    private bool ValidateOpponent(Transform opponentTransform, HealthSystem opponentHealth){
         return opponentTransform != null && opponentHealth != null;
     }
 
@@ -123,8 +123,8 @@ public class AiCombatAgent : MonoBehaviour{
         
         // get the data required for evaluation.
         
-        float normalisedSelfHealthValue     = selfHealth.NormalisedValue;
-        float normalisedOpponentHealthValue = opponentHealth.NormalisedValue;
+        float normalisedSelfHealthValue     = selfHealth.GetNormalisedHealthValue();
+        float normalisedOpponentHealthValue = opponentHealth.GetNormalisedHealthValue();
         float distanceToOpponent            = (transform.position - opponentTransform.position).magnitude; 
         float distanceToClosestObstacle     = GetDistanceToClosestObstacle();       
         
@@ -177,7 +177,7 @@ public class AiCombatAgent : MonoBehaviour{
     }
 
 
-    public void EngageOpponent(Transform opponentTransform, Health opponentHealth){
+    public void EngageOpponent(Transform opponentTransform, HealthSystem opponentHealth){
         isEngaged               = true;
         this.opponentTransform  = opponentTransform;
         this.opponentHealth     = opponentHealth;

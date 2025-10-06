@@ -67,10 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd61221b13b4d84e9ac99cc5f05fd21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorTag: Enabled Lifetime
   initialTime: 0
   BeginOnAwake: 0
   Loop: 0
+  EditorNameTag: Lifetime
 --- !u!114 &1305438483619739248
 MonoBehaviour:
   m_ObjectHideFlags: 0

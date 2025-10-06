@@ -1,18 +1,16 @@
 using UnityEngine;
-using Entropek.Logger;
 using Entropek.Logger.Exceptions;
-using System;
 
 namespace Entropek.Systems{
 
 [DefaultExecutionOrder(-10)]
-public class HealthBarHud : MonoBehaviour{
+public class ShieldedHealthBarHud : MonoBehaviour{
     
-    public static HealthBarHud Singleton {get;private set;} 
+    public static ShieldedHealthBarHud Singleton {get;private set;} 
 
     [Header("Components")]
-    [SerializeField] private HealthBar healthBar;
-    public HealthBar HealthBar => healthBar;
+    [SerializeField] private ShieldedHealthBar shieldedHealthBar;
+    public ShieldedHealthBar ShieldedHealthBar => shieldedHealthBar;
 
     void OnEnable(){
         if(Singleton!=null){

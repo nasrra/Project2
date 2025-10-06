@@ -13,7 +13,7 @@ public abstract class Enemy : MonoBehaviour{
     
 
     [Header(nameof(Enemy)+" Components")]
-    [SerializeField] protected Health health;
+    [SerializeField] protected HealthSystem health;
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] protected AiCombatAgent combatAgent;
     [SerializeField] protected AttackManager attackManager;

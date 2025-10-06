@@ -12,13 +12,22 @@ public class AnimationEventStateBehaviour : StateMachineBehaviour{
     [SerializeField][Range(0f,1f)] private float triggerTime;
     public float TriggerTime => triggerTime;
 
+    private bool triggered = false;
+    private float previousTime = 0f; // store previous normalized time.
+
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
     
         float currentTime = stateInfo.normalizedTime % 1f; // wrap around when looping.
     
-        if(currentTime >= triggerTime){
+        if(currentTime <= previousTime){
+            triggered = false;
+        }
+        else if(triggered == false && currentTime >= triggerTime){
+            triggered = true;
             NotifyEventReciever(animator);
         }
+
+        previousTime = currentTime;
     }
 
     private void NotifyEventReciever(Animator animtor){
