@@ -125,9 +125,13 @@
         //  light.shadowAttenuation : ranges from 0 - 1 (fully shadowed - fully lit);
         //  light.distanceAttenuation : the light distance (additional light not main light).
     
-        // apply user defined edges        
+        // apply user defined edges
         float attenuation = light.shadowAttenuation * light.distanceAttenuation;    
-        return min(attenuation, 1.0); // max to 1.0 to avoid light "flares" caused by close sqrd proximity values of lights.
+        attenuation = step (1, min(attenuation, 1)); // max to 1.0 to avoid light "flares" caused by close sqrd proximity values of lights.
+    
+        // attenuation = attenuation * surface.stepRamp / surface.stepRamp;
+
+        return attenuation;
     }
 
     float3 CalculateShading(Light light, SurfaceVariables surface){
