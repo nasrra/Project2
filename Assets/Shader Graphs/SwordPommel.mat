@@ -74,7 +74,7 @@ Material:
     - _RimLightStrength: 3.33
     - _RimLightThreshold: 3.33
     - _SHADOWS_SOFT: 1
-    - _ShadowLight: 0.33
+    - _ShadowLight: 0.0835
     - _Shininess: 0
     - _StepRamp: 3
     m_Colors:

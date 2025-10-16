@@ -25,10 +25,11 @@
     struct SurfaceVariables{
         float3 normal;      // the noramlised normal direction of a given point on the mesh.
         float3 view;        // the direction to the camera from this point.
-        float smoothness;  
+        float specularThreshold;  
+        float specularStrength;
         float shininess;   
-        float rimLightStrength;
         float rimLightThreshold;
+        float rimLightStrength;
         float stepRamp; 
         float shadowLight;
         float fullLight;
@@ -38,7 +39,7 @@
     
     
     float ApplyStepRamp(SurfaceVariables surface,float value){
-        return lerp(surface.shadowLight, 1, ceil(value * surface.stepRamp + surface.fullLight) / surface.stepRamp);
+        return lerp(surface.shadowLight, 1,floor(value * surface.stepRamp + surface.fullLight) / surface.stepRamp);
     }
     
     float CalculateDiffuse(Light light, SurfaceVariables surface){
@@ -56,10 +57,7 @@
         //  clamps the result to be between 0 (full shadow) and 1 (full light)
         //  ensuring a valid lighting range.
         
-        float diffuse = saturate(dot(surface.normal, light.direction)); // base shaded diffuse. 
-
-        // apply user defined edges
-        diffuse = ApplyStepRamp(surface, diffuse);
+        float diffuse = saturate(dot(surface.normal, light.direction)); // base shaded diffuse.
 
         return diffuse;
     }
@@ -84,17 +82,17 @@
         float specular = saturate(dot(surface.normal, halfwayVector)); 
         
         specular = pow(specular, surface.shininess);
-        specular *= diffuse * surface.smoothness; // to avoid the specular highlight from going over non-illuminated parts.
+        specular *= diffuse * surface.specularThreshold; // to avoid the specular highlight from going over non-illuminated parts.
 
         // this works for some reason, dont know why lol.
         
-        specular = surface.smoothness * smoothstep(
-            (1 - surface.smoothness) * 0,
+        specular = surface.specularThreshold * smoothstep(
+            (1 - surface.specularThreshold) * 0,
             0,
             specular
         );
 
-        return specular;
+        return specular * surface.specularStrength;
     }
 
     float CalculateRimLight(Light light, SurfaceVariables surface, float diffuse){
@@ -118,35 +116,41 @@
 
         return shadowCoord;
     }
-        
-    float CalculateAttenuation(Light light, SurfaceVariables surface){
-
-        // NOTE:
-        //  light.shadowAttenuation : ranges from 0 - 1 (fully shadowed - fully lit);
-        //  light.distanceAttenuation : the light distance (additional light not main light).
-    
-        // apply user defined edges
-        float attenuation = light.shadowAttenuation * light.distanceAttenuation;    
-        attenuation = step (1, min(attenuation, 1)); // max to 1.0 to avoid light "flares" caused by close sqrd proximity values of lights.
-    
-        // attenuation = attenuation * surface.stepRamp / surface.stepRamp;
-
-        return attenuation;
-    }
 
     float3 CalculateShading(Light light, SurfaceVariables surface){
 
-        float attenuation           = CalculateAttenuation(light, surface);
-        float diffuse               = CalculateDiffuse(light, surface);
-        float attentuatedDiffuse    = diffuse * attenuation;        
+        // keep between 0 - 1 (inclusive) to avoid lighting issues with negatives and values greater than 1.
 
-        float specular = CalculateSpecular(light, surface, diffuse) * attenuation;
+        float lightAttenuation      = saturate(light.shadowAttenuation); 
+        float distanceAttenuation   = saturate(light.distanceAttenuation);
         
-        float rimLight = CalculateRimLight(light, surface, attentuatedDiffuse) * attenuation;
+        
+        float diffuse               = CalculateDiffuse(light, surface);
+
+        // apply the shadow lighting attenuation.
+
+        diffuse *= lightAttenuation; 
+
+        //
+        // Calculate Specular and Rim Light outside of base diffuse for more control over the look of the terms.
+        // This is not "physically" accurate to the real world but who cares.. 
+        //
+
+        float specular = CalculateSpecular(light, surface, diffuse) * distanceAttenuation * lightAttenuation;
+        float rimLight = CalculateRimLight(light, surface, diffuse) * distanceAttenuation * lightAttenuation;
+
+        // Apply the stylised toon ramp to the end result.
+
+        diffuse = ApplyStepRamp(surface, diffuse);
+        
+        // At the very end apply the light's distance attenuation to have a smooth
+        // transition from being unlit into lit.
+
+        diffuse *= distanceAttenuation;
         
         // default real time shading model (including rim light).
 
-        return light.color * (attentuatedDiffuse + max(specular, rimLight));
+        return light.color * (diffuse + max(specular, rimLight));
     }
 
     
@@ -158,7 +162,8 @@
         float3 WorldPosition, 
         float3 WorldNormal, 
         float3 ViewDirection, 
-        float Smoothness, 
+        float SpecularThreshold,
+        float SpecularStrength, 
         float RimLightThreshold, 
         float RimLightStrength, 
         float StepRamp, 
@@ -176,8 +181,9 @@
             SurfaceVariables surface;
             surface.normal              = normalize(WorldNormal);           // normalise world normal for correct light intensity values.
             surface.view                = SafeNormalize(ViewDirection);     // use Safe Noramlise for tolerance checks against divide by zero or small magnitudes.
-            surface.smoothness          = Smoothness;
-            surface.shininess           = exp2(10 * Smoothness + 1);        // shiniess constant according to the Phong reflection model.
+            surface.specularThreshold   = SpecularThreshold;
+            surface.specularStrength    = SpecularStrength;
+            surface.shininess           = exp2(10 * SpecularThreshold + 1);        // shiniess constant according to the Phong reflection model.
             surface.rimLightStrength    = RimLightStrength;
             surface.rimLightThreshold   = RimLightThreshold;
             surface.stepRamp            = StepRamp;

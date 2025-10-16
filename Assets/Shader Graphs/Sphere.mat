@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Slink
+  m_Name: Sphere
   m_Shader: {fileID: -6465566751694194690, guid: ee7d5fbe1a69d8943ad2133c6979c460, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -30,7 +30,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: 42ed204f95eda554185e1d952bf517e0, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_34cc1baad5ed470081b6e561dbd1ce3e_Out_0_Texture2D:
@@ -59,29 +59,26 @@ Material:
     - _ADDITIONAL_LIGHTS: 1
     - _ADDITIONAL_LIGHTSHADOWS: 0
     - _ADDITIONAL_LIGHT_SHADOWS: 1
-    - _EdgeDiffuse: 0
+    - _EdgeDiffuse: 1
     - _EdgeDistanceAttenuation: 1
-    - _EdgeRimLight: 1.72
-    - _EdgeRimLightOffset: 3.33
+    - _EdgeRimLight: 0
+    - _EdgeRimLightOffset: 0
     - _EdgeShadowAttenuation: 1
-    - _EdgeSpecular: 0
-    - _EdgeSpecularOffset: 0
+    - _EdgeSpecular: 1
+    - _EdgeSpecularOffset: 1
     - _FullLight: 0.167
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RimLightStrength: 3.33
-    - _RimLightThreshold: 1.67
+    - _RimLightStrength: 0.77
+    - _RimLightThreshold: 0.33
     - _SHADOWS_SOFT: 1
     - _ShadowLight: 0.0835
     - _Shininess: 0
-    - _SpecularStrength: 0.33
-    - _SpecularThreshold: 1
-    - _SpecularThrreshold: 0
     - _StepRamp: 3
     m_Colors:
-    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Tint: {r: 1, g: 0.46698105, b: 0.46698105, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2067863974783365004
