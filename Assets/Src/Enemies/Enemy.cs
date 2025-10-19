@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using Entropek.Systems.Combat;
 using Entropek.UnityUtils.AnimatorUtils;
+using System;
+using Entropek.Physics;
 
 public abstract class Enemy : MonoBehaviour{
     
@@ -12,13 +14,19 @@ public abstract class Enemy : MonoBehaviour{
     /// 
     
 
-    [Header(nameof(Enemy)+" Components")]
+    [Header(nameof(Enemy)+"Required Components")]
+    [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
+    [SerializeField] protected Transform target;
     [SerializeField] protected HealthSystem health;
-    [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] protected AiCombatAgent combatAgent;
     [SerializeField] protected AttackManager attackManager;
     [SerializeField] protected AnimationEventReciever animationEventReciever;
+    [SerializeField] protected NavAgentMovement movement;
+    [SerializeField] protected ForceApplier forceApplier;
 
+    [Header(nameof(Enemy) + "Optional Components")]
+    [SerializeField] protected GroundChecker groundChecker;
+    private const float FaceMoveDirectionSpeed = 3.33f;
 
     /// 
     /// Base.
@@ -33,14 +41,34 @@ public abstract class Enemy : MonoBehaviour{
         UnlinkEvents();
     }
 
-
     /// 
     /// Functions. 
     /// 
 
 
     public abstract void Kill();
+    
+    protected void FaceMoveDirection(){
+        Vector3 moveDirection = movement.moveDirection;
+        if(moveDirection != Vector3.zero){
+            Entropek.UnityUtils.Transform.RotateYAxisToDirection(graphicsObject, movement.moveDirection, FaceMoveDirectionSpeed * Time.deltaTime);
+        }
+    }
 
+    protected void RotateGraphicsTransformToGroundNormal(){
+
+        // Get the rotation needed to align up with the ground.
+
+        Quaternion alignToGround = Quaternion.FromToRotation(graphicsObject.up, groundChecker.GroundNormal) * graphicsObject.rotation;
+
+        // Extract Euler Angles.
+
+        Vector3 originalEuler = graphicsObject.rotation.eulerAngles;
+        Vector3 targetEuler = alignToGround.eulerAngles;
+
+        Vector3 finalEuler = new Vector3(targetEuler.x, originalEuler.y, targetEuler.z);
+        graphicsObject.rotation = Quaternion.Euler(finalEuler);
+    }
 
     /// 
     /// Linkage.
@@ -109,5 +137,4 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected abstract void OnAnimationEventTriggered(string eventName);
-
 }

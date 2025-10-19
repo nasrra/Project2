@@ -5,7 +5,7 @@ using Entropek.Systems.Autoload;
 using Entropek.Systems.Interaction;
 using Entropek.Systems.Trails;
 using UnityEngine;
-using UnityEngine.VFX;
+using Entropek.Physics;
 
 public class Player : MonoBehaviour{
 
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour{
     [SerializeField] private CameraController cam;
     [SerializeField] private ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
-    [SerializeField] private Movement movement;
+    [SerializeField] private CharacterControllerMovement movement;
     [SerializeField] private AttackManager attackManager;
     [SerializeField] private Timer attackStateTimer; 
     [SerializeField] private Timer dodgeStateTimer;
@@ -43,10 +43,14 @@ public class Player : MonoBehaviour{
     [SerializeField] private Interactor interactor;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
     [SerializeField] private DodgeTrailController dodgeTrail;
+    [SerializeField] private GroundChecker groundChecker;
+    [SerializeField] private ForceApplier forceApplier;
+
 
     /// 
     /// Data.
     /// 
+
 
     [Header("Data")]
     [SerializeField]private State state = State.Idle;
@@ -174,7 +178,7 @@ public class Player : MonoBehaviour{
         // TODO:
         //  Will need an extra check here later down the line to check if the player
         //  is grounded or not. The player should enter a falling state when not grounded.
-        if(movement.IsGrounded==true){
+        if(groundChecker.IsGrounded==true){
 
             if(InputManager.Singleton.moveInputSqrMagnitude == 0){
                 Idle();
@@ -205,7 +209,7 @@ public class Player : MonoBehaviour{
         
         jumpMovement.StopJumping();
 
-        movement.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
+        forceApplier.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
         
         // play animations and vfx.
         
@@ -220,7 +224,7 @@ public class Player : MonoBehaviour{
 
     public void DodgeStop(){
 
-        if(movement.IsGrounded==true){
+        if(groundChecker.IsGrounded==true){
             
             // only reset out dodge when grounded.
             
@@ -258,8 +262,9 @@ public class Player : MonoBehaviour{
         slashFlag=!slashFlag;
 
         // face in the attack direction.
-        
-        FaceChosenDirection = FaceAttackDirection;
+
+        FaceAttackDirection();
+        FaceChosenDirection = null;
         
         // stop moving.
 
@@ -268,7 +273,7 @@ public class Player : MonoBehaviour{
 
         // apply a forward force.
 
-        movement.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
+        forceApplier.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
         
         animator.Play(AttackAnimation);
 
@@ -300,7 +305,7 @@ public class Player : MonoBehaviour{
         LinkInputEvents();
         LinkAttackManagerEvents();
         LinkTimerEvents();
-        LinkMovementEvents();
+        LinkGroundCheckerEvents();
     }
 
     private void UnlinkEvents(){
@@ -308,7 +313,7 @@ public class Player : MonoBehaviour{
         UnlinkInputEvents();
         UnlinkAttackManagerEvents();
         UnlinkTimerEvents();
-        UnlinkMovementEvents();
+        UnlinkGroundCheckerEvents();
     }
 
 
@@ -317,12 +322,12 @@ public class Player : MonoBehaviour{
     /// 
 
 
-    private void LinkMovementEvents(){
-        movement.Grounded += OnGrounded;
+    private void LinkGroundCheckerEvents(){
+        groundChecker.Grounded += OnGrounded;
     }
 
-    private void UnlinkMovementEvents(){
-        movement.Grounded -= OnGrounded;
+    private void UnlinkGroundCheckerEvents(){
+        groundChecker.Grounded -= OnGrounded;
     }
 
     private void OnGrounded(){
@@ -365,7 +370,7 @@ public class Player : MonoBehaviour{
 
     private void OnAttackStateTimerTimeout(){
         
-        if(movement.IsGrounded==true){
+        if(groundChecker.IsGrounded==true){
             if(InputManager.Singleton.moveInputSqrMagnitude>0){
                 Run();
             }

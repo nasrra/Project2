@@ -19,10 +19,84 @@
 + Reworked Health.
 + Fixed Animation Event System triggering multiple times.
 + Added I-frames to player dash.
++ Toon Shader.
+
++ Factor out Ground Check Code from Movement to its own component.
++ Factor out Force Application Code from Movement.
++ Create Nav Agent Movement scrpit.
++ Rework slash vfx.
++ Slink bite attack vfx.
 
 ======== TODO ========
 
-- Toon Shader.
+// NOTE:
+//  Look at Great Jagras fight from Monster Hunter World for inspiration.
+
+- Apex Slink:
+
+    - Gimmick:
+
+        - Wings allow slink to fly around.
+        - Flapping wings stuns player.
+    
+    - Attacks.
+    
+        - Bite.
+            
+            - Movement:
+                - move back and perform mid lunge at player.            
+            
+            - Timings:
+                - Lead-In:          1.0s
+                - Attack:           0.5s
+                - Follow-Through:   1.5s~ (reverts to idle which takes a little more time added at the end).
+
+        - Claw Swipe.
+
+            - Movement:
+                - move back and perform mid lunge at player.
+
+            - Timings:
+                - Lead-In:          1.5s
+                - Attack:           0.5s
+                - Follow-Through:   1.5s~ (reverts to idle which takes a little more time added at the end).
+
+        - Dive Bomb (fly backwards into air, then speed towards ground near player).
+
+            - Movement:
+                - fly backwards into air, then speed towards ground near player
+
+            - Timings:
+                - Lead-In:          2.0s~
+                - Attack:           1.0s~ (depending on travel time.)
+                - Follow-Through:   2.5s~ (reverts to idle which takes a little more time added at the end).
+
+        - Tail Swipe.
+
+            - Movement:
+                - Stationary. Flail around the tail once in the air to convey its intention.
+
+            - Timings:
+                - Lead-In:          1.5s
+                - Attack:           0.5s
+                - Follow-Through:   1.5s~ (reverts to idle which takes a little more time added at the end).
+
+
+    - Disengage.
+
+        - Jump Back (flap wings to jump back).
+
+        - Jump Forward(flap wings to jump forward and turn around.)
+
+    - Behvaiours:
+
+        - Running & Walking.
+
+        - Circle Walk Around Target.
+
+        - Turn Around To Target (may only do this when choosing an attack option though).
+
+
 
 ==== BACK BURNER =====
 

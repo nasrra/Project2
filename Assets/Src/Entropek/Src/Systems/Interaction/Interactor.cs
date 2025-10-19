@@ -105,7 +105,7 @@ public class Interactor : MonoBehaviour{
     private bool InteractableInSight(Interactable interactable){
         Vector3 distance = interactable.transform.position - transform.position;
         Vector3 direction = distance.normalized;
-        return !Physics.Raycast(
+        return !UnityEngine.Physics.Raycast(
             transform.position, 
             direction, 
             out RaycastHit hit, 

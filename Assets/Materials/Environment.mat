@@ -66,7 +66,7 @@ Material:
     - _EdgeShadowAttenuation: 1
     - _EdgeSpecular: 1
     - _EdgeSpecularOffset: 1
-    - _FullLight: 0.33
+    - _FullLight: 0.167
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _QueueControl: 0
@@ -76,6 +76,8 @@ Material:
     - _SHADOWS_SOFT: 1
     - _ShadowLight: 0.0835
     - _Shininess: 0
+    - _SpecularStrength: 0.33
+    - _SpecularThreshold: 0
     - _StepRamp: 3
     m_Colors:
     - _Tint: {r: 1, g: 1, b: 1, a: 1}

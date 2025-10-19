@@ -3,12 +3,7 @@ guid: 33b220f2d8ab3e0898011d1485db3b03
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: SlinkMaterial
-    second: {fileID: 2100000, guid: e3257ff3a979cce41bf6dce4f32d6922, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
