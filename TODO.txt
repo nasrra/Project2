@@ -21,11 +21,12 @@
 + Added I-frames to player dash.
 + Toon Shader.
 
-+ Factor out Ground Check Code from Movement to its own component.
-+ Factor out Force Application Code from Movement.
-+ Create Nav Agent Movement scrpit.
-+ Rework slash vfx.
++ Factored out Ground Check Code from Movement to its own component.
++ Factored out Force Application Code from Movement.
++ Created Nav Agent Movement scrpit.
++ Reworked slash vfx.
 + Slink bite attack vfx.
++ Fmod Intergration.
 
 ======== TODO ========
 
@@ -101,6 +102,5 @@
 ==== BACK BURNER =====
 
 - World Streaming (Open World)
-- Fmod Intergration.
 - Prototype First Boss 3D Model.
 - Prototype Player 3D Model.
