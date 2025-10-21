@@ -1,12 +1,13 @@
 using System;
 using Entropek.Systems;
 using Entropek.Systems.Combat;
-using Entropek.Systems.Autoload;
+using Entropek.Time;
 using Entropek.Systems.Interaction;
 using Entropek.Systems.Trails;
 using UnityEngine;
 using Entropek.Physics;
 using Entropek.Audio;
+using Entropek.UnityUtils.AnimatorUtils;
 
 public class Player : MonoBehaviour {
 
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour {
 
     [Header("Components")]
     [SerializeField] private CameraController cam;
-    [SerializeField] private ShieldedHealth health;
+    [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
     [SerializeField] private AttackManager attackManager;
@@ -47,6 +48,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private GroundChecker groundChecker;
     [SerializeField] private ForceApplier forceApplier;
     [SerializeField] private AudioPlayer audioPlayer;
+    [SerializeField] private AnimationEventReciever animationEventReciever;
 
 
     /// 
@@ -103,10 +105,10 @@ public class Player : MonoBehaviour {
     /// Base.
     /// 
 
-
-    private void OnEnable() {
+    private void OnEnable()
+    {
         LinkEvents();
-        ShieldedHealthBarHud.Singleton.ShieldedHealthBar.DisplayShieldedHealth(health);
+        Entropek.EntityStats.ShieldedHealthBarHud.Singleton.ShieldedHealthBar.DisplayShieldedHealth(health);
     }
 
     private void Update() {
@@ -218,6 +220,7 @@ public class Player : MonoBehaviour {
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
         animator.Play(DodgeAnimation);
+        audioPlayer.PlaySound("Dodge", gameObject);
 
         // enable i-frames.
 
@@ -279,6 +282,8 @@ public class Player : MonoBehaviour {
 
         animator.Play(AttackAnimation);
 
+        audioPlayer.PlaySound("MeleeSwing", transform.position);
+
         attackStateTimer.Begin();
 
     }
@@ -308,6 +313,7 @@ public class Player : MonoBehaviour {
         LinkAttackManagerEvents();
         LinkTimerEvents();
         LinkGroundCheckerEvents();
+        LinkAnimationEventRecieverEvents();
     }
 
     private void UnlinkEvents() {
@@ -316,6 +322,7 @@ public class Player : MonoBehaviour {
         UnlinkAttackManagerEvents();
         UnlinkTimerEvents();
         UnlinkGroundCheckerEvents();
+        UnlinkAnimationEventRecieverEvents();
     }
 
 
@@ -538,7 +545,32 @@ public class Player : MonoBehaviour {
         interactor.PreviousInteractable();
     }
 
-    private void OnNextInteractable() {
+    private void OnNextInteractable()
+    {
         interactor.NextInteractable();
+    }
+
+    // Animation Event Reciever Linkage.
+
+    private void LinkAnimationEventRecieverEvents()
+    {
+        animationEventReciever.AnimationEventTriggered += OnAnimationEventTriggered;
+    }
+
+    private void UnlinkAnimationEventRecieverEvents()
+    {
+        animationEventReciever.AnimationEventTriggered -= OnAnimationEventTriggered;        
+    }
+
+    private void OnAnimationEventTriggered(string eventName)
+    {
+        switch (eventName)
+        {
+            case "Footstep":
+                audioPlayer.PlaySound("FootstepGrass", transform.position);
+                break;
+            default:
+                throw new InvalidOperationException($"animation event {eventName} not configured for player.");
+        }
     }
 }

@@ -41,7 +41,7 @@ public class PlayerLoopComponentExample : IDisposable{
     }
 
     public void Tick(){
-        currentTime -= Time.deltaTime;
+        currentTime -= UnityEngine.Time.deltaTime;
         if(CurrentTime <= 0){
             Stop();
             Timeout?.Invoke();

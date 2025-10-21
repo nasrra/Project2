@@ -1,6 +1,6 @@
 using System;
 using Entropek.Collections;
-using Entropek.Systems.Autoload;
+using Entropek.Time;
 using UnityEngine;
 
 namespace Entropek.Systems.Trails{

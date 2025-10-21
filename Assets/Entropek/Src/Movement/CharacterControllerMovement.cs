@@ -58,7 +58,7 @@ namespace Entropek.Physics
             HandleMoveDirection();
             HandleGravity();
             Vector3 velocity = moveDirectionVelocity + gravityVelocity + totalForceVelocity;
-            controller.Move(velocity * Time.deltaTime);
+            controller.Move(velocity * UnityEngine.Time.deltaTime);
         }
 
 
@@ -99,7 +99,7 @@ namespace Entropek.Physics
                 rate = deceleration;
             }
 
-            moveDirectionVelocity = Vector3.MoveTowards(moveDirectionVelocity, targetVelocity, rate * Time.deltaTime);
+            moveDirectionVelocity = Vector3.MoveTowards(moveDirectionVelocity, targetVelocity, rate * UnityEngine.Time.deltaTime);
         }
 
         private void HandleGravity()
@@ -130,7 +130,7 @@ namespace Entropek.Physics
 
                 // apply gravity if we are not grounded.
 
-                gravityVelocity.y += gravity * Time.deltaTime;
+                gravityVelocity.y += gravity * UnityEngine.Time.deltaTime;
             }
         }
 

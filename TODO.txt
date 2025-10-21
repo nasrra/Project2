@@ -97,7 +97,8 @@
 
         - Turn Around To Target (may only do this when choosing an attack option though).
 
-
+- rework timer manager bootstrap.
+- fix Entropek library namespaces.
 
 ==== BACK BURNER =====
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -70,13 +69,14 @@ namespace Entropek.Audio
         {
             EventInstance instance = RuntimeManager.CreateInstance(loadedEventReferences[eventName]);
 
-            ATTRIBUTES_3D attributes = new ATTRIBUTES_3D
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
             {
-                position = UnityToFmodVector(position),
-                velocity = new VECTOR { x = 0, y = 0, z = 0 },
-                forward = UnityToFmodVector(Vector3.forward),
-                up = UnityToFmodVector(Vector3.up)
+                position    = AudioManager.Singleton.UnityToFmodVector(position),
+                velocity    = new FMOD.VECTOR { x = 0, y = 0, z = 0 },
+                forward     = new FMOD.VECTOR { x = 0, y = 0, z = 1},
+                up          = new FMOD.VECTOR { x = 0, y = 1, z = 0}
             };
+
 
             instance.set3DAttributes(attributes);
             instance.start();
@@ -91,7 +91,7 @@ namespace Entropek.Audio
 
             RuntimeManager.StudioSystem.update();
 
-            return new AudioInstance(instance, eventName, AudioInstanceType.Positional);
+            return new AudioInstance(instance, eventName, AudioInstanceType.Positional);;
         }
 
         /// <summary>
@@ -262,9 +262,9 @@ namespace Entropek.Audio
 
             RuntimeManager.LoadBank(bankName);
             Bank bank;
-            RESULT result = RuntimeManager.StudioSystem.getBank("bank:/" + bankName, out bank);
+            FMOD.RESULT result = RuntimeManager.StudioSystem.getBank("bank:/" + bankName, out bank);
 
-            if (result != RESULT.OK)
+            if (result != FMOD.RESULT.OK)
             {
                 UnityEngine.Debug.LogError($"Failed to load {bankName} bank: {result}");
                 return false;
@@ -373,9 +373,9 @@ namespace Entropek.Audio
         /// <param name="vector"></param>
         /// <returns></returns>
 
-        private VECTOR UnityToFmodVector(Vector3 vector)
+        public FMOD.VECTOR UnityToFmodVector(Vector3 vector)
         {
-            return new VECTOR
+            return new FMOD.VECTOR
             {
                 x = vector.x,
                 y = vector.y,
@@ -389,9 +389,9 @@ namespace Entropek.Audio
         /// <param name="vector"></param>
         /// <returns></returns>
 
-        private VECTOR UnityToFmodVector(Vector2 vector)
+        private FMOD.VECTOR UnityToFmodVector(Vector2 vector)
         {
-            return new VECTOR
+            return new FMOD.VECTOR
             {
                 x = vector.x,
                 y = vector.y,

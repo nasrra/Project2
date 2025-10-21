@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Entropek.Systems{
+namespace Entropek.EntityStats{
 
 
 public class ShieldedHealthBar : MonoBehaviour{

@@ -1,7 +1,7 @@
 using UnityEngine;
 using Entropek.Logger.Exceptions;
 
-namespace Entropek.Systems{
+namespace Entropek.EntityStats{
 
 [DefaultExecutionOrder(-10)]
 public class ShieldedHealthBarHud : MonoBehaviour{

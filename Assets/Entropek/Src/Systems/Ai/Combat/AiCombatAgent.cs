@@ -1,6 +1,5 @@
 using System;
-using Entropek.Systems.Autoload;
-using Entropek.Systems;
+using Entropek.Time;
 using UnityEngine;
 
 namespace Entropek.Systems.Ai.Combat{
@@ -26,11 +25,11 @@ public class AiCombatAgent : MonoBehaviour{
 
 
     [Header("Components")]
-    [SerializeField] private HealthSystem selfHealth;
+    [SerializeField] private EntityStats.HealthSystem selfHealth;
     [SerializeField] private Timer damageTakenIntervalTimer;
     [SerializeField] private Timer evaluationIntervalTimer;
     private Transform opponentTransform;
-    private HealthSystem opponentHealth;
+    private EntityStats.HealthSystem opponentHealth;
 
 
     /// 
@@ -81,7 +80,7 @@ public class AiCombatAgent : MonoBehaviour{
         if((otherLayerValue & opponentLayerValue) != 0){
             
             Transform otherTransform = other.transform;
-            HealthSystem otherHealth = other.GetComponent<HealthSystem>();
+            EntityStats.HealthSystem otherHealth = other.GetComponent<EntityStats.HealthSystem>();
             
             if(ValidateOpponent(otherTransform, otherHealth) == true){
                 EngageOpponent(otherTransform, otherHealth);
@@ -103,7 +102,7 @@ public class AiCombatAgent : MonoBehaviour{
         return ValidateOpponent(opponentTransform, opponentHealth);
     }
 
-    private bool ValidateOpponent(Transform opponentTransform, HealthSystem opponentHealth){
+    private bool ValidateOpponent(Transform opponentTransform, EntityStats.HealthSystem opponentHealth){
         return opponentTransform != null && opponentHealth != null;
     }
 
@@ -177,7 +176,7 @@ public class AiCombatAgent : MonoBehaviour{
     }
 
 
-    public void EngageOpponent(Transform opponentTransform, HealthSystem opponentHealth){
+    public void EngageOpponent(Transform opponentTransform, EntityStats.HealthSystem opponentHealth){
         isEngaged               = true;
         this.opponentTransform  = opponentTransform;
         this.opponentHealth     = opponentHealth;

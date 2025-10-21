@@ -63,8 +63,8 @@ namespace Entropek.Physics
         {
             if (isJumping == true && jumpVelocity.sqrMagnitude > 0)
             {
-                jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpDecay * Time.deltaTime);
-                controller.Move(jumpVelocity * Time.deltaTime);
+                jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpDecay * UnityEngine.Time.deltaTime);
+                controller.Move(jumpVelocity * UnityEngine.Time.deltaTime);
                 movement.SnapToGround = false;
             }
             else

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Entropek.Systems{
+namespace Entropek.EntityStats{
 
 [Serializable]
 public enum ShieldState : byte{

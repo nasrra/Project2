@@ -12,7 +12,6 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
     public InputActions inputActions {get; private set;}
 
     void Awake(){
-        Singleton=this;
         inputActions = new InputActions();
         inputActions.Enable();
         EnableGameplayInput();
@@ -116,6 +115,7 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
             main.name = "InputManager";
             main.AddComponent<InputManager>();
             DontDestroyOnLoad(main);
+            Singleton=main.GetComponent<InputManager>();
         }
     }
 }

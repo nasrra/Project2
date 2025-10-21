@@ -1,11 +1,12 @@
 using Entropek.Systems.Ai.Combat;
 using Entropek.Systems;
 using UnityEngine;
-using UnityEngine.AI;
+using Entropek;
 using Entropek.Systems.Combat;
 using Entropek.UnityUtils.AnimatorUtils;
 using System;
 using Entropek.Physics;
+using UnityEngine.Timeline;
 
 public abstract class Enemy : MonoBehaviour{
     
@@ -17,12 +18,13 @@ public abstract class Enemy : MonoBehaviour{
     [Header(nameof(Enemy)+"Required Components")]
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
     [SerializeField] protected Transform target;
-    [SerializeField] protected HealthSystem health;
+    [SerializeField] protected Entropek.EntityStats.HealthSystem health;
     [SerializeField] protected AiCombatAgent combatAgent;
     [SerializeField] protected AttackManager attackManager;
     [SerializeField] protected AnimationEventReciever animationEventReciever;
     [SerializeField] protected NavAgentMovement movement;
     [SerializeField] protected ForceApplier forceApplier;
+    [SerializeField] protected Entropek.Audio.AudioPlayer audioPlayer;
 
     [Header(nameof(Enemy) + "Optional Components")]
     [SerializeField] protected GroundChecker groundChecker;

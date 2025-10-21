@@ -100,15 +100,22 @@ public class TRex : Enemy{
 
     protected override void OnAnimationEventTriggered(string eventName){
         switch(eventName){
-            case "BiteAttack":  
-                attackManager.BeginAttack(BiteAttackId); 
-            break;
+            case "Footstep":
+                audioPlayer.PlaySound("FootstepGrass", transform.position);
+                break;
+            case "BiteGrowl":
+                audioPlayer.PlaySound("SlinkGrowl", gameObject);
+                break;
+            case "BiteAttack":
+                attackManager.BeginAttack(BiteAttackId);
+                audioPlayer.PlaySound("SlinkBite", gameObject);
+                break;
             case "BiteLunge":
                 forceApplier.ImpulseRelativeToGround(graphicsObject.forward, 24, 36);
-            break;
+                break;
             case "EndAttack":   
                 ChasingState(); 
-            break;
+                break;
             default:            throw new Exception("Animation Event Not Implemented "+eventName);
         }
     }

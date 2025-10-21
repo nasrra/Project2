@@ -57,7 +57,7 @@ public class ForceApplier : MonoBehaviour{
 
             // decay the current force.            
 
-            Vector3 decayedVelocity = Vector3.MoveTowards(forceVelocities[i].Velocity, Vector3.zero, forceVelocities[i].DecaySpeed * Time.deltaTime);
+            Vector3 decayedVelocity = Vector3.MoveTowards(forceVelocities[i].Velocity, Vector3.zero, forceVelocities[i].DecaySpeed * UnityEngine.Time.deltaTime);
             if(decayedVelocity.sqrMagnitude > 0){
                 
                 // if the force has not completely decayed, add the decayed force.

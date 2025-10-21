@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Entropek.Systems{
+namespace Entropek.EntityStats{
 
 
 [CustomEditor(typeof(ShieldedHealth))]

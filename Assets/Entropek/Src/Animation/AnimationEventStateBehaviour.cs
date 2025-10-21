@@ -34,7 +34,7 @@ public class AnimationEventStateBehaviour : StateMachineBehaviour{
         if(reciever==null){
             reciever = animtor.GetComponent<AnimationEventReciever>();
         }
-        reciever.OnAnimationEventTriggered(eventName);
+        reciever.TriggeredAnimationEvent(eventName);
     }
 
 }

@@ -7,7 +7,7 @@ namespace Entropek.UnityUtils.AnimatorUtils{
 public class AnimationEventReciever : MonoBehaviour{
     public event Action<string> AnimationEventTriggered;
 
-    public void OnAnimationEventTriggered(string eventName){
+    public void TriggeredAnimationEvent(string eventName){
         AnimationEventTriggered?.Invoke(eventName);
     }
 }

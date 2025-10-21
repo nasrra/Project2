@@ -1,4 +1,4 @@
-using Entropek.Systems.Autoload;
+using Entropek.Time;
 using UnityEngine;
 
 public class DodgeTrailController : MonoBehaviour{

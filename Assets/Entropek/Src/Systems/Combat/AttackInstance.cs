@@ -28,7 +28,7 @@ public class AttackInstance{
             return;
         }
 
-        Health health = other.GetComponent<Health>();
+        EntityStats.Health health = other.GetComponent<EntityStats.Health>();
         health.Damage(damage);
     }
 

@@ -78,7 +78,7 @@ namespace Entropek.Audio
         /// <param name="postion">The position - in world space - to play this sound at.</param>
         /// <param name="pooled">true, to pool the audio instance for later reuse. false, for one shot audio (e.g. music).</param>
 
-        public void PlaySound(string eventName, Vector3 postion, bool pooled = true)
+        public void PlaySound(string eventName, Vector3 position, bool pooled = true)
         {
 
             // release the instance immediately if the sound isn't pooled.
@@ -91,19 +91,29 @@ namespace Entropek.Audio
                 // reuse a free audio instance.
 
                 case PlaySoundEvaluationResult.Reuse:
+                    
+                    // set the instance position.
+                    FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
+                    {
+                        position    = AudioManager.Singleton.UnityToFmodVector(position),
+                        velocity    = new FMOD.VECTOR { x = 0, y = 0, z = 0 },
+                        forward     = new FMOD.VECTOR { x = 0, y = 0, z = 1},
+                        up          = new FMOD.VECTOR { x = 0, y = 1, z = 0}
+                    };
+                    FreePooledAudioInstances[eventName][reuseIndex].EventInstance.set3DAttributes(attributes);
                     FreePooledAudioInstances[eventName][reuseIndex].EventInstance.start();
                     break;
 
                 // allocate a new audio instance to pool.
 
                 case PlaySoundEvaluationResult.Allocate:
-                    ManagePooledEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, postion, release));
+                    ManagePooledEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, position, release));
                     break;
 
                 // allocate a new one shot audio instance.
 
                 case PlaySoundEvaluationResult.OneShot:
-                    ManageOneShotEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, postion, release));
+                    ManageOneShotEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, position, release));
                     break;
             }
         }
@@ -115,7 +125,7 @@ namespace Entropek.Audio
         /// <param name="attatchedGameObject">The gameobject to be attatched to.</param>
         /// <param name="pooled">true, to pool the audio instance for later reuse. false, for one shot audio (e.g. music).</param>
 
-        public void PlaySound(string eventName, GameObject attatchedGameObject, bool pooled = true)
+        public void PlaySound(string eventName, GameObject attachedGameObject, bool pooled = true)
         {
 
             // release the instance immediately if the sound isn't pooled.
@@ -128,19 +138,22 @@ namespace Entropek.Audio
                 // reuse a free audio instance.
 
                 case PlaySoundEvaluationResult.Reuse:
+
+                    // bind to the new gameobject.
+                    FMODUnity.RuntimeManager.AttachInstanceToGameObject(FreePooledAudioInstances[eventName][reuseIndex].EventInstance, attachedGameObject);
                     FreePooledAudioInstances[eventName][reuseIndex].EventInstance.start();
                     break;
 
                 // allocate a new audio instance to pool.
 
                 case PlaySoundEvaluationResult.Allocate:
-                    ManagePooledEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, attatchedGameObject, release));
+                    ManagePooledEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, attachedGameObject, release));
                     break;
 
                 // allocate a new one shot audio instance.
 
                 case PlaySoundEvaluationResult.OneShot:
-                    ManageOneShotEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, attatchedGameObject, release));
+                    ManageOneShotEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, attachedGameObject, release));
                     break;
             }
         }
