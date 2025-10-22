@@ -31,6 +31,10 @@
 + Protoype Player and Enemy sounds.
 + HealIntermediary class for hurt hit areas on an enemy.
 + Make dodge always go in the desired direction.
++ Coyote Inputs.
++ Removed attack manager, entities now implement hitboxes manually.
++ Remove Health HealIntermediary class for Hurtbox class.
++ Vfx when player hits enemy.
 
 ======== TODO ========
 
@@ -101,10 +105,7 @@
 
         - Turn Around To Target (may only do this when choosing an attack option though).
 
-+ Coyote Inputs.
-+ Removed attack manager, entities now implement hitboxes manually.
-+ Remove Health HealIntermediary class for Hurtbox class.
-+ Vfx when player hits enemy.
+- Jump Coyote time when falling.
 
 
 ==== BACK BURNER =====

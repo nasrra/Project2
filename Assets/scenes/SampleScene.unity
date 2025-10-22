@@ -583,7 +583,7 @@ MonoBehaviour:
   health: {fileID: 36969673}
   jumpMovement: {fileID: 36969667}
   movement: {fileID: 36969665}
-  iFrameStateTimer: {fileID: 36969675}
+  fallCoyoteTimer: {fileID: 36969675}
   animator: {fileID: 2045862570}
   interactor: {fileID: 1072212730}
   arcGhost: {fileID: 918353869}
@@ -610,7 +610,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 36969664}
   movement: {fileID: 36969665}
-  groundChecker: {fileID: 36969676}
   jumpSpeed: 19.532
   jumpDecay: 39.844
 --- !u!114 &36969673
@@ -659,10 +658,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd61221b13b4d84e9ac99cc5f05fd21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialTime: 0.17
+  initialTime: 0.1
   BeginOnAwake: 0
   Loop: 0
-  EditorNameTag: I-Frame State
+  EditorNameTag: Fall Coyote State
 --- !u!114 &36969676
 MonoBehaviour:
   m_ObjectHideFlags: 0

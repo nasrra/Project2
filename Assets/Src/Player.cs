@@ -46,7 +46,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
-    [SerializeField] private Timer iFrameStateTimer;
+    [SerializeField] private Timer fallCoyoteTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
@@ -95,8 +95,8 @@ public class Player : MonoBehaviour {
 
     private const float AttackLungeForce = 4.44f;
     private const float AttackLungeDecaySpeed = AttackLungeForce * 3f;
-    private const float DodgeForce = 25;
-    private const float DodgeDecaySpeed = DodgeForce * 3.33f;
+    private const float DodgeForce = 23.33f;
+    private const float DodgeDecaySpeed = DodgeForce * 2.66f;
     private const float FaceMoveDirectionSpeed = 16.7f;
     private const float FaceAttackDirectionSpeed = 16.7f;
     private const float AttackHitCameraShakeForce = 3.33f;
@@ -334,7 +334,7 @@ public class Player : MonoBehaviour {
         // stop moving.
 
         movement.moveDirection = Vector3.zero;
-        movement.HaltMoveDirectionVelocity();
+        // movement.HaltMoveDirectionVelocity();
         jumpMovement.StopJumping();
 
         // rebind, so the transform of the skinned mesh is correctly reset to its 
@@ -380,7 +380,6 @@ public class Player : MonoBehaviour {
 
     public void EnterIFrames() {
         health.Vulnerable = false;
-        iFrameStateTimer.Begin();
     }
 
     public void ExitIFrames()
@@ -401,11 +400,28 @@ public class Player : MonoBehaviour {
 
     private void EnterCoyoteState(CoyoteState coyoteState)
     {
-        // refresh the previously chached coyote callback
-        // and enter the desired coyote state.
+        // enter the desired coyote state.
 
         this.coyoteState = coyoteState;
+
+        // refresh the previously chached coyote callback
+
         CoyoteCallback = null;
+
+        // only begin the fall coyote state timer if the desired
+        // coyote state is Fall, and stop it when not.
+        // this is to ensure that the fall coyote timer does always timeout during
+        // a coyote state switch, making sure that its timeout doesnt effect other states
+        // by exiting coyote state too early.
+
+        if (coyoteState == CoyoteState.Fall)
+        {
+            fallCoyoteTimer.Begin();
+        }
+        else
+        {
+            fallCoyoteTimer.Halt();
+        }
     }
 
     /// <summary>
@@ -467,19 +483,23 @@ public class Player : MonoBehaviour {
 
 
     ///
-    /// Movement event linkage.
+    /// Ground check event linkage.
     /// 
 
-
-    private void LinkGroundCheckerEvents() {
+    private void LinkGroundCheckerEvents() 
+    {
         groundChecker.Grounded += OnGrounded;
+        groundChecker.Airborne += OnAirborne;
     }
 
-    private void UnlinkGroundCheckerEvents() {
+    private void UnlinkGroundCheckerEvents()
+    {
         groundChecker.Grounded -= OnGrounded;
+        groundChecker.Airborne += OnAirborne;
     }
 
-    private void OnGrounded() {
+    private void OnGrounded() 
+    {
         if (state != PlayerState.Dodge) {
             if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
                 Run();
@@ -495,22 +515,27 @@ public class Player : MonoBehaviour {
         canDodge = true;
     }
 
+    private void OnAirborne()
+    {
+        EnterCoyoteState(CoyoteState.Fall);
+    }
 
     ///
     /// Timer event linkage.
     /// 
 
 
-    private void LinkTimerEvents() {
-        iFrameStateTimer.Timeout += OnIFrameStateTimeout;
+    private void LinkTimerEvents()
+    {
+        fallCoyoteTimer.Timeout += OnFallCoyoteTimeout;
     }
 
     private void UnlinkTimerEvents() {
-        iFrameStateTimer.Timeout -= OnIFrameStateTimeout;
+        fallCoyoteTimer.Timeout -= OnFallCoyoteTimeout;
     }
 
-    private void OnIFrameStateTimeout() {
-        ExitIFrames();
+    private void OnFallCoyoteTimeout() {
+        ExitCoyoteState();
     }
 
 
@@ -616,14 +641,24 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStartInput() {
 
-        if (coyoteState == CoyoteState.Dodge
-        || coyoteState == CoyoteState.Attack)
+        // queue the action if we are attacking or dodging coyote states.
+
+        if (coyoteState == CoyoteState.Attack
+        || coyoteState == CoyoteState.Dodge)
         {
             CoyoteCallback = OnJumpInputCoyoteCallback;
+            return;
         }
 
-        if (state != PlayerState.Idle
-        && state != PlayerState.Run)
+        // immediately perform the action if we are in falling coyote state.
+        if (coyoteState == CoyoteState.Fall)
+        {
+            CoyoteCallback = OnJumpInputCoyoteCallback;
+            ExitCoyoteState();
+            return;            
+        }
+
+        if ((state != PlayerState.Idle && state != PlayerState.Run) || groundChecker.IsGrounded == false)
         {
             return;
         }
@@ -721,15 +756,28 @@ public class Player : MonoBehaviour {
 
             case "EnterAttackCoyoteState": EnterCoyoteState(CoyoteState.Attack); break;
             case "EnterDodgeCoyoteState": EnterCoyoteState(CoyoteState.Dodge); break;
-            case "ExitCoyoteState": ExitCoyoteState(); break;
 
             // Player States.
 
-            case "ExitDodgeState": StopDodge(); break;
-            case "ExitAttackState": StopAttack(); break;
+            // Note:
+            //  Exit Coyote state directly when exiting an action/animation state
+            //  to ensure any queued actions occur directly after the action has finished.
+            //  Do NOT put these exit coyote calls inside the actual functions, that will cause
+            //  a recursive loop as exit coyote state calls the stop functions of a given player state. 
+
+            case "ExitDodgeState": StopDodge(); ExitCoyoteState(); break;
+            case "ExitAttackState": StopAttack(); ExitCoyoteState(); break;
+            case "EnterIFrames": EnterIFrames(); break;
+            case "ExitIFrames" : ExitIFrames(); break;
+
+            // attack frames.
 
             case "SwordAttackFrame": SwordAttackFrame(); break;
+            
+            // miscellaneous.
+            
             case "Footstep": HandleFootstepEffects(); break;
+            
             default:
                 throw new InvalidOperationException($"animation event {eventName} not configured for player.");
         }

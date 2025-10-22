@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 namespace Entropek.Physics{
 
     public class GroundChecker : MonoBehaviour{
+        public event Action Airborne;
         public event Action Grounded;
         public Vector3 GroundNormal {get; private set;}
         public Vector3 CheckStartPostion = Vector3.zero;
@@ -40,13 +41,18 @@ namespace Entropek.Physics{
             if(UnityEngine.Physics.SphereCast(transform.position + CheckStartPostion, CheckRadius, Vector3.down, out RaycastHit hit, CheckLength, groundLayers, QueryTriggerInteraction.Ignore)==true){
                 IsGrounded = true;
                 GroundNormal = hit.normal;
-                if(WasGroundedLastTick == false){
+                if(WasGroundedLastTick == false)
+                {
                     Grounded?.Invoke();
                 }
             }
             else{
                 IsGrounded = false;
                 GroundNormal = Vector3.up;
+                if (WasGroundedLastTick == true)
+                {
+                    Airborne?.Invoke();
+                }
             }
         }
 

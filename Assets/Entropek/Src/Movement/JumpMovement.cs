@@ -10,7 +10,6 @@ namespace Entropek.Physics
         [Header("Components")]
         [SerializeField] private CharacterController controller;
         [SerializeField] private CharacterControllerMovement movement;
-        [SerializeField] private GroundChecker groundChecker;
 
         [Header("Data")]
         private Vector3 initialJumpVelocity;
@@ -53,10 +52,7 @@ namespace Entropek.Physics
         public void StartJumping()
         {
             isJumping = true;
-            if (groundChecker.IsGrounded == true)
-            {
-                jumpVelocity = initialJumpVelocity;
-            }
+            jumpVelocity = initialJumpVelocity;
         }
 
         public void HandleJumping()
