@@ -43,11 +43,14 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
 
     public event Action JumpStart;
     public event Action JumpStop;
+    public bool IsJumpPressed { get; private set; }
     void InputActions.IGameplayActions.OnJump(InputAction.CallbackContext context){
         if(context.performed==true){
+            IsJumpPressed = true;
             JumpStart?.Invoke();
         }
         else if(context.canceled==true){
+            IsJumpPressed = false;
             JumpStop?.Invoke();
         }
     }

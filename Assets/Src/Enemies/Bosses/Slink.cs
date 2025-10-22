@@ -2,14 +2,20 @@ using System;
 using TreeEditor;
 using UnityEngine;
 
-public class TRex : Enemy{
+public class Slink : Enemy{
 
 
-    [Header("Components")]
+    [Header(nameof(Slink)+" Components")]
     [SerializeField] Animator animator;
+    [SerializeField] Entropek.UnityUtils.BoneStagger boneStagger;
+
+    [Header("Hitboxes")]
+    [SerializeField] Entropek.Combat.Hitbox biteHitbox;
+
+    [Header("Vfx")]
+    [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
 
     private const string BiteAnimation = "Bite";
-    private const int BiteAttackId = 0;
 
     private event Action FixedUpdateCallback;
 
@@ -84,8 +90,25 @@ public class TRex : Enemy{
     /// Linkage Override.
     /// 
 
+    protected override void LinkHealthEvents()
+    {
+        base.LinkHealthEvents();
+        health.HealthDamaged += OnHealthDamaged;
+    }
 
-    protected override void OnHealthDeath(){
+    protected override void UnlinkHealthEvents()
+    {
+        base.UnlinkHealthEvents();
+        health.HealthDamaged -= OnHealthDamaged;
+    }
+
+    private void OnHealthDamaged(float amount)
+    {
+        boneStagger.TriggerStagger();
+    }
+
+    protected override void OnHealthDeath()
+    {
         Kill();
     }
 
@@ -107,7 +130,8 @@ public class TRex : Enemy{
                 audioPlayer.PlaySound("SlinkGrowl", gameObject);
                 break;
             case "BiteAttack":
-                attackManager.BeginAttack(BiteAttackId);
+                biteHitbox.Enable();
+                biteVfx.Play();
                 audioPlayer.PlaySound("SlinkBite", gameObject);
                 break;
             case "BiteLunge":

@@ -1,6 +1,5 @@
 using System;
 using Entropek.Systems;
-using Entropek.Systems.Combat;
 using Entropek.Time;
 using Entropek.Systems.Interaction;
 using Entropek.Systems.Trails;
@@ -8,6 +7,7 @@ using UnityEngine;
 using Entropek.Physics;
 using Entropek.Audio;
 using Entropek.UnityUtils.AnimatorUtils;
+using Entropek.Vfx;
 
 public class Player : MonoBehaviour {
 
@@ -17,13 +17,22 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    private enum State : byte {
+    private enum PlayerState : byte
+    {
         Idle,
         Attack,
         Dodge,
         Run,
         Jump,
         Fall
+    }
+
+    private enum CoyoteState : byte
+    {
+        None,
+        Dodge,
+        Attack,
+        Fall,
     }
 
 
@@ -37,9 +46,6 @@ public class Player : MonoBehaviour {
     [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
-    [SerializeField] private AttackManager attackManager;
-    [SerializeField] private Timer attackStateTimer;
-    [SerializeField] private Timer dodgeStateTimer;
     [SerializeField] private Timer iFrameStateTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
@@ -49,7 +55,11 @@ public class Player : MonoBehaviour {
     [SerializeField] private ForceApplier forceApplier;
     [SerializeField] private AudioPlayer audioPlayer;
     [SerializeField] private AnimationEventReciever animationEventReciever;
+    [SerializeField] private VfxManager vfx;
 
+    [Header("HitBoxes")]
+    [SerializeField] private Entropek.Combat.Hitbox slashLeftHitBox;
+    [SerializeField] private Entropek.Combat.Hitbox slashRightHitBox;
 
     /// 
     /// Data.
@@ -57,7 +67,9 @@ public class Player : MonoBehaviour {
 
 
     [Header("Data")]
-    [SerializeField] private State state = State.Idle;
+    [SerializeField] private PlayerState state = PlayerState.Idle;
+    private CoyoteState coyoteState = CoyoteState.None;
+    private event Action CoyoteCallback;
     private event Action FaceChosenDirection;
     private bool canDodge = true;
 
@@ -81,7 +93,7 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    private const float AttackLungeForce = 3.33f;
+    private const float AttackLungeForce = 4.44f;
     private const float AttackLungeDecaySpeed = AttackLungeForce * 3f;
     private const float DodgeForce = 25;
     private const float DodgeDecaySpeed = DodgeForce * 3.33f;
@@ -93,12 +105,13 @@ public class Player : MonoBehaviour {
 
 
     /// 
-    /// Attack Ids.
+    /// Vfx Ids.
     /// 
 
 
-    private const int Slash1AttackId = 0;
-    private const int Slash2AttackId = 1;
+    private const int LeftSlashVfxId = 0;
+    private const int RightSlashVfxId = 1;
+    private const int AttackHitVfxId = 2;
 
 
     /// 
@@ -124,34 +137,72 @@ public class Player : MonoBehaviour {
     /// Functions.
     /// 
 
-
-    private void UpdateMoveDirection(Vector3 moveDirection) {
+    private Vector3 GetMoveDirectionRelativeToCamera(Vector2 moveDirection)
+    {
         Vector3 cameraForwardXZ = new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized;
         Vector3 cameraRightXZ = new Vector3(cam.transform.right.x, 0, cam.transform.right.z).normalized;
-        movement.moveDirection = moveDirection.x * cameraRightXZ + moveDirection.y * cameraForwardXZ;
+        return moveDirection.x * cameraRightXZ + moveDirection.y * cameraForwardXZ;
     }
 
-    private void FaceMoveDirection() {
+    private void FaceMoveDirection()
+    {
         Vector3 moveDirection = movement.moveDirection;
-        if (moveDirection != Vector3.zero) {
+        if (moveDirection != Vector3.zero)
+        {
             Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, movement.moveDirection, FaceMoveDirectionSpeed * Time.deltaTime);
         }
     }
 
-    private void FaceAttackDirection() {
+    private void SnapToFaceMoveInput()
+    {
+        // only snap if there is a direction to snap to.
+        // if we snap when input zero, the result is undefined behaviour.
+
+        Vector2 moveInput = InputManager.Singleton.moveInput;
+
+        if (moveInput != Vector2.zero)
+        {
+            Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput), 1);
+        }
+    }
+
+    private void FaceAttackDirection()
+    {
         Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, cam.transform.forward, FaceAttackDirectionSpeed * Time.deltaTime);
+    }
+
+    private void SwordAttackFrame()
+    {
+        forceApplier.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
+        audioPlayer.PlaySound("MeleeSwing", transform.position);
+        if (slashFlag == true)
+        {
+            slashRightHitBox.Enable();
+            vfx.PlayVfx(LeftSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
+        }
+        else
+        {
+            slashLeftHitBox.Enable();
+            vfx.PlayVfx(RightSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
+        }
+    }
+
+    private void HandleFootstepEffects()
+    {
+        audioPlayer.PlaySound("FootstepGrass", transform.position);
     }
 
 
     ///
-    /// State Machine.
+    /// Player State Machine.
     /// 
 
 
     public void Idle() {
-        state = State.Idle;
-        UpdateMoveDirection(Vector3.zero);
-        if (state != State.Jump && state != State.Fall) {
+        state = PlayerState.Idle;
+        FaceChosenDirection = null; // dont look face any direction when idle.
+        movement.moveDirection = GetMoveDirectionRelativeToCamera(Vector2.zero);
+        if (state != PlayerState.Jump && state != PlayerState.Fall) {
             animator.Play(IdleAnimation);
         }
     }
@@ -160,23 +211,23 @@ public class Player : MonoBehaviour {
         Run(InputManager.Singleton.moveInput);
     }
 
-    public void Run(Vector3 directtion) {
-        state = State.Run;
-        UpdateMoveDirection(directtion);
+    public void Run(Vector2 direction) {
+        state = PlayerState.Run;
+        movement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
         FaceChosenDirection = FaceMoveDirection;
-        if (state != State.Fall && state != State.Jump) {
+        if (state != PlayerState.Fall && state != PlayerState.Jump) {
             animator.Play(WalkAnimation);
         }
     }
 
     public void JumpStart() {
-        state = State.Jump;
+        state = PlayerState.Jump;
         jumpMovement.StartJumping();
         animator.Play(JumpStartAnimation);
     }
 
     public void JumpStop() {
-        state = State.Jump;
+        state = PlayerState.Jump;
         jumpMovement.StopJumping();
 
         // TODO:
@@ -196,13 +247,15 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void DodgeStart() {
+    public void StartDodge() {
 
         // enter state.
 
-        dodgeStateTimer.Begin();
-        state = State.Dodge;
+        state = PlayerState.Dodge;
         canDodge = false;
+
+        SnapToFaceMoveInput();
+        FaceChosenDirection = FaceMoveDirection;
 
         // move only in the direction of our dodge.
 
@@ -219,15 +272,27 @@ public class Player : MonoBehaviour {
 
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
-        animator.Play(DodgeAnimation);
         audioPlayer.PlaySound("Dodge", gameObject);
+
+        // rebind, so the transform of the skinned mesh is correctly reset to its 
+        // "rest" position before abruptly switching animations.
+        // Otherwise animations will retain their transform offsets from one animation to another
+        // if they are not modified by the new animation.
+
+        animator.Rebind();
+
+        // force animation to play with 0 normalisedTime, 
+        // ensuring to override an animation that may have been queued
+        // during a coyote state switch. 
+
+        animator.Play(DodgeAnimation, 0, 0);
 
         // enable i-frames.
 
         EnterIFrames();
     }
 
-    public void DodgeStop() {
+    public void StopDodge() {
 
         if (groundChecker.IsGrounded == true) {
 
@@ -248,7 +313,7 @@ public class Player : MonoBehaviour {
 
         // set move direction back to the player input.
 
-        UpdateMoveDirection(InputManager.Singleton.moveInput);
+        movement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
 
         // re-enable gravity.
 
@@ -256,40 +321,61 @@ public class Player : MonoBehaviour {
 
     bool slashFlag = false;
 
-    public void Attack() {
+    public void StartAttack()
+    {
 
-        state = State.Attack;
+        state = PlayerState.Attack;
 
-        attackManager.BeginAttack(slashFlag == true ? Slash1AttackId : Slash2AttackId);
 
         // swap slashes for next time.
 
         slashFlag = !slashFlag;
 
-        // face in the attack direction.
-
-        FaceAttackDirection();
-        FaceChosenDirection = null;
-
         // stop moving.
 
         movement.moveDirection = Vector3.zero;
         movement.HaltMoveDirectionVelocity();
+        jumpMovement.StopJumping();
 
-        // apply a forward force.
+        // rebind, so the transform of the skinned mesh is correctly reset to its 
+        // "rest" position before abruptly switching animations.
+        // Otherwise animations will retain their transform offsets from one animation to another
+        // if they are not modified by the new animation.
 
-        forceApplier.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
+        animator.Rebind();
 
-        animator.Play(AttackAnimation);
+        // force animation to play with 0 normalisedTime, 
+        // ensuring to override an animation that may have been queued
+        // during a coyote state switch. 
 
-        audioPlayer.PlaySound("MeleeSwing", transform.position);
+        animator.Play(AttackAnimation, 0, 0);
 
-        attackStateTimer.Begin();
+        // face in the attack direction.
 
+        FaceChosenDirection = FaceAttackDirection;
+    }
+
+    public void StopAttack()
+    {
+        if (groundChecker.IsGrounded == true)
+        {
+            if (InputManager.Singleton.moveInputSqrMagnitude > 0)
+            {
+                Run();
+            }
+            else
+            {
+                Idle();
+            }
+        }
+        else
+        {
+            Fall();
+        }
     }
 
     public void Fall() {
-        state = State.Fall;
+        state = PlayerState.Fall;
     }
 
     public void EnterIFrames() {
@@ -297,8 +383,52 @@ public class Player : MonoBehaviour {
         iFrameStateTimer.Begin();
     }
 
-    public void ExitIFrames() {
+    public void ExitIFrames()
+    {
         health.Vulnerable = true;
+    }
+
+
+    ///
+    /// Coyote State Machine.
+    /// 
+
+
+    /// <summary>
+    /// Enters the coyote state for input queuing before the end of an action (attack, dodge, fall, etc.)
+    /// </summary>
+    /// <param name="coyoteState"></param>
+
+    private void EnterCoyoteState(CoyoteState coyoteState)
+    {
+        // refresh the previously chached coyote callback
+        // and enter the desired coyote state.
+
+        this.coyoteState = coyoteState;
+        CoyoteCallback = null;
+    }
+
+    /// <summary>
+    /// Exits the coyote state for input queuing, executing the latest desired queued action by the player.
+    /// </summary>
+
+    private void ExitCoyoteState()
+    {
+        if (CoyoteCallback != null)
+        {
+            // stop any state we are coming out of.
+            switch (state)
+            {
+                case PlayerState.Attack: StopAttack(); break;
+                case PlayerState.Dodge: StopDodge(); break;
+            }
+
+            
+            CoyoteCallback();
+        }
+
+        // reset the coyote state.
+        coyoteState = CoyoteState.None;
     }
 
 
@@ -307,22 +437,32 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    private void LinkEvents() {
+    /// <summary>
+    /// Links all component events to their respective callbacks.
+    /// </summary>
+
+    private void LinkEvents()
+    {
         LinkCameraEvents();
         LinkInputEvents();
-        LinkAttackManagerEvents();
         LinkTimerEvents();
         LinkGroundCheckerEvents();
         LinkAnimationEventRecieverEvents();
+        LinkHitBoxEvents();
     }
 
-    private void UnlinkEvents() {
+    /// <summary>
+    /// Unlinks all component events from theiur respective callbacks.
+    /// </summary>
+
+    private void UnlinkEvents()
+    {
         UnlinkCameraEvents();
         UnlinkInputEvents();
-        UnlinkAttackManagerEvents();
         UnlinkTimerEvents();
         UnlinkGroundCheckerEvents();
         UnlinkAnimationEventRecieverEvents();
+        UnlinkHitBoxEvents();
     }
 
 
@@ -340,7 +480,7 @@ public class Player : MonoBehaviour {
     }
 
     private void OnGrounded() {
-        if (state != State.Dodge) {
+        if (state != PlayerState.Dodge) {
             if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
                 Run();
             }
@@ -362,35 +502,11 @@ public class Player : MonoBehaviour {
 
 
     private void LinkTimerEvents() {
-        dodgeStateTimer.Timeout += OnDodgeStateTimerTimeout;
-        attackStateTimer.Timeout += OnAttackStateTimerTimeout;
         iFrameStateTimer.Timeout += OnIFrameStateTimeout;
     }
 
     private void UnlinkTimerEvents() {
-        dodgeStateTimer.Timeout -= OnDodgeStateTimerTimeout;
-        attackStateTimer.Timeout -= OnAttackStateTimerTimeout;
         iFrameStateTimer.Timeout -= OnIFrameStateTimeout;
-    }
-
-    private void OnDodgeStateTimerTimeout() {
-        DodgeStop();
-    }
-
-    private void OnAttackStateTimerTimeout() {
-
-        if (groundChecker.IsGrounded == true) {
-            if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
-                Run();
-            }
-            else {
-                Idle();
-            }
-        }
-        else {
-            Fall();
-        }
-
     }
 
     private void OnIFrameStateTimeout() {
@@ -402,16 +518,21 @@ public class Player : MonoBehaviour {
     /// Hitbox Linkage.
     /// 
 
-
-    private void LinkAttackManagerEvents() {
-        attackManager.AttackHit += OnAttackHit;
+    private void LinkHitBoxEvents()
+    {
+        slashLeftHitBox.Hit += OnAttackHit;
+        slashRightHitBox.Hit += OnAttackHit;
     }
 
-    private void UnlinkAttackManagerEvents() {
-        attackManager.AttackHit -= OnAttackHit;
+    private void UnlinkHitBoxEvents()
+    {
+        slashLeftHitBox.Hit -= OnAttackHit;
+        slashRightHitBox.Hit -= OnAttackHit;
     }
 
-    private void OnAttackHit() {
+    private void OnAttackHit(GameObject other, Vector3 hitPoint)
+    {
+        vfx.PlayVfx(AttackHitVfxId, hitPoint, transform.forward);
         health.RestoreShield(AttackShieldRestorationAmount);
         cam.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
     }
@@ -432,12 +553,12 @@ public class Player : MonoBehaviour {
 
     private void OnCameraRotated() {
 
-        if (state != State.Run
-        && state != State.Jump) {
+        if (state != PlayerState.Run
+        && state != PlayerState.Jump) {
             return;
         }
 
-        UpdateMoveDirection(InputManager.Singleton.moveInput);
+        movement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
     }
 
 
@@ -476,9 +597,9 @@ public class Player : MonoBehaviour {
 
     private void OnMoveInput(Vector2 moveInput) {
 
-        if (state != State.Idle
-        && state != State.Run
-        && state != State.Fall) {
+        if (state != PlayerState.Idle
+        && state != PlayerState.Run
+        && state != PlayerState.Fall) {
             return;
         }
 
@@ -495,17 +616,33 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStartInput() {
 
-        if (state != State.Idle
-        && state != State.Run) {
+        if (coyoteState == CoyoteState.Dodge
+        || coyoteState == CoyoteState.Attack)
+        {
+            CoyoteCallback = OnJumpInputCoyoteCallback;
+        }
+
+        if (state != PlayerState.Idle
+        && state != PlayerState.Run)
+        {
             return;
         }
 
         JumpStart();
     }
 
-    private void OnJumpStopInput() {
+    private void OnJumpInputCoyoteCallback()
+    {
+        if (InputManager.Singleton.IsJumpPressed == true)
+        {
+            JumpStart();
+        }
+    }
 
-        if (state != State.Jump) {
+    private void OnJumpStopInput()
+    {
+        if (state != PlayerState.Jump)
+        {
             return;
         }
 
@@ -516,25 +653,38 @@ public class Player : MonoBehaviour {
 
     private void OnDodgeInput() {
 
+        if (coyoteState == CoyoteState.Dodge 
+        ||  coyoteState == CoyoteState.Attack)
+        {
+            CoyoteCallback = StartDodge;
+        }
 
-        if (state == State.Attack
-        || state == State.Dodge
-        || canDodge == false)
+        if (state == PlayerState.Attack
+        ||  state == PlayerState.Dodge
+        ||  canDodge == false)
         {
             return;
         }
 
-        DodgeStart();
+        StartDodge();
     }
 
     private void OnAttackInput() {
 
-        if (state == State.Attack
-        || state == State.Dodge) {
+        if (coyoteState == CoyoteState.Dodge
+        || coyoteState == CoyoteState.Attack)
+        {
+            CoyoteCallback = StartAttack;
+        }
+
+        if (state == PlayerState.Attack
+        || state == PlayerState.Dodge)
+        {
             return;
         }
 
-        Attack();
+
+        StartAttack();
     }
 
     private void OnInteractInput() {
@@ -566,9 +716,20 @@ public class Player : MonoBehaviour {
     {
         switch (eventName)
         {
-            case "Footstep":
-                audioPlayer.PlaySound("FootstepGrass", transform.position);
-                break;
+
+            // Coyote States.
+
+            case "EnterAttackCoyoteState": EnterCoyoteState(CoyoteState.Attack); break;
+            case "EnterDodgeCoyoteState": EnterCoyoteState(CoyoteState.Dodge); break;
+            case "ExitCoyoteState": ExitCoyoteState(); break;
+
+            // Player States.
+
+            case "ExitDodgeState": StopDodge(); break;
+            case "ExitAttackState": StopAttack(); break;
+
+            case "SwordAttackFrame": SwordAttackFrame(); break;
+            case "Footstep": HandleFootstepEffects(); break;
             default:
                 throw new InvalidOperationException($"animation event {eventName} not configured for player.");
         }

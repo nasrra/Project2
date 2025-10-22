@@ -37,6 +37,8 @@ public class CameraController : MonoBehaviour{
     private const float CameraRadius            = 0.33f;
     private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
 
+    public bool isLockedOn { get; private set; }
+
 
     /// 
     /// Base.
@@ -92,6 +94,7 @@ public class CameraController : MonoBehaviour{
     }
 
     public void SetLockOnTarget(Transform lockOnTarget){
+        isLockedOn = !(lockOnTarget == null);
         this.lockOnTarget = lockOnTarget;
     }
 
@@ -319,7 +322,7 @@ public class CameraController : MonoBehaviour{
     }
 
     private void OnLockOnTargetLeftRange(){
-        lockOnTarget = null;
+        SetLockOnTarget(null);
     }
 
 
@@ -400,14 +403,12 @@ public class CameraController : MonoBehaviour{
             if(newLockOnTarget!=null){
 
                 // if a target was found: lock onto it.
-
                 SetLockOnTarget(newLockOnTarget);
             }
         }
         else{
 
             // stop locking onto a target if we are tracking one.
-
             SetLockOnTarget(null);
         }
     }

@@ -20,13 +20,17 @@
 + Fixed Animation Event System triggering multiple times.
 + Added I-frames to player dash.
 + Toon Shader.
-
 + Factored out Ground Check Code from Movement to its own component.
 + Factored out Force Application Code from Movement.
 + Created Nav Agent Movement scrpit.
 + Reworked slash vfx.
 + Slink bite attack vfx.
 + Fmod Intergration.
++ rework timer manager bootstrap.
++ fix Entropek library namespaces.
++ Protoype Player and Enemy sounds.
++ HealIntermediary class for hurt hit areas on an enemy.
++ Make dodge always go in the desired direction.
 
 ======== TODO ========
 
@@ -97,8 +101,11 @@
 
         - Turn Around To Target (may only do this when choosing an attack option though).
 
-- rework timer manager bootstrap.
-- fix Entropek library namespaces.
++ Coyote Inputs.
++ Removed attack manager, entities now implement hitboxes manually.
++ Remove Health HealIntermediary class for Hurtbox class.
++ Vfx when player hits enemy.
+
 
 ==== BACK BURNER =====
 

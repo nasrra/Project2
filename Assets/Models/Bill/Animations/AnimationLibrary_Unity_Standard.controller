@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8378315555935502983
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: EnterDodgeCoyoteState
+  triggerTime: 0.167
 --- !u!1102 &-8277611557529671751
 AnimatorState:
   serializedVersion: 6
@@ -8,10 +22,14 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rig_Sword_Attack
-  m_Speed: 3.33
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 8947051627876474097}
+  - {fileID: 8059856736387983549}
+  - {fileID: -206779228700372325}
+  - {fileID: -5945918631819161551}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -79,6 +97,20 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-5945918631819161551
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: ExitAttackState
+  triggerTime: 0.8
 --- !u!1102 &-4638069988254707675
 AnimatorState:
   serializedVersion: 6
@@ -87,7 +119,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rig_Sword_Idle
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -105,6 +137,20 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-3976226796026593187
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: ExitDodgeState
+  triggerTime: 0.8
 --- !u!1102 &-3221918619474355873
 AnimatorState:
   serializedVersion: 6
@@ -131,6 +177,20 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-2697268488509178053
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: ExitCoyoteState
+  triggerTime: 0.75
 --- !u!1107 &-1647944537398674850
 AnimatorStateMachine:
   serializedVersion: 6
@@ -174,6 +234,20 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -4638069988254707675}
+--- !u!114 &-206779228700372325
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: ExitCoyoteState
+  triggerTime: 0.7
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -229,7 +303,10 @@ AnimatorState:
   m_Speed: 3
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -3976226796026593187}
+  - {fileID: -8378315555935502983}
+  - {fileID: -2697268488509178053}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -296,3 +373,31 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &8059856736387983549
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: EnterAttackCoyoteState
+  triggerTime: 0.25
+--- !u!114 &8947051627876474097
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: SwordAttackFrame
+  triggerTime: 0.273

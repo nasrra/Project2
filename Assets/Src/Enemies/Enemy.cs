@@ -2,7 +2,6 @@ using Entropek.Systems.Ai.Combat;
 using Entropek.Systems;
 using UnityEngine;
 using Entropek;
-using Entropek.Systems.Combat;
 using Entropek.UnityUtils.AnimatorUtils;
 using System;
 using Entropek.Physics;
@@ -20,7 +19,6 @@ public abstract class Enemy : MonoBehaviour{
     [SerializeField] protected Transform target;
     [SerializeField] protected Entropek.EntityStats.HealthSystem health;
     [SerializeField] protected AiCombatAgent combatAgent;
-    [SerializeField] protected AttackManager attackManager;
     [SerializeField] protected AnimationEventReciever animationEventReciever;
     [SerializeField] protected NavAgentMovement movement;
     [SerializeField] protected ForceApplier forceApplier;
@@ -114,11 +112,11 @@ public abstract class Enemy : MonoBehaviour{
     /// 
 
 
-    private void LinkHealthEvents(){
+    protected virtual void LinkHealthEvents(){
         health.Death += OnHealthDeath;
     }
 
-    private void UnlinkHealthEvents(){
+    protected virtual void UnlinkHealthEvents(){
         health.Death -= OnHealthDeath;
     }
 
