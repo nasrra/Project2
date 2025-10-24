@@ -1,4 +1,3 @@
-using Entropek.Time;
 using UnityEngine;
 
 namespace Entropek.Systems.Trails{
@@ -7,13 +6,11 @@ namespace Entropek.Systems.Trails{
     public class SkinnedMeshTrailSystem : MonoBehaviour{
         [Header("Components")]
 
-        // the rate at which to spawn meshes.
-        
-        [SerializeField] private Timer spawnRate;
-        
-        // the lifetime of the loop to spawn backed mesh instances.
-        
-        [SerializeField] private Timer loopTime;
+        [Tooltip("The rate at which to spawn meshes.")]
+        [SerializeField] private Time.LoopedTimer spawnRateTimer;
+                
+        [Tooltip("The lifetime of the loop to spawn backed mesh instances.")]
+        [SerializeField] private Time.OneShotTimer spawnLoopTimer;
 
         [Header("Trail Properties")]
         [SerializeField] private SkinnedMeshRenderer[] skinnedMeshes;
@@ -44,8 +41,8 @@ namespace Entropek.Systems.Trails{
         }
 
         private void LinkTimerEvents(){
-            spawnRate.Timeout += OnSpawnRateTimeout;
-            loopTime.Timeout += OnLoopTimeTimeout;
+            spawnRateTimer.Timeout += OnSpawnRateTimeout;
+            spawnLoopTimer.Timeout += OnLoopTimeTimeout;
         }
 
         private void UnlinkTimerEvents(){
@@ -57,7 +54,7 @@ namespace Entropek.Systems.Trails{
         }
 
         private void OnLoopTimeTimeout(){
-            spawnRate.Halt();
+            spawnRateTimer.Halt();
         }
     }
 

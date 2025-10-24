@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7694181347925691395}
   - component: {fileID: 2251539076524147152}
-  - component: {fileID: 3854907966034779366}
   - component: {fileID: 1305438483619739248}
+  - component: {fileID: 6194842533418049946}
   m_Layer: 10
   m_Name: Hitbox
   m_TagString: Untagged
@@ -55,22 +55,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3854907966034779366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7870681125687954591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cd61221b13b4d84e9ac99cc5f05fd21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialTime: 0
-  BeginOnAwake: 0
-  Loop: 0
-  EditorNameTag: Lifetime
 --- !u!114 &1305438483619739248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,4 +68,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   col: {fileID: 2251539076524147152}
-  timer: {fileID: 3854907966034779366}
+  timer: {fileID: 6194842533418049946}
+  damage: 0
+--- !u!114 &6194842533418049946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7870681125687954591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: cooldown
+  initialTime: 0
+  BeginOnAwake: 0

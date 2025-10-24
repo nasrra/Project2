@@ -1,11 +1,12 @@
 using System;
+using Entropek.Ai.Combat;
 using TreeEditor;
 using UnityEngine;
 
-public class Slink : Enemy{
+public class Slink : Enemy {
 
 
-    [Header(nameof(Slink)+" Components")]
+    [Header(nameof(Slink) + " Components")]
     [SerializeField] Animator animator;
     [SerializeField] Entropek.UnityUtils.BoneStagger boneStagger;
 
@@ -39,30 +40,31 @@ public class Slink : Enemy{
         throw new System.NotImplementedException();
     }
 
-    protected override void OnCombatActionChosen(string actionName){
-        switch(actionName){
-            case "Bite":
-                BiteAttack();
-                break;
-            default:
-                throw new NotImplementedException(actionName);
-        }
-    }
 
-    private void FixedUpdate(){
+    private void FixedUpdate() {
         FixedUpdateCallback?.Invoke();
-    }
-
-    private void LateUpdate()
-    {
-        RotateGraphicsTransformToGroundNormal();
-        FaceMoveDirection();
     }
 
     ///
     /// State Machine.
     /// 
 
+
+    private void FaceTargetThenPerformAction(Action action)
+    {
+        Vector3 cachedTargetPosition = target.position;
+        FixedUpdateCallback = () => { FaceWorldPositionThenPerformActionFixedUpdate(cachedTargetPosition, action); };
+    }
+
+    private void FaceWorldPositionThenPerformActionFixedUpdate(Vector3 worldPosition, Action action)
+    {
+        if (FaceWorldSpacePosition(worldPosition) == false)
+        {
+            return;
+        }
+        FixedUpdateCallback = null;
+        action();
+    }
 
     private void AttackingState()
     {
@@ -81,14 +83,40 @@ public class Slink : Enemy{
     }
 
     private void ChaseStateFixedUpdate()
-    {
-        
+    {  
+        RotateGraphicsTransformToGroundNormal();
+        FaceMoveDirection();
     }
 
 
     /// 
     /// Linkage Override.
     /// 
+
+    protected override void OnCombatActionChosen(AiCombatAction action){
+        if (action.TurnToTarget == true)
+        {
+            switch (action.Name)
+            {
+                case "Bite":
+                    FaceTargetThenPerformAction(BiteAttack);
+                    break;
+                default:
+                    throw new NotImplementedException(action.Name);
+            }
+        }
+        else
+        {
+            switch (action.Name)
+            {
+                case "Bite":
+                    BiteAttack();
+                    break;
+                default:
+                    throw new NotImplementedException(action.Name);
+            }            
+        }
+    }
 
     protected override void LinkHealthEvents()
     {
@@ -121,26 +149,28 @@ public class Slink : Enemy{
         target = opponent;
     }
 
-    protected override void OnAnimationEventTriggered(string eventName){
+    protected override bool OnAnimationEventTriggered(string eventName){
+        
+        if (base.OnAnimationEventTriggered(eventName) == true)
+        {
+            return true;
+        }
+        
         switch(eventName){
             case "Footstep":
                 audioPlayer.PlaySound("FootstepGrass", transform.position);
-                break;
+                return true;
             case "BiteGrowl":
                 audioPlayer.PlaySound("SlinkGrowl", gameObject);
-                break;
+                return true;
             case "BiteAttack":
                 biteHitbox.Enable();
                 biteVfx.Play();
                 audioPlayer.PlaySound("SlinkBite", gameObject);
-                break;
-            case "BiteLunge":
-                forceApplier.ImpulseRelativeToGround(graphicsObject.forward, 24, 36);
-                break;
-            case "EndAttack":   
-                ChasingState(); 
-                break;
-            default:            throw new Exception("Animation Event Not Implemented "+eventName);
+                return true;
+            case "BiteLunge": forceApplier.ImpulseRelativeToGround(graphicsObject.forward, 24, 36); return true;
+            case "EndAttack": ChasingState(); combatAgent.Begin(); return true;
+            default: throw new Exception("Animation Event Not Implemented "+eventName);
         }
     }
 }

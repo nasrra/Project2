@@ -87,6 +87,7 @@ AnimatorState:
   - {fileID: -8797519044436936662}
   - {fileID: 1400769153810123543}
   - {fileID: 1340446116566614810}
+  - {fileID: 2013206242407550809}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -203,6 +204,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: BiteLunge
   triggerTime: 0.528
+--- !u!114 &2013206242407550809
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: StartCombatActionCooldown
+  triggerTime: 0.97
 --- !u!1101 &2952679757862612242
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

@@ -1,5 +1,4 @@
 using System;
-using Entropek.Time;
 using UnityEngine;
 
 namespace Entropek.EntityStats{
@@ -26,7 +25,7 @@ namespace Entropek.EntityStats{
 
 
         [Header(nameof(ShieldedHealth))]
-        [SerializeField] protected Timer shieldBrokenStateTimer; 
+        [SerializeField] protected Time.OneShotTimer shieldBrokenStateTimer; 
         [SerializeField] protected float shieldValue;
         [SerializeField] protected float maxShieldValue;
         protected ShieldState shieldState;

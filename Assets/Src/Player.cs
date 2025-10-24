@@ -1,6 +1,4 @@
 using System;
-using Entropek.Systems;
-using Entropek.Time;
 using Entropek.Systems.Interaction;
 using Entropek.Systems.Trails;
 using UnityEngine;
@@ -46,7 +44,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
-    [SerializeField] private Timer fallCoyoteTimer;
+    [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;

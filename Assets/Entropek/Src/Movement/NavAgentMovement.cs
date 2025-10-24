@@ -51,8 +51,16 @@ namespace Entropek.Physics
 
 
         protected void FixedUpdate(){
-            // handle the recacluate path recursion.
 
+            // short-circuit if we are paused.
+
+            if (paused == true)
+            {
+                return;
+            }
+
+            // handle the recacluate path recursion.
+            
             fixedFrameCounter++;
             if (fixedFrameCounter >= fixedFramesPerRecalculate)
             {
@@ -156,15 +164,6 @@ namespace Entropek.Physics
 
         private void MoveToNextPathPoint()
         {
-
-            // short-circuit if we are paused.
-
-            if (paused == true)
-            {
-                return;
-            }
-
-
             // if there is still path points to traverse along.
 
             if (path.corners.Length > 0 && currentCornerIndex < path.corners.Length)

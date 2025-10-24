@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Entropek.Time;
 using UnityEngine;
 
 namespace Entropek.Combat{
     
     [RequireComponent(typeof(Collider))]
-    [RequireComponent(typeof(Timer))]
+    [RequireComponent(typeof(Time.OneShotTimer))]
     public class Hitbox : MonoBehaviour{
         
         /// <summary>
@@ -17,8 +16,8 @@ namespace Entropek.Combat{
         
         [Header("Components")]
         [SerializeField] private Collider col;
-        [SerializeField] private Timer timer;
-        public Timer Timer => timer;
+        [SerializeField] private Time.OneShotTimer timer;
+        public Time.OneShotTimer Timer => timer;
 
         [Header("Data")]
         private HashSet<int> hitGameObjectInstanceIds = new HashSet<int>();

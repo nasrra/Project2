@@ -5,7 +5,9 @@ using UnityEngine;
 
 namespace Entropek.Time{
 
-    public class TimerManager : MonoBehaviour{
+    [DefaultExecutionOrder(-10)]
+    public class TimerManager : MonoBehaviour
+    {
 
 
         /// 
@@ -17,13 +19,13 @@ namespace Entropek.Time{
 
         public static TimerManager Singleton { get; private set; }
 
-        SwapbackList<Timer> activeTimers = new SwapbackList<Timer>();
-        SwapbackList<Timer> pausedTimers = new SwapbackList<Timer>();
-        SwapbackList<Timer> haltedTimers = new SwapbackList<Timer>();
+        public SwapbackList<Timer> ActiveTimers { get; private set; } = new();
+        public SwapbackList<Timer> PausedTimers { get; private set; } = new();
+        public SwapbackList<Timer> HaltedTimers { get; private set; } = new();
 
-        Dictionary<int, int> activeTimersIdToListIndexMap    = new Dictionary<int, int>();
-        Dictionary<int, int> pausedTimersIdToListIndexMap    = new Dictionary<int, int>();
-        Dictionary<int, int> haltedTimersIdToListIndexMap    = new Dictionary<int, int>();
+        Dictionary<int, int> activeTimersIdToListIndexMap = new Dictionary<int, int>();
+        Dictionary<int, int> pausedTimersIdToListIndexMap = new Dictionary<int, int>();
+        Dictionary<int, int> haltedTimersIdToListIndexMap = new Dictionary<int, int>();
 
 
         /// 
@@ -31,38 +33,47 @@ namespace Entropek.Time{
         /// 
 
 
-        public void RegisterTimer(Timer timer){
+        public void RegisterTimer(Timer timer)
+        {
             // timers are defaulted to stop.
             AddTimerToHaltedList(timer);
         }
 
-        public void DeregisterTimer(Timer timer){
-            
-            if(IsHalted(timer)==true){
+        public void DeregisterTimer(Timer timer)
+        {
+
+            if (IsHalted(timer) == true)
+            {
                 RemoveTimerFromHaltedList(timer);
             }
-            else if(IsActive(timer)==true){
+            else if (IsActive(timer) == true)
+            {
                 RemoveTimerFromActiveList(timer);
             }
-            else if(IsPaused(timer)==true){
+            else if (IsPaused(timer) == true)
+            {
                 RemoveTimerFromPausedList(timer);
             }
         }
 
-        public bool BeginTimer(Timer timer){
-            
+        public bool BeginTimer(Timer timer)
+        {
+
             // short-circuit if the timer is already started.
 
-            if(IsActive(timer)==true){
+            if (IsActive(timer) == true)
+            {
                 return false;
             }
 
             // check and handle if the timer is in another state.
-            
-            if(IsPaused(timer)==true){
+
+            if (IsPaused(timer) == true)
+            {
                 RemoveTimerFromPausedList(timer);
             }
-            else if(IsHalted(timer)==true){
+            else if (IsHalted(timer) == true)
+            {
                 RemoveTimerFromHaltedList(timer);
             }
 
@@ -71,20 +82,24 @@ namespace Entropek.Time{
             return true;
         }
 
-        public bool HaltTimer(Timer timer){
-            
+        public bool HaltTimer(Timer timer)
+        {
+
             // short-circuit if the timer is already stopped.
 
-            if(IsHalted(timer)==true){
+            if (IsHalted(timer) == true)
+            {
                 return false;
             }
 
             // check and handle if the timer is in another state.
-            
-            if(IsPaused(timer)==true){
+
+            if (IsPaused(timer) == true)
+            {
                 RemoveTimerFromPausedList(timer);
             }
-            else if(IsActive(timer)==true){
+            else if (IsActive(timer) == true)
+            {
                 RemoveTimerFromActiveList(timer);
             }
 
@@ -93,25 +108,29 @@ namespace Entropek.Time{
             return true;
         }
 
-        public bool PauseTimer(Timer timer){
-        
+        public bool PauseTimer(Timer timer)
+        {
+
             // short-circuit if the timer is already stopped.
 
-            if(IsPaused(timer)==true){
+            if (IsPaused(timer) == true)
+            {
                 return false;
             }
 
             // check and handle if the timer is in another state.
-            
-            if(IsHalted(timer)==true){
+
+            if (IsHalted(timer) == true)
+            {
                 RemoveTimerFromHaltedList(timer);
             }
-            else if(IsActive(timer)==true){
+            else if (IsActive(timer) == true)
+            {
                 RemoveTimerFromActiveList(timer);
             }
 
             AddTimerToPausedList(timer);
-        
+
             return true;
         }
 
@@ -121,15 +140,18 @@ namespace Entropek.Time{
         /// 
 
 
-        public bool IsActive(Timer timer){
+        public bool IsActive(Timer timer)
+        {
             return activeTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID());
         }
 
-        public bool IsHalted(Timer timer){
+        public bool IsHalted(Timer timer)
+        {
             return haltedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID());
         }
 
-        public bool IsPaused(Timer timer){
+        public bool IsPaused(Timer timer)
+        {
             return pausedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID());
         }
 
@@ -139,21 +161,25 @@ namespace Entropek.Time{
         /// 
 
 
-        void AddTimerToActiveList(Timer timer){
-            AddTimerToList(activeTimers, activeTimersIdToListIndexMap, timer);
+        void AddTimerToActiveList(Timer timer)
+        {
+            AddTimerToList(ActiveTimers, activeTimersIdToListIndexMap, timer);
         }
 
-        void AddTimerToHaltedList(Timer timer){
-            AddTimerToList(haltedTimers, haltedTimersIdToListIndexMap, timer);
+        void AddTimerToHaltedList(Timer timer)
+        {
+            AddTimerToList(HaltedTimers, haltedTimersIdToListIndexMap, timer);
         }
 
-        void AddTimerToPausedList(Timer timer){
-            AddTimerToList(pausedTimers, pausedTimersIdToListIndexMap, timer);
+        void AddTimerToPausedList(Timer timer)
+        {
+            AddTimerToList(PausedTimers, pausedTimersIdToListIndexMap, timer);
         }
 
-        void AddTimerToList(SwapbackList<Timer> timerList, Dictionary<int, int> idToArrayIndexMap, Timer timerToAdd){
+        void AddTimerToList(SwapbackList<Timer> timerList, Dictionary<int, int> idToArrayIndexMap, Timer timerToAdd)
+        {
             timerList.Add(timerToAdd);
-            idToArrayIndexMap.Add(timerToAdd.GetInstanceID(), timerList.Count-1);
+            idToArrayIndexMap.Add(timerToAdd.GetInstanceID(), timerList.Count - 1);
         }
 
 
@@ -162,35 +188,27 @@ namespace Entropek.Time{
         /// 
 
 
-        void RemoveTimerFromActiveList(Timer timer){
-            RemoveTimerFromList(activeTimers, activeTimersIdToListIndexMap, timer);
+        void RemoveTimerFromActiveList(Timer timer)
+        {
+            RemoveTimerFromList(ActiveTimers, activeTimersIdToListIndexMap, timer);
         }
 
-        void RemoveTimerFromHaltedList(Timer timer){
-            RemoveTimerFromList(haltedTimers, haltedTimersIdToListIndexMap, timer);
+        void RemoveTimerFromHaltedList(Timer timer)
+        {
+            RemoveTimerFromList(HaltedTimers, haltedTimersIdToListIndexMap, timer);
         }
 
-        void RemoveTimerFromPausedList(Timer timer){
-            RemoveTimerFromList(pausedTimers, pausedTimersIdToListIndexMap, timer);
+        void RemoveTimerFromPausedList(Timer timer)
+        {
+            RemoveTimerFromList(PausedTimers, pausedTimersIdToListIndexMap, timer);
         }
 
-        void RemoveTimerFromList(SwapbackList<Timer> timerList, Dictionary<int, int> idToArrayIndexMap, Timer timerToRemove){
-            
-            #if UNITY_EDITOR
-
-            // this check is here as the timer manager is cleared before the timers
-            // themselves are freed from memeory. The timers try to remove themselves
-            // from the list that doesnt contain them anymore.
-
-            // if(UnityUtils.Editor.InPlaymode==false){
-            //     return;
-            // }
-
-            #endif
+        void RemoveTimerFromList(SwapbackList<Timer> timerList, Dictionary<int, int> idToArrayIndexMap, Timer timerToRemove)
+        {
 
             // swap the indices of the last entry and entry to remove.
             // this is done becuase timers are stored in a swapbacklist.
-            
+
             int timerToRemoveIndex = idToArrayIndexMap[timerToRemove.GetInstanceID()];
             int lastIndex = timerList.Count - 1;
             Timer lastTimer = timerList[lastIndex];
@@ -198,10 +216,10 @@ namespace Entropek.Time{
             // set the timer to removes array data to the last entries data.
 
             timerList[timerToRemoveIndex] = lastTimer;
-            idToArrayIndexMap[lastTimer.GetInstanceID()] = timerToRemoveIndex; 
+            idToArrayIndexMap[lastTimer.GetInstanceID()] = timerToRemoveIndex;
 
             // then remove the last entry from the list.
-            
+
             idToArrayIndexMap.Remove(timerToRemove.GetInstanceID());
             timerList.RemoveAt(lastIndex);
         }
@@ -212,23 +230,25 @@ namespace Entropek.Time{
         /// 
 
 
-        void Update(){
+        void Update()
+        {
 
             // tick down all available timers.
-            
-            for(int i = 0; i < activeTimers.Count; i++){
-                Timer timer = activeTimers[i];
+
+            for (int i = 0; i < ActiveTimers.Count; i++)
+            {
+                Timer timer = ActiveTimers[i];
                 timer.Tick();
             }
         }
 
         private void Clear()
         {
-            activeTimers.Clear();
+            ActiveTimers.Clear();
             activeTimersIdToListIndexMap.Clear();
-            haltedTimers.Clear();
+            HaltedTimers.Clear();
             haltedTimersIdToListIndexMap.Clear();
-            pausedTimers.Clear();
+            PausedTimers.Clear();
             pausedTimersIdToListIndexMap.Clear();
         }
 
@@ -243,9 +263,11 @@ namespace Entropek.Time{
         /// 
 
 
-        static class Bootstrap{    
+        static class Bootstrap
+        {
             [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-            internal static void Initialise(){
+            internal static void Initialise()
+            {
                 GameObject main = new();
                 main.name = "Timer Manager";
                 main.AddComponent<TimerManager>();

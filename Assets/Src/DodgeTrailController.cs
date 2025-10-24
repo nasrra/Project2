@@ -1,12 +1,11 @@
-using Entropek.Time;
 using UnityEngine;
 
 public class DodgeTrailController : MonoBehaviour{
         
     [Header("Components")]
     [SerializeField] private TrailRenderer trail;
-    [SerializeField] private Timer idleTimer;
-    [SerializeField] private Timer snapbackTimer;
+    [SerializeField] private Entropek.Time.OneShotTimer idleTimer;
+    [SerializeField] private Entropek.Time.OneShotTimer snapbackTimer;
     
     [Header("Data")]
     [SerializeField] private float trailMaxTime;

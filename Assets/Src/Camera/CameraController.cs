@@ -1,5 +1,4 @@
 using System;
-using Entropek.Time;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour{
@@ -14,7 +13,7 @@ public class CameraController : MonoBehaviour{
     [SerializeField] private Transform shaker;
     [SerializeField] private Transform followTarget;
     [SerializeField] private Transform lockOnTarget;  
-    [SerializeField] private Timer shakeTimer;
+    [SerializeField] private Entropek.Time.LoopedTimer shakeTimer;
     [SerializeField] private LockOnTargetDetector lockOnTargetDetector; // this must be a separate game object childed to this one.
 
 
