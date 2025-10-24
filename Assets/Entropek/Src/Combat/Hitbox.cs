@@ -37,10 +37,11 @@ namespace Entropek.Combat{
             Unlink();
         }
 
-        void OnTriggerEnter(Collider hurtboxCollider){
-            
-            GameObject hurtboxGameObject = hurtboxCollider.gameObject;
-            int otherId = hurtboxGameObject.GetInstanceID();
+        void OnTriggerEnter(Collider hitCollider)
+        {
+
+            GameObject hitGameObject = hitCollider.gameObject;
+            int otherId = hitGameObject.GetInstanceID();
 
             // short-circuit if we've already hit the collider object.
 
@@ -54,52 +55,147 @@ namespace Entropek.Combat{
             hitGameObjectInstanceIds.Add(otherId);
 
             // get the health system from the gameObject and 
-            
-            EntityStats.HealthSystem health;
 
-            health = hurtboxGameObject.GetComponent<EntityStats.HealthSystem>();
-
-            if (health == null)
+            if(hitGameObject.TryGetComponent(out Hurtbox hurtbox))
             {
-                health = hurtboxGameObject.GetComponent<Hurtbox>().Health;
+                HitHurtboxComponent(hitCollider, hurtbox);
+            }
+            else if (hitGameObject.TryGetComponent(out EntityStats.HealthSystem health))
+            {
+                HitHealthSystemComponent(hitCollider, health);
+            }
+            else
+            {
+                throw new Exceptions.ComponentNotFoundException(message: $"{gameObject.name} did not find Hurtbox or Health System on {hurtbox.gameObject.name}.");
             }
 
-            // check if weve already hit this health.
+
+
+        }
+
+        /// <summary>
+        /// Damages a health system, invoking the Hit callback.
+        /// </summary>
+        /// <param name="hitCollider">The specified collider to get the hit point on.</param>
+        /// <param name="healthSystem">The specified health system to damage.</param>
+        /// <exception cref="Exception">Thrown if there was no point found on the health system collider that classifies as a 'hit point'.</exception>
+
+        private void HitHealthSystemComponent(Collider hitCollider, EntityStats.HealthSystem healthSystem)
+        {
+            // get the hit point on the health collider. 
+
+            if (GetHitPoint(hitCollider, out Vector3 hitPoint))
+            {
+
+                // damage the health component.
+
+                healthSystem.Damage(damage);
+
+                // return that we hit the health object.
+
+                Hit?.Invoke(healthSystem.gameObject, hitPoint);
+            }
+            else
+            {
+                throw new Exception($"'{name}' failed to retrieve a valid hit point to health compoonent collider on '{healthSystem.gameObject.name}'");
+            }
+        }
+
+        /// <summary>
+        /// Damages a health system linked insides a hurtbox, invoking the Hit callback. 
+        /// </summary>
+        /// <param name="hitCollider">The specified collider to get the hit point on.</param>
+        /// <param name="hurtbox">The specified hurtbox to extract a health system to damage.</param>
+        /// <exception cref="Exception">Thrown if there was no point found on the health system collider that classifies as a 'hit point'.</exception>
+
+        private void HitHurtboxComponent(Collider hitCollider, Hurtbox hurtbox)
+        {
+
+            // ensure that the health component hasn't already been hit by another 
+            // linked hurtbox previously being hit.
             // a single entity may have multiple hurtboxes that share the same health component.
 
-            GameObject healthGameObject = health.gameObject;
+            GameObject healthGameObject = hurtbox.Health.gameObject;
             int healthInstanceId = healthGameObject.GetInstanceID();
 
             if (hitGameObjectInstanceIds.Contains(healthInstanceId))
             {
-                return; // this hitbox has already damaged the health component.
+                return;
             }
 
             hitGameObjectInstanceIds.Add(healthInstanceId);
 
             // get the hit point on the hurtbox collider. 
 
-            Vector3 directionToOther = hurtboxGameObject.transform.position - transform.position;
-            float distanceToOther = directionToOther.sqrMagnitude;
-            int layerMask = 1 << hurtboxGameObject.layer; // bit shift to get actual layer mask.
-
-            if (UnityEngine.Physics.Raycast(transform.position, directionToOther.normalized, out RaycastHit hit, distanceToOther, layerMask))
+            if (GetHitPoint(hitCollider, out Vector3 hitPoint))
             {
-                // damage and call back that weve hit the health components gameobject.
 
-                health.Damage(damage);
-                Hit?.Invoke(healthGameObject, hit.point);
+                // damage the health component tied to the hurtbox.
+
+                hurtbox.Health.Damage(damage);
+
+                // return that we hit the health object, not the hurtbox.
+
+                Hit?.Invoke(healthGameObject, hitPoint);
+            }
+            else
+            {
+                throw new Exception($"'{name}' failed to retrieve a valid hit point to hurtbox '{hurtbox.gameObject.name}'");
             }
 
-            
         }
+
+        /// <summary>
+        /// Performs a raycast intersection check from this hitbox position in world space to the hit collider.
+        /// </summary>
+        /// <param name="hitCollider">The specified collider to find a hit point on.</param>
+        /// <param name="hitPoint">The raycast point of intersection in world space.</param>
+        /// <returns>true, if a point was found.</returns>
+
+        private bool GetHitPoint(Collider hitCollider, out Vector3 hitPoint)
+        {
+
+            Vector3 directionToOther =  hitCollider.transform.position - transform.position;
+            float distance = directionToOther.sqrMagnitude;
+            Ray ray = new Ray(transform.position, directionToOther.normalized);
+            RaycastHit hit;
+
+            // get the hit point on the colliders surface.
+
+            if (hitCollider.Raycast(ray, out hit, distance))
+            {
+                hitPoint = hit.point;
+                return true;
+
+            }
+
+            // check if we're inside the collider
+
+            else if (hitCollider.bounds.Contains(transform.position))
+            {
+
+                hitPoint = transform.position;
+                return true;
+
+            }
+
+            // the hitbox has not hit anything.
+
+            else
+            {
+                hitPoint = Vector3.zero;
+                return false;
+            }
+        }
+
 
         /// 
         /// Functions.
         /// 
 
 
-        public void Enable(){
+        public void Enable()
+        {
             col.enabled = true;
             timer.Begin();
         }

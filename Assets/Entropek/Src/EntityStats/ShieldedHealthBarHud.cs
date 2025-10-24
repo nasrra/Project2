@@ -1,5 +1,4 @@
 using UnityEngine;
-using Entropek.Logger.Exceptions;
 
 namespace Entropek.EntityStats{
 
@@ -14,7 +13,7 @@ public class ShieldedHealthBarHud : MonoBehaviour{
 
     void OnEnable(){
         if(Singleton!=null){
-            throw new SingletonException();
+            throw new Exceptions.SingletonException();
         }
         else{
             Singleton = this;

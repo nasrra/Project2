@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
-namespace Entropek.Logger.Exceptions{
+namespace Entropek.Exceptions{
 
 public class SingletonException : Exception{
     public SingletonException([CallerFilePath] string filePath = "", [CallerMemberName] string methodName = "")

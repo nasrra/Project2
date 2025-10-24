@@ -39,6 +39,8 @@
 + fixed loop timers not halting when callin halt on timeout.
 + separated timer class into one shot and looped timers.
 + added new timer and timer manager editors.
++ scafolded "turn around before action" beahviour for enemies.
++ Slink bite attack.
 
 ======== TODO ========
 
@@ -46,68 +48,21 @@
 //  Look at Great Jagras fight from Monster Hunter World for inspiration.
 
 - Apex Slink:
-
-    - Gimmick:
-
-        - Wings allow slink to fly around.
-        - Flapping wings stuns player.
     
     - Attacks.
-    
-        - Bite.
-            
-            - Movement:
-                - move back and perform mid lunge at player.            
-            
-            - Timings:
-                - Lead-In:          1.0s
-                - Attack:           0.5s
-                - Follow-Through:   1.5s~ (reverts to idle which takes a little more time added at the end).
-
+        + Bite.
         - Claw Swipe.
-
-            - Movement:
-                - move back and perform mid lunge at player.
-
-            - Timings:
-                - Lead-In:          1.5s
-                - Attack:           0.5s
-                - Follow-Through:   1.5s~ (reverts to idle which takes a little more time added at the end).
-
-        - Dive Bomb (fly backwards into air, then speed towards ground near player).
-
-            - Movement:
-                - fly backwards into air, then speed towards ground near player
-
-            - Timings:
-                - Lead-In:          2.0s~
-                - Attack:           1.0s~ (depending on travel time.)
-                - Follow-Through:   2.5s~ (reverts to idle which takes a little more time added at the end).
-
+        - Dive Bomb.
         - Tail Swipe.
 
-            - Movement:
-                - Stationary. Flail around the tail once in the air to convey its intention.
-
-            - Timings:
-                - Lead-In:          1.5s
-                - Attack:           0.5s
-                - Follow-Through:   1.5s~ (reverts to idle which takes a little more time added at the end).
-
-
     - Disengage.
-
         - Jump Back (flap wings to jump back).
-
         - Jump Forward(flap wings to jump forward and turn around.)
 
     - Behvaiours:
-
-        - Running & Walking.
-
+        - Patrol.
         - Circle Walk Around Target.
-
-        - Turn Around To Target (may only do this when choosing an attack option though).
+        + Turn Around To Target (may only do this when choosing an attack option though).
 
 
 
