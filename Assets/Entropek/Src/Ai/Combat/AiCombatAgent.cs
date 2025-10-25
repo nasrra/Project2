@@ -38,6 +38,7 @@ namespace Entropek.Ai.Combat{
 
         [SerializeField] private AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f,0f), new Keyframe(1f,1f)); // the probability at which a action is chosen based on the curve. 
         [SerializeField] private AiCombatAction[] aiCombatActions;
+        public AiCombatAction[] AiCombatActions => aiCombatActions;
         private (AiCombatAction, float)[] possbileCombatActions;
         private AiCombatAction chosenCombatAction;
 
@@ -147,9 +148,9 @@ namespace Entropek.Ai.Combat{
 
                 AiCombatAction currentEvaluation = aiCombatActions[i];
 
-                // if the action is currently on cooldown.
+                // if the action is not enabled or currently on cooldown.
 
-                if (currentEvaluation.CooldownTimer.HasTimedOut == false)
+                if (currentEvaluation.Enabled == false || currentEvaluation.CooldownTimer.HasTimedOut == false)
                 {
                     continue;
                 }
@@ -231,9 +232,21 @@ namespace Entropek.Ai.Combat{
             evaluationIntervalTimer.Halt();
         }
 
-        public (AiCombatAction, float)[] GetPossibleCombatActions(){
+        public (AiCombatAction, float)[] GetPossibleCombatActions()
+        {
             return possbileCombatActions;
         }
+
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            for (int i = 0; i < aiCombatActions.Length; i++)
+            {
+                aiCombatActions[i].OnValidate();
+            }
+        }
+#endif
 
 
         /// 

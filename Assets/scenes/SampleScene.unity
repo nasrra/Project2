@@ -1522,6 +1522,21 @@ MonoBehaviour:
   editorNameTag: Bite Cooldown
   initialTime: 0
   BeginOnAwake: 0
+--- !u!114 &200020861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200020851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: TailSwipe
+  initialTime: 0
+  BeginOnAwake: 0
 --- !u!43 &231071196
 Mesh:
   m_ObjectHideFlags: 0
@@ -14880,7 +14895,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075580345}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.5787791, z: -0, w: 0.8154844}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -9.87, y: -0.49, z: 1.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14890,7 +14905,7 @@ Transform:
   - {fileID: 919281699}
   - {fileID: 423475323}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 70.729, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &2075580359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15367,7 +15382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_LocalPosition.z
@@ -15411,22 +15426,66 @@ PrefabInstance:
       objectReference: {fileID: 2075580361}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].name
       value: Bite
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].name
+      value: TailSwipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[0].maxFov
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[0].minFov
+      value: -0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].maxFov
+      value: -0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].minFov
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[0].enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].turnToTarget
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].turnToTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].cooldownTimer
       value: 
       objectReference: {fileID: 200020860}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].cooldownTimer
+      value: 
+      objectReference: {fileID: 200020861}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentWeight
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToObstacleWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentWeight
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
@@ -15434,7 +15493,15 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_PostInfinity
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
@@ -15442,8 +15509,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].time
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].time
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].value
@@ -15454,11 +15529,23 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
       value: -0.033051632
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
+      value: -0.01502164
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
+      value: -0.033051632
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
       value: -0.01502164
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
@@ -15474,7 +15561,23 @@ PrefabInstance:
       value: -0.01502164
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
+      value: -0.033051632
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
+      value: -0.01502164
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
@@ -15492,6 +15595,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       insertIndex: -1
       addedObject: {fileID: 200020860}
+    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 200020861}
   m_SourcePrefab: {fileID: 100100000, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
 --- !u!1001 &793647828341617097
 PrefabInstance:

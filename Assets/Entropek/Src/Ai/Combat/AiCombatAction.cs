@@ -65,10 +65,22 @@ namespace Entropek.Ai.Combat{
         [Range(0,5f)][SerializeField] private float normalisedSelfHealthWeight = 0;
         public float NormalisedSelfHealthWeight => normalisedSelfHealthWeight;
 
+        [Header("Fov")]
+        [Tooltip("Fov is measured by dot product value (-1 - 1), not by angle")]
+        [SerializeField][Range(-1,1)] private float maxFov;
+        public float MaxFov => maxFov;
+        [Tooltip("Fov is measured by dot product value (-1 - 1), not by angle")]
+        [SerializeField][Range(-1, 1)] private float minFov;
+        public float MinFov => minFov;
 
         [Header("Parameters")]
+        // whether or not to turn towards the target before commiting to this action.
         [SerializeField] private bool turnToTarget;
         public bool TurnToTarget => turnToTarget;
+        // whether or not this action is enabled and shoule be chosen by a combat agent.
+        [SerializeField] private bool enabled = true;
+        public bool Enabled => enabled;
+
 
 
         public float Evaluate(float damageTakenInterval, float distanceToOpponent, float distanceToObstacle, float normalisedOpponentHealth, float noramlisedSelfHealth)
@@ -102,44 +114,109 @@ namespace Entropek.Ai.Combat{
             return selfHealthScore + distanceToObstacleScore + distanceToOpponentScore + opponentHealthScore + damageTakenIntervalScore;
         }
 
-        private void OnValidate(){
+#if UNITY_EDITOR
+
+        private float editorLastValidateMinFov;
+        private float editorLastValidateMaxFov;
+
+        /// <summary>
+        /// Calls OnValidate for the Unity Editor. This should never be called outside of a UNITY_EDITOR 'if' macro.
+        /// </summary>
+
+        public void OnValidate()
+        {
+            EditorClampTotalWeightToMaxWeight();
+            EditorRegulateFovValues();
+        }
+
+        /// <summary>
+        /// Ensures that total weight is never higher than max weight.
+        /// </summary>
+
+        private void EditorClampTotalWeightToMaxWeight()
+        {
             // Calculate sum
             float sum = normalisedSelfHealthWeight + distanceToObstacleWeight + distanceToOpponentWeight + normalisedOpponentHealthWeight + damageTakenIntervalWeight;
 
             // Scale values if sum exceeds the max
-            if (sum > MaxWeight){
-                float scale                 = MaxWeight / sum;
-                normalisedSelfHealthWeight  *= scale;
-                
-                if(normalisedSelfHealthWeight < 0.1f){
+            if (sum > MaxWeight)
+            {
+                float scale = MaxWeight / sum;
+                normalisedSelfHealthWeight *= scale;
+
+                if (normalisedSelfHealthWeight < 0.1f)
+                {
                     normalisedSelfHealthWeight = 0;
                 }
-                
-                distanceToObstacleWeight    *= scale;
 
-                if(distanceToObstacleWeight < 0.1f){
+                distanceToObstacleWeight *= scale;
+
+                if (distanceToObstacleWeight < 0.1f)
+                {
                     distanceToObstacleWeight = 0;
                 }
 
-                distanceToOpponentWeight    *= scale;
+                distanceToOpponentWeight *= scale;
 
-                if(distanceToOpponentWeight < 0.1f){
+                if (distanceToOpponentWeight < 0.1f)
+                {
                     distanceToOpponentWeight = 0;
                 }
 
                 normalisedOpponentHealthWeight *= scale;
 
-                if(normalisedOpponentHealthWeight < 0.1f){
+                if (normalisedOpponentHealthWeight < 0.1f)
+                {
                     normalisedOpponentHealthWeight = 0;
                 }
 
-                damageTakenIntervalWeight   *= scale;
-                
-                if(damageTakenIntervalWeight < 0.1f){
+                damageTakenIntervalWeight *= scale;
+
+                if (damageTakenIntervalWeight < 0.1f)
+                {
                     damageTakenIntervalWeight = 0;
                 }
             }
         }
+        
+        /// <summary>
+        /// Ensures that min fov is never greater than max fov and max fov is never less than min fov.
+        /// </summary>
+
+        private void EditorRegulateFovValues()
+        {
+
+            /// Ensures that min fov is never greater than max fov.
+
+            if (editorLastValidateMinFov != minFov)
+            {                
+                if (minFov > maxFov)
+                {
+                    // add 0.1f for margin of error, and clamp value between -1 and 1 (min and max of dot product values).
+
+                    minFov = Mathf.Clamp((maxFov + 0.01f), -1, 1);
+                }
+            }
+
+            // ensure that max fov is never less than min fov.
+
+            if (editorLastValidateMaxFov != maxFov)
+            {
+                if (maxFov < minFov)
+                {
+
+                    // subtract 0.1f for margin of error, and clamp value between -1 and 1 (min and max of dot product values).
+
+                    maxFov = Mathf.Clamp((minFov - 0.01f), -1, 1);
+                }
+            }
+
+            editorLastValidateMaxFov = maxFov;
+            editorLastValidateMinFov = minFov;
+        }
+
+#endif
+
     }
 
 

@@ -17,6 +17,7 @@ public class Slink : Enemy {
     [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
 
     private const string BiteAnimation = "Bite";
+    private const string TailSwipeAnimation = "TailSwipe";
 
     private event Action FixedUpdateCallback;
 
@@ -112,6 +113,9 @@ public class Slink : Enemy {
                 case "Bite":
                     BiteAttack();
                     break;
+                case "TailSwipe":
+                    TailSwipeAttack();
+                    break;
                 default:
                     throw new NotImplementedException(action.Name);
             }            
@@ -140,8 +144,15 @@ public class Slink : Enemy {
         Kill();
     }
 
-    public void BiteAttack(){
+    public void BiteAttack()
+    {
         animator.Play(BiteAnimation);
+        AttackingState();
+    }
+
+    public void TailSwipeAttack()
+    {
+        animator.Play(TailSwipeAnimation);
         AttackingState();
     }
 
