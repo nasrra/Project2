@@ -65,19 +65,30 @@ namespace Entropek.Ai.Combat{
         [Range(0,5f)][SerializeField] private float normalisedSelfHealthWeight = 0;
         public float NormalisedSelfHealthWeight => normalisedSelfHealthWeight;
 
-        [Header("Fov")]
+
+        [Header("Parameters")]
+
         [Tooltip("Fov is measured by dot product value (-1 - 1), not by angle")]
         [SerializeField][Range(-1,1)] private float maxFov;
         public float MaxFov => maxFov;
+
         [Tooltip("Fov is measured by dot product value (-1 - 1), not by angle")]
         [SerializeField][Range(-1, 1)] private float minFov;
         public float MinFov => minFov;
 
-        [Header("Parameters")]
+        [Tooltip("The amount of time spent in the idle state after this action has completed.")]
+        [SerializeField][Range(0, 10)] private float idleTime;
+        public float IdleTime => idleTime;
+
+        [Tooltip("Whether or not the agent should evaluate for a new action to perform when the idle state has timed out.")]
+        [SerializeField] private bool evaluateOnIdleTimeout;
+        public bool EvaluateOnIdleTimeout => evaluateOnIdleTimeout;
+
         // whether or not to turn towards the target before commiting to this action.
         [SerializeField] private bool turnToTarget;
         public bool TurnToTarget => turnToTarget;
-        // whether or not this action is enabled and shoule be chosen by a combat agent.
+
+        // whether or not this action is considered a plausible action to be chosen by this combat agent.
         [SerializeField] private bool enabled = true;
         public bool Enabled => enabled;
 

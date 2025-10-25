@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Entropek.Time{
     
     [Serializable]
-    public class  Timer : MonoBehaviour{
+    public abstract class  Timer : MonoBehaviour{
 
 
         /// 
@@ -94,6 +94,7 @@ namespace Entropek.Time{
             {
                 currentTime = 0;
                 normalisedCurrentTime = 0;
+                OnBeforeTimeout();
                 Timeout?.Invoke();
                 OnAfterTimeout();
             }
@@ -175,11 +176,6 @@ namespace Entropek.Time{
             currentTime = initialTime;
         }
 
-        protected virtual void OnAfterTimeout()
-        {
-            
-        }
-
         /// <summary>
         /// Sets the initial time value to countdown from in this timer. 
         /// </summary>
@@ -197,6 +193,8 @@ namespace Entropek.Time{
             return true;
         }
 
+        protected abstract void OnAfterTimeout();
+        protected abstract void OnBeforeTimeout();
     }
 
 

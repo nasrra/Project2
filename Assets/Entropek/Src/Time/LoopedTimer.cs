@@ -29,6 +29,11 @@ namespace Entropek.Time
         /// Callback Overrides.
         /// 
 
+        protected override void OnBeforeTimeout()
+        {
+            // do nothing.
+            return;
+        }
 
         protected override void OnAfterTimeout()
         {

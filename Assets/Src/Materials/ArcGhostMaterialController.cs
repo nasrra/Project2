@@ -14,7 +14,7 @@ public class ArcGhostMaterialController : MonoBehaviour{
 
     void Awake(){
         material = GetComponent<MeshRenderer>().material;
-        alphaTimer = gameObject.AddComponent<Timer>();
+        alphaTimer = gameObject.AddComponent<OneShotTimer>();
         alphaTimer.Begin(0.6f);
     }
 

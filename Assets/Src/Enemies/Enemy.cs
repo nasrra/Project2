@@ -4,18 +4,17 @@ using Entropek;
 using Entropek.UnityUtils.AnimatorUtils;
 using System;
 using Entropek.Physics;
-using UnityEngine.Timeline;
-using Unity.VisualScripting;
 
-public abstract class Enemy : MonoBehaviour{
-    
+public abstract class Enemy : MonoBehaviour
+{
+
 
     /// 
     /// Required Components.
     /// 
-    
 
-    [Header(nameof(Enemy)+" Required Components")]
+
+    [Header(nameof(Enemy) + " Required Components")]
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
     [SerializeField] protected Transform target;
     [SerializeField] protected Entropek.EntityStats.HealthSystem health;
@@ -24,6 +23,7 @@ public abstract class Enemy : MonoBehaviour{
     [SerializeField] protected NavAgentMovement movement;
     [SerializeField] protected ForceApplier forceApplier;
     [SerializeField] protected Entropek.Audio.AudioPlayer audioPlayer;
+    [SerializeField] protected Entropek.Time.TimedActionQueue stateQeueue;
 
 
     /// 
@@ -51,13 +51,24 @@ public abstract class Enemy : MonoBehaviour{
     /// 
 
 
-    void OnEnable(){
+    void OnEnable()
+    {
         LinkEvents();
     }
 
-    void OnDisable(){
+    void OnDisable()
+    {
         UnlinkEvents();
     }
+
+    ///
+    /// State Machine.
+    /// 
+
+    public abstract void IdleState();
+    public abstract void IdleState(float time);
+    public abstract void ChaseState();
+    public abstract void AttackState();
 
     /// 
     /// Functions. 
@@ -65,15 +76,18 @@ public abstract class Enemy : MonoBehaviour{
 
 
     public abstract void Kill();
-    
-    protected void FaceMoveDirection(){
+
+    protected void FaceMoveDirection()
+    {
         Vector3 moveDirection = movement.moveDirection;
-        if(moveDirection != Vector3.zero){
+        if (moveDirection != Vector3.zero)
+        {
             Entropek.UnityUtils.Transform.RotateYAxisToDirection(graphicsObject, movement.moveDirection, faceMoveDirectionSpeed * Time.deltaTime);
         }
     }
 
-    protected void RotateGraphicsTransformToGroundNormal(){
+    protected void RotateGraphicsTransformToGroundNormal()
+    {
 
         // Get the rotation needed to align up with the ground.
 
@@ -94,7 +108,7 @@ public abstract class Enemy : MonoBehaviour{
     }
 
     protected bool FaceWorldSpacePosition(Vector3 worldPosition)
-    {        
+    {
         // keep the same y-position so this enemy only rotates on the y-rotational axis.
         Vector3 worldPositionFlattened = new Vector3(worldPosition.x, graphicsObject.transform.position.y, worldPosition.z);
         Vector3 directionToOther = (worldPositionFlattened - graphicsObject.transform.position).normalized;
@@ -120,7 +134,8 @@ public abstract class Enemy : MonoBehaviour{
         LinkAnimationEventRecieverEvents();
     }
 
-    protected virtual void UnlinkEvents(){
+    protected virtual void UnlinkEvents()
+    {
         UnlinkHealthEvents();
         UnlinkCombatAgentEvents();
         UnlinkAnimationEventRecieverEvents();
@@ -132,17 +147,31 @@ public abstract class Enemy : MonoBehaviour{
     /// 
 
 
-    private void LinkCombatAgentEvents(){
-        combatAgent.ActionChosen += OnCombatActionChosen;
+    private void LinkCombatAgentEvents()
+    {
+        combatAgent.ActionChosen += OnCombatActionChosenWrapper;
         combatAgent.EngagedOpponent += OnOpponentEngaged;
     }
 
-    private void UnlinkCombatAgentEvents(){
-        combatAgent.ActionChosen -= OnCombatActionChosen;
-        combatAgent.EngagedOpponent -= OnOpponentEngaged;        
+    private void UnlinkCombatAgentEvents()
+    {
+        combatAgent.ActionChosen -= OnCombatActionChosenWrapper;
+        combatAgent.EngagedOpponent -= OnOpponentEngaged;
     }
 
-    protected abstract void OnCombatActionChosen(Entropek.Ai.Combat.AiCombatAction action); 
+    private void OnCombatActionChosenWrapper(Entropek.Ai.Combat.AiCombatAction action)
+    {
+        // always clear state queue when choosing a combat action.
+        // a new combat action (best action to choosen in the current scenario)
+        // should always overwrite the previous state, otherwise two states may collide
+        // and generate undefined behaviour.
+
+        stateQeueue.Clear();
+
+        OnCombatActionChosen(action);
+    }
+
+    protected abstract void OnCombatActionChosen(Entropek.Ai.Combat.AiCombatAction action);
     protected abstract void OnOpponentEngaged(Transform opponent);
 
 
@@ -151,23 +180,26 @@ public abstract class Enemy : MonoBehaviour{
     /// 
 
 
-    protected virtual void LinkHealthEvents(){
+    protected virtual void LinkHealthEvents()
+    {
         health.Death += OnHealthDeath;
     }
 
-    protected virtual void UnlinkHealthEvents(){
+    protected virtual void UnlinkHealthEvents()
+    {
         health.Death -= OnHealthDeath;
     }
 
     protected abstract void OnHealthDeath();
-    
+
 
     /// 
     /// Animation Event Reciever Linkage.
     /// 
 
 
-    private void LinkAnimationEventRecieverEvents(){
+    private void LinkAnimationEventRecieverEvents()
+    {
         animationEventReciever.AnimationEventTriggered += OnAnimationEventTriggeredWrapper;
     }
 

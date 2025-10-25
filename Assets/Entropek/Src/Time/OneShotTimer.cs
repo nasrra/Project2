@@ -25,12 +25,18 @@ namespace Entropek.Time
         /// Callbacks.
         /// 
 
+        protected override void OnBeforeTimeout()
+        {
+            // always halt a one shot timer before it times out.
+            // allowing begin() to be called again once timed out is invoked.
+
+            Halt();
+        }
 
         protected override void OnAfterTimeout()
         {
-            // always halt a one shot timer when it times out.
-
-            Halt();
+            // do nothing...
+            return;
         }
 
     }    

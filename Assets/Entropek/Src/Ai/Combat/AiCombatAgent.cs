@@ -36,11 +36,13 @@ namespace Entropek.Ai.Combat{
 
         [Header("Data")]
 
-        [SerializeField] private AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f,0f), new Keyframe(1f,1f)); // the probability at which a action is chosen based on the curve. 
+        [Tooltip("The probability at which a action is chosen based on the curve.")]
+        [SerializeField] private AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f,0f), new Keyframe(1f,1f));
         [SerializeField] private AiCombatAction[] aiCombatActions;
         public AiCombatAction[] AiCombatActions => aiCombatActions;
         private (AiCombatAction, float)[] possbileCombatActions;
         private AiCombatAction chosenCombatAction;
+        public AiCombatAction ChosenCombatAction => chosenCombatAction;
 
         [SerializeField] LayerMask opponentLayer;
         [SerializeField] LayerMask obstacleLayer;
@@ -92,50 +94,92 @@ namespace Entropek.Ai.Combat{
         /// Functions.
         /// 
 
+
+        /// <summary>
+        /// Halts the evaluation loop.
+        /// </summary>
+
         public void Halt()
         {
             evaluationIntervalTimer.Halt();
         }
+
+        /// <summary>
+        /// Begins the evaluation loop.
+        /// </summary>
 
         public void Begin()
         {
             evaluationIntervalTimer.Begin();
         }
 
-
         private float GetDistanceToClosestObstacle()
         {
+            // TODO:
+            // IMPLEMENT THIS WHEN NEEDED!
+
             return 0;
         }
 
-        private bool ValidateEngagedOpponent(){
+        /// <summary>
+        /// Used to validate if the engaged opponent hasnt been destroyed in a given frame.
+        /// </summary>
+        /// <returns>true, if the objct is still allocated in memory.</returns>
+
+        private bool ValidateEngagedOpponent()
+        {
             return ValidateOpponent(opponentTransform, opponentHealth);
         }
 
-        private bool ValidateOpponent(Transform opponentTransform, EntityStats.HealthSystem opponentHealth){
+        /// <summary>
+        /// Used to validate if an opponent hasnt been destroyed in the given frame.
+        /// </summary>
+        /// <param name="opponentTransform"></param>
+        /// <param name="opponentHealth"></param>
+        /// <returns>true, if they are still allocated in memory.</returns>
+
+        private bool ValidateOpponent(Transform opponentTransform, EntityStats.HealthSystem opponentHealth)
+        {
             return opponentTransform != null && opponentHealth != null;
         }
 
-        public void Evaluate(){
+        /// <summary>
+        /// Evaluates the agent in relation to its opponent and invokes the ActionChosen callback if an desireable action was found; possibly not invoking at all.
+        /// </summary>
+
+        public void Evaluate()
+        {
 
             // validate that out opponent is still active and not destroyed.
 
-            if(ValidateEngagedOpponent()==false){
+            if (ValidateEngagedOpponent() == false)
+            {
                 DisengageOpponent();
             }
 
-            GetPossibleActions();        
+            GeneratePossibleActions();
             ChoosePossibleAction();
         }
 
-        private void GetPossibleActions()
+        /// <summary>
+        /// Updates the possible actions array stored by this agent to contain a new set of desireable actions that can be chosen; sorted in descending order from most to least desireable.
+        /// </summary>
+
+        private void GeneratePossibleActions()
         {
 
             // get the data required for evaluation.
 
+            Vector3 vectorDistanceToOpponent = transform.position - opponentTransform.position;
+            float distanceToOpponent = vectorDistanceToOpponent.magnitude;
+
+            // dot needs to be negated because vector distance is reveresed for correct distance calculations, not dot product similarity.
+            // vector distance could be negated instead but doing one negation on a float is faster then 3.
+
+            float dotDirectionToOpponent = -Vector3.Dot(vectorDistanceToOpponent.normalized, transform.forward);
+
             float normalisedSelfHealthValue = selfHealth.GetNormalisedHealthValue();
             float normalisedOpponentHealthValue = opponentHealth.GetNormalisedHealthValue();
-            float distanceToOpponent = (transform.position - opponentTransform.position).magnitude;
             float distanceToClosestObstacle = GetDistanceToClosestObstacle();
 
             // clear the previous evaluates options.
@@ -151,6 +195,14 @@ namespace Entropek.Ai.Combat{
                 // if the action is not enabled or currently on cooldown.
 
                 if (currentEvaluation.Enabled == false || currentEvaluation.CooldownTimer.HasTimedOut == false)
+                {
+                    continue;
+                }
+
+                // check if the target is currently in view of the action.
+
+                if (dotDirectionToOpponent < currentEvaluation.MinFov
+                || dotDirectionToOpponent > currentEvaluation.MaxFov)
                 {
                     continue;
                 }
@@ -243,6 +295,8 @@ namespace Entropek.Ai.Combat{
         {
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
+                // call on validate for each action as they are not MonoBehaviour. 
+                
                 aiCombatActions[i].OnValidate();
             }
         }

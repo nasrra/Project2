@@ -59,11 +59,11 @@ namespace Entropek.Time{
         public bool BeginTimer(Timer timer)
         {
 
-            // short-circuit if the timer is already started.
+            // short-circuit if the timer is already started; the lists dont have to be altered.
 
             if (IsActive(timer) == true)
             {
-                return false;
+                return true; // because the timer has already began.
             }
 
             // check and handle if the timer is in another state.
@@ -85,11 +85,11 @@ namespace Entropek.Time{
         public bool HaltTimer(Timer timer)
         {
 
-            // short-circuit if the timer is already stopped.
+            // short-circuit if the timer is already stopped; the lists dont have to be altered..
 
             if (IsHalted(timer) == true)
             {
-                return false;
+                return false; // because the timer has already halted.
             }
 
             // check and handle if the timer is in another state.
@@ -111,11 +111,11 @@ namespace Entropek.Time{
         public bool PauseTimer(Timer timer)
         {
 
-            // short-circuit if the timer is already stopped.
+            // short-circuit if the timer is already stopped; the lists dont have to be altered..
 
             if (IsPaused(timer) == true)
             {
-                return false;
+                return false; // because the timer has already been paused.
             }
 
             // check and handle if the timer is in another state.

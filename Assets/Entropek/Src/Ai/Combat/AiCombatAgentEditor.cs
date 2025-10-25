@@ -9,6 +9,11 @@ namespace Entropek.Ai.Combat{
     public class AiCombatAgentEditor : Editor{
 
 
+        /// 
+        /// Fields.
+        /// 
+
+
         private const int NameLabelPixelWidth = 150;
 
         int selectedActionToDebugFov = 0;
@@ -16,6 +21,12 @@ namespace Entropek.Ai.Combat{
         private float fovMaxAngle;
         private static Color OutsideFovColor = Color.red;
         private static Color InsideFovColor = Color.green;
+
+
+        /// 
+        /// Base.
+        /// 
+
 
         public override void OnInspectorGUI()
         {
@@ -36,8 +47,19 @@ namespace Entropek.Ai.Combat{
 
             EditorGUILayout.Space();
 
-            DisplayDebugEditor(agent);
+            DisplayFovDebugEditor(agent);
         }
+
+        private void OnSceneGUI()
+        {
+            DebugDrawSelectedActionFov();
+        }
+
+
+        /// <summary>
+        /// Displays the list of possible actions that could have been chosen in an Evaluate() call.
+        /// </summary>
+        /// <param name="possibleCombatActions">The agents possible actions.</param>
 
         private void DisplayPossibleActions((AiCombatAction, float)[] possibleCombatActions)
         {
@@ -62,7 +84,12 @@ namespace Entropek.Ai.Combat{
             }
         }
 
-        private void DisplayDebugEditor(AiCombatAgent aiCombatAgent)
+        /// <summary>
+        /// Displays the debug editor for FOV sliders on a selected combat agents action.
+        /// </summary>
+        /// <param name="aiCombatAgent"></param>
+
+        private void DisplayFovDebugEditor(AiCombatAgent aiCombatAgent)
         {
             // header.
 
@@ -111,11 +138,6 @@ namespace Entropek.Ai.Combat{
 
             fovMinAngle = Mathf.Acos(selectedAction.MinFov) * Mathf.Rad2Deg;
             fovMaxAngle = Mathf.Acos(selectedAction.MaxFov) * Mathf.Rad2Deg;
-        }
-
-        private void OnSceneGUI()
-        {
-            DebugDrawSelectedActionFov();
         }
 
         /// <summary>

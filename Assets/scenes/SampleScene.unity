@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Bite Cooldown
-  initialTime: 0
+  initialTime: 3.33
   BeginOnAwake: 0
 --- !u!114 &200020861
 MonoBehaviour:
@@ -1535,7 +1535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: TailSwipe
-  initialTime: 0
+  initialTime: 3.33
   BeginOnAwake: 0
 --- !u!43 &231071196
 Mesh:
@@ -10538,7 +10538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Shake
-  initialTime: 0
+  initialTime: 1
   BeginOnAwake: 0
   Loop: 1
 --- !u!4 &856204668 stripped
@@ -10665,6 +10665,7 @@ Transform:
   - {fileID: 136566064}
   - {fileID: 660546500}
   - {fileID: 856204668}
+  - {fileID: 200020852}
   m_Father: {fileID: 2075580349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &958585956
@@ -14880,6 +14881,8 @@ GameObject:
   - component: {fileID: 2075580366}
   - component: {fileID: 2075580368}
   - component: {fileID: 2075580369}
+  - component: {fileID: 2075580370}
+  - component: {fileID: 2075580371}
   m_Layer: 7
   m_Name: Boss
   m_TagString: Untagged
@@ -14901,7 +14904,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1499201871}
-  - {fileID: 200020852}
   - {fileID: 919281699}
   - {fileID: 423475323}
   m_Father: {fileID: 0}
@@ -14926,6 +14928,7 @@ MonoBehaviour:
   movement: {fileID: 2075580367}
   forceApplier: {fileID: 2075580364}
   audioPlayer: {fileID: 2075580368}
+  stateQeueue: {fileID: 2075580370}
   groundChecker: {fileID: 2075580365}
   faceTargetDirectionSpeed: 3.33
   faceMoveDirectionSpeed: 3.33
@@ -15059,6 +15062,34 @@ MonoBehaviour:
   - {fileID: 1008379598}
   rotationOffset: {x: -33.4, y: 0, z: 0}
   staggerDuration: 0.33
+--- !u!114 &2075580370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075580345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed0257717646901c1937fc6cb58f78bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: {fileID: 2075580371}
+--- !u!114 &2075580371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075580345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Timed Action Queue
+  initialTime: 0
+  BeginOnAwake: 0
 --- !u!1001 &2084166582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15370,7 +15401,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2075580349}
+    m_TransformParent: {fileID: 919281699}
     m_Modifications:
     - target: {fileID: 2192116559576180027, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_Radius
@@ -15394,15 +15425,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15442,11 +15473,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].minFov
-      value: -0.77
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].maxFov
-      value: -0.77
+      value: -0.33
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].minFov
@@ -15458,6 +15489,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[0].idleTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].idleTime
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
@@ -15476,6 +15515,14 @@ PrefabInstance:
       propertyPath: aiCombatActions.Array.data[1].cooldownTimer
       value: 
       objectReference: {fileID: 200020861}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[0].evaluateOnIdleTimeout
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiCombatActions.Array.data[1].evaluateOnIdleTimeout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentWeight
       value: 5
@@ -15542,11 +15589,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: -0.033051632
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.01502164
+      value: -0.2004762
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
@@ -15562,15 +15609,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: -0.033051632
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.01502164
+      value: -0.2004762
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
@@ -15578,7 +15625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 1
+      value: 0.32083333
       objectReference: {fileID: 0}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode

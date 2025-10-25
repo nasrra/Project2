@@ -6,6 +6,14 @@ using UnityEngine;
 public class Slink : Enemy {
 
 
+    private enum State : byte
+    {
+        Idle,
+        Chase,
+        Attack
+    }
+
+
     [Header(nameof(Slink) + " Components")]
     [SerializeField] Animator animator;
     [SerializeField] Entropek.UnityUtils.BoneStagger boneStagger;
@@ -18,6 +26,8 @@ public class Slink : Enemy {
 
     private const string BiteAnimation = "Bite";
     private const string TailSwipeAnimation = "TailSwipe";
+    private const string IdleAnimation = "Idle";
+    private const string ChaseAnimation = "Walk";
 
     private event Action FixedUpdateCallback;
 
@@ -28,12 +38,12 @@ public class Slink : Enemy {
 
     void Awake()
     {
-        ChasingState();
+        ChaseState();
     }
 
     void Start()
     {
-        ChasingState();
+        ChaseState();
     }
 
     public override void Kill()
@@ -67,7 +77,19 @@ public class Slink : Enemy {
         action();
     }
 
-    private void AttackingState()
+    public override void IdleState()
+    {
+        FixedUpdateCallback = null;
+        animator.Play(IdleAnimation);
+    }
+
+    public override void IdleState(float time)
+    {
+        IdleState();
+        stateQeueue.Begin(time);
+    }
+
+    public override void AttackState()
     {
         FixedUpdateCallback = AttackingStateFixedUpdate;
         movement.PausePath();
@@ -77,16 +99,40 @@ public class Slink : Enemy {
         
     }
 
-    private void ChasingState(){
+    public override void ChaseState(){
         FixedUpdateCallback = ChaseStateFixedUpdate;
+        combatAgent.Begin();
         movement.ResumePath();
         movement.StartPath(target);
+        animator.Play(ChaseAnimation);
     }
 
     private void ChaseStateFixedUpdate()
-    {  
+    {
         RotateGraphicsTransformToGroundNormal();
         FaceMoveDirection();
+    }
+
+    private void AttackEndedState()
+    {
+        // get the attack that has just been completed. 
+
+        AiCombatAction endedAttack = combatAgent.ChosenCombatAction;
+
+        // evaulate for a new action immediately up time out if set to true.
+
+        if (endedAttack.EvaluateOnIdleTimeout == true)
+        {
+            stateQeueue.Enqueue(combatAgent.Evaluate);
+        }
+
+        // go back to chasing when idle times out.
+
+        stateQeueue.Enqueue(ChaseState);
+        
+        // start idle state.
+
+        IdleState(endedAttack.IdleTime);
     }
 
 
@@ -94,7 +140,9 @@ public class Slink : Enemy {
     /// Linkage Override.
     /// 
 
-    protected override void OnCombatActionChosen(AiCombatAction action){
+
+    protected override void OnCombatActionChosen(AiCombatAction action)
+    {
         if (action.TurnToTarget == true)
         {
             switch (action.Name)
@@ -118,7 +166,7 @@ public class Slink : Enemy {
                     break;
                 default:
                     throw new NotImplementedException(action.Name);
-            }            
+            }
         }
     }
 
@@ -147,13 +195,13 @@ public class Slink : Enemy {
     public void BiteAttack()
     {
         animator.Play(BiteAnimation);
-        AttackingState();
+        AttackState();
     }
 
     public void TailSwipeAttack()
     {
         animator.Play(TailSwipeAnimation);
-        AttackingState();
+        AttackState();
     }
 
     protected override void OnOpponentEngaged(Transform opponent){
@@ -180,7 +228,7 @@ public class Slink : Enemy {
                 audioPlayer.PlaySound("SlinkBite", gameObject);
                 return true;
             case "BiteLunge": forceApplier.ImpulseRelativeToGround(graphicsObject.forward, 24, 36); return true;
-            case "EndAttack": ChasingState(); combatAgent.Begin(); return true;
+            case "EndAttack":  AttackEndedState();  return true;
             default: throw new Exception("Animation Event Not Implemented "+eventName);
         }
     }

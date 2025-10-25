@@ -44,7 +44,7 @@ public class SkinnedMeshTrailProperty : ScriptableObject{
 
         // assign and begin the lifetime timer.
 
-        Timer lifetimeTimer = gameObject.AddComponent<Timer>();
+        OneShotTimer lifetimeTimer = gameObject.AddComponent<OneShotTimer>();
         lifetimeTimer.Timeout += () => Destroy(gameObject);
         lifetimeTimer.Begin(lifetime);
 
