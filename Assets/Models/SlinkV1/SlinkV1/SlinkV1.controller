@@ -84,6 +84,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: StartCombatActionCooldown
   triggerTime: 0.97
+--- !u!114 &-5825678694759240893
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: StartGrowl
+  triggerTime: 0.04
 --- !u!1102 &-5743717613842678775
 AnimatorState:
   serializedVersion: 6
@@ -110,6 +124,20 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-5306773001381549696
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: TailSwipeAttackFrame
+  triggerTime: 0.37
 --- !u!1102 &-2505251914971462642
 AnimatorState:
   serializedVersion: 6
@@ -127,6 +155,7 @@ AnimatorState:
   - {fileID: 1400769153810123543}
   - {fileID: 1340446116566614810}
   - {fileID: 2013206242407550809}
+  - {fileID: 8194106435944418402}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -182,6 +211,9 @@ AnimatorState:
   m_StateMachineBehaviours:
   - {fileID: 3030493711089155575}
   - {fileID: -5852926580279678209}
+  - {fileID: -5306773001381549696}
+  - {fileID: -5825678694759240893}
+  - {fileID: 253410608075621405}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -244,6 +276,20 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!114 &253410608075621405
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: StopGrowl
+  triggerTime: 0.375
 --- !u!1101 &347589499021304840
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -278,7 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventName: BiteAttack
+  eventName: BiteAttackFrame
   triggerTime: 0.601
 --- !u!114 &1400769153810123543
 MonoBehaviour:
@@ -322,3 +368,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: EndAttack
   triggerTime: 0.98
+--- !u!114 &8194106435944418402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aac1c4abe503b842a08d0889684abc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: StartGrowl
+  triggerTime: 0

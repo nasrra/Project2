@@ -20,14 +20,19 @@ public class Slink : Enemy {
 
     [Header("Hitboxes")]
     [SerializeField] Entropek.Combat.Hitbox biteHitbox;
+    [SerializeField] Entropek.Combat.Hitbox tailHitbox;
 
     [Header("Vfx")]
     [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
+    [SerializeField] Entropek.Vfx.SingleVfxPlayer tailSwipeVfx;
 
     private const string BiteAnimation = "Bite";
     private const string TailSwipeAnimation = "TailSwipe";
     private const string IdleAnimation = "Idle";
     private const string ChaseAnimation = "Walk";
+
+    private const float BiteLungeForce = 24;
+    private const float BiteLungeDecaySpeed = 36;
 
     private event Action FixedUpdateCallback;
 
@@ -48,7 +53,7 @@ public class Slink : Enemy {
 
     public override void Kill()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
 
@@ -129,10 +134,78 @@ public class Slink : Enemy {
         // go back to chasing when idle times out.
 
         stateQeueue.Enqueue(ChaseState);
-        
+
         // start idle state.
 
         IdleState(endedAttack.IdleTime);
+    }
+
+
+    ///
+    /// Bite Attack.
+    /// 
+
+
+    public void BiteAttack()
+    {
+        animator.Play(BiteAnimation);
+        AttackState();
+    }
+
+    private void OnBiteLungeAnimationEvent()
+    {
+        forceApplier.ImpulseRelativeToGround(graphicsObject.forward, BiteLungeForce, BiteLungeDecaySpeed);
+    }
+
+    private void OnBiteAttackFrameAnimationEvent()
+    {
+        biteHitbox.Enable();
+        biteVfx.Play();
+        audioPlayer.PlaySound("SlinkBite", gameObject);
+    }
+
+    private void OnStartGrowlAnimationEvent()
+    {        
+        audioPlayer.PlaySound("SlinkGrowl", gameObject);
+    }
+
+    private void OnStopGrowlAnimationEvent()
+    {
+        audioPlayer.StopSound("SlinkGrowl", immediate: false);
+    }
+
+    /// 
+    /// Tail Swipe Attack.
+    /// 
+
+
+    public void TailSwipeAttack()
+    {
+        animator.Play(TailSwipeAnimation);
+        AttackState();
+    }
+
+    private void OnTailSwipeAttackFrameAnimationEvent()
+    {
+        tailSwipeVfx.Play();
+        tailHitbox.Enable();
+        audioPlayer.PlaySound("SlinkTailSwipe", gameObject);
+    }
+
+    private void OnTailSwipeGrowlAnimationEvent()
+    {
+        audioPlayer.PlaySound("SlinkGrowl", gameObject);
+    }
+
+
+    /// 
+    /// Generic Animation Events.
+    /// 
+
+
+    private void OnFootstepAnimationEvent()
+    {
+        audioPlayer.PlaySound("FootstepGrass", transform.position);
     }
 
 
@@ -192,18 +265,6 @@ public class Slink : Enemy {
         Kill();
     }
 
-    public void BiteAttack()
-    {
-        animator.Play(BiteAnimation);
-        AttackState();
-    }
-
-    public void TailSwipeAttack()
-    {
-        animator.Play(TailSwipeAnimation);
-        AttackState();
-    }
-
     protected override void OnOpponentEngaged(Transform opponent){
         target = opponent;
     }
@@ -216,20 +277,24 @@ public class Slink : Enemy {
         }
         
         switch(eventName){
-            case "Footstep":
-                audioPlayer.PlaySound("FootstepGrass", transform.position);
-                return true;
-            case "BiteGrowl":
-                audioPlayer.PlaySound("SlinkGrowl", gameObject);
-                return true;
-            case "BiteAttack":
-                biteHitbox.Enable();
-                biteVfx.Play();
-                audioPlayer.PlaySound("SlinkBite", gameObject);
-                return true;
-            case "BiteLunge": forceApplier.ImpulseRelativeToGround(graphicsObject.forward, 24, 36); return true;
-            case "EndAttack":  AttackEndedState();  return true;
-            default: throw new Exception("Animation Event Not Implemented "+eventName);
+            
+            // Generic Animations events.
+            
+            case "Footstep":                OnFootstepAnimationEvent();                 return true;
+            case "EndAttack":               AttackEndedState();                         return true;
+            case "StartGrowl":              OnStartGrowlAnimationEvent();               return true;
+            case "StopGrowl":               OnStopGrowlAnimationEvent();                return true;
+
+            // Bite Animation Events.
+
+            case "BiteAttackFrame":         OnBiteAttackFrameAnimationEvent();          return true;
+            case "BiteLunge":               OnBiteLungeAnimationEvent();                return true;
+            
+            // Tail Swipe Animation Events.
+
+            case "TailSwipeAttackFrame":    OnTailSwipeAttackFrameAnimationEvent();     return true;
+
+            default: throw new InvalidOperationException("Animation Event Not Implemented "+eventName);
         }
     }
 }

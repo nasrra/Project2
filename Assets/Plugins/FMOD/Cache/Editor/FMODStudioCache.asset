@@ -42,9 +42,36 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638966549477659219
+  lastModified: 638970768598882961
   FileSizes: []
   Exists: 1
+--- !u!114 &-4093084935808055269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/Slink/SlinkTailSwipe
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/Slink/SlinkTailSwipe
+  Guid:
+    Data1: -1635090276
+    Data2: 1130969002
+    Data3: 900533902
+    Data4: 155356271
+  Banks:
+  - {fileID: -6955079234322254397}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 600
 --- !u!114 &-3832436070927649410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,10 +87,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638966514794014291
+  lastModified: 638970768598932915
   FileSizes:
   - Name: 
-    Value: 1302
+    Value: 1342
   Exists: 1
 --- !u!114 &-3814601106733631365
 MonoBehaviour:
@@ -80,7 +107,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638966514794006008
+  lastModified: 638970768598923704
   FileSizes: []
   Exists: 1
 --- !u!114 &11400000
@@ -107,13 +134,14 @@ MonoBehaviour:
   - {fileID: 1502746064291429577}
   - {fileID: 6859072056017952893}
   - {fileID: -7907255013272385460}
+  - {fileID: -4093084935808055269}
   EditorParameters: []
   MasterBanks:
   - {fileID: -3814601106733631365}
   StringsBanks:
   - {fileID: -3832436070927649410}
   cacheVersion: 131849
-  cacheTime: 638966549477659219
+  cacheTime: 638970768598932915
   SerializableEventsDict:
   - key: event:/Music/Awakening
     index: 0
@@ -129,6 +157,8 @@ MonoBehaviour:
     index: 5
   - key: event:/Sfx/Enemies/Slink/SlinkBite
     index: 6
+  - key: event:/Sfx/Enemies/Slink/SlinkTailSwipe
+    index: 7
 --- !u!114 &1502746064291429577
 MonoBehaviour:
   m_ObjectHideFlags: 0

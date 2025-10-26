@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Entropek.Combat{
     
-    [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Time.OneShotTimer))]
     public class Hitbox : MonoBehaviour{
         
