@@ -1,12 +1,14 @@
 using System;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Ai.Combat{
 
 
     [RequireComponent(typeof(SphereCollider))]
-    public class AiCombatAgent : MonoBehaviour{
-        
+    public class AiCombatAgent : MonoBehaviour
+    {
+
 
         /// 
         /// Callbacks.
@@ -37,53 +39,61 @@ namespace Entropek.Ai.Combat{
         [Header("Data")]
 
         [Tooltip("The probability at which a action is chosen based on the curve.")]
-        [SerializeField] private AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f,0f), new Keyframe(1f,1f));
+        [SerializeField] private AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
         [SerializeField] private AiCombatAction[] aiCombatActions;
         public AiCombatAction[] AiCombatActions => aiCombatActions;
         private (AiCombatAction, float)[] possbileCombatActions;
+        public (AiCombatAction, float)[] PossibleCombatActions => possbileCombatActions;
         private AiCombatAction chosenCombatAction;
         public AiCombatAction ChosenCombatAction => chosenCombatAction;
 
         [SerializeField] LayerMask opponentLayer;
         [SerializeField] LayerMask obstacleLayer;
 
-        private float damageTakenInCurrentInteval;
+        [RuntimeField] private float damageTakenInCurrentInterval;
+        public float DamageTakenInCurrentInterval => damageTakenInCurrentInterval; 
 
-        bool isEngaged; // whether or not this agent has been agro'd
+        [RuntimeField] bool isEngaged; // whether or not this agent has been agro'd
 
 
         /// 
         /// Base.
         /// 
 
-        void Start(){
+        void Start()
+        {
             possbileCombatActions = new (AiCombatAction, float)[aiCombatActions.Length];
         }
 
-        private void OnEnable(){
+        private void OnEnable()
+        {
             LinkEvents();
         }
 
-        private void OnDisable(){
+        private void OnDisable()
+        {
             UnlinkEvents();
         }
 
-        private void OnTriggerEnter(Collider other){
-            
+        private void OnTriggerEnter(Collider other)
+        {
+
             // Get the other's bitwise layer mask.
             // Get our bitwise layer mask for opponents. 
 
             int otherLayerValue = 1 << other.gameObject.layer;
             int opponentLayerValue = opponentLayer.value;
-            
+
             // evaluate if the other is an opponent.
 
-            if((otherLayerValue & opponentLayerValue) != 0){
-                
+            if ((otherLayerValue & opponentLayerValue) != 0)
+            {
+
                 Transform otherTransform = other.transform;
                 EntityStats.HealthSystem otherHealth = other.GetComponent<EntityStats.HealthSystem>();
-                
-                if(ValidateOpponent(otherTransform, otherHealth) == true){
+
+                if (ValidateOpponent(otherTransform, otherHealth) == true)
+                {
                     EngageOpponent(otherTransform, otherHealth);
                 }
             }
@@ -99,18 +109,25 @@ namespace Entropek.Ai.Combat{
         /// Halts the evaluation loop.
         /// </summary>
 
-        public void Halt()
+        public void HaltEvaluationLoop()
         {
             evaluationIntervalTimer.Halt();
+            damageTakenIntervalTimer.Halt();
         }
 
         /// <summary>
-        /// Begins the evaluation loop.
+        /// Begins the evaluation loop for choosing an desired action to take; per evaluation tick.
         /// </summary>
 
-        public void Begin()
+        public void BeginEvaluationLoop()
         {
             evaluationIntervalTimer.Begin();
+            damageTakenIntervalTimer.Begin();
+
+            // reset to ensure the value does not pass between intervals;
+            // when Evaluate () successfully chooses an action.
+
+            damageTakenInCurrentInterval = 0;
         }
 
         private float GetDistanceToClosestObstacle()
@@ -208,7 +225,7 @@ namespace Entropek.Ai.Combat{
                 }
 
                 float score = currentEvaluation.Evaluate(
-                    damageTakenInCurrentInteval,
+                    damageTakenInCurrentInterval,
                     distanceToOpponent,
                     distanceToClosestObstacle,
                     normalisedOpponentHealthValue,
@@ -250,7 +267,7 @@ namespace Entropek.Ai.Combat{
 
                 // stop from evaluating any more
 
-                Halt();
+                HaltEvaluationLoop();
 
                 // execute it if its within the probable range.
 
@@ -273,20 +290,16 @@ namespace Entropek.Ai.Combat{
             isEngaged = true;
             this.opponentTransform = opponentTransform;
             this.opponentHealth = opponentHealth;
-            evaluationIntervalTimer.Begin();
+            BeginEvaluationLoop();
             EngagedOpponent?.Invoke(opponentTransform);
         }
 
-        public void DisengageOpponent(){
-            isEngaged           = false;
-            opponentTransform   = null;
-            opponentHealth      = null;
-            evaluationIntervalTimer.Halt();
-        }
-
-        public (AiCombatAction, float)[] GetPossibleCombatActions()
+        public void DisengageOpponent()
         {
-            return possbileCombatActions;
+            isEngaged = false;
+            opponentTransform = null;
+            opponentHealth = null;
+            HaltEvaluationLoop();
         }
 
 
@@ -296,7 +309,7 @@ namespace Entropek.Ai.Combat{
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
                 // call on validate for each action as they are not MonoBehaviour. 
-                
+
                 aiCombatActions[i].OnValidate();
             }
         }
@@ -308,27 +321,79 @@ namespace Entropek.Ai.Combat{
         /// 
 
 
-        private void LinkEvents(){
+        private void LinkEvents()
+        {
             LinkTimerEvents();
+            LinkSelfHealthEvents();
         }
 
-        private void UnlinkEvents(){
+        private void UnlinkEvents()
+        {
             UnlinkTimerEvents();
+            UnlinkSelfHealthEvents();
         }
 
-        private void LinkTimerEvents(){
+
+        ///
+        /// Timer Linkage.
+        ///
+
+
+        private void LinkTimerEvents()
+        {
             evaluationIntervalTimer.Timeout += OnEvaluationIntervalTimeout;
+            damageTakenIntervalTimer.Timeout += OnDamgeTakenIntevalTimeout;
         }
 
-        private void UnlinkTimerEvents(){
+        private void UnlinkTimerEvents()
+        {
             evaluationIntervalTimer.Timeout -= OnEvaluationIntervalTimeout;
+            damageTakenIntervalTimer.Timeout -= OnDamgeTakenIntevalTimeout;
         }
 
-        private void OnEvaluationIntervalTimeout(){
-            if(isEngaged==true){
+        private void OnEvaluationIntervalTimeout()
+        {
+            if (isEngaged == true)
+            {
                 Evaluate();
             }
         }
+
+        /// <summary>
+        /// Resets the damage counter for the next interval.
+        /// </summary>
+
+        private void OnDamgeTakenIntevalTimeout()
+        {
+
+            damageTakenInCurrentInterval = 0;
+        }
+
+
+        ///
+        /// Self health linkage.
+        /// 
+
+        private void LinkSelfHealthEvents()
+        {
+            selfHealth.HealthDamaged += OnHealthDamaged; 
+        }
+
+        private void UnlinkSelfHealthEvents()
+        {
+            selfHealth.HealthDamaged -= OnHealthDamaged; 
+        }
+
+        /// <summary>
+        /// Increments the counter for damage taken this interval by a specified amount.
+        /// </summary>
+        /// <param name="amount">The amount to increment by.</param>
+
+        private void OnHealthDamaged(float amount)
+        {
+            damageTakenInCurrentInterval += amount;
+        }
+
     }
 
 

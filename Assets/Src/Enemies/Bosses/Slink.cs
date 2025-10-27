@@ -30,9 +30,12 @@ public class Slink : Enemy {
     private const string TailSwipeAnimation = "TailSwipe";
     private const string IdleAnimation = "Idle";
     private const string ChaseAnimation = "Walk";
+    private const string DashForwardAnimation = "DashForward";
 
     private const float BiteLungeForce = 24;
     private const float BiteLungeDecaySpeed = 36;
+    private const float DashForwardLungeForce = 36;
+    private const float DashForwardLungeDecay = 60;
 
     private event Action FixedUpdateCallback;
 
@@ -106,10 +109,10 @@ public class Slink : Enemy {
 
     public override void ChaseState(){
         FixedUpdateCallback = ChaseStateFixedUpdate;
-        combatAgent.Begin();
+        combatAgent.BeginEvaluationLoop();
         movement.ResumePath();
         movement.StartPath(target);
-        animator.Play(ChaseAnimation);
+        animator.CrossFade(ChaseAnimation, 0.167f);
     }
 
     private void ChaseStateFixedUpdate()
@@ -198,6 +201,31 @@ public class Slink : Enemy {
     }
 
 
+    ///
+    /// Dash Forward.
+    /// 
+
+    public void DashForward()
+    {
+        animator.Play(DashForwardAnimation);
+        AttackState();
+    }
+
+    public void OnDashForwardLungeAnimationEvent()
+    {
+        forceApplier.ImpulseRelativeToGround(graphicsObject.forward, DashForwardLungeForce, DashForwardLungeDecay);
+    }
+
+    ///
+    /// Test Swivel.
+    /// 
+
+    private void TestSwivel()
+    {
+        animator.Play("TestSwivel");
+        AttackState();
+    }
+
     /// 
     /// Generic Animation Events.
     /// 
@@ -231,14 +259,11 @@ public class Slink : Enemy {
         {
             switch (action.Name)
             {
-                case "Bite":
-                    BiteAttack();
-                    break;
-                case "TailSwipe":
-                    TailSwipeAttack();
-                    break;
-                default:
-                    throw new NotImplementedException(action.Name);
+                case "Bite":        BiteAttack();       break;
+                case "TailSwipe":   TailSwipeAttack();  break;
+                case "TestSwivel":  TestSwivel();       break;
+                case "DashForward": DashForward();      break;
+                default: throw new NotImplementedException(action.Name);
             }
         }
     }
@@ -293,6 +318,10 @@ public class Slink : Enemy {
             // Tail Swipe Animation Events.
 
             case "TailSwipeAttackFrame":    OnTailSwipeAttackFrameAnimationEvent();     return true;
+
+            // Dash Forwards Animation Events.
+
+            case "DashForwardLunge":        OnDashForwardLungeAnimationEvent();         return true;
 
             default: throw new InvalidOperationException("Animation Event Not Implemented "+eventName);
         }

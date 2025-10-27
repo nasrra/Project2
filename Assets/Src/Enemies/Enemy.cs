@@ -122,6 +122,16 @@ public abstract class Enemy : MonoBehaviour
     }
 
 
+    ///
+    /// Animation Events.
+    /// 
+
+
+    private void OnSetGraphicsObjectDirectionBackwardsAnimationEvent(){
+        graphicsObject.rotation = Quaternion.LookRotation(-graphicsObject.forward);
+    }
+
+
     /// 
     /// Linkage.
     /// 
@@ -233,6 +243,10 @@ public abstract class Enemy : MonoBehaviour
         {
             case "StartCombatActionCooldown":
                 combatAgent.BeginChosenCombatActionCooldown();
+                return true;
+
+            case "SetGraphicsObjectDirectionBackwards":
+                OnSetGraphicsObjectDirectionBackwardsAnimationEvent();
                 return true;
             default:
                 return false;

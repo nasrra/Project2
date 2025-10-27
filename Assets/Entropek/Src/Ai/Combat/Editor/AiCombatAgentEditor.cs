@@ -6,7 +6,7 @@ namespace Entropek.Ai.Combat{
 
 
     [CustomEditor(typeof(AiCombatAgent))]
-    public class AiCombatAgentEditor : Editor{
+    public class AiCombatAgentEditor : UnityUtils.RuntimeEditor<AiCombatAgent>{
 
 
         /// 
@@ -14,7 +14,7 @@ namespace Entropek.Ai.Combat{
         /// 
 
 
-        private const int NameLabelPixelWidth = 150;
+        private const int FieldLabelPixelWidth = 150;
 
         int selectedActionToDebugFov = 0;
         private float fovMinAngle;
@@ -22,6 +22,8 @@ namespace Entropek.Ai.Combat{
         private static Color OutsideFovColor = Color.red;
         private static Color InsideFovColor = Color.green;
 
+        private bool drawPossibleActions = false;
+        private bool drawActionFovEditor = false;
 
         /// 
         /// Base.
@@ -31,9 +33,11 @@ namespace Entropek.Ai.Combat{
         public override void OnInspectorGUI()
         {
 
+
+
             // draw default inspector.
 
-            DrawDefaultInspector();
+            base.OnInspectorGUI();
 
             // get a reference to the target.
 
@@ -41,13 +45,12 @@ namespace Entropek.Ai.Combat{
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Private Field Peek:", EditorStyles.boldLabel);
-
-            DisplayPossibleActions(agent.GetPossibleCombatActions());
+            DrawPossibleActionsToggle(agent);
 
             EditorGUILayout.Space();
 
-            DisplayFovDebugEditor(agent);
+            DrawActionFovEditorToggle(agent);
+
         }
 
         private void OnSceneGUI()
@@ -55,15 +58,32 @@ namespace Entropek.Ai.Combat{
             DebugDrawSelectedActionFov();
         }
 
+        /// <summary>
+        /// Toggles displaying the possible actions that can be chosen in an Evaluate() call for the AiCombatAgent.
+        /// </summary>
+        /// <param name="aiCombatAgent">The specified AiCombatAgent.</param>
+
+        private void DrawPossibleActionsToggle(AiCombatAgent aiCombatAgent)
+        {
+            drawPossibleActions = EditorGUILayout.BeginToggleGroup("Display Possible Combat Actions", drawPossibleActions);
+            if (drawPossibleActions == true)
+            {
+                DrawPossibleActions(aiCombatAgent);
+            }
+            EditorGUILayout.EndToggleGroup();
+        }
 
         /// <summary>
         /// Displays the list of possible actions that could have been chosen in an Evaluate() call.
         /// </summary>
         /// <param name="possibleCombatActions">The agents possible actions.</param>
 
-        private void DisplayPossibleActions((AiCombatAction, float)[] possibleCombatActions)
+        private void DrawPossibleActions(AiCombatAgent aiCombatAgent)
         {
-            EditorGUILayout.LabelField("Possble Combat Actions");
+
+            (AiCombatAction, float)[] possibleCombatActions = aiCombatAgent.PossibleCombatActions;
+
+            EditorGUILayout.LabelField("Possble Combat Actions", EditorStyles.boldLabel);
             if (possibleCombatActions == null)
             {
                 EditorGUILayout.HelpBox("Possible Combat Actions has not been initialised.", MessageType.Warning);
@@ -78,28 +98,42 @@ namespace Entropek.Ai.Combat{
                     continue;
                 }
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(action.Name, GUILayout.Width(NameLabelPixelWidth));
+                EditorGUILayout.LabelField(action.Name, GUILayout.Width(FieldLabelPixelWidth));
                 EditorGUILayout.LabelField(score.ToString("F2")); // eg: 0.00
                 EditorGUILayout.EndHorizontal();
             }
         }
+
+
+        ///
+        /// FOV debug dusplay.
+        /// 
+
+
+        private void DrawActionFovEditorToggle(AiCombatAgent aiCombatAgent)
+        {
+            drawActionFovEditor = EditorGUILayout.BeginToggleGroup("Action FOV Editor", drawActionFovEditor);
+            if (drawActionFovEditor == true)
+            {
+                DrawActionFovEditor(aiCombatAgent);
+            }
+            EditorGUILayout.EndToggleGroup();
+        }
+
 
         /// <summary>
         /// Displays the debug editor for FOV sliders on a selected combat agents action.
         /// </summary>
         /// <param name="aiCombatAgent"></param>
 
-        private void DisplayFovDebugEditor(AiCombatAgent aiCombatAgent)
+        private void DrawActionFovEditor(AiCombatAgent aiCombatAgent)
         {
-            // header.
-
-            EditorGUILayout.LabelField("Display Action Fov", EditorStyles.boldLabel);
 
             // options to choose from.
 
             string[] options = new string[aiCombatAgent.AiCombatActions.Length + 1];
             options[0] = "None"; // default to none.
-            
+
             // add all the names of the combat actions.
 
             AiCombatAction[] aiCombatActions = aiCombatAgent.AiCombatActions;
@@ -130,7 +164,8 @@ namespace Entropek.Ai.Combat{
 
             // error handling.
 
-            if (selectedAction == null){
+            if (selectedAction == null)
+            {
                 EditorGUILayout.HelpBox("The selected AiCombatAction to display fov is currently null.", MessageType.Error);
             }
 
@@ -146,7 +181,7 @@ namespace Entropek.Ai.Combat{
 
         private void DebugDrawSelectedActionFov()
         {
-            if (selectedActionToDebugFov == 0)
+            if (drawActionFovEditor == false || selectedActionToDebugFov == 0)
             {
                 return; // dont draw anything if no action has been selected.
             }
