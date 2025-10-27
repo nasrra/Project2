@@ -1537,6 +1537,21 @@ MonoBehaviour:
   editorNameTag: TailSwipe
   initialTime: 3.33
   BeginOnAwake: 0
+--- !u!114 &200020865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200020851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Dash Forward
+  initialTime: 0
+  BeginOnAwake: 0
 --- !u!43 &231071196
 Mesh:
   m_ObjectHideFlags: 0
@@ -15675,7 +15690,7 @@ PrefabInstance:
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[3].cooldownTimer
       value: 
-      objectReference: {fileID: 200020861}
+      objectReference: {fileID: 200020865}
     - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: aiCombatActions.Array.data[0].evaluateOnIdleTimeout
       value: 1
@@ -16010,6 +16025,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       insertIndex: -1
       addedObject: {fileID: 200020861}
+    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 200020865}
   m_SourcePrefab: {fileID: 100100000, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
 --- !u!1001 &793647828341617097
 PrefabInstance:

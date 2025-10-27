@@ -211,7 +211,7 @@ public class Slink : Enemy {
         AttackState();
     }
 
-    public void OnDashForwardLungeAnimationEvent()
+    private void OnDashForwardLungeAnimationEvent()
     {
         forceApplier.ImpulseRelativeToGround(graphicsObject.forward, DashForwardLungeForce, DashForwardLungeDecay);
     }
@@ -233,7 +233,7 @@ public class Slink : Enemy {
 
     private void OnFootstepAnimationEvent()
     {
-        audioPlayer.PlaySound("FootstepGrass", transform.position);
+        audioPlayer.PlaySound("FootstepGrassMedium", transform.position);
     }
 
 
@@ -309,6 +309,7 @@ public class Slink : Enemy {
             case "EndAttack":               AttackEndedState();                         return true;
             case "StartGrowl":              OnStartGrowlAnimationEvent();               return true;
             case "StopGrowl":               OnStopGrowlAnimationEvent();                return true;
+            case "WingFlap":  audioPlayer.PlaySound("SmallWingsFlap", gameObject);     return true;
 
             // Bite Animation Events.
 

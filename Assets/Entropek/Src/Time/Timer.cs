@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Time{
@@ -45,7 +46,7 @@ namespace Entropek.Time{
         [SerializeField] private float initialTime;
         public float InitialTime => initialTime;
         
-        private float currentTime;
+        [RuntimeField] private float currentTime;
         public float CurrentTime => currentTime;
         
         private float normalisedCurrentTime;

@@ -187,7 +187,7 @@ public class Player : MonoBehaviour {
 
     private void HandleFootstepEffects()
     {
-        audioPlayer.PlaySound("FootstepGrass", transform.position);
+        audioPlayer.PlaySound("FootstepGrassLight", transform.position);
     }
 
 

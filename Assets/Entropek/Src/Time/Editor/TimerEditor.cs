@@ -1,0 +1,19 @@
+using Entropek.UnityUtils;
+using UnityEditor;
+using UnityEngine;
+
+namespace Entropek.Time{
+
+    [CustomEditor(typeof(Timer), editorForChildClasses: true)]
+    [CanEditMultipleObjects]
+    public class TimerEditor : RuntimeEditor<Timer>
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+        }
+    }
+
+
+}
+
