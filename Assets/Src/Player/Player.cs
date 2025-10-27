@@ -6,32 +6,19 @@ using Entropek.Physics;
 using Entropek.Audio;
 using Entropek.UnityUtils.AnimatorUtils;
 using Entropek.Vfx;
+using Entropek.UnityUtils.Attributes;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour {
 
 
-    ///
-    /// Definitions.
+    /// 
+    /// Callbacks.
     /// 
 
 
-    private enum PlayerState : byte
-    {
-        Idle,
-        Attack,
-        Dodge,
-        Run,
-        Jump,
-        Fall
-    }
-
-    private enum CoyoteState : byte
-    {
-        None,
-        Dodge,
-        Attack,
-        Fall,
-    }
+    private event Action CoyoteCallback;
+    private event Action FaceChosenDirection;
 
 
     /// 
@@ -44,16 +31,18 @@ public class Player : MonoBehaviour {
     [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
-    [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
     [SerializeField] private Animator animator;
     [SerializeField] private Interactor interactor;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
     [SerializeField] private DodgeTrailController dodgeTrail;
-    [SerializeField] private GroundChecker groundChecker;
+    [SerializeField] private GroundCheck groundChecker;
     [SerializeField] private ForceApplier forceApplier;
     [SerializeField] private AudioPlayer audioPlayer;
     [SerializeField] private AnimationEventReciever animationEventReciever;
     [SerializeField] private VfxManager vfx;
+
+    [Header("Timers")]
+    [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
 
     [Header("HitBoxes")]
     [SerializeField] private Entropek.Combat.Hitbox slashLeftHitBox;
@@ -65,10 +54,10 @@ public class Player : MonoBehaviour {
 
 
     [Header("Data")]
-    [SerializeField] private PlayerState state = PlayerState.Idle;
-    private CoyoteState coyoteState = CoyoteState.None;
-    private event Action CoyoteCallback;
-    private event Action FaceChosenDirection;
+    [RuntimeField] private PlayerState playerState = PlayerState.Idle;
+    public PlayerState PlayerState => playerState;
+    [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
+    public CoyoteState CoyoteState => coyoteState;
     private bool canDodge = true;
 
 
@@ -84,6 +73,7 @@ public class Player : MonoBehaviour {
     private const string FallAnimation = "Rig_Jump_Loop";
     private const string GroundedAnimation = "Rig_Jump_Land";
     private const string AttackAnimation = "Rig_Sword_Attack";
+    private const string StaggerAnimation = "Rig_Stagger";
 
 
     /// 
@@ -116,9 +106,13 @@ public class Player : MonoBehaviour {
     /// Base.
     /// 
 
-    private void OnEnable()
+    private void Awake()
     {
         LinkEvents();
+    }
+
+    private void OnEnable()
+    {
         Entropek.EntityStats.ShieldedHealthBarHud.Singleton.ShieldedHealthBar.DisplayShieldedHealth(health);
     }
 
@@ -126,8 +120,9 @@ public class Player : MonoBehaviour {
         FaceChosenDirection?.Invoke();
     }
 
-    private void OnDisable() {
-        UnlinkEvents();
+    private void OnDestroy()
+    {
+        UnlinkEvents();        
     }
 
 
@@ -196,11 +191,41 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    public void Idle() {
-        state = PlayerState.Idle;
+    /// <summary>
+    /// Returns the player to a resting state to branch from into different actions; depending upon their endivronmental circumnstances.
+    /// </summary>
+
+    private void EnterRestState()
+    {
+        if (groundChecker.IsGrounded == true) {
+
+            // only reset out dodge when grounded.
+
+            canDodge = true;
+
+            if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
+                Run();
+            }
+            else {
+                Idle();
+            }
+        }
+        else {
+            Fall();
+        }
+
+        // set move direction back to the player input.
+
+        movement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
+    }
+
+    public void Idle()
+    {
+        playerState = PlayerState.Idle;
         FaceChosenDirection = null; // dont look face any direction when idle.
         movement.moveDirection = GetMoveDirectionRelativeToCamera(Vector2.zero);
-        if (state != PlayerState.Jump && state != PlayerState.Fall) {
+        if (playerState != PlayerState.Jump && playerState != PlayerState.Fall)
+        {
             animator.Play(IdleAnimation);
         }
     }
@@ -210,46 +235,31 @@ public class Player : MonoBehaviour {
     }
 
     public void Run(Vector2 direction) {
-        state = PlayerState.Run;
+        playerState = PlayerState.Run;
         movement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
         FaceChosenDirection = FaceMoveDirection;
-        if (state != PlayerState.Fall && state != PlayerState.Jump) {
+        if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
             animator.Play(WalkAnimation);
         }
     }
 
     public void JumpStart() {
-        state = PlayerState.Jump;
+        playerState = PlayerState.Jump;
         jumpMovement.StartJumping();
         animator.Play(JumpStartAnimation);
     }
 
     public void JumpStop() {
-        state = PlayerState.Jump;
+        playerState = PlayerState.Jump;
         jumpMovement.StopJumping();
-
-        // TODO:
-        //  Will need an extra check here later down the line to check if the player
-        //  is grounded or not. The player should enter a falling state when not grounded.
-        if (groundChecker.IsGrounded == true) {
-
-            if (InputManager.Singleton.moveInputSqrMagnitude == 0) {
-                Idle();
-            }
-            else {
-                Run();
-            }
-        }
-        else {
-            Fall();
-        }
+        EnterRestState();
     }
 
     public void StartDodge() {
 
         // enter state.
 
-        state = PlayerState.Dodge;
+        playerState = PlayerState.Dodge;
         canDodge = false;
 
         SnapToFaceMoveInput();
@@ -291,38 +301,16 @@ public class Player : MonoBehaviour {
     }
 
     public void StopDodge() {
-
-        if (groundChecker.IsGrounded == true) {
-
-            // only reset out dodge when grounded.
-
-            canDodge = true;
-
-            if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
-                Run();
-            }
-            else {
-                Idle();
-            }
-        }
-        else {
-            Fall();
-        }
-
-        // set move direction back to the player input.
-
-        movement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
-
-        // re-enable gravity.
-
+        EnterRestState();
     }
 
     bool slashFlag = false;
 
     public void StartAttack()
     {
+            Debug.Log("attack");
 
-        state = PlayerState.Attack;
+        playerState = PlayerState.Attack;
 
 
         // swap slashes for next time.
@@ -355,25 +343,12 @@ public class Player : MonoBehaviour {
 
     public void StopAttack()
     {
-        if (groundChecker.IsGrounded == true)
-        {
-            if (InputManager.Singleton.moveInputSqrMagnitude > 0)
-            {
-                Run();
-            }
-            else
-            {
-                Idle();
-            }
-        }
-        else
-        {
-            Fall();
-        }
+        EnterRestState();
     }
 
     public void Fall() {
-        state = PlayerState.Fall;
+        playerState = PlayerState.Fall;
+        animator.Play(FallAnimation);
     }
 
     public void EnterIFrames() {
@@ -385,6 +360,17 @@ public class Player : MonoBehaviour {
         health.Vulnerable = true;
     }
 
+    public void EnterStagger()
+    {
+        playerState = PlayerState.Stagger;
+        movement.moveDirection = Vector3.zero;
+        animator.Play(StaggerAnimation);
+    }
+
+    public void ExitStagger()
+    {
+        EnterRestState();
+    }
 
     ///
     /// Coyote State Machine.
@@ -428,16 +414,7 @@ public class Player : MonoBehaviour {
 
     private void ExitCoyoteState()
     {
-        if (CoyoteCallback != null)
-        {
-            // stop any state we are coming out of.
-            switch (state)
-            {
-                case PlayerState.Attack: StopAttack(); break;
-                case PlayerState.Dodge: StopDodge(); break;
-            }
-
-            
+        if (CoyoteCallback != null){            
             CoyoteCallback();
         }
 
@@ -463,6 +440,7 @@ public class Player : MonoBehaviour {
         LinkGroundCheckerEvents();
         LinkAnimationEventRecieverEvents();
         LinkHitBoxEvents();
+        LinkHealthEvents();
     }
 
     /// <summary>
@@ -477,14 +455,35 @@ public class Player : MonoBehaviour {
         UnlinkGroundCheckerEvents();
         UnlinkAnimationEventRecieverEvents();
         UnlinkHitBoxEvents();
+        UnlinkHealthEvents();
     }
 
+
+    ///
+    /// Health Event Linkage.
+    /// 
+
+    private void LinkHealthEvents()
+    {
+        health.HealthDamaged += OnHealthDamaged;
+        health.ShieldDamaged += OnHealthDamaged;
+    }
+
+    private void UnlinkHealthEvents()
+    {
+        health.HealthDamaged -= OnHealthDamaged;
+        health.ShieldDamaged -= OnHealthDamaged;
+    }
+
+    private void OnHealthDamaged(float amount){
+        EnterStagger();
+    }
 
     ///
     /// Ground check event linkage.
     /// 
 
-    private void LinkGroundCheckerEvents() 
+    private void LinkGroundCheckerEvents()
     {
         groundChecker.Grounded += OnGrounded;
         groundChecker.Airborne += OnAirborne;
@@ -496,14 +495,19 @@ public class Player : MonoBehaviour {
         groundChecker.Airborne += OnAirborne;
     }
 
-    private void OnGrounded() 
+    private void OnGrounded()
     {
-        if (state != PlayerState.Dodge) {
-            if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
+        // only enter the rest state if we are currently not performing any actions.
+
+        if (playerState != PlayerState.Dodge 
+        && playerState != PlayerState.Attack) 
+        {
+            if (InputManager.Singleton.moveInputSqrMagnitude > 0)
+            {
                 Run();
             }
-            else {
-                // animator.Play(GroundedAnimation);
+            else
+            {
                 Idle();
             }
         }
@@ -532,7 +536,8 @@ public class Player : MonoBehaviour {
         fallCoyoteTimer.Timeout -= OnFallCoyoteTimeout;
     }
 
-    private void OnFallCoyoteTimeout() {
+    private void OnFallCoyoteTimeout()
+    {
         ExitCoyoteState();
     }
 
@@ -576,8 +581,8 @@ public class Player : MonoBehaviour {
 
     private void OnCameraRotated() {
 
-        if (state != PlayerState.Run
-        && state != PlayerState.Jump) {
+        if (playerState != PlayerState.Run
+        && playerState != PlayerState.Jump) {
             return;
         }
 
@@ -620,9 +625,9 @@ public class Player : MonoBehaviour {
 
     private void OnMoveInput(Vector2 moveInput) {
 
-        if (state != PlayerState.Idle
-        && state != PlayerState.Run
-        && state != PlayerState.Fall) {
+        if (playerState != PlayerState.Idle
+        && playerState != PlayerState.Run
+        && playerState != PlayerState.Fall) {
             return;
         }
 
@@ -642,7 +647,8 @@ public class Player : MonoBehaviour {
         // queue the action if we are attacking or dodging coyote states.
 
         if (coyoteState == CoyoteState.Attack
-        || coyoteState == CoyoteState.Dodge)
+        || coyoteState == CoyoteState.Dodge
+        || coyoteState == CoyoteState.Stagger)
         {
             CoyoteCallback = OnJumpInputCoyoteCallback;
             return;
@@ -656,7 +662,7 @@ public class Player : MonoBehaviour {
             return;            
         }
 
-        if ((state != PlayerState.Idle && state != PlayerState.Run) || groundChecker.IsGrounded == false)
+        if ((playerState != PlayerState.Idle && playerState != PlayerState.Run) || groundChecker.IsGrounded == false)
         {
             return;
         }
@@ -674,7 +680,7 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStopInput()
     {
-        if (state != PlayerState.Jump)
+        if (playerState != PlayerState.Jump)
         {
             return;
         }
@@ -687,13 +693,15 @@ public class Player : MonoBehaviour {
     private void OnDodgeInput() {
 
         if (coyoteState == CoyoteState.Dodge 
-        ||  coyoteState == CoyoteState.Attack)
+        ||  coyoteState == CoyoteState.Attack
+        ||  coyoteState == CoyoteState.Stagger)
         {
             CoyoteCallback = StartDodge;
         }
 
-        if (state == PlayerState.Attack
-        ||  state == PlayerState.Dodge
+        if (playerState == PlayerState.Attack
+        ||  playerState == PlayerState.Dodge
+        ||  playerState == PlayerState.Stagger
         ||  canDodge == false)
         {
             return;
@@ -705,13 +713,15 @@ public class Player : MonoBehaviour {
     private void OnAttackInput() {
 
         if (coyoteState == CoyoteState.Dodge
-        || coyoteState == CoyoteState.Attack)
+        || coyoteState == CoyoteState.Attack
+        || coyoteState == CoyoteState.Stagger)
         {
             CoyoteCallback = StartAttack;
         }
 
-        if (state == PlayerState.Attack
-        || state == PlayerState.Dodge)
+        if (playerState == PlayerState.Attack
+        ||  playerState == PlayerState.Stagger
+        ||  playerState == PlayerState.Dodge)
         {
             return;
         }
@@ -733,7 +743,11 @@ public class Player : MonoBehaviour {
         interactor.NextInteractable();
     }
 
-    // Animation Event Reciever Linkage.
+
+    /// 
+    /// Animation Event Reciever Linkage.
+    /// 
+
 
     private void LinkAnimationEventRecieverEvents()
     {
@@ -754,8 +768,7 @@ public class Player : MonoBehaviour {
 
             case "EnterAttackCoyoteState": EnterCoyoteState(CoyoteState.Attack); break;
             case "EnterDodgeCoyoteState": EnterCoyoteState(CoyoteState.Dodge); break;
-
-            // Player States.
+            case "EnterStaggerCoyoteState": EnterCoyoteState(CoyoteState.Stagger); break;
 
             // Note:
             //  Exit Coyote state directly when exiting an action/animation state
@@ -765,6 +778,10 @@ public class Player : MonoBehaviour {
 
             case "ExitDodgeState": StopDodge(); ExitCoyoteState(); break;
             case "ExitAttackState": StopAttack(); ExitCoyoteState(); break;
+            case "ExitStaggerState": ExitStagger(); ExitCoyoteState(); break;
+
+            // Player States.
+
             case "EnterIFrames": EnterIFrames(); break;
             case "ExitIFrames" : ExitIFrames(); break;
 
@@ -776,6 +793,7 @@ public class Player : MonoBehaviour {
             
             case "Footstep": HandleFootstepEffects(); break;
             
+
             default:
                 throw new InvalidOperationException($"animation event {eventName} not configured for player.");
         }

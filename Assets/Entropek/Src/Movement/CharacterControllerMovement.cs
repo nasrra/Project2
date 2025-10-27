@@ -12,7 +12,7 @@ namespace Entropek.Physics
 
         [Header(nameof(CharacterController)+" Components")]
         [SerializeField] protected CharacterController controller;
-        [SerializeField] protected GroundChecker groundChecker;
+        [SerializeField] protected GroundCheck groundChecker;
         [SerializeField] protected ForceApplier forceApplier;
 
         [Header("Data")]

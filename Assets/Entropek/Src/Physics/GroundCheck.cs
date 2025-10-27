@@ -1,10 +1,11 @@
 using System;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Entropek.Physics{
 
-    public class GroundChecker : MonoBehaviour{
+    public class GroundCheck : MonoBehaviour{
         public event Action Airborne;
         public event Action Grounded;
         public Vector3 GroundNormal {get; private set;}
@@ -15,17 +16,16 @@ namespace Entropek.Physics{
         [Header("Data")]
         [SerializeField] private LayerMask groundLayers;
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         [Header("Editor Tools")]
         [SerializeField] private bool showGroundCheck = false;
-        #endif
+#endif
 
-        public bool IsGrounded {get;private set;}
+        [RuntimeField] private bool isGrounded;
+        public bool IsGrounded => isGrounded;
         public bool WasGroundedLastTick {get;private set;}
 
         private void FixedUpdate(){
-            // check a sphere at the bottom of the character controller at a radius of the character controller.
-            // check if there is ground there or not.
 
             // float radius = controller.radius; 
             // Vector3 controllerPosition = controller.transform.position;
@@ -36,10 +36,10 @@ namespace Entropek.Physics{
 
             // set last frame data. 
 
-            WasGroundedLastTick = IsGrounded;
+            WasGroundedLastTick = isGrounded;
             
             if(UnityEngine.Physics.SphereCast(transform.position + CheckStartPostion, CheckRadius, Vector3.down, out RaycastHit hit, CheckLength, groundLayers, QueryTriggerInteraction.Ignore)==true){
-                IsGrounded = true;
+                isGrounded = true;
                 GroundNormal = hit.normal;
                 if(WasGroundedLastTick == false)
                 {
@@ -47,7 +47,7 @@ namespace Entropek.Physics{
                 }
             }
             else{
-                IsGrounded = false;
+                isGrounded = false;
                 GroundNormal = Vector3.up;
                 if (WasGroundedLastTick == true)
                 {

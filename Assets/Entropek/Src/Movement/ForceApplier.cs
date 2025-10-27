@@ -10,7 +10,7 @@ public class ForceApplier : MonoBehaviour{
     
     private readonly SwapbackList<ForceVelocity> forceVelocities = new(); // forces applied overtime (automatic).
     [Header("Optional Components")]
-    private GroundChecker groundChecker;
+    private GroundCheck groundChecker;
 
     private void LateUpdate(){
         DecayForces();

@@ -67,7 +67,7 @@
         - Circle Walk Around Target.
         + Turn Around To Target (may only do this when choosing an attack option though).
 
- 
+ + Player Stagger State
 
 
 ==== BACK BURNER =====

@@ -32,7 +32,7 @@ public abstract class Enemy : MonoBehaviour
 
 
     [Header(nameof(Enemy) + " Optional Components")]
-    [SerializeField] protected GroundChecker groundChecker;
+    [SerializeField] protected GroundCheck groundChecker;
 
 
     /// 
