@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8581327948538117689}
   - component: {fileID: 6313864609858437256}
   m_Layer: 0
-  m_Name: SlinkTailSlash
+  m_Name: SlinkTailSlashVFx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -19,6 +19,7 @@ namespace Entropek.Combat{
         public Time.OneShotTimer Timer => timer;
 
         [Header("Data")]
+        [SerializeField] Collider[] ignoreColliders = new Collider[0];
         private HashSet<int> hitGameObjectInstanceIds = new HashSet<int>();
         [SerializeField] private float damage;
 
@@ -38,6 +39,11 @@ namespace Entropek.Combat{
 
         void OnTriggerEnter(Collider hitCollider)
         {
+
+            if (IgnoreCollider(hitCollider) == true)
+            {
+                return;
+            }
 
             GameObject hitGameObject = hitCollider.gameObject;
             int otherId = hitGameObject.GetInstanceID();
@@ -185,6 +191,26 @@ namespace Entropek.Combat{
                 hitPoint = Vector3.zero;
                 return false;
             }
+        }
+
+
+        /// <summary>
+        /// Checks whether or not a collider is one of the specified colliders to ignore when hitting an object.
+        /// </summary>
+        /// <param name="collider">The specified collider to check against.</param>
+        /// <returns>true, if it should be ignored. false, if not.</returns>
+
+        private bool IgnoreCollider(Collider collider)
+        {
+            for (int i = 0; i < ignoreColliders.Length; i++)
+            {
+                if (collider == ignoreColliders[i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 
