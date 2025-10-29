@@ -71,8 +71,8 @@ namespace Entropek.Camera
 
             CalculateSmoothedFollowPosition();
             Vector3 relativeOffset = CalculateOffsetRelativeToLookRotation();
-            smoothedFollowPosition = ApplyOffsetToFollowPosition(smoothedFollowPosition, relativeOffset);
-            transform.position = CalculateDeltaPosition(smoothedFollowPosition);
+            Vector3 offsetedSmoothedFollowPosition = ApplyOffsetToFollowPosition(smoothedFollowPosition, relativeOffset);
+            transform.position = CalculateDeltaPosition(offsetedSmoothedFollowPosition);
 
             // apply mouse rotation.
 
