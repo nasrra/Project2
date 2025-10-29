@@ -101,6 +101,9 @@ VisualEffect:
         m_Name: VoronoiEdge
         m_Overridden: 1
       - m_Value: 167
+        m_Name: RotationStartOffset
+        m_Overridden: 1
+      - m_Value: 167
         m_Name: RotationSpeed
         m_Overridden: 1
     m_Vector2f:

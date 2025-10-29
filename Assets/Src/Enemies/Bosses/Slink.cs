@@ -21,6 +21,7 @@ public class Slink : Enemy {
     [Header("Hitboxes")]
     [SerializeField] Entropek.Combat.Hitbox biteHitbox;
     [SerializeField] Entropek.Combat.Hitbox tailHitbox;
+    [SerializeField] Entropek.Combat.Hitbox biteLungeHitbox;
 
     [Header("Vfx")]
     [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
@@ -167,14 +168,9 @@ public class Slink : Enemy {
         audioPlayer.PlaySound("SlinkBite", gameObject);
     }
 
-    private void OnStartGrowlAnimationEvent()
-    {        
-        audioPlayer.PlaySound("SlinkGrowl", gameObject);
-    }
-
-    private void OnStopGrowlAnimationEvent()
+    private void OnBiteLungeAttackFrameAnimationEvent()
     {
-        audioPlayer.StopSound("SlinkGrowl", immediate: false);
+        biteLungeHitbox.Enable();
     }
 
     /// 
@@ -235,6 +231,22 @@ public class Slink : Enemy {
     {
         audioPlayer.PlaySound("FootstepGrassMedium", transform.position);
     }
+
+    private void OnWingFlapAnimationEvent()
+    {
+        audioPlayer.PlaySound("SmallWingsFlap", gameObject);
+    }
+
+    private void OnStartGrowlAnimationEvent()
+    {        
+        audioPlayer.PlaySound("SlinkGrowl", gameObject);
+    }
+
+    private void OnStopGrowlAnimationEvent()
+    {
+        audioPlayer.StopSound("SlinkGrowl", immediate: false);
+    }
+
 
 
     /// 
@@ -309,10 +321,11 @@ public class Slink : Enemy {
             case "EndAttack":               AttackEndedState();                         return true;
             case "StartGrowl":              OnStartGrowlAnimationEvent();               return true;
             case "StopGrowl":               OnStopGrowlAnimationEvent();                return true;
-            case "WingFlap":  audioPlayer.PlaySound("SmallWingsFlap", gameObject);     return true;
+            case "WingFlap":                OnWingFlapAnimationEvent();                 return true;
 
             // Bite Animation Events.
 
+            case "BiteLungeAttackFrame":    OnBiteLungeAttackFrameAnimationEvent();     return true;
             case "BiteAttackFrame":         OnBiteAttackFrameAnimationEvent();          return true;
             case "BiteLunge":               OnBiteLungeAnimationEvent();                return true;
             

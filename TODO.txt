@@ -42,6 +42,7 @@
 + scafolded "turn around before action" beahviour for enemies.
 + Slink bite attack.
 + Player Stagger State
++ Controller Support.
 
 ======== TODO ========
 
@@ -58,7 +59,7 @@
 
     - Disengage.
         - Jump Back (flap wings to jump back).
-        - Jump Forward(flap wings to jump forward and turn around.)
+        + Jump Forward(flap wings to jump forward and turn around.)
 
             - Technichal Notes:
                 - Check on the nav mesh surface if the slink desired position is within the grid, if not then dont do it.
@@ -71,7 +72,6 @@
 - rework health class to callback Damage for both health a shield damage.
 - clip callback float for Damage to not exceed health when going below zero.
 
-- Controller Support.
 
 ==== BACK BURNER =====
 
