@@ -12,8 +12,17 @@ public class LockOnTargetDetector : MonoBehaviour{
     public event Action TargetLeftRange;
     private List<Transform> detectedTransforms = new List<Transform>();
     private Transform currentTarget;
+    private Transform followTarget; 
     private int index;
     private const float SimilarityThreshold = 0.8f;
+
+    private void FixedUpdate()
+    {
+        if (followTarget != null)
+        {
+            transform.position = followTarget.position;
+        }
+    }
 
     void OnTriggerEnter(Collider other){
     
@@ -22,15 +31,22 @@ public class LockOnTargetDetector : MonoBehaviour{
         detectedTransforms.Add(other.transform);
     }
 
-    void OnTriggerExit(Collider other){
-        
+    void OnTriggerExit(Collider other)
+    {
+
         VerifyDetectedTransforms();
 
-        if(other.transform==currentTarget){
+        if (other.transform == currentTarget)
+        {
             TargetLeftRange?.Invoke();
         }
-        
+
         detectedTransforms.Remove(other.transform);
+    }
+
+    public void SetFollowTarget(Transform followTarget)
+    {
+        this.followTarget = followTarget;
     }
 
     public Transform GetTarget(Vector3 forwardDirection){

@@ -22,10 +22,8 @@ namespace Entropek.Camera
 
 
         [Header("Data")]
-        private Vector3 smoothedfollowTargetPosition;
-        private Vector3 desiredWorldPosition; // the next position in world space the camera will take.
+        private Vector3 smoothedFollowPosition;
         private Vector3 desiredFollowDirection;
-        private Vector3 nextShakerLocalPosition;
         private Vector3 targetShakerOffset;
         [SerializeField] private Vector3 followOffset;
         [SerializeField] private Vector2 sensitivity;
@@ -48,37 +46,45 @@ namespace Entropek.Camera
         /// 
 
 
-        private void OnEnable()
+        private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            SetFollowTarget(followTarget);
+            if (followTarget != null)
+            {
+                SnapToPosition(followTarget.position);
+                SetFollowTarget(followTarget);
+            }
 
             LinkEvents();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             UnlinkEvents();
         }
 
         private void LateUpdate()
         {
+            // smoothly lerp to the follow targets position.
 
-            CalculateSmoothedFollowTargetPosition();
-            CalculateDesiredWorldPosition();
-            UpdateFollowPosition();
+            CalculateSmoothedFollowPosition();
+            Vector3 relativeOffset = CalculateOffsetRelativeToLookRotation();
+            smoothedFollowPosition = ApplyOffsetToFollowPosition(smoothedFollowPosition, relativeOffset);
+            transform.position = CalculateDeltaPosition(smoothedFollowPosition);
 
-            LookAtTarget();
+            // apply mouse rotation.
 
-            CalculateDesiredShakerPosition();
-            UpdateShakerPosition();
+            transform.rotation = CalculateRotationToRelativeTarget();
+            
+            // update shaker position.
 
-            CheckRotation();
+            shaker.localPosition = CalculateShakerDeltaLocalPosition(targetShakerOffset);
 
-            UpdateLockOnTargetDetector();
+            CheckIfRotated();
         }
+
 
         private void FixedUpdate()
         {
@@ -91,16 +97,31 @@ namespace Entropek.Camera
         /// 
 
 
+        /// <summary>
+        /// Sets the follow offset for the camera. 
+        /// </summary>
+        /// <param name="followOffset">The specified offset.</param>
+
         public void SetFollowOffset(Vector3 followOffset)
         {
             this.followOffset = followOffset;
         }
 
+        /// <summary>
+        /// Sets the target to follow.
+        /// </summary>
+        /// <param name="followTarget">The specified target to follow</param>
+
         public void SetFollowTarget(Transform followTarget)
         {
             this.followTarget = followTarget;
-            smoothedfollowTargetPosition = followTarget.position;
+            lockOnTargetDetector.SetFollowTarget(followTarget);
         }
+
+        /// <summary>
+        /// Sets the target to lock onto (look at) whilst moving.
+        /// </summary>
+        /// <param name="lockOnTarget">The specified targett to look at.</param>
 
         public void SetLockOnTarget(Transform lockOnTarget)
         {
@@ -110,20 +131,43 @@ namespace Entropek.Camera
 
 
         /// 
-        /// World Position setting.
+        /// Positional Updating.
         /// 
 
 
-        private void CalculateSmoothedFollowTargetPosition()
+        /// <summary>
+        /// Snaps the camera to a position in world space; with follow offsets applied.
+        /// </summary>
+        /// <param name="position">The position in world space to snap to.</param>
+
+        public void SnapToPosition(Vector3 position)
         {
-            smoothedfollowTargetPosition = Vector3.Lerp(smoothedfollowTargetPosition, followTarget.position, FollowSpeed * UnityEngine.Time.deltaTime);
+            // update the smoothed position as well,
+            // so it can smooth back to its resting point.
+
+            smoothedFollowPosition = position;
+
+            Vector3 relativeOffset = CalculateOffsetRelativeToLookRotation();
+            transform.position = ApplyOffsetToFollowPosition(position, relativeOffset);
+            transform.rotation = CalculateRotationToRelativeTarget();
         }
 
+        /// <summary>
+        /// Calculates a lerped Vector3 position between the current smoothedFollowPosition and follow target's position in world space. 
+        /// </summary>
 
-        private void CalculateDesiredWorldPosition()
+        private void CalculateSmoothedFollowPosition()
         {
-            Vector3 offset = Vector3.zero;
+            smoothedFollowPosition = Vector3.Lerp(smoothedFollowPosition, followTarget.position, FollowSpeed * UnityEngine.Time.deltaTime);
+        }
 
+        /// <summary>
+        /// Returns a Vector3 of the follow offset projected onto the look rotations axis.
+        /// </summary>
+        /// <returns>The follow offset relative to the look rotation.</returns>
+
+        private Vector3 CalculateOffsetRelativeToLookRotation()
+        {
             if (lockOnTarget != null)
             {
 
@@ -136,16 +180,28 @@ namespace Entropek.Camera
 
             }
 
-            offset = lookRotation * followOffset;
+            return lookRotation * followOffset;
+        }
 
-            desiredWorldPosition = smoothedfollowTargetPosition + offset; // apply the player camera input as positional offset.
-            Vector3 distance = smoothedfollowTargetPosition - desiredWorldPosition;
+        /// <summary>
+        /// Applies an offset to the follow position, ensuring the camera does not clip through any obstructions along the way.
+        /// </summary>
+        /// <param name="followPosition">The desired follow position.</param>
+        /// <param name="offset">The specified offset.</param>
+        /// <returns></returns>
+
+        private Vector3 ApplyOffsetToFollowPosition(Vector3 followPosition, Vector3 offset)
+        {
+
+
+            Vector3 offsetedPosition = followPosition + offset;
+            Vector3 distance = followPosition - offsetedPosition;
             desiredFollowDirection = distance.normalized;
 
             // check if there are any obstructions along the way.
 
             if (UnityEngine.Physics.SphereCast(
-                smoothedfollowTargetPosition,
+                followPosition,
                 CameraRadius,
                 -desiredFollowDirection,
                 out RaycastHit hit,
@@ -157,11 +213,22 @@ namespace Entropek.Camera
 
                 // apply a 'bubble' around the camera so it doesnt clip into walls.
 
-                desiredWorldPosition = hit.point + (desiredFollowDirection * CameraRadius) + (hit.normal * CameraRadius);
+                return hit.point + (desiredFollowDirection * CameraRadius) + (hit.normal * CameraRadius);
+            }
+            else
+            {
+                return offsetedPosition; // apply the player camera input as positional offset.
             }
         }
 
-        private void UpdateFollowPosition()
+        /// <summary>
+        /// Calculates a position in world space from the camera transform position to a desired world position;
+        /// smoothly moving between the two positions.
+        /// </summary>
+        /// <param name="desiredWorldPosition"></param>
+        /// <returns></returns>
+
+        private Vector3 CalculateDeltaPosition(Vector3 desiredWorldPosition)
         {
 
             Vector3 deltaPosition;
@@ -177,16 +244,21 @@ namespace Entropek.Camera
 
             // if we are currently not shaking.
 
-            transform.position = deltaPosition;
+            return deltaPosition;
         }
 
 
         /// 
-        /// Look At Target Functionality.
+        /// Rotational Updating.
         /// 
 
 
-        private void LookAtTarget()
+        /// <summary>
+        /// Calculates a rotation for the camera to look at the follow target or lock on target (if available)
+        /// </summary>
+        /// <returns>A Quaternion that looks at the relevant target.</returns>
+
+        private Quaternion CalculateRotationToRelativeTarget()
         {
 
             // look at the direction that the camera is pointing in relation to players input
@@ -199,7 +271,7 @@ namespace Entropek.Camera
 
                 // smoothly lerp to lock on target.
 
-                transform.rotation =
+                return
                     Quaternion.Slerp(
                         transform.rotation,
                         Quaternion.LookRotation(desiredFollowDirection, Vector3.up),
@@ -211,56 +283,53 @@ namespace Entropek.Camera
 
                 // snap to input for responsiveness.
 
-                transform.rotation = Quaternion.LookRotation(desiredFollowDirection, Vector3.up);
+                return Quaternion.LookRotation(desiredFollowDirection, Vector3.up);
             }
         }
 
-        private void CheckRotation()
+        /// <summary>
+        /// Invokes the OnRotated Callback if the camera has been rotated since the last time this was called.
+        /// </summary>
+
+        private void CheckIfRotated()
         {
             if (transform.rotation.Equals(previousRotation) == false)
             {
-                OnRotated();
+                Rotated?.Invoke();
             }
             previousRotation = transform.rotation;
         }
 
-        private void OnRotated()
-        {
-            Rotated?.Invoke();
-        }
-
-        private void UpdateLockOnTargetDetector()
-        {
-            lockOnTargetDetector.transform.position = followTarget.position;
-        }
 
 
-        /// 
-        /// Camera Shake Functionality.
-        /// 
+        /// <summary>
+        /// Calculates a position in world space from the shaker transform position to the desired shaker position;
+        /// smoothly moving between the two positions.
+        /// </summary>
+        /// <param name="desiredPosition">The position for the shaker to move towards (in local space).</param>
+        /// <returns></returns>
 
-
-        private void CalculateDesiredShakerPosition()
+        private Vector3 CalculateShakerDeltaLocalPosition(Vector3 desiredPosition)
         {
 
             // smoothly update position instead of snapping
 
-            nextShakerLocalPosition = Vector3.MoveTowards(shaker.localPosition, targetShakerOffset, UnityEngine.Time.deltaTime * shakeStrength);
+            Vector3 deltaPosition = Vector3.MoveTowards(shaker.localPosition, desiredPosition, UnityEngine.Time.deltaTime * shakeStrength);
 
             // short-circuit if we have returned to default state.
 
-            if (nextShakerLocalPosition == Vector3.zero && shaker.localPosition == Vector3.zero)
-                return;
+            if (deltaPosition == Vector3.zero && shaker.localPosition == Vector3.zero)
+                return Vector3.zero;
 
             // clamp shake strength so it doesn't overshoot
 
-            nextShakerLocalPosition.x = Mathf.Clamp(nextShakerLocalPosition.x, -shakeStrength, shakeStrength);
-            nextShakerLocalPosition.y = Mathf.Clamp(nextShakerLocalPosition.y, -shakeStrength, shakeStrength);
-            nextShakerLocalPosition.z = Mathf.Clamp(nextShakerLocalPosition.z, -shakeStrength, shakeStrength);
+            deltaPosition.x = Mathf.Clamp(deltaPosition.x, -shakeStrength, shakeStrength);
+            deltaPosition.y = Mathf.Clamp(deltaPosition.y, -shakeStrength, shakeStrength);
+            deltaPosition.z = Mathf.Clamp(deltaPosition.z, -shakeStrength, shakeStrength);
 
             // convert to world space
 
-            Vector3 nextShakerWorldPos = transform.TransformPoint(nextShakerLocalPosition);
+            Vector3 nextShakerWorldPos = transform.TransformPoint(deltaPosition);
             Vector3 worldDir = (nextShakerWorldPos - transform.position).normalized;
             float worldDist = Vector3.Distance(transform.position, nextShakerWorldPos);
 
@@ -278,14 +347,16 @@ namespace Entropek.Camera
 
                 // push the shaker out so it doesn’t clip into walls
                 Vector3 correctedWorldPos = hit.point - (worldDir * CameraRadius) + (hit.normal * CameraRadius);
-                nextShakerLocalPosition = transform.InverseTransformPoint(correctedWorldPos);
+                return transform.InverseTransformPoint(correctedWorldPos);
             }
+
+            return deltaPosition;
         }
 
-        private void UpdateShakerPosition()
-        {
-            shaker.localPosition = nextShakerLocalPosition;
-        }
+        /// <summary>
+        /// Starts to shake this camera indefinently.
+        /// </summary>
+        /// <param name="strength">The specified strength.</param>
 
         public void StartShaking(float strength)
         {
@@ -295,6 +366,12 @@ namespace Entropek.Camera
             shakeTimer.Begin(int.MaxValue); // max value so it doesnt call loop increbily often.
         }
 
+        /// <summary>
+        /// Starts to shake this camera.
+        /// </summary>
+        /// <param name="strength">The specified strength.</param>
+        /// <param name="time">The amount of time in seconds (scaled time) to shake.</param>
+
         public void StartShaking(float strength, float time)
         {
             Shake = ShakeFixedUpdate;
@@ -303,12 +380,20 @@ namespace Entropek.Camera
             shakeTimer.Begin(time);
         }
 
+        /// <summary>
+        /// Stops shaking the camera if it is currently shaking.
+        /// </summary>
+
         private void StopShaking()
         {
             shakeTimer.Halt();
             Shake = null;
             targetShakerOffset = Vector3.zero;
         }
+
+        /// <summary>
+        /// Assign a random position within the shake strengths range for the shaker to move to.
+        /// </summary>
 
         private void ShakeFixedUpdate()
         {
