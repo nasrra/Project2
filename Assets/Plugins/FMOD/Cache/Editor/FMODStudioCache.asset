@@ -42,7 +42,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638971822754105478
+  lastModified: 638973335765096906
   FileSizes: []
   Exists: 1
 --- !u!114 &-4093084935808055269
@@ -114,10 +114,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638971815026134829
+  lastModified: 638973330935893454
   FileSizes:
   - Name: 
-    Value: 1452
+    Value: 1498
   Exists: 1
 --- !u!114 &-3814601106733631365
 MonoBehaviour:
@@ -134,7 +134,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638971815026128632
+  lastModified: 638973330935885827
   FileSizes: []
   Exists: 1
 --- !u!114 &-3119746140194838632
@@ -191,13 +191,14 @@ MonoBehaviour:
   - {fileID: 8248852890597649268}
   - {fileID: -4039813928244868927}
   - {fileID: -3119746140194838632}
+  - {fileID: 9004772612350915906}
   EditorParameters: []
   MasterBanks:
   - {fileID: -3814601106733631365}
   StringsBanks:
   - {fileID: -3832436070927649410}
   cacheVersion: 131849
-  cacheTime: 638971822754105478
+  cacheTime: 638973335765096906
   SerializableEventsDict:
   - key: event:/Music/Awakening
     index: 0
@@ -219,6 +220,8 @@ MonoBehaviour:
     index: 8
   - key: event:/Sfx/Movement/Footsteps/FootstepGrassMedium
     index: 9
+  - key: event:/Sfx/Weapons/MeleeHit
+    index: 10
 --- !u!114 &1502746064291429577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +357,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 40
   Length: 816
+--- !u!114 &9004772612350915906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Weapons/MeleeHit
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Weapons/MeleeHit
+  Guid:
+    Data1: -899890190
+    Data2: 1199216818
+    Data3: 584388019
+    Data4: 2028901576
+  Banks:
+  - {fileID: -6955079234322254397}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1080
 --- !u!114 &9213142153004916282
 MonoBehaviour:
   m_ObjectHideFlags: 0

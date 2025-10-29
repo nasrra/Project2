@@ -580,6 +580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 834651593}
+  cameraPostProcessing: {fileID: 834651596}
   health: {fileID: 36969673}
   jumpMovement: {fileID: 36969667}
   movement: {fileID: 36969665}
@@ -10473,7 +10474,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 834651591}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834651590
 GameObject:
@@ -10487,6 +10488,7 @@ GameObject:
   - component: {fileID: 834651593}
   - component: {fileID: 834651594}
   - component: {fileID: 834651595}
+  - component: {fileID: 834651596}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -10509,6 +10511,7 @@ Transform:
   m_Children:
   - {fileID: 330585546}
   - {fileID: 2118517619}
+  - {fileID: 832575519}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &834651593
@@ -10563,6 +10566,20 @@ MonoBehaviour:
   initialTime: 1
   BeginOnAwake: 0
   Loop: 1
+--- !u!114 &834651596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834651590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3258fc277a9177fd7b8eb1f0b7b9dc02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalVolume: {fileID: 832575518}
+  vignette: {fileID: 0}
 --- !u!4 &856204668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7678704298130238203, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
@@ -16436,7 +16453,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 410087041}
-  - {fileID: 832575519}
   - {fileID: 36969663}
   - {fileID: 2075580349}
   - {fileID: 16329393}

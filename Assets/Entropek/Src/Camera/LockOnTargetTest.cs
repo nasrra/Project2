@@ -3,25 +3,30 @@ using UnityEngine;
 public class LockOnTargetTest : MonoBehaviour
 {
 
-    [SerializeField] private new CameraController camera;
+    [SerializeField] private new Entropek.Camera.CameraController camera;
     [SerializeField] private Transform lockOnTarget;
 
-    void OnEnable(){
+    void OnEnable()
+    {
         InputManager.Singleton.LockOnToggle += Toggle;
     }
 
-    void OnDisable(){
-        InputManager.Singleton.LockOnToggle -= Toggle;        
+    void OnDisable()
+    {
+        InputManager.Singleton.LockOnToggle -= Toggle;
     }
 
     bool toggled;
-    void Toggle(){
-        if(toggled==false){
+    void Toggle()
+    {
+        if (toggled == false)
+        {
             camera.SetLockOnTarget(lockOnTarget);
         }
-        else{
+        else
+        {
             camera.SetLockOnTarget(null);
         }
-        toggled=!toggled;
+        toggled = !toggled;
     }
 }

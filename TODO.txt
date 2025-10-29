@@ -41,6 +41,7 @@
 + added new timer and timer manager editors.
 + scafolded "turn around before action" beahviour for enemies.
 + Slink bite attack.
++ Player Stagger State
 
 ======== TODO ========
 
@@ -67,7 +68,8 @@
         - Circle Walk Around Target.
         + Turn Around To Target (may only do this when choosing an attack option though).
 
- + Player Stagger State
+- rework health class to callback Damage for both health a shield damage.
+- clip callback float for Damage to not exceed health when going below zero.
 
 
 ==== BACK BURNER =====

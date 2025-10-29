@@ -27,7 +27,8 @@ public class Player : MonoBehaviour {
 
 
     [Header("Components")]
-    [SerializeField] private CameraController cam;
+    [SerializeField] private Entropek.Camera.CameraController cam;
+    [SerializeField] private Entropek.Camera.CameraPostProcessingController cameraPostProcessing;
     [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
@@ -83,13 +84,31 @@ public class Player : MonoBehaviour {
 
     private const float AttackLungeForce = 4.44f;
     private const float AttackLungeDecaySpeed = AttackLungeForce * 3f;
+    private const float AttackShieldRestorationAmount = 5f;
+    private const float AttackHitCameraShakeForce = 4f;
+    private const float AttackHitCameraShakeTime = 0.167f;
+    private const float AttackHitLensDistortionIntensity = 0.24f;
+    private const float AttackHitLensDistortionDuration = 0.16f;
+    private const float AttackHitMotionBlurDuration = 0.33f;
+    private const float AttackHitMotionBlurIntensity = 1f;
+
     private const float DodgeForce = 23.33f;
     private const float DodgeDecaySpeed = DodgeForce * 2.66f;
+    
     private const float FaceMoveDirectionSpeed = 16.7f;
     private const float FaceAttackDirectionSpeed = 16.7f;
-    private const float AttackHitCameraShakeForce = 3.33f;
-    private const float AttackHitCameraShakeTime = 0.167f;
-    private const float AttackShieldRestorationAmount = 5f;
+    
+    
+    private const float DamagedCameraShakeStrength = 7.77f;
+    private const float DamagedCameraShakeTime = 0.33f;
+    private const float DamagedVignettePulseInIntensity = 0.25f;
+    private const float DamagedVignettePulseOutIntensity = 0f;
+    private const float DamagedVignettePulseInDuration = 0.167f;
+    private const float DamagedVignettePulseOutDuration = 1f;
+    private const float DamagedLensDistortionIntensity = 0.45f;
+    private const float DamagedLensDistortionDuration = 0.16f;
+    private const float DamagedMotionBlurDuration = 0.66f;
+    private const float DamagedMotionBlurIntensity = 1f;
 
 
     /// 
@@ -308,8 +327,6 @@ public class Player : MonoBehaviour {
 
     public void StartAttack()
     {
-            Debug.Log("attack");
-
         playerState = PlayerState.Attack;
 
 
@@ -476,6 +493,25 @@ public class Player : MonoBehaviour {
     }
 
     private void OnHealthDamaged(float amount){
+        cam.StartShaking(DamagedCameraShakeStrength, DamagedCameraShakeTime);
+
+        cameraPostProcessing.PulseVignetteIntensity(
+            DamagedVignettePulseInDuration,
+            DamagedVignettePulseOutDuration,
+            DamagedVignettePulseInIntensity,
+            DamagedVignettePulseOutIntensity
+        );
+
+        cameraPostProcessing.PulseMotionBlurIntensity(
+            DamagedMotionBlurDuration,
+            DamagedMotionBlurIntensity
+        );
+
+        cameraPostProcessing.PulseLensDistortionIntensity(
+            DamagedLensDistortionDuration,
+            DamagedLensDistortionIntensity
+        );
+
         EnterStagger();
     }
 
@@ -563,6 +599,18 @@ public class Player : MonoBehaviour {
         vfx.PlayVfx(AttackHitVfxId, hitPoint, transform.forward);
         health.RestoreShield(AttackShieldRestorationAmount);
         cam.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
+
+        cameraPostProcessing.PulseLensDistortionIntensity(
+            AttackHitLensDistortionDuration,
+            AttackHitLensDistortionIntensity
+        );
+
+        cameraPostProcessing.PulseMotionBlurIntensity(
+            AttackHitMotionBlurDuration,
+            AttackHitMotionBlurIntensity
+        );
+        
+        audioPlayer.PlaySound("MeleeHit", hitPoint);
     }
 
 
