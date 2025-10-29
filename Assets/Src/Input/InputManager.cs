@@ -5,26 +5,51 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
 [DefaultExecutionOrder(-10)]
-public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
+public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayActions{
     
     public static InputManager Singleton {get;private set;}
-
     public InputActions inputActions {get; private set;}
 
     void Awake(){
         inputActions = new InputActions();
-        inputActions.Enable();
+        // inputActions.Enable(); <-- this enables all input action maps.
         EnableGameplayInput();
     }
 
-    public void EnableGameplayInput(){
+    public bool EnableGameplayInput(){
+        
+        // short ccircuit if the input map is already enabled.
+        
+        if (inputActions.Gameplay.enabled == true)
+        {
+            return false;
+        }
+
+        // enable.
+
         inputActions.Gameplay.Enable();
         inputActions.Gameplay.SetCallbacks(this);
+        inputActions.Gameplay.Get().actionTriggered += HandleInputActionDeviceType;
+        
+        return true;
     }
 
-    public void DisableGameplayInput(){
+    public bool DisableGameplayInput(){
+        
+        // short circuit if alread disabled.
+
+        if(inputActions.Gameplay.enabled == false)
+        {
+            return false;
+        }
+        
+        // disable.
+
         inputActions.Gameplay.Disable();
         inputActions.Gameplay.RemoveCallbacks(this);
+        inputActions.Gameplay.Get().actionTriggered -= HandleInputActionDeviceType;
+    
+        return true;
     }
 
     public event Action<Vector2> Move;
@@ -113,14 +138,23 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
         }
     }
 
+
+    /// 
+    /// Bootstrap Singleton.
+    /// 
+
+
     private static class Bootstrap{
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialise(){            
             GameObject main = new();
             main.name = "InputManager";
-            main.AddComponent<InputManager>();
+            Singleton = main.AddComponent<InputManager>();
             DontDestroyOnLoad(main);
-            Singleton=main.GetComponent<InputManager>();
+
+            // Start Polling for controllers.
+
+            Singleton.StartPollingControllers();
         }
     }
 }

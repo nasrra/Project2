@@ -66,10 +66,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -108,22 +108,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -289,10 +289,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -331,22 +331,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -512,10 +512,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -554,22 +554,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -735,10 +735,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -777,22 +777,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -958,10 +958,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -1000,22 +1000,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -1181,10 +1181,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -1223,22 +1223,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -1404,10 +1404,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -1446,22 +1446,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -1627,10 +1627,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -1669,22 +1669,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -1976,10 +1976,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -2018,22 +2018,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -2199,10 +2199,10 @@ VisualEffect:
       - m_Value: 0.001
         m_Name: RotateSpeed
         m_Overridden: 1
-      - m_Value: 26.64
+      - m_Value: 1670
         m_Name: RotationSpeed
         m_Overridden: 1
-      - m_Value: -135
+      - m_Value: -75
         m_Name: RotationStartOffset
         m_Overridden: 1
       - m_Value: 0.44
@@ -2241,22 +2241,22 @@ VisualEffect:
             inWeight: 0.33333334
             outWeight: 0.06666667
           - serializedVersion: 3
-            time: 0.31014174
-            value: 0.092941284
-            inSlope: -0.11741938
-            outSlope: -0.11741938
+            time: 0.4434818
+            value: 0.3905487
+            inSlope: -1.3777081
+            outSlope: -1.3777081
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.33333334
+            inWeight: 1
             outWeight: 1
           - serializedVersion: 3
             time: 1
             value: 0
-            inSlope: -0.008592911
-            outSlope: -0.008592911
+            inSlope: 0.088010214
+            outSlope: 0.088010214
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0.5541667
+            inWeight: 0.14583425
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2

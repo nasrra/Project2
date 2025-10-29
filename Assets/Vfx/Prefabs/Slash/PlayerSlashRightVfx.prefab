@@ -54,6 +54,9 @@ VisualEffect:
       - m_Value: 0.66
         m_Name: VoronoiEdge
         m_Overridden: 1
+      - m_Value: 1250
+        m_Name: RotationSpeed
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -67,7 +70,42 @@ VisualEffect:
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1.4184963
+            outSlope: 1.4184963
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.33043477
+          - serializedVersion: 3
+            time: 0.5
+            value: 0.85
+            inSlope: 0.14867468
+            outSlope: 0.14867468
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.99033815
+          - serializedVersion: 3
+            time: 2
+            value: 1
+            inSlope: 0.13452084
+            outSlope: 0.13452084
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.99903375
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: RotationSpeedCurve
+        m_Overridden: 1
     m_Gradient:
       m_Array: []
     m_NamedObject:

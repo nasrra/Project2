@@ -42,7 +42,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638973335765096906
+  lastModified: 638973842118318688
   FileSizes: []
   Exists: 1
 --- !u!114 &-4093084935808055269
@@ -114,7 +114,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638973330935893454
+  lastModified: 638973842118379241
   FileSizes:
   - Name: 
     Value: 1498
@@ -134,7 +134,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638973330935885827
+  lastModified: 638973842118370117
   FileSizes: []
   Exists: 1
 --- !u!114 &-3119746140194838632
@@ -198,7 +198,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3832436070927649410}
   cacheVersion: 131849
-  cacheTime: 638973335765096906
+  cacheTime: 638973842118379241
   SerializableEventsDict:
   - key: event:/Music/Awakening
     index: 0

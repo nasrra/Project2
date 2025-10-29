@@ -28,7 +28,7 @@ namespace Entropek.Camera
         [SerializeField] private Vector3 followOffset;
         private Vector2 inputSensitivity;
         public Vector2 MouseSensitivity;
-        public Vector2 GamepadSensitivity;
+        public Vector2 JoystickSensitivity;
         [SerializeField] private LayerMask obstructionLayer;
         private float shakeStrength;
 
@@ -449,17 +449,24 @@ namespace Entropek.Camera
         /// Input Sensitivity Handling.
         /// 
 
+
+        /// <summary>
+        /// Sets the input sensitivity of this camera to MouseSensitivity if the current input is a keyboard
+        /// and to GamepadSensitivity if the current input device is a gamepad.
+        /// </summary>
+
         private void InitialiseInputSensitivity()
         {
-            if (Input.Gamepad.Connected == false)
+            if (InputManager.Singleton.InputDeviceType == Input.InputDeviceType.KeyboardAndMouse)
             {
                 inputSensitivity = MouseSensitivity;
             }
             else
             {
-                inputSensitivity = GamepadSensitivity;
+                inputSensitivity = JoystickSensitivity;
             }
         }
+
 
         /// 
         /// Linkage.
@@ -470,7 +477,6 @@ namespace Entropek.Camera
         {
             LinkTimerEvents();
             LinkInputEvents();
-            LinkGamepadEvents();
             LinkLockOnTargetDetectorEvents();
         }
 
@@ -479,7 +485,6 @@ namespace Entropek.Camera
         {
             UnlinkTimerEvents();
             UnlinkInputEvents();
-            UnlinkGamepadEvents();
             UnlinkLockOnTargetDetectorEvents();
         }
 
@@ -539,6 +544,7 @@ namespace Entropek.Camera
             input.LockOnToggle += OnLockOnToggle;
             input.LockOnPrevious += OnLockOnPrevious;
             input.LockOnNext += OnLockOnNext;
+            input.InputDeviceTypeSet += OnInputDeviceTypeSet;
         }
 
         private void UnlinkInputEvents()
@@ -549,6 +555,7 @@ namespace Entropek.Camera
             input.LockOnToggle -= OnLockOnToggle;
             input.LockOnPrevious -= OnLockOnPrevious;
             input.LockOnNext -= OnLockOnNext;
+            input.InputDeviceTypeSet -= OnInputDeviceTypeSet;
         }
 
         private void OnLockOnToggle()
@@ -605,20 +612,9 @@ namespace Entropek.Camera
             }
         }
 
-        ///
-        /// Gamepad event linkage.
-        /// 
-
-        private void LinkGamepadEvents()
+        private void OnInputDeviceTypeSet(Input.InputDeviceType inputDeviceType)
         {
-            Input.Gamepad.Singleton.GamepadConnected += InitialiseInputSensitivity;
-            Input.Gamepad.Singleton.GamepadDisconnected += InitialiseInputSensitivity;
-        }
-
-        private void UnlinkGamepadEvents()
-        {
-            Input.Gamepad.Singleton.GamepadConnected -= InitialiseInputSensitivity;
-            Input.Gamepad.Singleton.GamepadDisconnected -= InitialiseInputSensitivity;
+            InitialiseInputSensitivity();
         }
     }
 

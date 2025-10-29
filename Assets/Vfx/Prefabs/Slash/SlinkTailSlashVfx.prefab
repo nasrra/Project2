@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8581327948538117689}
   - component: {fileID: 6313864609858437256}
   m_Layer: 0
-  m_Name: SlinkTailSlashVFx
+  m_Name: SlinkTailSlashVfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,6 +99,9 @@ VisualEffect:
       m_Array:
       - m_Value: 0.66
         m_Name: VoronoiEdge
+        m_Overridden: 1
+      - m_Value: 167
+        m_Name: RotationSpeed
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
