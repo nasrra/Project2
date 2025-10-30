@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -15,6 +16,13 @@ namespace Entropek.UnityUtils
     {
         private FieldInfo[] runtimeFields;
         private bool drawRuntimeFields = true;
+        private Dictionary<string, bool> foldoutStates = new();
+
+
+        /// 
+        /// Base.
+        /// 
+
 
         protected virtual void OnEnable()
         {
@@ -88,6 +96,10 @@ namespace Entropek.UnityUtils
                 {
                     EditorGUILayout.ObjectField(label, unityObj, field.FieldType, true);
                 }
+                else if(value is System.Collections.IList list)
+                {
+                    DrawList(label, list);
+                }
                 else
                 {
                     EditorGUILayout.LabelField(label, value?.ToString() ?? "null");
@@ -95,7 +107,43 @@ namespace Entropek.UnityUtils
             }
         }
 
+        protected void DrawList(string fieldName, System.Collections.IList list)
+        {
+            bool foldout = RetrieveFoldoutState(fieldName);
+            foldout = EditorGUILayout.Foldout(foldout, $"{fieldName} ({list.Count})");
+            foldoutStates[fieldName] = foldout;
 
+            if (foldout)
+            {
+                EditorGUI.indentLevel++;
+                for(int i = 0; i < list.Count; i++)
+                {
+                    var item = list[i];
+                    if (item is UnityEngine.Object unityObj)
+                    {
+                        EditorGUILayout.ObjectField(item.GetType().Name, unityObj, unityObj.GetType(), true);
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField(item.GetType().Name, item?.ToString() ?? "null");                        
+                    }
+                }
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        private bool RetrieveFoldoutState(string foldoutName)
+        {
+            // Get or create a foldout state.
+
+            bool foldout;
+            if(foldoutStates.TryGetValue(foldoutName, out foldout) == true)
+            {
+                foldoutStates[foldoutName] = foldout;
+            }
+
+            return foldout;
+        }
     }    
 }
 

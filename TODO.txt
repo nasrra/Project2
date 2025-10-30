@@ -54,7 +54,7 @@
     - Attacks.
         + Bite.
         + Tail Swipe.
-        - Claw Swipe.
+        + Claw Swipe.
         - Dive Bomb.
 
     - Disengage.
@@ -72,6 +72,7 @@
 - rework health class to callback Damage for both health a shield damage.
 - clip callback float for Damage to not exceed health when going below zero.
 
+- Teleporter Charge Field.
 
 ==== BACK BURNER =====
 

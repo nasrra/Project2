@@ -49,10 +49,10 @@ namespace Entropek.Time{
         [RuntimeField] private float currentTime;
         public float CurrentTime => currentTime;
         
-        private float normalisedCurrentTime;
+        [RuntimeField] private float normalisedCurrentTime;
         public float NormalisedCurrentTime => normalisedCurrentTime;
 
-        protected TimerState state = TimerState.Halted; // default state for any timer is alaways halted.
+        [RuntimeField] protected TimerState state = TimerState.Halted; // default state for any timer is alaways halted.
         public TimerState State => state;
 
         [SerializeField] public bool BeginOnAwake;
