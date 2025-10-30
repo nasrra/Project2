@@ -16,10 +16,10 @@ MonoBehaviour:
   - title: Base Loop
     position:
       serializedVersion: 2
-      x: 234
+      x: 199
       y: -1433
-      width: 1093
-      height: 1774
+      width: 1128
+      height: 1914
     contents:
     - model: {fileID: 8926484042661614608}
       id: 0
@@ -52,6 +52,15 @@ MonoBehaviour:
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661615128}
+      id: 0
+      isStickyNote: 0
+    - model: {fileID: 8926484042661615008}
+      id: 0
+      isStickyNote: 0
+    - model: {fileID: 8926484042661615010}
+      id: 0
+      isStickyNote: 0
+    - model: {fileID: 8926484042661615020}
       id: 0
       isStickyNote: 0
   stickyNoteInfos: []
@@ -2685,7 +2694,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615009}
       inputSlot: {fileID: 8926484042661614984}
-    position: {x: 635, y: 50}
+    position: {x: 451, y: 203}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -2766,7 +2775,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615011}
       inputSlot: {fileID: 8926484042661615000}
-    position: {x: 613, y: 235}
+    position: {x: 429, y: 388}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -3145,7 +3154,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615021}
       inputSlot: {fileID: 8926484042661614980}
-    position: {x: 629, y: 319}
+    position: {x: 444, y: 135}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -3736,7 +3745,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615050}
       inputSlot: {fileID: 8926484042661615052}
-    position: {x: 466, y: 97}
+    position: {x: 224, y: 305}
     expandedSlots: []
     expanded: 1
     supecollapsed: 0
@@ -3790,7 +3799,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 624, y: 126}
+  m_UIPosition: {x: 440, y: 279}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:

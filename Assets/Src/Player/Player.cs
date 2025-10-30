@@ -512,6 +512,8 @@ public class Player : MonoBehaviour {
             DamagedLensDistortionIntensity
         );
 
+        audioPlayer.PlaySound("PlayerHit");
+
         EnterStagger();
     }
 

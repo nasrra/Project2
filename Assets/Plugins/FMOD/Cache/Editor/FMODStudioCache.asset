@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8131227900312437355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Player/PlayerHit
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Player/PlayerHit
+  Guid:
+    Data1: 174355687
+    Data2: 1265213822
+    Data3: -41595233
+    Data4: -627892046
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1560
 --- !u!114 &-7907255013272385460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22,6 +49,33 @@ MonoBehaviour:
   - {fileID: -6955079234322254397}
   IsStream: 0
   Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-7194456693447418904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Menu/MenuButtonAccepted
+  m_EditorClassIdentifier: 
+  Path: event:/Menu/MenuButtonAccepted
+  Guid:
+    Data1: -1851626670
+    Data2: 1082028315
+    Data3: 717985666
+    Data4: 1831709338
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
@@ -164,6 +218,150 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 30
   Length: 1071
+--- !u!114 &-2875021768336980086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Globals.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
+  Name: Globals
+  StudioPath: bank:/Globals
+  lastModified: 638974693531575103
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-2854114135667232134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Movement/Dodge/Dodge
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Movement/Dodge/Dodge
+  Guid:
+    Data1: 1376062932
+    Data2: 1220246141
+    Data3: 1950626728
+    Data4: -857318860
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2538706350703853652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/Slink/SlinkBite
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/Slink/SlinkBite
+  Guid:
+    Data1: 1716243137
+    Data2: 1284752071
+    Data3: -774470259
+    Data4: -272641615
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2519853073427545565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638974691132085926
+  FileSizes: []
+  Exists: 1
+--- !u!114 &-2267910940784852343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/Slink/SlinkTailSwipe
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/Slink/SlinkTailSwipe
+  Guid:
+    Data1: -1635090276
+    Data2: 1130969002
+    Data3: 900533902
+    Data4: 155356271
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 35
+  Length: 600
+--- !u!114 &-568547559401313771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/Slink/SlinkClawSlash
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/Slink/SlinkClawSlash
+  Guid:
+    Data1: -1962878496
+    Data2: 1257628129
+    Data3: 634180257
+    Data4: 354581221
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 35
+  Length: 600
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,51 +375,111 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -3832436070927649410}
-  - {fileID: -3814601106733631365}
-  - {fileID: -6955079234322254397}
+  - {fileID: 8146968385664048423}
+  - {fileID: -2875021768336980086}
+  - {fileID: -2519853073427545565}
   EditorEvents:
-  - {fileID: 1537877236414561769}
-  - {fileID: 9213142153004916282}
-  - {fileID: 6246238936929300101}
-  - {fileID: 1502746064291429577}
-  - {fileID: 6859072056017952893}
-  - {fileID: -7907255013272385460}
-  - {fileID: -4093084935808055269}
-  - {fileID: 8248852890597649268}
-  - {fileID: -4039813928244868927}
-  - {fileID: -3119746140194838632}
-  - {fileID: 9004772612350915906}
+  - {fileID: 4069379677724185348}
+  - {fileID: 292067498568191822}
+  - {fileID: 2580687608405566772}
+  - {fileID: -7194456693447418904}
+  - {fileID: 1005399292320354465}
+  - {fileID: 2496392046152957449}
+  - {fileID: -2267910940784852343}
+  - {fileID: 6198180318605954092}
+  - {fileID: -2538706350703853652}
+  - {fileID: -2854114135667232134}
+  - {fileID: -568547559401313771}
+  - {fileID: 4188082517680241345}
+  - {fileID: -8131227900312437355}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -3814601106733631365}
+  - {fileID: -2519853073427545565}
   StringsBanks:
-  - {fileID: -3832436070927649410}
+  - {fileID: 8146968385664048423}
   cacheVersion: 131849
-  cacheTime: 638973842118379241
+  cacheTime: 638974693531575103
   SerializableEventsDict:
-  - key: event:/Music/Awakening
-    index: 0
-  - key: event:/Menu/MenuButtonAccepted
-    index: 1
-  - key: event:/Sfx/Weapons/MeleeSwing
-    index: 2
-  - key: event:/Sfx/Movement/Dodge/Dodge
-    index: 3
   - key: event:/Sfx/Enemies/Slink/SlinkGrowl
+    index: 0
+  - key: event:/Sfx/Movement/Footsteps/FootstepGrassLight
+    index: 1
+  - key: event:/Music/Awakening
+    index: 2
+  - key: event:/Menu/MenuButtonAccepted
+    index: 3
+  - key: event:/Sfx/Movement/Footsteps/FootstepGrassMedium
     index: 4
-  - key: event:/Sfx/Enemies/Slink/SlinkBite
+  - key: event:/Sfx/Weapons/MeleeSwing
     index: 5
   - key: event:/Sfx/Enemies/Slink/SlinkTailSwipe
     index: 6
   - key: event:/Sfx/Enemies/SmallWingsFlap
     index: 7
-  - key: event:/Sfx/Movement/Footsteps/FootstepGrassLight
+  - key: event:/Sfx/Enemies/Slink/SlinkBite
     index: 8
-  - key: event:/Sfx/Movement/Footsteps/FootstepGrassMedium
+  - key: event:/Sfx/Movement/Dodge/Dodge
     index: 9
-  - key: event:/Sfx/Weapons/MeleeHit
+  - key: event:/Sfx/Enemies/Slink/SlinkClawSlash
     index: 10
+  - key: event:/Sfx/Weapons/MeleeHit
+    index: 11
+  - key: event:/Sfx/Player/PlayerHit
+    index: 12
+--- !u!114 &292067498568191822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Movement/Footsteps/FootstepGrassLight
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Movement/Footsteps/FootstepGrassLight
+  Guid:
+    Data1: -1153029840
+    Data2: 1134232239
+    Data3: -280544855
+    Data4: 1108387341
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 420
+--- !u!114 &1005399292320354465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Movement/Footsteps/FootstepGrassMedium
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Movement/Footsteps/FootstepGrassMedium
+  Guid:
+    Data1: 997195875
+    Data2: 1157537497
+    Data3: 409345438
+    Data4: -1626155584
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 30
+  Length: 1071
 --- !u!114 &1502746064291429577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +534,141 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 96912
+--- !u!114 &2496392046152957449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Weapons/MeleeSwing
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Weapons/MeleeSwing
+  Guid:
+    Data1: -1968382350
+    Data2: 1213158621
+    Data3: -414516066
+    Data4: -338747788
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1200
+--- !u!114 &2580687608405566772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Awakening
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Awakening
+  Guid:
+    Data1: 751240770
+    Data2: 1211033374
+    Data3: -1030966900
+    Data4: -2103224082
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 96912
+--- !u!114 &4069379677724185348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/Slink/SlinkGrowl
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/Slink/SlinkGrowl
+  Guid:
+    Data1: 832309007
+    Data2: 1313915624
+    Data3: 1043678137
+    Data4: -1806564988
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1152
+--- !u!114 &4188082517680241345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Weapons/MeleeHit
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Weapons/MeleeHit
+  Guid:
+    Data1: -899890190
+    Data2: 1199216818
+    Data3: 584388019
+    Data4: 2028901576
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1080
+--- !u!114 &6198180318605954092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/SmallWingsFlap
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/SmallWingsFlap
+  Guid:
+    Data1: -1725503058
+    Data2: 1142501474
+    Data3: -1403006042
+    Data4: -617571192
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 816
 --- !u!114 &6246238936929300101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +723,26 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1152
+--- !u!114 &8146968385664048423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638974691132103941
+  FileSizes:
+  - Name: 
+    Value: 1586
+  Exists: 1
 --- !u!114 &8248852890597649268
 MonoBehaviour:
   m_ObjectHideFlags: 0

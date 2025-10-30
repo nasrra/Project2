@@ -22,16 +22,19 @@ public class Slink : Enemy {
     [SerializeField] Entropek.Combat.Hitbox biteHitbox;
     [SerializeField] Entropek.Combat.Hitbox tailHitbox;
     [SerializeField] Entropek.Combat.Hitbox biteLungeHitbox;
+    [SerializeField] Entropek.Combat.Hitbox clawSlashHitbox;
 
     [Header("Vfx")]
     [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
     [SerializeField] Entropek.Vfx.SingleVfxPlayer tailSwipeVfx;
+    [SerializeField] Entropek.Vfx.CompositeVfxPlayer clawSlashVfx;
 
     private const string BiteAnimation = "Bite";
     private const string TailSwipeAnimation = "TailSwipe";
     private const string IdleAnimation = "Idle";
     private const string ChaseAnimation = "Walk";
     private const string DashForwardAnimation = "DashForward";
+    private const string ClawSlashAnimation = "ClawSlash";
 
     private const float BiteLungeForce = 24;
     private const float BiteLungeDecaySpeed = 36;
@@ -213,6 +216,23 @@ public class Slink : Enemy {
     }
 
     ///
+    /// Claw Slash
+    /// 
+
+    private void ClawSlash()
+    {
+        animator.Play(ClawSlashAnimation);
+        AttackState();
+    }
+
+    private void OnClawSlashAttackFrameAnimationEvent()
+    {
+        audioPlayer.PlaySound("SlinkClawSlash", gameObject);
+        clawSlashHitbox.Enable();
+        clawSlashVfx.Play();
+    }
+
+    ///
     /// Test Swivel.
     /// 
 
@@ -256,27 +276,25 @@ public class Slink : Enemy {
 
     protected override void OnCombatActionChosen(AiCombatAction action)
     {
-        if (action.TurnToTarget == true)
+        Action actionCallback;
+
+        switch (action.Name)
         {
-            switch (action.Name)
-            {
-                case "Bite":
-                    FaceTargetThenPerformAction(BiteAttack);
-                    break;
-                default:
-                    throw new NotImplementedException(action.Name);
-            }
+            case "Bite":        actionCallback = BiteAttack;       break;
+            case "TailSwipe":   actionCallback = TailSwipeAttack;  break;
+            case "TestSwivel":  actionCallback = TestSwivel;       break;
+            case "DashForward": actionCallback = DashForward;      break;
+            case "ClawSlash":   actionCallback = ClawSlash;        break;
+            default: throw new NotImplementedException(action.Name);
+        }
+
+        if(action.TurnToTarget == true)
+        {
+            FaceTargetThenPerformAction(actionCallback);
         }
         else
         {
-            switch (action.Name)
-            {
-                case "Bite":        BiteAttack();       break;
-                case "TailSwipe":   TailSwipeAttack();  break;
-                case "TestSwivel":  TestSwivel();       break;
-                case "DashForward": DashForward();      break;
-                default: throw new NotImplementedException(action.Name);
-            }
+            actionCallback();
         }
     }
 
@@ -336,6 +354,9 @@ public class Slink : Enemy {
             // Dash Forwards Animation Events.
 
             case "DashForwardLunge":        OnDashForwardLungeAnimationEvent();         return true;
+
+            // Claw Slash Animation Events.
+            case "ClawSlashAttackFrame":    OnClawSlashAttackFrameAnimationEvent();     return true;
 
             default: throw new InvalidOperationException("Animation Event Not Implemented "+eventName);
         }
