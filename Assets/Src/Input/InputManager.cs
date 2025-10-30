@@ -36,8 +36,10 @@ public class InputManager : MonoBehaviour, InputActions.IGameplayActions{
         Move?.Invoke(moveInput);
     }
 
+    public Vector3 LookDelta { get; private set; }
     public event Action<Vector2> Look; // delta mouse input.
     void InputActions.IGameplayActions.OnLook(InputAction.CallbackContext context){
+        LookDelta = context.ReadValue<Vector2>();
         Look?.Invoke(context.ReadValue<Vector2>());
     }
 

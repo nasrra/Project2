@@ -26,7 +26,9 @@ namespace Entropek.Camera
         private Vector3 desiredFollowDirection;
         private Vector3 targetShakerOffset;
         [SerializeField] private Vector3 followOffset;
-        [SerializeField] private Vector2 sensitivity;
+        private Vector2 inputSensitivity;
+        public Vector2 MouseSensitivity;
+        public Vector2 GamepadSensitivity;
         [SerializeField] private LayerMask obstructionLayer;
         private float shakeStrength;
 
@@ -57,6 +59,8 @@ namespace Entropek.Camera
                 SetFollowTarget(followTarget);
             }
 
+            InitialiseInputSensitivity();
+
             LinkEvents();
         }
 
@@ -67,6 +71,8 @@ namespace Entropek.Camera
 
         private void LateUpdate()
         {
+            ApplyDeltaMovementToLookRotation(InputManager.Singleton.LookDelta);
+
             // smoothly lerp to the follow targets position.
 
             CalculateSmoothedFollowPosition();
@@ -77,7 +83,7 @@ namespace Entropek.Camera
             // apply mouse rotation.
 
             transform.rotation = CalculateRotationToRelativeTarget();
-            
+
             // update shaker position.
 
             shaker.localPosition = CalculateShakerDeltaLocalPosition(targetShakerOffset);
@@ -300,6 +306,40 @@ namespace Entropek.Camera
             previousRotation = transform.rotation;
         }
 
+        /// <summary>
+        /// Increments the current look rotation. 
+        /// </summary>
+        /// <param name="deltaMovement">The amount of movement to apply.</param>
+
+        private void ApplyDeltaMovementToLookRotation(Vector2 deltaMovement)
+        {
+            deltaMovement *= inputSensitivity;
+            Vector3 eulerAngles = lookRotation.eulerAngles;
+
+            // Convert pitch (x) to -180..180 range
+            // as Unity never gives angles from -180..180,
+            // always 0-360.
+
+            float pitch = eulerAngles.x;
+            if (pitch > 180f) pitch -= 360f;
+
+            // Apply delta and clamp
+
+            pitch = Mathf.Clamp(pitch - deltaMovement.y, LowerPitchLimit, UpperPitchLimit);
+
+            // apply yaw.
+
+            float yaw = eulerAngles.y + deltaMovement.x;
+
+            // set the new rotation.
+
+            lookRotation = Quaternion.Euler(pitch, yaw, 0f);
+        }
+
+
+        ///
+        /// Shaker Functions.
+        /// 
 
 
         /// <summary>
@@ -405,6 +445,22 @@ namespace Entropek.Camera
         }
 
 
+        ///
+        /// Input Sensitivity Handling.
+        /// 
+
+        private void InitialiseInputSensitivity()
+        {
+            if (Input.Gamepad.Connected == false)
+            {
+                inputSensitivity = MouseSensitivity;
+            }
+            else
+            {
+                inputSensitivity = GamepadSensitivity;
+            }
+        }
+
         /// 
         /// Linkage.
         /// 
@@ -414,6 +470,7 @@ namespace Entropek.Camera
         {
             LinkTimerEvents();
             LinkInputEvents();
+            LinkGamepadEvents();
             LinkLockOnTargetDetectorEvents();
         }
 
@@ -422,6 +479,7 @@ namespace Entropek.Camera
         {
             UnlinkTimerEvents();
             UnlinkInputEvents();
+            UnlinkGamepadEvents();
             UnlinkLockOnTargetDetectorEvents();
         }
 
@@ -478,7 +536,6 @@ namespace Entropek.Camera
 
             InputManager input = InputManager.Singleton;
 
-            input.Look += OnLook;
             input.LockOnToggle += OnLockOnToggle;
             input.LockOnPrevious += OnLockOnPrevious;
             input.LockOnNext += OnLockOnNext;
@@ -489,35 +546,9 @@ namespace Entropek.Camera
 
             InputManager input = InputManager.Singleton;
 
-            input.Look -= OnLook;
             input.LockOnToggle -= OnLockOnToggle;
             input.LockOnPrevious -= OnLockOnPrevious;
             input.LockOnNext -= OnLockOnNext;
-        }
-
-        private void OnLook(Vector2 deltaMovement)
-        {
-            deltaMovement *= sensitivity;
-            Vector3 eulerAngles = lookRotation.eulerAngles;
-
-            // Convert pitch (x) to -180..180 range
-            // as Unity never gives angles from -180..180,
-            // always 0-360.
-
-            float pitch = eulerAngles.x;
-            if (pitch > 180f) pitch -= 360f;
-
-            // Apply delta and clamp
-
-            pitch = Mathf.Clamp(pitch - deltaMovement.y, LowerPitchLimit, UpperPitchLimit);
-
-            // apply yaw.
-
-            float yaw = eulerAngles.y + deltaMovement.x;
-
-            // set the new rotation.
-
-            lookRotation = Quaternion.Euler(pitch, yaw, 0f);
         }
 
         private void OnLockOnToggle()
@@ -574,6 +605,21 @@ namespace Entropek.Camera
             }
         }
 
+        ///
+        /// Gamepad event linkage.
+        /// 
+
+        private void LinkGamepadEvents()
+        {
+            Input.Gamepad.Singleton.GamepadConnected += InitialiseInputSensitivity;
+            Input.Gamepad.Singleton.GamepadDisconnected += InitialiseInputSensitivity;
+        }
+
+        private void UnlinkGamepadEvents()
+        {
+            Input.Gamepad.Singleton.GamepadConnected -= InitialiseInputSensitivity;
+            Input.Gamepad.Singleton.GamepadDisconnected -= InitialiseInputSensitivity;
+        }
     }
 
 }
