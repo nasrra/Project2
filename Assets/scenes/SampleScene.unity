@@ -11156,7 +11156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Charge Time
-  initialTime: 0.1
+  initialTime: 5
   BeginOnAwake: 0
 --- !u!43 &771267188
 Mesh:

@@ -22,6 +22,11 @@ public class ChargeField : MonoBehaviour
     [SerializeField] private LayerMask chargerObjectLayer;
     [Entropek.UnityUtils.Attributes.RuntimeField] private SwapbackList<GameObject> chargerObjectsInRange = new();
     [Entropek.UnityUtils.Attributes.RuntimeField] private State state = State.Depleted;
+    [Entropek.UnityUtils.Attributes.RuntimeField] private float progress;
+    public float Progress => progress;
+
+    private Coroutine PollChargerObjectsCoroutine;
+    private Coroutine PollTimerProgressCoroutine;
 
     /// 
     /// Base.
@@ -30,7 +35,6 @@ public class ChargeField : MonoBehaviour
     void Awake()
     {
         LinkEvents();
-        StartCoroutine(PollChargerObjects());    
     }
 
     void OnDestroy()
@@ -67,10 +71,13 @@ public class ChargeField : MonoBehaviour
     private void DepletedState()
     {
         state = State.Depleted;
+
+        StopAllCoroutines();
     }
 
     private void ChargingState()
     {
+        
         switch (state)
         {
             case State.Depleted:
@@ -80,18 +87,27 @@ public class ChargeField : MonoBehaviour
                 timer.Resume();
             break;
         }
+        
         state = State.Charging;
+                
+        Entropek.UnityUtils.Coroutine.Replace(this, ref PollChargerObjectsCoroutine, PollChargerObjects());
+        Entropek.UnityUtils.Coroutine.Replace(this, ref PollTimerProgressCoroutine, PollTimerProgress());
     }
 
     private void PausedState()
     {
         state = State.Paused;
         timer.Pause();
+
+        StopAllCoroutines();
     }
 
     private void ChargedState()
     {
         state = State.Charged;
+        progress = 100;
+
+        StopAllCoroutines();
     }
 
 
@@ -154,6 +170,7 @@ public class ChargeField : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// Polls all tracked charger objects, removing any that may now be null due to gameObject deallocation.
     /// </summary>
@@ -163,6 +180,13 @@ public class ChargeField : MonoBehaviour
     {
         while (true)
         {
+            // poll charger objects every second.
+            // Note:
+            //  Wait the second first so that when an object enters range,
+            //  the charge field doesnt immediately finish.
+
+            yield return new WaitForSeconds(1);
+            
             // only poll if this has started charging.
 
             if(state != State.Depleted && state != State.Charged)
@@ -172,9 +196,16 @@ public class ChargeField : MonoBehaviour
                 CheckChargerObjectsInRange();                
             }
 
-            // poll charger objects every second.
 
-            yield return new WaitForSeconds(1);
+        }
+    }
+
+    private IEnumerator PollTimerProgress()
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            progress = (1-timer.NormalisedCurrentTime) * 100;
         }
     }
 
