@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -92,18 +93,21 @@ namespace Entropek.UnityUtils
             {
                 object value = field.GetValue(targetObj);
                 string label = ObjectNames.NicifyVariableName(field.Name);
-                if (value is UnityEngine.Object unityObj)
+                switch (value)
                 {
-                    EditorGUILayout.ObjectField(label, unityObj, field.FieldType, true);
-                }
-                else if(value is System.Collections.IList list)
-                {
-                    DrawList(label, list);
-                }
-                else
-                {
-                    EditorGUILayout.LabelField(label, value?.ToString() ?? "null");
-                }
+                    case UnityEngine.Object unityObj:
+                        EditorGUILayout.ObjectField(label, unityObj, field.FieldType, true);
+                        break;
+                    case System.Collections.IList list:
+                        DrawList(label, list);
+                        break;
+                    case System.Collections.IDictionary dictionary:
+                        DrawDicionary(label, dictionary);
+                        break;
+                    default:
+                        EditorGUILayout.LabelField(label, value?.ToString() ?? "null");
+                        break;
+                }                
             }
         }
 
@@ -114,8 +118,9 @@ namespace Entropek.UnityUtils
             foldoutStates[fieldName] = foldout;
 
             if (foldout)
-            {
+            {                
                 EditorGUI.indentLevel++;
+                
                 for(int i = 0; i < list.Count; i++)
                 {
                     var item = list[i];
@@ -128,9 +133,51 @@ namespace Entropek.UnityUtils
                         EditorGUILayout.LabelField(item.GetType().Name, item?.ToString() ?? "null");                        
                     }
                 }
+                
                 EditorGUI.indentLevel--;
             }
         }
+
+        protected void DrawDicionary(string fieldName, IDictionary dictionary)
+        {
+            bool foldout = RetrieveFoldoutState(fieldName);
+            foldout = EditorGUILayout.Foldout(foldout, $"{fieldName} ({dictionary.Count})");
+            foldoutStates[fieldName] = foldout;
+
+            if (foldout)
+            {
+                EditorGUI.indentLevel++;
+
+                foreach(DictionaryEntry kvp in dictionary)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    switch (kvp.Key)
+                    {
+                        case UnityEngine.Object unityObj:
+                            EditorGUILayout.ObjectField("", unityObj, unityObj.GetType(), true);
+                            break;
+                        default:
+                            EditorGUILayout.LabelField("", kvp.Key.GetType().Name ?? "null");                        
+                            break;
+                    }
+
+                    switch (kvp.Value)
+                    {
+                        case UnityEngine.Object unityObj:
+                            EditorGUILayout.ObjectField("", unityObj, unityObj.GetType(), true);
+                            break;
+                        default:
+                            EditorGUILayout.LabelField("", kvp.Value.ToString() ?? "null");
+                            break;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                EditorGUI.indentLevel--;
+            }
+        }
+
+
 
         private bool RetrieveFoldoutState(string foldoutName)
         {

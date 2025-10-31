@@ -1,5 +1,5 @@
 using System;
-using Entropek.Systems.Interaction;
+using Entropek.Interaction;
 using Entropek.Systems.Trails;
 using UnityEngine;
 using Entropek.Physics;

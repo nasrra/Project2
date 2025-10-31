@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Entropek.Collections;
 using UnityEngine;
@@ -6,22 +7,24 @@ using UnityEngine;
 [RequireComponent(typeof(Entropek.Time.OneShotTimer))]
 public class ChargeField : MonoBehaviour
 {
-    private enum State : byte
-    {
-        Depleted,   // default as depleted.
-        Charging,   // when a charger object has entered the field.
-        Paused,     // when a charger has no chargers inside the field but has been charged. 
-        Charged,    // the field is fully charged.
-    }
+    public event Action OnStandby;
+    public event Action OnCharging;
+    public event Action OnDepleted;
+    public event Action OnCharged;
 
     [Header("Components")]
-    [SerializeField] private new Collider collider;
+    [SerializeField] private Collider triggerCollider;
     [SerializeField] private Entropek.Time.OneShotTimer timer;
 
     [Header("Data")]
-    [SerializeField] private LayerMask chargerObjectLayer;
+    
     [Entropek.UnityUtils.Attributes.RuntimeField] private SwapbackList<GameObject> chargerObjectsInRange = new();
-    [Entropek.UnityUtils.Attributes.RuntimeField] private State state = State.Depleted;
+    
+    [SerializeField] private LayerMask chargerObjectLayer;
+    
+    [Entropek.UnityUtils.Attributes.RuntimeField] private ChargeFieldState state = ChargeFieldState.Depleted;
+    public ChargeFieldState State => state;
+    
     [Entropek.UnityUtils.Attributes.RuntimeField] private float progress;
     public float Progress => progress;
 
@@ -63,16 +66,19 @@ public class ChargeField : MonoBehaviour
         }
     }
 
+
     ///
     /// State Machine.
     /// 
 
-    
+
     private void DepletedState()
     {
-        state = State.Depleted;
+        state = ChargeFieldState.Depleted;
 
         StopAllCoroutines();
+
+        OnDepleted?.Invoke();
     }
 
     private void ChargingState()
@@ -80,34 +86,39 @@ public class ChargeField : MonoBehaviour
         
         switch (state)
         {
-            case State.Depleted:
+            case ChargeFieldState.Depleted:
                 timer.Begin();
             break;
-            case State.Paused:
+            case ChargeFieldState.Standy:
                 timer.Resume();
             break;
         }
         
-        state = State.Charging;
+        state = ChargeFieldState.Charging;
                 
         Entropek.UnityUtils.Coroutine.Replace(this, ref PollChargerObjectsCoroutine, PollChargerObjects());
         Entropek.UnityUtils.Coroutine.Replace(this, ref PollTimerProgressCoroutine, PollTimerProgress());
+
+        OnCharging?.Invoke();
     }
 
-    private void PausedState()
+    private void StandbyState()
     {
-        state = State.Paused;
+        state = ChargeFieldState.Standy;
         timer.Pause();
 
         StopAllCoroutines();
+
+        OnStandby?.Invoke();
     }
 
     private void ChargedState()
     {
-        state = State.Charged;
+        state = ChargeFieldState.Charged;
         progress = 100;
-
         StopAllCoroutines();
+
+        OnCharged?.Invoke();
     }
 
 
@@ -136,7 +147,7 @@ public class ChargeField : MonoBehaviour
     {        
         // if there are currently no charger objects in the area.
 
-        if(state != State.Charged
+        if(state != ChargeFieldState.Charged
         && chargerObjectsInRange.Count == 0){
             ChargingState(); 
         }
@@ -163,10 +174,10 @@ public class ChargeField : MonoBehaviour
 
         // if there are no chargers in the field and this is not fully charged.
 
-        if(state != State.Charged
+        if(state != ChargeFieldState.Charged
         && chargerObjectsInRange.Count == 0)
         {
-            PausedState();
+            StandbyState();
         }
     }
 
@@ -189,7 +200,7 @@ public class ChargeField : MonoBehaviour
             
             // only poll if this has started charging.
 
-            if(state != State.Depleted && state != State.Charged)
+            if(state != ChargeFieldState.Depleted && state != ChargeFieldState.Charged)
             {
                 // remove any charger objects that may be null.
                 chargerObjectsInRange.RemoveAll(o => o == null);
@@ -234,5 +245,4 @@ public class ChargeField : MonoBehaviour
     {
         timer.Timeout -= ChargedState;        
     }
-
 }
