@@ -99,6 +99,33 @@ MonoBehaviour:
   lastModified: 638973842118318688
   FileSizes: []
   Exists: 1
+--- !u!114 &-6666042072242068795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Items/ArcStone/ArcStonePickup
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Items/ArcStone/ArcStonePickup
+  Guid:
+    Data1: -1541427616
+    Data2: 1327559303
+    Data3: 538364066
+    Data4: -372667263
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 720
 --- !u!114 &-5416507813752684155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +287,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638974936364623937
+  lastModified: 638975703285442779
   FileSizes: []
   Exists: 1
 --- !u!114 &-2854114135667232134
@@ -332,7 +359,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638974936364685984
+  lastModified: 638975702728849073
   FileSizes: []
   Exists: 1
 --- !u!114 &-2267910940784852343
@@ -421,13 +448,14 @@ MonoBehaviour:
   - {fileID: -8131227900312437355}
   - {fileID: 3731092912885796876}
   - {fileID: -5416507813752684155}
+  - {fileID: -6666042072242068795}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2519853073427545565}
   StringsBanks:
   - {fileID: 8146968385664048423}
   cacheVersion: 131849
-  cacheTime: 638974936364701013
+  cacheTime: 638975703285442779
   SerializableEventsDict:
   - key: event:/Sfx/Enemies/Slink/SlinkGrowl
     index: 0
@@ -459,6 +487,8 @@ MonoBehaviour:
     index: 13
   - key: event:/Sfx/Teleporter/TeleporterCharged
     index: 14
+  - key: event:/Sfx/Items/ArcStone/ArcStonePickup
+    index: 15
 --- !u!114 &292067498568191822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,10 +828,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638974936364701013
+  lastModified: 638975702728862104
   FileSizes:
   - Name: 
-    Value: 1696
+    Value: 1756
   Exists: 1
 --- !u!114 &8248852890597649268
 MonoBehaviour:

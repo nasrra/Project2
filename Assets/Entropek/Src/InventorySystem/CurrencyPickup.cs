@@ -1,4 +1,3 @@
-using Entropek.Interaction;
 using UnityEngine;
 
 namespace Entropek.InventorySystem
@@ -6,11 +5,17 @@ namespace Entropek.InventorySystem
     public class CurrencyPickup : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] private Interactable interactable;
+        [SerializeField] private Interaction.Interactable interactable;
 
         [Header("Data")]
         public Currency Currency;
         public uint Amount;
+
+
+        /// 
+        /// Base.
+        /// 
+
 
         private void Awake()
         {
@@ -21,6 +26,12 @@ namespace Entropek.InventorySystem
         {
             UnlinkEvents();
         }
+
+
+        /// 
+        /// Linkage.
+        /// 
+
 
         private void LinkEvents()
         {
@@ -42,9 +53,12 @@ namespace Entropek.InventorySystem
             interactable.Interacted -= OnInteracted;            
         }
 
-        private void OnInteracted(Interactor interactor)
+        private void OnInteracted(Interaction.Interactor interactor)
         {
-            interactor.GetComponent<Inventory>().AddCurrency(Currency, Amount);
+            // access root gameobject as the interactor gameobject is not expected
+            // to contain te inventory component.
+
+            interactor.RootGameObject.GetComponent<Inventory>().AddCurrency(Currency, Amount);
         }
     }    
 }

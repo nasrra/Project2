@@ -5,6 +5,7 @@ namespace Entropek.Interaction{
 
 
     [RequireComponent(typeof(SphereCollider))]
+    [RequireComponent(typeof(Rigidbody))]
     public class Interactable : MonoBehaviour{
 
         public event Action<Interactor> Interacted;

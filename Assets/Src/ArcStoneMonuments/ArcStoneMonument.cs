@@ -1,4 +1,3 @@
-using Entropek.Interaction;
 using UnityEngine;
 
 public class ArcStoneMonument : MonoBehaviour
@@ -6,10 +5,10 @@ public class ArcStoneMonument : MonoBehaviour
 
     [Header("Components")]
     [Tooltip("Note: The charge field gameObject should always start disabled.")]
-    [SerializeField] private ChargeField chargeField;
     [SerializeField] private Entropek.Interaction.Interactable interactable;
-    [SerializeField] private Entropek.Audio.AudioPlayer audioPlayer;
-    [SerializeField] private Animator chargeFieldGraphicsAnimator;
+    [SerializeField] private ArcField arcField;
+    [Tooltip("The ArcStone should be disabled in the editor.")]
+    [SerializeField] private GameObject arcStone;
 
 
     /// 
@@ -36,13 +35,13 @@ public class ArcStoneMonument : MonoBehaviour
     private void LinkEvents()
     {
         LinkInteractableEvents();
-        LinkChargeFieldEvents();
+        LinkArcFieldEvents();
     }
 
     private void UnlinkEvents()
     {
         UnlinkInteractableEvents();
-        UnlinkChargeFieldEvents();
+        UnlinkArcFieldEvents();
     }
 
     private void LinkInteractableEvents()
@@ -55,29 +54,25 @@ public class ArcStoneMonument : MonoBehaviour
         interactable.Interacted -= OnInteracted;        
     }
 
-    private void OnInteracted(Interactor interactor)
+    private void OnInteracted(Entropek.Interaction.Interactor interactor)
     {
         interactable.DisableInteraction();
-        chargeField.enabled = true;
-        chargeFieldGraphicsAnimator.Play("Expand");
-        audioPlayer.PlaySound("TeleporterExpanded", transform.position);
+        arcField.Activate();
     }
 
-    private void LinkChargeFieldEvents()
+    private void LinkArcFieldEvents()
     {
-        chargeField.OnCharged += OnChargeFieldCharged;
+        arcField.ChargeField.Charged += OnArcFieldCharged;
     }
 
-    private void UnlinkChargeFieldEvents()
+    private void UnlinkArcFieldEvents()
     {
-        chargeField.OnCharged -= OnChargeFieldCharged;
+        arcField.ChargeField.Charged -= OnArcFieldCharged;
     }
 
-    private void OnChargeFieldCharged()
+    private void OnArcFieldCharged()
     {
-        chargeField.enabled = false;
-        chargeFieldGraphicsAnimator.Play("Shrink");
-        audioPlayer.PlaySound("TeleporterCharged", transform.position);
+        arcStone.SetActive(true);
     }
 
 }

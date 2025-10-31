@@ -7,10 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(Entropek.Time.OneShotTimer))]
 public class ChargeField : MonoBehaviour
 {
-    public event Action OnStandby;
-    public event Action OnCharging;
-    public event Action OnDepleted;
-    public event Action OnCharged;
+    public event Action Standby;
+    public event Action Charging;
+    public event Action Depleted;
+    public event Action Charged;
 
     [Header("Components")]
     [SerializeField] private Collider triggerCollider;
@@ -45,7 +45,7 @@ public class ChargeField : MonoBehaviour
         UnlinkEvents();
         StopAllCoroutines();
     }
-
+    
     public void OnTriggerEnter(Collider other)
     {        
         GameObject otherGameObject = other.gameObject;
@@ -78,7 +78,7 @@ public class ChargeField : MonoBehaviour
 
         StopAllCoroutines();
 
-        OnDepleted?.Invoke();
+        Depleted?.Invoke();
     }
 
     private void ChargingState()
@@ -99,7 +99,7 @@ public class ChargeField : MonoBehaviour
         Entropek.UnityUtils.Coroutine.Replace(this, ref PollChargerObjectsCoroutine, PollChargerObjects());
         Entropek.UnityUtils.Coroutine.Replace(this, ref PollTimerProgressCoroutine, PollTimerProgress());
 
-        OnCharging?.Invoke();
+        Charging?.Invoke();
     }
 
     private void StandbyState()
@@ -109,7 +109,7 @@ public class ChargeField : MonoBehaviour
 
         StopAllCoroutines();
 
-        OnStandby?.Invoke();
+        Standby?.Invoke();
     }
 
     private void ChargedState()
@@ -118,7 +118,7 @@ public class ChargeField : MonoBehaviour
         progress = 100;
         StopAllCoroutines();
 
-        OnCharged?.Invoke();
+        Charged?.Invoke();
     }
 
 

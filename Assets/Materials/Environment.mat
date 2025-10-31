@@ -66,6 +66,7 @@ Material:
     - _EdgeShadowAttenuation: 1
     - _EdgeSpecular: 1
     - _EdgeSpecularOffset: 1
+    - _Emission: 1
     - _FullLight: 0.167
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1

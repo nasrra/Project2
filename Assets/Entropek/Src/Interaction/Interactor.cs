@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Entropek.Exceptions;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
@@ -11,6 +12,10 @@ namespace Entropek.Interaction{
         [RuntimeField] private List<Interactable> interactablesNotInSight = new List<Interactable>();
 
         [Header("Data")]
+        [Tooltip("The gameobject at the top of the local hierarchy that holds this interactor (Player, Enemy, item, etc.)")]
+        [SerializeField] private GameObject rootGameObject;
+        public GameObject RootGameObject => rootGameObject;
+
         [SerializeField] LayerMask obstructionLayers;
         private int index;
 
@@ -75,7 +80,14 @@ namespace Entropek.Interaction{
             VerifyInteractableInRange();
 
             Interactable interactable = other.GetComponent<Interactable>();
-            
+
+#if UNITY_EDITOR
+            if(interactable == null)
+            {
+                throw new ComponentNotFoundException($"{other.name} does not contain the Interactable component.");                
+            }
+#endif
+
             if(InteractableInSight(interactable)==true){
         
                 // add the interactable if it is currently in sight.
