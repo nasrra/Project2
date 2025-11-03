@@ -71,7 +71,7 @@ namespace Entropek.Input
 
             // if there were no controllers connected last call and the josytick names has entries.
 
-            if (IsGamepadConnected == false && joystickNames[0] != "")
+            if (IsGamepadConnected == false && joystickNames.Length > 0 && joystickNames[0] != "")
             {
                 IsGamepadConnected = true;                
                 GamepadConnected?.Invoke();

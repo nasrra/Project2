@@ -19,10 +19,10 @@ public class Slink : Enemy {
     [SerializeField] Entropek.UnityUtils.BoneStagger boneStagger;
 
     [Header("Hitboxes")]
-    [SerializeField] Entropek.Combat.Hitbox biteHitbox;
-    [SerializeField] Entropek.Combat.Hitbox tailHitbox;
-    [SerializeField] Entropek.Combat.Hitbox biteLungeHitbox;
-    [SerializeField] Entropek.Combat.Hitbox clawSlashHitbox;
+    [SerializeField] Entropek.Combat.TimedSingleHitbox biteHitbox;
+    [SerializeField] Entropek.Combat.TimedSingleHitbox tailHitbox;
+    [SerializeField] Entropek.Combat.TimedSingleHitbox biteLungeHitbox;
+    [SerializeField] Entropek.Combat.TimedSingleHitbox clawSlashHitbox;
 
     [Header("Vfx")]
     [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
@@ -166,14 +166,14 @@ public class Slink : Enemy {
 
     private void OnBiteAttackFrameAnimationEvent()
     {
-        biteHitbox.Enable();
+        biteHitbox.Activate();
         biteVfx.Play();
         audioPlayer.PlaySound("SlinkBite", gameObject);
     }
 
     private void OnBiteLungeAttackFrameAnimationEvent()
     {
-        biteLungeHitbox.Enable();
+        biteLungeHitbox.Activate();
     }
 
     /// 
@@ -190,7 +190,7 @@ public class Slink : Enemy {
     private void OnTailSwipeAttackFrameAnimationEvent()
     {
         tailSwipeVfx.Play();
-        tailHitbox.Enable();
+        tailHitbox.Activate();
         audioPlayer.PlaySound("SlinkTailSwipe", gameObject);
     }
 
@@ -228,7 +228,7 @@ public class Slink : Enemy {
     private void OnClawSlashAttackFrameAnimationEvent()
     {
         audioPlayer.PlaySound("SlinkClawSlash", gameObject);
-        clawSlashHitbox.Enable();
+        clawSlashHitbox.Activate();
         clawSlashVfx.Play();
     }
 

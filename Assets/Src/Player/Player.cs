@@ -46,8 +46,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
 
     [Header("HitBoxes")]
-    [SerializeField] private Entropek.Combat.Hitbox slashLeftHitBox;
-    [SerializeField] private Entropek.Combat.Hitbox slashRightHitBox;
+    [SerializeField] private Entropek.Combat.TimedSingleHitbox slashLeftHitBox;
+    [SerializeField] private Entropek.Combat.TimedSingleHitbox slashRightHitBox;
 
     /// 
     /// Data.
@@ -189,12 +189,12 @@ public class Player : MonoBehaviour {
         audioPlayer.PlaySound("MeleeSwing", transform.position);
         if (slashFlag == true)
         {
-            slashRightHitBox.Enable();
+            slashRightHitBox.Activate();
             vfx.PlayVfx(LeftSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
         }
         else
         {
-            slashLeftHitBox.Enable();
+            slashLeftHitBox.Activate();
             vfx.PlayVfx(RightSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
         }
     }
