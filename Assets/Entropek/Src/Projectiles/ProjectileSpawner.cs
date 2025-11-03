@@ -12,7 +12,7 @@ namespace Entropek.Projectiles
         
         void Awake()
         {
-            StartCoroutine(TestFire());
+            // StartCoroutine(TestFire());
         }
 
         public void Fire(int projectilePrefabId, int shootPointId)
@@ -24,6 +24,28 @@ namespace Entropek.Projectiles
 
             projectileTransform.position = shootPoint.position;
             projectileTransform.rotation = shootPoint.rotation;
+        }
+
+        public void Fire(int projectilePrefabId, int shootPointId, Vector3 direction)
+        {
+            Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
+            
+            Transform projectileTransform = projectile.transform;
+            Transform shootPoint = shootPoints[shootPointId];
+
+            projectileTransform.position = shootPoint.position;
+            projectileTransform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        public void Fire(int projectilePrefabId, int shootPointId, Transform transform)
+        {
+            Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
+            
+            Transform projectileTransform = projectile.transform;
+            Transform shootPoint = shootPoints[shootPointId];
+
+            projectileTransform.position = shootPoint.position;
+            projectileTransform.LookAt(transform); 
         }
 
         private IEnumerator TestFire()

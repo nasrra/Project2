@@ -5,14 +5,8 @@ namespace Entropek.Ai.Combat
     [RequireComponent(typeof(SphereCollider))]
     public class BasicAiCombatAgent : AiCombatAgent<BasicAiCombatAction>
     {
-        protected override void GeneratePossibleActions()
+        protected override void GeneratePossibleActions(in AiCombatAgentRelationToOpponentContext relationToOpponentContext)
         {
-            CalculateRelationToEngagedOpponent(
-                out Vector3 vectorDistanceToOpponent, 
-                out float distanceToOpponent, 
-                out float dotDirectionToOpponent
-            );
-
             // clear the previous evaluateion call options.
             
             possibleCombatActions.Clear();
@@ -30,13 +24,13 @@ namespace Entropek.Ai.Combat
 
                 // check if the target is currently in view of the action.
 
-                if (dotDirectionToOpponent < currentEvaluation.MinFov
-                || dotDirectionToOpponent > currentEvaluation.MaxFov)
+                if (relationToOpponentContext.DotDirectionToOpponent < currentEvaluation.MinFov
+                || relationToOpponentContext.DotDirectionToOpponent > currentEvaluation.MaxFov)
                 {
                     continue;
                 }
 
-                float score = currentEvaluation.Evaluate(distanceToOpponent);
+                float score = currentEvaluation.Evaluate(relationToOpponentContext.DistanceToOpponent);
 
                 possibleCombatActions.Add((currentEvaluation, score));
             }

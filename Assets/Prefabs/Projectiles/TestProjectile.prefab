@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitbox: {fileID: 2952783466885691917}
-  speed: 12
+  speed: 24
   lifetime: 1
 --- !u!33 &1864777987718189778
 MeshFilter:

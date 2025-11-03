@@ -1,6 +1,4 @@
 using System;
-using Entropek.Ai.Combat;
-using TreeEditor;
 using UnityEngine;
 
 public class Slink : Enemy {
@@ -48,12 +46,7 @@ public class Slink : Enemy {
     /// base.
     /// 
 
-    void Awake()
-    {
-        ChaseState();
-    }
-
-    void Start()
+    void OnEnable()
     {
         ChaseState();
     }
@@ -125,26 +118,13 @@ public class Slink : Enemy {
         FaceMoveDirection();
     }
 
-    private void AttackEndedState()
+    protected override void AttackEndedState()
     {
-        // get the attack that has just been completed. 
-
-        AiCombatAction endedAttack = combatAgent.ChosenCombatAction;
-
-        // evaulate for a new action immediately up time out if set to true.
-
-        if (endedAttack.EvaluateOnIdleTimeout == true)
-        {
-            stateQeueue.Enqueue(combatAgent.Evaluate);
-        }
-
+        base.AttackEndedState();
+        
         // go back to chasing when idle times out.
 
         stateQeueue.Enqueue(ChaseState);
-
-        // start idle state.
-
-        IdleState(endedAttack.IdleTime);
     }
 
 
@@ -274,7 +254,7 @@ public class Slink : Enemy {
     /// 
 
 
-    protected override void OnCombatActionChosen(AiCombatAction action)
+    protected override void OnCombatActionChosen(Entropek.Ai.Combat.AiCombatAction action)
     {
         Action actionCallback;
 
@@ -336,7 +316,6 @@ public class Slink : Enemy {
             // Generic Animations events.
             
             case "Footstep":                OnFootstepAnimationEvent();                 return true;
-            case "EndAttack":               AttackEndedState();                         return true;
             case "StartGrowl":              OnStartGrowlAnimationEvent();               return true;
             case "StopGrowl":               OnStopGrowlAnimationEvent();                return true;
             case "WingFlap":                OnWingFlapAnimationEvent();                 return true;

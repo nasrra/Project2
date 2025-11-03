@@ -1,11 +1,7 @@
-using Entropek.Systems;
 using UnityEngine;
-using Entropek;
-using Entropek.UnityUtils.AnimatorUtils;
 using System;
-using Entropek.Physics;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour 
 {
 
 
@@ -18,10 +14,10 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
     [SerializeField] protected Transform target;
     [SerializeField] protected Entropek.EntityStats.HealthSystem health;
-    [SerializeField] protected Entropek.Ai.Combat.ComplexAiCombatAgent combatAgent;
-    [SerializeField] protected AnimationEventReciever animationEventReciever;
-    [SerializeField] protected NavAgentMovement movement;
-    [SerializeField] protected ForceApplier forceApplier;
+    [SerializeField] protected Entropek.Ai.Combat.AiCombatAgentBase combatAgent;
+    [SerializeField] protected Entropek.UnityUtils.AnimatorUtils.AnimationEventReciever animationEventReciever;
+    [SerializeField] protected Entropek.Physics.NavAgentMovement movement;
+    [SerializeField] protected Entropek.Physics.ForceApplier forceApplier;
     [SerializeField] protected Entropek.Audio.AudioPlayer audioPlayer;
     [SerializeField] protected Entropek.Time.TimedActionQueue stateQeueue;
 
@@ -32,7 +28,7 @@ public abstract class Enemy : MonoBehaviour
 
 
     [Header(nameof(Enemy) + " Optional Components")]
-    [SerializeField] protected GroundCheck groundChecker;
+    [SerializeField] protected Entropek.Physics.GroundCheck groundChecker;
 
 
     /// 
@@ -51,12 +47,12 @@ public abstract class Enemy : MonoBehaviour
     /// 
 
 
-    void OnEnable()
+    void Awake()
     {
         LinkEvents();
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
         UnlinkEvents();
     }
@@ -69,6 +65,24 @@ public abstract class Enemy : MonoBehaviour
     public abstract void IdleState(float time);
     public abstract void ChaseState();
     public abstract void AttackState();
+
+    protected virtual void AttackEndedState()
+    {
+        // get the attack that has just been completed. 
+
+        Entropek.Ai.Combat.AiCombatAction endedAttack = combatAgent.ChosenCombatAction;
+
+        // evaulate for a new action immediately up time out if set to true.
+
+        if (endedAttack.EvaluateOnIdleTimeout == true)
+        {
+            stateQeueue.Enqueue(combatAgent.Evaluate);
+        }
+
+        // start idle state.
+
+        IdleState(endedAttack.IdleTime);
+    }
 
     /// 
     /// Functions. 
@@ -248,6 +262,11 @@ public abstract class Enemy : MonoBehaviour
             case "SetGraphicsObjectDirectionBackwards":
                 OnSetGraphicsObjectDirectionBackwardsAnimationEvent();
                 return true;
+
+            case "EndAttack":               
+                AttackEndedState();                         
+                return true;
+
             default:
                 return false;
         }

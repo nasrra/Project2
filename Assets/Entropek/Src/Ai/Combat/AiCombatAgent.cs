@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace Entropek.Ai.Combat
 {    
-    public abstract class AiCombatAgent<T> : MonoBehaviour where T : AiCombatAction
-    {
-        public event Action<AiCombatAction> ActionChosen;
-        public Action<Transform> EngagedOpponent;
-        
+    public abstract class AiCombatAgent<T> : AiCombatAgentBase where T : AiCombatAction
+    {        
+        public override event Action<AiCombatAction> ActionChosen;
+        public override event Action<Transform> EngagedOpponent;
+
         [Header("Components")]
         [SerializeField] protected Time.LoopedTimer evaluationIntervalTimer;
         private AiCombatAction chosenCombatAction;
-        public AiCombatAction ChosenCombatAction => chosenCombatAction;
+        public override AiCombatAction ChosenCombatAction => chosenCombatAction;
         protected Transform opponentTransform;
 
 
@@ -43,12 +43,11 @@ namespace Entropek.Ai.Combat
             UnlinkEvents();
         }
 
-
         /// <summary>
         /// Halts the evaluation loop.
         /// </summary>
 
-        public virtual void HaltEvaluationLoop()
+        public override void HaltEvaluationLoop()
         {
             evaluationIntervalTimer.Halt();
         }
@@ -57,7 +56,7 @@ namespace Entropek.Ai.Combat
         /// Begins the evaluation loop for choosing an desired action to take; per evaluation tick.
         /// </summary>
 
-        public virtual void BeginEvaluationLoop()
+        public override void BeginEvaluationLoop()
         {
             evaluationIntervalTimer.Begin();
         }
@@ -66,7 +65,7 @@ namespace Entropek.Ai.Combat
         /// Evaluates the agent in relation to its opponent and invokes the ActionChosen callback if an desireable action was found; possibly not invoking at all.
         /// </summary>
 
-        public void Evaluate()
+        public override void Evaluate()
         {
 
             // validate that out opponent is still active and not destroyed.
@@ -76,15 +75,17 @@ namespace Entropek.Ai.Combat
                 DisengageOpponent();
             }
 
-            GeneratePossibleActions();
-            ChoosePossibleAction();
+            CalculateRelationToEngagedOpponent(out AiCombatAgentRelationToOpponentContext relationToOpponentContext);
+            
+            GeneratePossibleActions(in relationToOpponentContext);
+            ChoosePossibleAction(in relationToOpponentContext);
         }
 
         /// <summary>
         /// Clears the currently engaged opponent and halts the evaluation loop.
         /// </summary>
 
-        public virtual void DisengageOpponent()
+        public override void DisengageOpponent()
         {
             isEngaged = false;
             opponentTransform = null;
@@ -96,7 +97,7 @@ namespace Entropek.Ai.Combat
         /// </summary>
         /// <param name="opponentTransform">The specified transform.</param>
 
-        public virtual void EngageOpponent(Transform opponentTransform)
+        public override void EngageOpponent(Transform opponentTransform)
         {
             isEngaged = true;
             this.opponentTransform = opponentTransform;
@@ -117,15 +118,16 @@ namespace Entropek.Ai.Combat
         /// <summary>
         /// Updates the possible actions array stored by this agent to contain a new set of desireable actions that can be chosen; sorted in descending order from most to least desireable.
         /// </summary>
+        /// <param name="relationToOpponentContext">The relational information between this agent and its engaged opponent.</param>
 
-        protected abstract void GeneratePossibleActions();
+        protected abstract void GeneratePossibleActions(in AiCombatAgentRelationToOpponentContext relationToOpponentContext);
                     
         /// <summary>
         /// Begins the cooldown timer for the chosen combat action, removing it as a possibility from the
         /// action choice pool until the timer has finished.
         /// </summary>
 
-        public void BeginChosenCombatActionCooldown()
+        public override void BeginChosenCombatActionCooldown()
         {
             chosenCombatAction.CooldownTimer.Begin();
         }
@@ -153,15 +155,15 @@ namespace Entropek.Ai.Combat
             }
         }
 
-
         /// <summary>
         /// Executes a random possible action, with probability of an action depending on how desirable it is.
         /// (eg. 100% desirability will allways occur, 50% desirability will only occur half the time).
         /// This function may return nothing if no action was chosen or found, link to the ActionChosen event to 
         /// recieve callbacks. 
         /// </summary>
+        /// <param name="relationToOpponentContext">The relational information between this agent and its engaged opponent.</param>
 
-        private void ChoosePossibleAction()
+        private void ChoosePossibleAction(in AiCombatAgentRelationToOpponentContext relationToOpponentContext)
         {
 
             // short-circuit if there are currently no possible actions.
@@ -199,21 +201,25 @@ namespace Entropek.Ai.Combat
         /// <summary>
         /// Gets the relative data for this frame between this agent and the engaged opponent.
         /// </summary>
-        /// <param name="vectorDistanceToOpponent">The vector distance between this agent and the engaged opponent.</param>
-        /// <param name="distanceToOpponent">The float distance between this agent and the engaged opponent.</param>
-        /// <param name="dotDirectionToOpponent">The dot product representing if the agent is facing (1) or looking away (-1) from the engaged opponent.</param>
+        /// <param name="vectorDistanceToOpponent">The vector distance from this agent to the engaged opponent.</param>
+        /// <param name="distanceToOpponent">The float distance from this agent to the engaged opponent.</param>
+        /// <param name="dotDirectionToOpponent">The dot product that represents if the agent is facing (1) or looking away (-1) from the engaged opponent.</param>
 
-        protected void CalculateRelationToEngagedOpponent(out Vector3 vectorDistanceToOpponent, out float distanceToOpponent, out float dotDirectionToOpponent)
+        protected void CalculateRelationToEngagedOpponent(out AiCombatAgentRelationToOpponentContext relationToOpponentContext)
         {
-            // get the data required for evaluation.
+            // Notes:
+            //  dotDirectionToOpponent needs to be negated because vector distance is reveresed for correct distance calculations, not dot product similarity.
+            //  vector distance could be negated instead but doing one negation on a float is faster then 3.
 
-            vectorDistanceToOpponent = transform.position - opponentTransform.position;
-            distanceToOpponent = vectorDistanceToOpponent.magnitude;
+            Vector3 vectorDistanceToOpponent = opponentTransform.position - transform.position;
+            float distanceToOpponent = vectorDistanceToOpponent.magnitude;
+            float dotDirectionToOpponent = Vector3.Dot(vectorDistanceToOpponent.normalized, transform.forward);
 
-            // dot needs to be negated because vector distance is reveresed for correct distance calculations, not dot product similarity.
-            // vector distance could be negated instead but doing one negation on a float is faster then 3.
-
-            dotDirectionToOpponent = -Vector3.Dot(vectorDistanceToOpponent.normalized, transform.forward);
+            relationToOpponentContext = new(
+                vectorDistanceToOpponent,
+                distanceToOpponent,
+                dotDirectionToOpponent 
+            );
         }
 
 
