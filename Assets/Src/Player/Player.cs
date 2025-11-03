@@ -40,7 +40,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private ForceApplier forceApplier;
     [SerializeField] private AudioPlayer audioPlayer;
     [SerializeField] private AnimationEventReciever animationEventReciever;
-    [SerializeField] private VfxManager vfx;
+    [SerializeField] private VfxPlayerSpawner vfx;
 
     [Header("Timers")]
     [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
@@ -586,14 +586,14 @@ public class Player : MonoBehaviour {
 
     private void LinkHitBoxEvents()
     {
-        slashLeftHitBox.Hit += OnAttackHit;
-        slashRightHitBox.Hit += OnAttackHit;
+        slashLeftHitBox.HitHealth += OnAttackHit;
+        slashRightHitBox.HitHealth += OnAttackHit;
     }
 
     private void UnlinkHitBoxEvents()
     {
-        slashLeftHitBox.Hit -= OnAttackHit;
-        slashRightHitBox.Hit -= OnAttackHit;
+        slashLeftHitBox.HitHealth -= OnAttackHit;
+        slashRightHitBox.HitHealth -= OnAttackHit;
     }
 
     private void OnAttackHit(GameObject other, Vector3 hitPoint)

@@ -69,7 +69,8 @@ namespace Entropek.Combat
             }
             else
             {
-                throw new Exceptions.ComponentNotFoundException(message: $"{gameObject.name} did not find Hurtbox or Health System on {hitGameObject.name}.");
+                GetHitPoint(hitCollider, out Vector3 hitPoint);
+                InvokeHitOther(hitGameObject, hitPoint);
             }
         }
 

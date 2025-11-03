@@ -5,12 +5,17 @@ using UnityEngine.VFX;
 namespace Entropek.Vfx
 {
 
+    /// <summary>
+    /// A Vfx Player that can play multiple vfx instances at once.
+    /// </summary>
+
     public class CompositeVfxPlayer : VfxPlayer
     {
 
+        [Header("Data")]
         [SerializeField] private VisualEffect[] vfx;
 
-        public override bool IsFinished()
+        protected override bool IsFinished()
         {
             for (int i = 0; i < vfx.Length; i++)
             {
@@ -27,24 +32,12 @@ namespace Entropek.Vfx
 
         public override void Play()
         {
+            base.Play();
             for (int i = 0; i < vfx.Length; i++)
             {
                 vfx[i].Play();
             }
         }
-
-        public override void Play(Vector3 worldSpacePosition)
-        {
-            transform.position = worldSpacePosition;
-            Play();
-        }
-        
-        public override void Play(Vector3 worldSpacePosition, Vector3 rotationEuler)
-        {
-            transform.rotation = Quaternion.Euler(rotationEuler);
-            Play(worldSpacePosition);
-        }
-
     }
 }
 

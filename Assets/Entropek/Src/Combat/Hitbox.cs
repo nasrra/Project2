@@ -11,10 +11,16 @@ namespace Entropek.Combat
     public abstract class Hitbox : MonoBehaviour
     {
         /// <summary>
-        /// Returns the Gameobject hit and the position that it was hit on.
+        /// Returns the Gameobject (with a health component) hit as well as the position (in world space) that it was hit on.
         /// </summary>
 
-        public event Action<GameObject, Vector3> Hit;
+        public event Action<GameObject, Vector3> HitHealth;
+
+        /// <summary>
+        /// Returns the Gamobject (without a health component) that was hit, as well as the position (in world space) that it was hit on.
+        /// </summary>
+
+        public event Action<GameObject, Vector3> HitOther;
         
         [Header("Data")]
         [Tooltip("This trigger collider must always start disabled.")]
@@ -58,7 +64,7 @@ namespace Entropek.Combat
 
                 // return that we hit the health object.
 
-                Hit?.Invoke(healthSystem.gameObject, hitPoint);
+                HitHealth?.Invoke(healthSystem.gameObject, hitPoint);
             }
             else
             {
@@ -67,14 +73,25 @@ namespace Entropek.Combat
         }
 
         /// <summary>
-        /// Invokes the Hit event Action callback.
+        /// Invokes the HitHealth event Action callback.
         /// </summary>
         /// <param name="hitGameObject">The gameobject that was hit.</param>
         /// <param name="hitPoint">The point along the hit colliders surface (in world space) that was hit.</param>
 
-        protected void InvokeHit(GameObject hitGameObject, Vector3 hitPoint)
+        protected void InvokeHitHealth(GameObject hitGameObject, Vector3 hitPoint)
         {
-            Hit?.Invoke(hitGameObject.gameObject, hitPoint);
+            HitHealth?.Invoke(hitGameObject.gameObject, hitPoint);
+        }
+
+        /// <summary>
+        /// Invokes the HitOther event Action callback.
+        /// </summary>
+        /// <param name="hitGameObject">The gameobject that was hit.</param>
+        /// <param name="hitPoint">The point along the hit colliders surface (in world space) that was hit.</param>
+
+        protected void InvokeHitOther(GameObject hitGameObject, Vector3 hitPoint)
+        {
+            HitOther?.Invoke(hitGameObject.gameObject, hitPoint);
         }
 
         /// <summary>
