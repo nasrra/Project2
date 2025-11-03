@@ -9,6 +9,14 @@ namespace Entropek.Vfx
         public event Action Activated;
         public event Action Deactivated;
 
+        /// <summary>
+        /// Flag for whether or not Play() was called this frame;
+        /// to ensure that checking if this vfx is finished playing doesnt
+        /// incorrectly return true when just starting.
+        /// </summary>
+
+        private bool playedThisFrame = false;
+
         public void Activate()
         {
             gameObject.SetActive(true);
@@ -28,6 +36,8 @@ namespace Entropek.Vfx
         public virtual void Play()
         {
             
+            playedThisFrame = true;
+
             // Activate to re enable the update loop to check
             // if this vfx instance has finished.
 
@@ -59,14 +69,16 @@ namespace Entropek.Vfx
         
         /// <summary>
         /// Checks whether or not the vfx instance has completed playing.
+        /// Note:
+        ///     Always check IsFinished in Update not LateUpdate as it will give incorrectly return true on the first frame when playing a vfx instance. 
         /// </summary>
         /// <returns>true, if completed; otherwise false.</returns>
 
         protected abstract bool IsFinished();
 
-        private void LateUpdate()
+        private void Update()
         {
-            if (IsFinished() == true)
+            if (playedThisFrame == false && IsFinished() == true)
             {
                 Finished?.Invoke();
 
@@ -75,6 +87,7 @@ namespace Entropek.Vfx
 
                 Deactivate(); 
             }
+            playedThisFrame = false;
         }
     }
     

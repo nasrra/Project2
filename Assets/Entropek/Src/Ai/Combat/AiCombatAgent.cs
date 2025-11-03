@@ -1,163 +1,65 @@
 using System;
+using System.Collections.Generic;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
-namespace Entropek.Ai.Combat{
-
-
-    [RequireComponent(typeof(SphereCollider))]
-    public class AiCombatAgent : MonoBehaviour
+namespace Entropek.Ai.Combat
+{    
+    public abstract class AiCombatAgent<T> : MonoBehaviour where T : AiCombatAction
     {
-
-
-        /// 
-        /// Callbacks.
-        /// 
-
-        public Action<AiCombatAction> ActionChosen;
+        public event Action<AiCombatAction> ActionChosen;
         public Action<Transform> EngagedOpponent;
-
-
-        /// 
-        /// Components.
-        /// 
-
-
+        
         [Header("Components")]
-        [SerializeField] private EntityStats.HealthSystem selfHealth;
-        [SerializeField] private Time.LoopedTimer damageTakenIntervalTimer;
-        [SerializeField] private Time.LoopedTimer evaluationIntervalTimer;
-        private Transform opponentTransform;
-        private EntityStats.HealthSystem opponentHealth;
-
-
-        /// 
-        /// Data.
-        /// 
+        [SerializeField] protected Time.LoopedTimer evaluationIntervalTimer;
+        private AiCombatAction chosenCombatAction;
+        public AiCombatAction ChosenCombatAction => chosenCombatAction;
+        protected Transform opponentTransform;
 
 
         [Header("Data")]
-
         [Tooltip("The probability at which a action is chosen based on the curve.")]
-        [SerializeField] private AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
-        [SerializeField] private AiCombatAction[] aiCombatActions;
-        public AiCombatAction[] AiCombatActions => aiCombatActions;
-        private (AiCombatAction, float)[] possbileCombatActions;
-        public (AiCombatAction, float)[] PossibleCombatActions => possbileCombatActions;
-        private AiCombatAction chosenCombatAction;
-        public AiCombatAction ChosenCombatAction => chosenCombatAction;
-
-        [SerializeField] LayerMask opponentLayer;
-        [SerializeField] LayerMask obstacleLayer;
-
-        [RuntimeField] private float damageTakenInCurrentInterval;
-        public float DamageTakenInCurrentInterval => damageTakenInCurrentInterval; 
-
-        [RuntimeField] bool isEngaged; // whether or not this agent has been agro'd
+        [SerializeField] protected AnimationCurve scoreProbabtilityCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
+        [SerializeField] protected T[] aiCombatActions;
+        public T[] AiCombatActions => aiCombatActions;
+        protected List<(T, float)> possibleCombatActions = new();
+        public List<(T, float)> PossibleCombatActions => possibleCombatActions;
+        [SerializeField] protected LayerMask opponentLayer;
+        [RuntimeField] protected bool isEngaged; // whether or not this agent has been agro'd
 
 
         /// 
         /// Base.
         /// 
 
-        void Start()
-        {
-            possbileCombatActions = new (AiCombatAction, float)[aiCombatActions.Length];
-        }
 
-        private void OnEnable()
+        private void Awake()
         {
             LinkEvents();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             UnlinkEvents();
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-
-            // Get the other's bitwise layer mask.
-            // Get our bitwise layer mask for opponents. 
-
-            int otherLayerValue = 1 << other.gameObject.layer;
-            int opponentLayerValue = opponentLayer.value;
-
-            // evaluate if the other is an opponent.
-
-            if ((otherLayerValue & opponentLayerValue) != 0)
-            {
-
-                Transform otherTransform = other.transform;
-                EntityStats.HealthSystem otherHealth = other.GetComponent<EntityStats.HealthSystem>();
-
-                if (ValidateOpponent(otherTransform, otherHealth) == true)
-                {
-                    EngageOpponent(otherTransform, otherHealth);
-                }
-            }
-        }
-
-
-        /// 
-        /// Functions.
-        /// 
 
 
         /// <summary>
         /// Halts the evaluation loop.
         /// </summary>
 
-        public void HaltEvaluationLoop()
+        public virtual void HaltEvaluationLoop()
         {
             evaluationIntervalTimer.Halt();
-            damageTakenIntervalTimer.Halt();
         }
 
         /// <summary>
         /// Begins the evaluation loop for choosing an desired action to take; per evaluation tick.
         /// </summary>
 
-        public void BeginEvaluationLoop()
+        public virtual void BeginEvaluationLoop()
         {
             evaluationIntervalTimer.Begin();
-            damageTakenIntervalTimer.Begin();
-
-            // reset to ensure the value does not pass between intervals;
-            // when Evaluate () successfully chooses an action.
-
-            damageTakenInCurrentInterval = 0;
-        }
-
-        private float GetDistanceToClosestObstacle()
-        {
-            // TODO:
-            // IMPLEMENT THIS WHEN NEEDED!
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Used to validate if the engaged opponent hasnt been destroyed in a given frame.
-        /// </summary>
-        /// <returns>true, if the objct is still allocated in memory.</returns>
-
-        private bool ValidateEngagedOpponent()
-        {
-            return ValidateOpponent(opponentTransform, opponentHealth);
-        }
-
-        /// <summary>
-        /// Used to validate if an opponent hasnt been destroyed in the given frame.
-        /// </summary>
-        /// <param name="opponentTransform"></param>
-        /// <param name="opponentHealth"></param>
-        /// <returns>true, if they are still allocated in memory.</returns>
-
-        private bool ValidateOpponent(Transform opponentTransform, EntityStats.HealthSystem opponentHealth)
-        {
-            return opponentTransform != null && opponentHealth != null;
         }
 
         /// <summary>
@@ -179,66 +81,78 @@ namespace Entropek.Ai.Combat{
         }
 
         /// <summary>
+        /// Clears the currently engaged opponent and halts the evaluation loop.
+        /// </summary>
+
+        public virtual void DisengageOpponent()
+        {
+            isEngaged = false;
+            opponentTransform = null;
+            HaltEvaluationLoop();
+        }
+
+        /// <summary>
+        /// Sets the target of this agent to the transform of an opponent and starts the evaluation loop.
+        /// </summary>
+        /// <param name="opponentTransform">The specified transform.</param>
+
+        public virtual void EngageOpponent(Transform opponentTransform)
+        {
+            isEngaged = true;
+            this.opponentTransform = opponentTransform;
+            BeginEvaluationLoop();
+            EngagedOpponent?.Invoke(opponentTransform);
+        }
+
+        /// <summary>
+        /// Used to validate if the engaged opponent hasnt been destroyed in a given frame.
+        /// </summary>
+        /// <returns>true, if the objct is still allocated in memory.</returns>
+
+        protected bool ValidateEngagedOpponent()
+        {
+            return opponentTransform != null;
+        }
+
+        /// <summary>
         /// Updates the possible actions array stored by this agent to contain a new set of desireable actions that can be chosen; sorted in descending order from most to least desireable.
         /// </summary>
 
-        private void GeneratePossibleActions()
+        protected abstract void GeneratePossibleActions();
+                    
+        /// <summary>
+        /// Begins the cooldown timer for the chosen combat action, removing it as a possibility from the
+        /// action choice pool until the timer has finished.
+        /// </summary>
+
+        public void BeginChosenCombatActionCooldown()
+        {
+            chosenCombatAction.CooldownTimer.Begin();
+        }
+
+        private void OnTriggerEnter(Collider other)
         {
 
-            // get the data required for evaluation.
+            // Get the other's bitwise layer mask.
+            // Get our bitwise layer mask for opponents. 
 
-            Vector3 vectorDistanceToOpponent = transform.position - opponentTransform.position;
-            float distanceToOpponent = vectorDistanceToOpponent.magnitude;
+            int otherLayerValue = 1 << other.gameObject.layer;
+            int opponentLayerValue = opponentLayer.value;
 
-            // dot needs to be negated because vector distance is reveresed for correct distance calculations, not dot product similarity.
-            // vector distance could be negated instead but doing one negation on a float is faster then 3.
+            // evaluate if the other is an opponent.
 
-            float dotDirectionToOpponent = -Vector3.Dot(vectorDistanceToOpponent.normalized, transform.forward);
-
-            float normalisedSelfHealthValue = selfHealth.GetNormalisedHealthValue();
-            float normalisedOpponentHealthValue = opponentHealth.GetNormalisedHealthValue();
-            float distanceToClosestObstacle = GetDistanceToClosestObstacle();
-
-            // clear the previous evaluates options.
-
-            Array.Clear(possbileCombatActions, 0, possbileCombatActions.Length);
-            int possbileCombatActionsIndex = -1;
-
-            for (int i = 0; i < aiCombatActions.Length; i++)
+            if ((otherLayerValue & opponentLayerValue) != 0)
             {
 
-                AiCombatAction currentEvaluation = aiCombatActions[i];
+                Transform otherTransform = other.transform;
 
-                // if the action is not enabled or currently on cooldown.
-
-                if (currentEvaluation.Enabled == false || currentEvaluation.CooldownTimer.HasTimedOut == false)
-                {
-                    continue;
-                }
-
-                // check if the target is currently in view of the action.
-
-                if (dotDirectionToOpponent < currentEvaluation.MinFov
-                || dotDirectionToOpponent > currentEvaluation.MaxFov)
-                {
-                    continue;
-                }
-
-                float score = currentEvaluation.Evaluate(
-                    damageTakenInCurrentInterval,
-                    distanceToOpponent,
-                    distanceToClosestObstacle,
-                    normalisedOpponentHealthValue,
-                    normalisedSelfHealthValue
-                );
-
-                possbileCombatActions[++possbileCombatActionsIndex] = (currentEvaluation, score);
+                // if (ValidateEngagedOpponent() == true)
+                // {
+                EngageOpponent(otherTransform);
+                // }
             }
-
-            // sort in descenging order.
-
-            Array.Sort(possbileCombatActions, (a, b) => b.Item2.CompareTo(a.Item2));
         }
+
 
         /// <summary>
         /// Executes a random possible action, with probability of an action depending on how desirable it is.
@@ -250,12 +164,19 @@ namespace Entropek.Ai.Combat{
         private void ChoosePossibleAction()
         {
 
-            (AiCombatAction, float) bestAction = possbileCombatActions[0];
+            // short-circuit if there are currently no possible actions.
+
+            if(possibleCombatActions.Count == 0)
+            {
+                return;
+            }
+
+            (T, float) bestAction = possibleCombatActions[0];
 
             // get the probability value of executing this action based on its score
             // projected onto the probability curve.
 
-            float probability = scoreProbabtilityCurve.Evaluate(bestAction.Item2 / AiCombatAction.MaxWeight);
+            float probability = scoreProbabtilityCurve.Evaluate(bestAction.Item2 / bestAction.Item1.GetMaxWeight());
 
             if (UnityEngine.Random.Range(0f, 1f) <= probability)
             {
@@ -273,82 +194,52 @@ namespace Entropek.Ai.Combat{
 
                 ActionChosen?.Invoke(bestAction.Item1);
             }
-        }
+        }    
 
         /// <summary>
-        /// Begins the cooldown timer for the chosen combat action, removing it as a possibility from the
-        /// action choice pool until the timer has finished.
+        /// Gets the relative data for this frame between this agent and the engaged opponent.
+        /// </summary>
+        /// <param name="vectorDistanceToOpponent">The vector distance between this agent and the engaged opponent.</param>
+        /// <param name="distanceToOpponent">The float distance between this agent and the engaged opponent.</param>
+        /// <param name="dotDirectionToOpponent">The dot product representing if the agent is facing (1) or looking away (-1) from the engaged opponent.</param>
+
+        protected void CalculateRelationToEngagedOpponent(out Vector3 vectorDistanceToOpponent, out float distanceToOpponent, out float dotDirectionToOpponent)
+        {
+            // get the data required for evaluation.
+
+            vectorDistanceToOpponent = transform.position - opponentTransform.position;
+            distanceToOpponent = vectorDistanceToOpponent.magnitude;
+
+            // dot needs to be negated because vector distance is reveresed for correct distance calculations, not dot product similarity.
+            // vector distance could be negated instead but doing one negation on a float is faster then 3.
+
+            dotDirectionToOpponent = -Vector3.Dot(vectorDistanceToOpponent.normalized, transform.forward);
+        }
+
+
+        /// <summary>
+        /// Linkage.
         /// </summary>
 
-        public void BeginChosenCombatActionCooldown()
-        {
-            chosenCombatAction.CooldownTimer.Begin();
-        }
 
-        public void EngageOpponent(Transform opponentTransform, EntityStats.HealthSystem opponentHealth)
-        {
-            isEngaged = true;
-            this.opponentTransform = opponentTransform;
-            this.opponentHealth = opponentHealth;
-            BeginEvaluationLoop();
-            EngagedOpponent?.Invoke(opponentTransform);
-        }
-
-        public void DisengageOpponent()
-        {
-            isEngaged = false;
-            opponentTransform = null;
-            opponentHealth = null;
-            HaltEvaluationLoop();
-        }
-
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            for (int i = 0; i < aiCombatActions.Length; i++)
-            {
-                // call on validate for each action as they are not MonoBehaviour. 
-
-                aiCombatActions[i].OnValidate();
-            }
-        }
-#endif
-
-
-        /// 
-        /// Linkage.
-        /// 
-
-
-        private void LinkEvents()
+        protected virtual void LinkEvents()
         {
             LinkTimerEvents();
-            LinkSelfHealthEvents();
         }
 
-        private void UnlinkEvents()
+        protected virtual void UnlinkEvents()
         {
             UnlinkTimerEvents();
-            UnlinkSelfHealthEvents();
         }
 
-
-        ///
-        /// Timer Linkage.
-        ///
-
-
-        private void LinkTimerEvents()
+        protected virtual void LinkTimerEvents()
         {
             evaluationIntervalTimer.Timeout += OnEvaluationIntervalTimeout;
-            damageTakenIntervalTimer.Timeout += OnDamgeTakenIntevalTimeout;
         }
 
-        private void UnlinkTimerEvents()
+        protected virtual void UnlinkTimerEvents()
         {
             evaluationIntervalTimer.Timeout -= OnEvaluationIntervalTimeout;
-            damageTakenIntervalTimer.Timeout -= OnDamgeTakenIntevalTimeout;
         }
 
         private void OnEvaluationIntervalTimeout()
@@ -359,43 +250,23 @@ namespace Entropek.Ai.Combat{
             }
         }
 
+#if UNITY_EDITOR
         /// <summary>
-        /// Resets the damage counter for the next interval.
+        /// Calls the OnValidate inspector function for AiCombatActions in the unity editor.
+        /// Note:
+        ///     This should only be called withn an '#if UNITY_EDITOR' macro.
         /// </summary>
-
-        private void OnDamgeTakenIntevalTimeout()
+        protected virtual void OnValidate()
         {
+            for (int i = 0; i < aiCombatActions.Length; i++)
+            {
+                // call on validate for each action as they are not MonoBehaviour. 
 
-            damageTakenInCurrentInterval = 0;
+                aiCombatActions[i].OnValidate();
+            }
+
         }
-
-
-        ///
-        /// Self health linkage.
-        /// 
-
-        private void LinkSelfHealthEvents()
-        {
-            selfHealth.HealthDamaged += OnHealthDamaged; 
-        }
-
-        private void UnlinkSelfHealthEvents()
-        {
-            selfHealth.HealthDamaged -= OnHealthDamaged; 
-        }
-
-        /// <summary>
-        /// Increments the counter for damage taken this interval by a specified amount.
-        /// </summary>
-        /// <param name="amount">The amount to increment by.</param>
-
-        private void OnHealthDamaged(float amount)
-        {
-            damageTakenInCurrentInterval += amount;
-        }
-
+#endif
+        
     }
-
-
 }
-

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -61,6 +62,13 @@ namespace Entropek.Collections
         {
             T monoBehaviour;
 
+            #if UNITY_EDITOR
+            if(inactive.Count() <= id)
+            {
+                throw new InvalidOperationException($"{GetType().Name} does not have an entry for requested prefab id: {id}");
+            }
+            #endif
+
             if(inactive[id].Count > 0)
             {                
                 // Note:
@@ -73,7 +81,7 @@ namespace Entropek.Collections
             {
                 // create a new one if there are none inactive.
 
-                GameObject instanceObject = Object.Instantiate(prefabs[id]);
+                GameObject instanceObject = Instantiate(prefabs[id]);
 
                 instanceObject.transform.SetParent(poolContainer.transform);
 

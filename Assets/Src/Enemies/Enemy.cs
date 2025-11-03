@@ -18,7 +18,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
     [SerializeField] protected Transform target;
     [SerializeField] protected Entropek.EntityStats.HealthSystem health;
-    [SerializeField] protected Entropek.Ai.Combat.AiCombatAgent combatAgent;
+    [SerializeField] protected Entropek.Ai.Combat.ComplexAiCombatAgent combatAgent;
     [SerializeField] protected AnimationEventReciever animationEventReciever;
     [SerializeField] protected NavAgentMovement movement;
     [SerializeField] protected ForceApplier forceApplier;

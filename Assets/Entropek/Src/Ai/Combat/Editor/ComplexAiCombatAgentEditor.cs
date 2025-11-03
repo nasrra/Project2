@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace Entropek.Ai.Combat{
 
 
-    [CustomEditor(typeof(AiCombatAgent))]
-    public class AiCombatAgentEditor : UnityUtils.RuntimeEditor<AiCombatAgent>{
+    [CustomEditor(typeof(ComplexAiCombatAgent))]
+    public class AiCombatAgentEditor : UnityUtils.RuntimeEditor<ComplexAiCombatAgent>{
 
 
         /// 
@@ -41,7 +42,7 @@ namespace Entropek.Ai.Combat{
 
             // get a reference to the target.
 
-            AiCombatAgent agent = (AiCombatAgent)target;
+            ComplexAiCombatAgent agent = (ComplexAiCombatAgent)target;
 
             EditorGUILayout.Space();
 
@@ -63,7 +64,7 @@ namespace Entropek.Ai.Combat{
         /// </summary>
         /// <param name="aiCombatAgent">The specified AiCombatAgent.</param>
 
-        private void DrawPossibleActionsToggle(AiCombatAgent aiCombatAgent)
+        private void DrawPossibleActionsToggle(ComplexAiCombatAgent aiCombatAgent)
         {
             drawPossibleActions = EditorGUILayout.BeginToggleGroup("Display Possible Combat Actions", drawPossibleActions);
             if (drawPossibleActions == true)
@@ -78,10 +79,10 @@ namespace Entropek.Ai.Combat{
         /// </summary>
         /// <param name="possibleCombatActions">The agents possible actions.</param>
 
-        private void DrawPossibleActions(AiCombatAgent aiCombatAgent)
+        private void DrawPossibleActions(ComplexAiCombatAgent aiCombatAgent)
         {
 
-            (AiCombatAction, float)[] possibleCombatActions = aiCombatAgent.PossibleCombatActions;
+            List<(ComplexAiCombatAction, float)> possibleCombatActions = aiCombatAgent.PossibleCombatActions;
 
             EditorGUILayout.LabelField("Possble Combat Actions", EditorStyles.boldLabel);
             if (possibleCombatActions == null)
@@ -90,7 +91,7 @@ namespace Entropek.Ai.Combat{
                 return;
             }
 
-            for (int i = 0; i < possibleCombatActions.Length; i++)
+            for (int i = 0; i < possibleCombatActions.Count; i++)
             {
                 (AiCombatAction action, float score) = possibleCombatActions[i];
                 if (action == null)
@@ -110,7 +111,7 @@ namespace Entropek.Ai.Combat{
         /// 
 
 
-        private void DrawActionFovEditorToggle(AiCombatAgent aiCombatAgent)
+        private void DrawActionFovEditorToggle(ComplexAiCombatAgent aiCombatAgent)
         {
             drawActionFovEditor = EditorGUILayout.BeginToggleGroup("Action FOV Editor", drawActionFovEditor);
             if (drawActionFovEditor == true)
@@ -126,7 +127,7 @@ namespace Entropek.Ai.Combat{
         /// </summary>
         /// <param name="aiCombatAgent"></param>
 
-        private void DrawActionFovEditor(AiCombatAgent aiCombatAgent)
+        private void DrawActionFovEditor(ComplexAiCombatAgent aiCombatAgent)
         {
 
             // options to choose from.
@@ -136,7 +137,7 @@ namespace Entropek.Ai.Combat{
 
             // add all the names of the combat actions.
 
-            AiCombatAction[] aiCombatActions = aiCombatAgent.AiCombatActions;
+            ComplexAiCombatAction[] aiCombatActions = aiCombatAgent.AiCombatActions;
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
                 options[i + 1] = aiCombatActions[i].Name;
@@ -153,7 +154,7 @@ namespace Entropek.Ai.Combat{
 
             // find the selected action.
 
-            AiCombatAction selectedAction = null;
+            ComplexAiCombatAction selectedAction = null;
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
                 if (aiCombatActions[i].Name == options[selectedActionToDebugFov])
@@ -186,7 +187,7 @@ namespace Entropek.Ai.Combat{
                 return; // dont draw anything if no action has been selected.
             }
 
-            Transform transform = ((AiCombatAgent)target).transform;
+            Transform transform = ((ComplexAiCombatAgent)target).transform;
 
 
             // draw the user defined max angle, where the combat angent cannot see in relation to the front of it.
