@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1809505232688274476}
   - component: {fileID: 4900296982674033762}
   m_Layer: 0
-  m_Name: Ai Combat Agent
+  m_Name: ComplexAiCombatAgent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,8 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb600d3f5c367c42a7bb6e61396b3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfHealth: {fileID: 0}
-  damageTakenIntervalTimer: {fileID: 4900296982674033762}
   evaluationIntervalTimer: {fileID: 1809505232688274476}
   scoreProbabtilityCurve:
     serializedVersion: 2
@@ -78,6 +76,8 @@ MonoBehaviour:
   opponentLayer:
     serializedVersion: 2
     m_Bits: 8
+  selfHealth: {fileID: 0}
+  damageTakenIntervalTimer: {fileID: 4900296982674033762}
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 64

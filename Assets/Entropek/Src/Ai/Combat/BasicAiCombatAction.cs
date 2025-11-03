@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Entropek.Ai.Combat
 {    
+    [System.Serializable]
     public class BasicAiCombatAction : AiCombatAction
     {
         [Header("Curves")]
