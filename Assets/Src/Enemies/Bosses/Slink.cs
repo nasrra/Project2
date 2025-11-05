@@ -254,27 +254,16 @@ public class Slink : Enemy {
     /// 
 
 
-    protected override void OnCombatActionChosen(Entropek.Ai.Combat.AiCombatAction action)
+    protected override void OnCombatActionChosen(in string actionName)
     {
-        Action actionCallback;
-
-        switch (action.Name)
+        switch (actionName)
         {
-            case "Bite":        actionCallback = BiteAttack;       break;
-            case "TailSwipe":   actionCallback = TailSwipeAttack;  break;
-            case "TestSwivel":  actionCallback = TestSwivel;       break;
-            case "DashForward": actionCallback = DashForward;      break;
-            case "ClawSlash":   actionCallback = ClawSlash;        break;
-            default: throw new NotImplementedException(action.Name);
-        }
-
-        if(action.TurnToTarget == true)
-        {
-            FaceTargetThenPerformAction(actionCallback);
-        }
-        else
-        {
-            actionCallback();
+            case "Bite":            FaceTargetThenPerformAction(BiteAttack);    break;
+            case "TailSwipe":       TailSwipeAttack();                          break;
+            case "TestSwivel":      TestSwivel();                               break;
+            case "DashForward":     DashForward();                              break;
+            case "ClawSlash":       FaceTargetThenPerformAction(ClawSlash);     break;
+            default: throw new NotImplementedException(actionName);
         }
     }
 

@@ -13,6 +13,10 @@ namespace Entropek.Time
         /// Base.
         /// 
 
+        protected override void Awake()
+        {
+            base.Awake();
+        }
 
         protected override void OnEnable()
         {
@@ -22,6 +26,11 @@ namespace Entropek.Time
         protected override void OnDisable()
         {
             base.OnDisable();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
 
 

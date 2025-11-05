@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Entropek.Ai.Combat{
+namespace Entropek.Ai{
 
     /// <summary>
     /// This is the generic editor class for providing the base class inspector gui
@@ -13,9 +13,9 @@ namespace Entropek.Ai.Combat{
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="U"></typeparam>
 
-    public abstract class AiCombatAgentEditor<T,U> : UnityUtils.RuntimeEditor<T>
-        where T : AiCombatAgent<U>
-        where U : AiCombatAction
+    public abstract class AiActionAgentEditor<T,U> : AiAgentEditor<T>
+        where T : AiActionAgent<U>
+        where U : AiAction
     {
 
 
@@ -24,16 +24,14 @@ namespace Entropek.Ai.Combat{
         /// 
 
 
-        private const int FieldLabelPixelWidth = 150;
-
         int selectedActionToDebugFov = 0;
         private float fovMinAngle;
         private float fovMaxAngle;
         private static Color OutsideFovColor = Color.red;
         private static Color InsideFovColor = Color.green;
 
-        private bool drawPossibleActions = false;
         private bool drawActionFovEditor = false;
+
 
         /// 
         /// Base.
@@ -41,9 +39,6 @@ namespace Entropek.Ai.Combat{
 
         public override void OnInspectorGUI()
         {
-
-
-
             // draw default inspector.
 
             base.OnInspectorGUI();
@@ -54,10 +49,6 @@ namespace Entropek.Ai.Combat{
 
             EditorGUILayout.Space();
 
-            DrawPossibleActionsToggle(agent);
-
-            EditorGUILayout.Space();
-
             DrawActionFovEditorToggle(agent);
 
         }
@@ -65,52 +56,6 @@ namespace Entropek.Ai.Combat{
         protected void OnSceneGUI()
         {
             DebugDrawSelectedActionFov();
-        }
-
-        /// <summary>
-        /// Toggles displaying the possible actions that can be chosen in an Evaluate() call for the AiCombatAgent.
-        /// </summary>
-        /// <param name="aiCombatAgent">The specified AiCombatAgent.</param>
-
-        private void DrawPossibleActionsToggle(T aiCombatAgent)
-        {
-            drawPossibleActions = EditorGUILayout.BeginToggleGroup("Display Possible Combat Actions", drawPossibleActions);
-            if (drawPossibleActions == true)
-            {
-                DrawPossibleActions(aiCombatAgent);
-            }
-            EditorGUILayout.EndToggleGroup();
-        }
-
-        /// <summary>
-        /// Displays the list of possible actions that could have been chosen in an Evaluate() call.
-        /// </summary>
-        /// <param name="possibleCombatActions">The agents possible actions.</param>
-
-        private void DrawPossibleActions(T aiCombatAgent)
-        {
-
-            List<(U, float)> possibleCombatActions = aiCombatAgent.PossibleCombatActions;
-
-            EditorGUILayout.LabelField("Possble Combat Actions", EditorStyles.boldLabel);
-            if (possibleCombatActions == null)
-            {
-                EditorGUILayout.HelpBox("Possible Combat Actions has not been initialised.", MessageType.Warning);
-                return;
-            }
-
-            for (int i = 0; i < possibleCombatActions.Count; i++)
-            {
-                (AiCombatAction action, float score) = possibleCombatActions[i];
-                if (action == null)
-                {
-                    continue;
-                }
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(action.Name, GUILayout.Width(FieldLabelPixelWidth));
-                EditorGUILayout.LabelField(score.ToString("F2")); // eg: 0.00
-                EditorGUILayout.EndHorizontal();
-            }
         }
 
 
@@ -145,7 +90,7 @@ namespace Entropek.Ai.Combat{
 
             // add all the names of the combat actions.
 
-            AiCombatAction[] aiCombatActions = aiCombatAgent.AiCombatActions;
+            AiAction[] aiCombatActions = aiCombatAgent.AiCombatActions;
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
                 options[i + 1] = aiCombatActions[i].Name;
@@ -162,7 +107,7 @@ namespace Entropek.Ai.Combat{
 
             // find the selected action.
 
-            AiCombatAction selectedAction = null;
+            AiAction selectedAction = null;
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
                 if (aiCombatActions[i].Name == options[selectedActionToDebugFov])
@@ -263,4 +208,3 @@ namespace Entropek.Ai.Combat{
 
 
 }
-

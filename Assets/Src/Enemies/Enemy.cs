@@ -14,7 +14,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
     [SerializeField] protected Transform target;
     [SerializeField] protected Entropek.EntityStats.HealthSystem health;
-    [SerializeField] protected Entropek.Ai.Combat.AiCombatAgentBase combatAgent;
+    [SerializeField] protected Entropek.Ai.AiActionAgent combatAgent;
     [SerializeField] protected Entropek.UnityUtils.AnimatorUtils.AnimationEventReciever animationEventReciever;
     [SerializeField] protected Entropek.Physics.NavAgentMovement movement;
     [SerializeField] protected Entropek.Physics.ForceApplier forceApplier;
@@ -70,7 +70,7 @@ public abstract class Enemy : MonoBehaviour
     {
         // get the attack that has just been completed. 
 
-        Entropek.Ai.Combat.AiCombatAction endedAttack = combatAgent.ChosenCombatAction;
+        Entropek.Ai.AiAction endedAttack = combatAgent.ChosenAction;
 
         // evaulate for a new action immediately up time out if set to true.
 
@@ -173,17 +173,17 @@ public abstract class Enemy : MonoBehaviour
 
     private void LinkCombatAgentEvents()
     {
-        combatAgent.ActionChosen += OnCombatActionChosenWrapper;
+        combatAgent.OutcomeChosen += OnCombatActionChosenWrapper;
         combatAgent.EngagedOpponent += OnOpponentEngaged;
     }
 
     private void UnlinkCombatAgentEvents()
     {
-        combatAgent.ActionChosen -= OnCombatActionChosenWrapper;
+        combatAgent.OutcomeChosen -= OnCombatActionChosenWrapper;
         combatAgent.EngagedOpponent -= OnOpponentEngaged;
     }
 
-    private void OnCombatActionChosenWrapper(Entropek.Ai.Combat.AiCombatAction action)
+    private void OnCombatActionChosenWrapper(string actionName)
     {
         // always clear state queue when choosing a combat action.
         // a new combat action (best action to choosen in the current scenario)
@@ -192,10 +192,10 @@ public abstract class Enemy : MonoBehaviour
 
         stateQeueue.Clear();
 
-        OnCombatActionChosen(action);
+        OnCombatActionChosen(actionName);
     }
 
-    protected abstract void OnCombatActionChosen(Entropek.Ai.Combat.AiCombatAction action);
+    protected abstract void OnCombatActionChosen(in string actionName);
     protected abstract void OnOpponentEngaged(Transform opponent);
 
 
@@ -256,7 +256,7 @@ public abstract class Enemy : MonoBehaviour
         switch (eventName)
         {
             case "StartCombatActionCooldown":
-                combatAgent.BeginChosenCombatActionCooldown();
+                combatAgent.BeginChosenActionCooldown();
                 return true;
 
             case "SetGraphicsObjectDirectionBackwards":

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Entropek.Ai.Combat
+namespace Entropek.Ai
 {
     
-    public struct AiCombatAgentRelationToOpponentContext
+    public struct AiActionAgentRelationToOpponentContext
     {
         /// <summary>
         /// The vector distance from this agent to the engaged opponent.
@@ -31,7 +31,7 @@ namespace Entropek.Ai.Combat
         /// <param name="DistanceToOpponent">The float distance from this agent and the engaged opponent.</param>
         /// <param name="DotDirectionToOpponent">The dot product that represents if the agent is facing (1) or looking away (-1) from the engaged opponent.</param>
 
-        public AiCombatAgentRelationToOpponentContext
+        public AiActionAgentRelationToOpponentContext
         (
             Vector3 VectorDistanceToOpponent,
             float DistanceToOpponent,

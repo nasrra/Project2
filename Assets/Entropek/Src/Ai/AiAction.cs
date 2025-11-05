@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
-namespace Entropek.Ai.Combat
+namespace Entropek.Ai
 {
-    public abstract class AiCombatAction
+    [Serializable]
+    public abstract class AiAction
     {
         [Header("Action Name")]
         [SerializeField] protected string name;
@@ -31,16 +33,12 @@ namespace Entropek.Ai.Combat
         [Tooltip("Whether or not the agent should evaluate for a new action to perform when the idle state has timed out.")]
         [SerializeField] protected bool evaluateOnIdleTimeout;
         public bool EvaluateOnIdleTimeout => evaluateOnIdleTimeout;
-
-        // whether or not to turn towards the target before commiting to this action.
-        [SerializeField] protected bool turnToTarget;
-        public bool TurnToTarget => turnToTarget;
-
+        
         // whether or not this action is considered a plausible action to be chosen by this combat agent.
         [SerializeField] protected bool enabled = true;
         public bool Enabled => enabled;
     
-        public abstract float GetMaxWeight();
+        public abstract float GetMaxScore();
 
 #if UNITY_EDITOR
 

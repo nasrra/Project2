@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace Entropek.Ai.Combat{
+namespace Entropek.Ai{
 
 
     [Serializable]
-    public class ComplexAiCombatAction : AiCombatAction{
+    public class ComplexAiAction : AiAction{
 
         public const float MaxWeight = 5;
 
@@ -148,7 +148,7 @@ namespace Entropek.Ai.Combat{
         }
 #endif
 
-        public override float GetMaxWeight()
+        public override float GetMaxScore()
         {
             return MaxWeight;
         }

@@ -13,7 +13,7 @@ namespace Entropek.UnityUtils
     /// Base editor that automatically displays private fields marked with [RuntimeField].
     /// </summary>
 
-    public class RuntimeEditor<T> : UnityEditor.Editor where T : UnityEngine.Object
+    public class RuntimeEditor<T> : CustomEditor<T> where T : UnityEngine.Object
     {
         private FieldInfo[] runtimeFields;
         private bool drawRuntimeFields = true;
@@ -25,8 +25,11 @@ namespace Entropek.UnityUtils
         /// 
 
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
+
+            base.OnEnable();
+
             runtimeFields = typeof(T)
                 .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                 .Where(field => Attribute.IsDefined(field, typeof(Attributes.RuntimeField)))

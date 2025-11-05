@@ -7,7 +7,6 @@ using Entropek.Audio;
 using Entropek.UnityUtils.AnimatorUtils;
 using Entropek.Vfx;
 using Entropek.UnityUtils.Attributes;
-using Unity.VisualScripting;
 
 public class Player : MonoBehaviour {
 

@@ -1,19 +1,15 @@
 using UnityEngine;
 
-namespace Entropek.Ai.Combat
+namespace Entropek.Ai
 {
     [RequireComponent(typeof(SphereCollider))]
-    public class BasicAiCombatAgent : AiCombatAgent<BasicAiCombatAction>
+    public class BasicAiActionAgent : AiActionAgent<BasicAiAction>
     {
-        protected override void GeneratePossibleActions(in AiCombatAgentRelationToOpponentContext relationToOpponentContext)
+        protected override void GeneratePossibleOutcomes(in AiActionAgentRelationToOpponentContext relationToOpponentContext)
         {
-            // clear the previous evaluateion call options.
-            
-            possibleCombatActions.Clear();
-
-            for(int i = 0; i < aiCombatActions.Length; i++)
+            for(int i = 0; i < aiActions.Length; i++)
             {
-                BasicAiCombatAction currentEvaluation = aiCombatActions[i];
+                ref BasicAiAction currentEvaluation = ref aiActions[i];
 
                 // if the action is not enabled or currently on cooldown.
 
@@ -32,12 +28,15 @@ namespace Entropek.Ai.Combat
 
                 float score = currentEvaluation.Evaluate(relationToOpponentContext.DistanceToOpponent);
 
-                possibleCombatActions.Add((currentEvaluation, score));
+                possibleOutcomes.Add(
+                    new AiPossibleOutcome(
+                        currentEvaluation.Name,
+                        score,
+                        currentEvaluation.GetMaxScore(),
+                        i
+                    )
+                );
             }
-
-            // sort in descending order.
-
-            possibleCombatActions.Sort((a, b) => b.Item2.CompareTo(a.Item2));
         }
     }    
 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Entropek.Ai.Combat
+namespace Entropek.Ai
 {    
     [System.Serializable]
-    public class BasicAiCombatAction : AiCombatAction
+    public class BasicAiAction : AiAction
     {
         [Header("Curves")]
         
@@ -15,7 +15,7 @@ namespace Entropek.Ai.Combat
             return distanceToOpponentCurve.Evaluate(distanceToOpponent);
         }
 
-        public override float GetMaxWeight()
+        public override float GetMaxScore()
         {
             return 1;
         }

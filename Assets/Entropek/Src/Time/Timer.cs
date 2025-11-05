@@ -55,7 +55,7 @@ namespace Entropek.Time{
         [RuntimeField] protected TimerState state = TimerState.Halted; // default state for any timer is alaways halted.
         public TimerState State => state;
 
-        [SerializeField] public bool BeginOnAwake;
+        [SerializeField] public bool BeginOnEnable;
         public bool HasTimedOut => CurrentTime == 0;
 
 
@@ -63,20 +63,26 @@ namespace Entropek.Time{
         /// Base.
         /// 
 
+        protected virtual void Awake()
+        {
+            TimerManager.Singleton.RegisterTimer(this);
+        }
 
         protected virtual void OnEnable()
         {
-            TimerManager.Singleton.RegisterTimer(this);
-            if (BeginOnAwake == true)
+            if (BeginOnEnable == true)
             {
                 Begin();
             }
         }
 
         protected virtual void OnDisable(){        
-            TimerManager.Singleton.DeregisterTimer(this);
         }
 
+        protected virtual void OnDestroy()
+        {
+            TimerManager.Singleton.DeregisterTimer(this);
+        }
 
         /// 
         /// Functions.

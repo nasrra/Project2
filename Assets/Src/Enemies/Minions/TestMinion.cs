@@ -48,9 +48,9 @@ public class TestMinion : Enemy
     }
 
 
-    protected override void OnCombatActionChosen(Entropek.Ai.Combat.AiCombatAction action)
+    protected override void OnCombatActionChosen(in string actionName)
     {
-        switch (action.Name)
+        switch (actionName)
         {
             case "Shoot":
                 Shoot(target);
