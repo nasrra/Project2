@@ -88,13 +88,6 @@ IDamageIntervalContext, IOpponentContext
     private IDamageIntervalContext damageIntervalContext;
     private IOpponentContext opponentContext;
 
-    public SlinkAiAgentContext()
-    {
-        damageIntervalContext = this;
-        opponentContext = this;
-    }
-
-
     /// 
     /// Base.
     /// 
@@ -113,5 +106,11 @@ IDamageIntervalContext, IOpponentContext
     public override void Evaluate()
     {
         opponentContext.CalculateRelativeData(transform);
+    }
+
+    protected override void RetrieveContextTypes()
+    {
+        damageIntervalContext = this;
+        opponentContext = this;
     }
 }

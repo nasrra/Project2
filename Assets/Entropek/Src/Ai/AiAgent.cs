@@ -15,7 +15,7 @@ namespace Entropek.Ai
         /// 
 
 
-        public  event Action<string> OutcomeChosen;
+        public event Action<string> OutcomeChosen;
 
         [Header("Components")]
         [Tooltip("An AiAgent that halts and begins its evaluation loop when this AiAgent is halted or began.")]
@@ -110,7 +110,7 @@ namespace Entropek.Ai
             {
                 // callback to subclasses for any extra operations.
 
-                OnPossibleOutcomeChosen(mostDesireable);
+                OnPossibleOutcomeChosen(in mostDesireable);
 
                 // execute it if its within the probable range.
 
@@ -119,6 +119,16 @@ namespace Entropek.Ai
             }
             return false;
         }    
+
+        /// <summary>
+        /// Invokes the OutcomeChosen event Action callback.
+        /// </summary>
+        /// <param name="aiPossibleOutcomeName">The name of the AiOutcome chosen.</param>
+
+        protected void InvokeOutcomeChosen(string aiOutcomeName)
+        {
+            OutcomeChosen?.Invoke(aiOutcomeName);            
+        }
 
         /// <summary>
         /// A callback function to subclesses for any operations that need to be performed when choosing a possible outcome.

@@ -7,12 +7,13 @@ using UnityEngine;
 namespace Entropek.Ai
 {    
     public class AiActionAgent : AiAgent
-    {        
+    {                
         [Header("Components")]
         public AiAction ChosenAction {get; protected set;}
                     
         [Header("Data")]
         [SerializeReference] protected AiAction[] aiActions;
+
         public AiAction[] AiActions => aiActions;
 
         /// <summary>
@@ -72,9 +73,16 @@ namespace Entropek.Ai
 
             for (int i = 0; i < aiActions.Length; i++)
             {
+                AiAction aiAction = aiActions[i];
+
+                if(aiAction == null)
+                {
+                    continue;
+                }
+
                 // call on validate for each action as they are not MonoBehaviour. 
 
-                aiActions[i].OnValidate();
+                aiAction.OnValidate();
             }
 
         }

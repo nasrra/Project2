@@ -5,11 +5,8 @@ public class TestMinion : Enemy
     [Header(nameof(TestMinion)+" Components")]
     [SerializeField] Entropek.Projectiles.ProjectileSpawner projectileSpawner;
     [SerializeField] Entropek.Time.OneShotTimer attackStateTimer;
+    [SerializeField] protected Entropek.Ai.AiStateAgent stateAgent;
 
-    void OnEnable()
-    {
-        ChaseState();
-    }
 
     public override void AttackState()
     {
@@ -23,9 +20,15 @@ public class TestMinion : Enemy
         movement.StartPath(target);     
     }
 
+    public void FleeState()
+    {
+        combatAgent.BeginEvaluationLoop();
+        movement.ResumePath();
+        movement.MoveAway(target, 24);        
+    }
+
     public override void IdleState()
     {
-        Debug.Log("Idle");
     }
 
     public override void IdleState(float time)
@@ -42,7 +45,6 @@ public class TestMinion : Enemy
 
     public void Shoot(Transform target)
     {
-        Debug.Log("Shoot");
         projectileSpawner.Fire(0, 0, target);
         attackStateTimer.Begin();
     }
@@ -78,12 +80,14 @@ public class TestMinion : Enemy
     {
         base.LinkEvents();
         LinkTimerEvents();
+        LinkStateAgentEvents();
     }
 
     protected override void UnlinkEvents()
     {
         base.UnlinkEvents();
         UnlinkTimerEvents();
+        UnlinkStateAgentEvents();
     }
 
     private void LinkTimerEvents()
@@ -94,5 +98,31 @@ public class TestMinion : Enemy
     private void UnlinkTimerEvents()
     {
         attackStateTimer.Timeout -= AttackEndedState;        
+    }
+
+    protected void LinkStateAgentEvents()
+    {
+        stateAgent.OutcomeChosen += OnStateAgentOutcomeChosen;
+    }
+
+    protected void UnlinkStateAgentEvents()
+    {
+        stateAgent.OutcomeChosen -= OnStateAgentOutcomeChosen;        
+    }
+
+    private void OnStateAgentOutcomeChosen(string outcomeName)
+    {
+        switch (outcomeName)
+        {
+            case "Chase":
+                ChaseState();
+                break;
+            case "Flee":
+                FleeState();
+                break;
+            default:
+                Debug.LogError($"Test Minion does not implment state: {outcomeName}");
+                break;
+        }
     }
 }

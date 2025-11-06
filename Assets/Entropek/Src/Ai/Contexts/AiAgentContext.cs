@@ -12,6 +12,12 @@ namespace Entropek.Ai.Contexts
         /// Evaluates the context based on this gameobjects transform.
         /// </summary>
 
-        public abstract void Evaluate();    
+        public abstract void Evaluate();
+        protected abstract void RetrieveContextTypes();
+        
+        protected virtual void Awake()
+        {
+            RetrieveContextTypes();
+        }
     }
 }

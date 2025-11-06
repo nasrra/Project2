@@ -33,6 +33,9 @@ namespace Entropek.Physics
         [Header(nameof(NavAgentMovement) + " Components")]
         [SerializeField] protected NavMeshAgent navAgent;
 
+        [Header("Data")]
+        [Tooltip("how fast this agent adjusts its move direction after passing a corner.")]
+        [SerializeField][Range(0,1)] float cornerSpeed = 1;
 
         NavMeshPath path;
 
@@ -43,6 +46,11 @@ namespace Entropek.Physics
         private int currentCornerIndex = 0;
 
         private bool paused = false;
+
+        protected override void Awake(){
+            base.Awake();
+            path = new NavMeshPath();
+        }
 
 
         /// 
@@ -88,11 +96,6 @@ namespace Entropek.Physics
         {
             currentCornerIndex = 0;
 
-            if (path == null)
-            {
-                path = new NavMeshPath();
-            }
-
             // set the RecalculatePath to this function call
             // to recursively update.
 
@@ -110,7 +113,7 @@ namespace Entropek.Physics
         }
 
         /// <summary>
-        /// Set the agent to calculate and start moving along a path towards a transform targets position.
+        /// Set the agent to calculate and start moving along a path towards a transform's position.
         /// </summary>
         /// <param name="target"></param>
         /// <returns> true if a path was found. </returns>
@@ -125,26 +128,59 @@ namespace Entropek.Physics
 
             currentCornerIndex = 0;
 
-            if (path == null)
+            // set the RecalculatePath to this function call
+            // to recursively update.
+
+            RecalculatePath = () =>
             {
-                path = new NavMeshPath();
+                StartPath(target);
+            };
+
+            return navAgent.CalculatePath(target.position, path);
+        }
+
+        /// <summary>
+        /// Sets the agent to calculate and state moving along a path away from a transform's position.
+        /// </summary>
+        /// <param name="target">The transform to target.</param>
+        /// <param name="distance">The distance away from the NavAgentMovement gameObject to check for a valid point to move to.</param>
+
+        public void MoveAway(Transform target, float distance)
+        {
+            if(target == null)
+            {
+                return;
             }
+
+            currentCornerIndex = 0;
 
             // set the RecalculatePath to this function call
             // to recursively update.
 
             RecalculatePath = () =>
             {
-
-                // recalc path until we cant anymore.
-
-                if (StartPath(target) == false)
-                {
-                    // RecalculatePath = null;
-                }
+                MoveAway(target, distance);
             };
 
-            return navAgent.CalculatePath(target.position, path);
+            // calculate a point in the opposite direction of the target to move to. 
+
+            Vector3 oppositeDirection = (transform.position - target.position).normalized;
+            Vector3 destinationPosition = (oppositeDirection * distance) + transform.position; 
+            
+            // check if the point is valid on this agents nav mesh surface..
+
+            if(NavMesh.SamplePosition(destinationPosition, out NavMeshHit hit, 3, navAgent.areaMask))
+            {
+                // go to path point.
+
+                navAgent.CalculatePath(hit.position, path);
+            }
+            else
+            {
+                // go to the point opposite the player; as a fallback if nothing was found.
+                
+                navAgent.CalculatePath(destinationPosition, path); 
+            }
         }
 
         public void PausePath()
@@ -185,7 +221,7 @@ namespace Entropek.Physics
                 {
                     // move in the direction of the next path point.
 
-                    moveDirection = direction;
+                    moveDirection = Vector3.MoveTowards(moveDirection, direction, cornerSpeed);
                 }
             }
         }
