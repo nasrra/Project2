@@ -1,4 +1,5 @@
 using System;
+using Entropek.Combat;
 using UnityEngine;
 
 namespace Entropek.EntityStats{
@@ -7,15 +8,12 @@ namespace Entropek.EntityStats{
     public abstract class HealthSystem : MonoBehaviour{
         
         public event Action<float> Healed;
-        public event Action<float> HealthDamaged;
+        public event Action<DamageContext> Damaged;
         public event Action Death;
-        public event Action HealthFull;
+        public event Action Restored;
 
-        public abstract float GetHealthValue();
-        public abstract float GetMaxHealthValue();
-        public abstract float GetNormalisedHealthValue();
-
-        public abstract bool Damage(float amount);
+        public abstract float GetNormalisedValue();
+        public abstract bool Damage(in DamageContext damageContext);
         public abstract void Heal(float amount);
 
         [Header(nameof(HealthSystem))]
@@ -25,12 +23,12 @@ namespace Entropek.EntityStats{
             Death?.Invoke();
         }
         
-        protected void InvokeHealthDamaged(float amount){
-            HealthDamaged?.Invoke(amount);
+        protected void InvokeDamaged(in DamageContext damageContext){
+            Damaged?.Invoke(damageContext);
         }
 
-        protected void InvokeHealthFull(){
-            HealthFull?.Invoke();
+        protected void InvokeRestored(){
+            Restored?.Invoke();
         }
 
         protected void InvokeHealed(float amount){

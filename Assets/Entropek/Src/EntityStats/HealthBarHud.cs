@@ -3,13 +3,13 @@ using UnityEngine;
 namespace Entropek.EntityStats{
 
 [DefaultExecutionOrder(-10)]
-public class ShieldedHealthBarHud : MonoBehaviour{
+public class HealthBarHud : MonoBehaviour{
     
-    public static ShieldedHealthBarHud Singleton {get;private set;} 
+    public static HealthBarHud Singleton {get;private set;} 
 
     [Header("Components")]
-    [SerializeField] private ShieldedHealthBar shieldedHealthBar;
-    public ShieldedHealthBar ShieldedHealthBar => shieldedHealthBar;
+    [SerializeField] private HealthBar healthBar;
+    public HealthBar HealthBar => healthBar;
 
     void OnEnable(){
         if(Singleton!=null){

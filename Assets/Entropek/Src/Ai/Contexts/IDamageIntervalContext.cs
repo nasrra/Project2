@@ -1,3 +1,4 @@
+using Entropek.Combat;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
@@ -36,12 +37,12 @@ namespace Entropek.Ai.Contexts
 
         protected void LinkEvents()
         {
-            SelfHealth.HealthDamaged += OnHealthDamaged; 
+            SelfHealth.Damaged += OnHealthDamaged; 
         }
 
         protected void UnlinkEvents()
         {
-            SelfHealth.HealthDamaged -= OnHealthDamaged;             
+            SelfHealth.Damaged -= OnHealthDamaged;             
         }
 
         /// <summary>
@@ -49,9 +50,9 @@ namespace Entropek.Ai.Contexts
         /// </summary>
         /// <param name="amount">The amount to increment by.</param>
 
-        private void OnHealthDamaged(float amount)
+        private void OnHealthDamaged(DamageContext damageContext)
         {
-            DamageTakenInCurrentInterval += amount;
+            DamageTakenInCurrentInterval += damageContext.DamageAmount;
         }
     }    
 }

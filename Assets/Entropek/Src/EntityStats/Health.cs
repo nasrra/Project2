@@ -1,4 +1,5 @@
 using System;
+using Entropek.Combat;
 using Unity.XR.OpenVR;
 using UnityEngine;
 
@@ -14,10 +15,19 @@ namespace Entropek.EntityStats{
 
 
         [Header("Data")]
-        [SerializeField] protected float healthValue;
-        [SerializeField] protected float maxHealthValue;
+        [SerializeField] private float value;
+        public float Value => value;
+        [SerializeField] private float maxValue;
+        public float MaxValue => maxValue;
         [HideInInspector] protected HealthState healthState;
         public HealthState HealthState => healthState;
+
+        public override float GetNormalisedValue()
+        {
+            return value / maxValue;    
+        }
+        
+
 
 
         /// 
@@ -36,10 +46,10 @@ namespace Entropek.EntityStats{
 
 
         private void SetInitialHealthState(){
-            if(healthValue <= 0){
+            if(value <= 0){
                 healthState = HealthState.Dead;
             }
-            else if(healthValue >= maxHealthValue){
+            else if(value >= maxValue){
                 healthState = HealthState.Full;
             }
             else{
@@ -47,22 +57,22 @@ namespace Entropek.EntityStats{
             }
         }
 
-        protected void HealthAliveState(){
+        protected void AliveState(){
             if(healthState==HealthState.Alive){
                 return;
             }
             healthState=HealthState.Alive;
         }
 
-        protected void HealthFullState(){
+        protected void RestoredState(){
             if(healthState==HealthState.Full){
                 return;
             }
             healthState=HealthState.Full;
-            InvokeHealthFull();
+            InvokeRestored();
         }
 
-        protected void HealthDeadState(){
+        protected void DeathState(){
             if(healthState==HealthState.Dead){
                 return;
             }
@@ -76,57 +86,34 @@ namespace Entropek.EntityStats{
         /// 
 
 
-        public override bool Damage(float amount){
-            return DamageHealth(amount);
-        }
-
-        protected bool DamageHealth(float amount){
+        public override bool Damage(in DamageContext damageContext){
+            
             if(Vulnerable == false || healthState == HealthState.Dead){
                 return false;
             }
 
-            healthValue -= amount;
-            if(healthValue<=0){
-                HealthDeadState();
+            value -= damageContext.DamageAmount;
+            if(value<=0){
+                DeathState();
             }
             else{
-                HealthAliveState();
-                InvokeHealthDamaged(amount);
+                AliveState();
+                InvokeDamaged(damageContext);
             }
 
             return true;
         }
 
         public override void Heal(float amount){
-            healthValue += amount;
-            if(healthValue >= maxHealthValue){
-                HealthFullState();
+            value += amount;
+            if(value >= maxValue){
+                RestoredState();
             }
             else{
-                HealthAliveState();
+                AliveState();
                 InvokeHealed(amount);
             }
         }
-
-
-        /// 
-        /// Getters.
-        /// 
-
-
-        public override float GetHealthValue(){
-            return healthValue;
-        }
-
-        public override float GetMaxHealthValue(){
-            return maxHealthValue;
-        }
-
-        public override float GetNormalisedHealthValue(){
-            return healthValue / maxHealthValue;
-        }
-
-
     }
 
 

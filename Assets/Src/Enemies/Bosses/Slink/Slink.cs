@@ -1,6 +1,7 @@
 using System;
 using Entropek.Ai;
 using Entropek.Ai.Contexts;
+using Entropek.Combat;
 using UnityEngine;
 
 public class Slink : Enemy {
@@ -271,19 +272,7 @@ public class Slink : Enemy {
         }
     }
 
-    protected override void LinkHealthEvents()
-    {
-        base.LinkHealthEvents();
-        health.HealthDamaged += OnHealthDamaged;
-    }
-
-    protected override void UnlinkHealthEvents()
-    {
-        base.UnlinkHealthEvents();
-        health.HealthDamaged -= OnHealthDamaged;
-    }
-
-    private void OnHealthDamaged(float amount)
+    protected override void OnHealthDamaged(DamageContext damageContext)
     {
         boneStagger.TriggerStagger();
     }

@@ -101,7 +101,7 @@ namespace Entropek.Ai{
         {
             float selfHealthScore
                 = normalisedSelfHealthWeight > 0
-                ? normalisedSelfHealthCurve.Evaluate(damageIntervalContext.SelfHealth.GetNormalisedHealthValue()) * normalisedSelfHealthWeight
+                ? normalisedSelfHealthCurve.Evaluate(damageIntervalContext.SelfHealth.GetNormalisedValue()) * normalisedSelfHealthWeight
                 : 0;
 
             float distanceToObstacleScore
@@ -116,7 +116,7 @@ namespace Entropek.Ai{
 
             float opponentHealthScore
                 = normalisedOpponentHealthWeight > 0
-                ? normalisedOpponentHealthCurve.Evaluate(opponentContext.HealthSystem.GetNormalisedHealthValue()) * normalisedOpponentHealthWeight
+                ? normalisedOpponentHealthCurve.Evaluate(opponentContext.HealthSystem.GetNormalisedValue()) * normalisedOpponentHealthWeight
                 : 0;
 
             float damageTakenIntervalScore

@@ -1,3 +1,4 @@
+using Entropek.Combat;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,8 +44,8 @@ namespace Entropek.EntityStats{
             }
 
             this.health     = health;
-            slider.maxValue = health.GetMaxHealthValue();
-            slider.value    = health.GetHealthValue();
+            slider.maxValue = health.MaxValue;
+            slider.value    = health.Value;
 
             // link to this new one.
 
@@ -66,21 +67,21 @@ namespace Entropek.EntityStats{
         }
 
         private void LinkHealth(){
-            health.HealthDamaged += OnHealthDamaged;
-            health.Healed        += OnHealthHealed;
+            health.Damaged += OnDamaged;
+            health.Healed += OnHealed;
         }
 
         private void UnlinkHealth(){
-            health.HealthDamaged -= OnHealthDamaged;
-            health.Healed        -= OnHealthHealed;
+            health.Damaged -= OnDamaged;
+            health.Healed -= OnHealed;
         }
 
-        private void OnHealthHealed(float amount){
-            slider.value = health.GetHealthValue();
+        private void OnHealed(float amount){
+            slider.value = health.Value;
         }
 
-        private void OnHealthDamaged(float amount){
-            slider.value = health.GetHealthValue();
+        private void OnDamaged(DamageContext damageContext){
+            slider.value = health.Value;
         }
     }
 

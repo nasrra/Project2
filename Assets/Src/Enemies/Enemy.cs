@@ -48,7 +48,7 @@ public abstract class Enemy : MonoBehaviour
     /// 
 
 
-    void Awake()
+   void Awake()
     {
         LinkEvents();
     }
@@ -232,15 +232,18 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void LinkHealthEvents()
     {
         health.Death += OnHealthDeath;
+        health.Damaged += OnHealthDamaged;
     }
 
     protected virtual void UnlinkHealthEvents()
     {
         health.Death -= OnHealthDeath;
+        health.Damaged -= OnHealthDamaged;
     }
 
     protected abstract void OnHealthDeath();
 
+    protected abstract void OnHealthDamaged(DamageContext damageContext);
 
     /// 
     /// Animation Event Reciever Linkage.

@@ -26,7 +26,8 @@ namespace Entropek.Combat
         [Tooltip("This trigger collider must always start disabled.")]
         [SerializeField] protected Collider triggerCollider;
         [TagSelector] [SerializeField] protected string[] ignoreTags;
-        [SerializeField] protected float damage;
+        [SerializeField] protected float damageAmount;
+        [SerializeField] protected DamageType damageType;
 
         /// <summary>
         /// Activates the trigger collider for the hitbox, enabling detection of incoming hurtboxes.
@@ -60,7 +61,7 @@ namespace Entropek.Combat
 
                 // damage the health component.
 
-                healthSystem.Damage(damage);
+                healthSystem.Damage(new DamageContext(transform.position, damageAmount, damageType));
 
                 // return that we hit the health object.
 

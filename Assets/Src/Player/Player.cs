@@ -7,6 +7,7 @@ using Entropek.Audio;
 using Entropek.UnityUtils.AnimatorUtils;
 using Entropek.Vfx;
 using Entropek.UnityUtils.Attributes;
+using Entropek.Combat;
 
 public class Player : MonoBehaviour {
 
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour {
     [Header("Components")]
     [SerializeField] private Entropek.Camera.CameraController cam;
     [SerializeField] private Entropek.Camera.CameraPostProcessingController cameraPostProcessing;
-    [SerializeField] private Entropek.EntityStats.ShieldedHealth health;
+    [SerializeField] private Entropek.EntityStats.Health health;
     [SerializeField] private JumpMovement jumpMovement;
     [SerializeField] private CharacterControllerMovement movement;
     [SerializeField] private Animator animator;
@@ -131,7 +132,7 @@ public class Player : MonoBehaviour {
 
     private void OnEnable()
     {
-        Entropek.EntityStats.ShieldedHealthBarHud.Singleton.ShieldedHealthBar.DisplayShieldedHealth(health);
+        Entropek.EntityStats.HealthBarHud.Singleton.HealthBar.DisplayHealth(health);
     }
 
     private void Update() {
@@ -481,17 +482,15 @@ public class Player : MonoBehaviour {
 
     private void LinkHealthEvents()
     {
-        health.HealthDamaged += OnHealthDamaged;
-        health.ShieldDamaged += OnHealthDamaged;
+        health.Damaged += OnDamaged;
     }
 
     private void UnlinkHealthEvents()
     {
-        health.HealthDamaged -= OnHealthDamaged;
-        health.ShieldDamaged -= OnHealthDamaged;
+        health.Damaged -= OnDamaged;
     }
 
-    private void OnHealthDamaged(float amount){
+    private void OnDamaged(DamageContext damageContext){
         cam.StartShaking(DamagedCameraShakeStrength, DamagedCameraShakeTime);
 
         cameraPostProcessing.PulseVignetteIntensity(
@@ -598,7 +597,7 @@ public class Player : MonoBehaviour {
     private void OnAttackHit(GameObject other, Vector3 hitPoint)
     {
         vfx.PlayVfx(AttackHitVfxId, hitPoint, transform.forward);
-        health.RestoreShield(AttackShieldRestorationAmount);
+        health.Heal(AttackShieldRestorationAmount);
         cam.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
 
         cameraPostProcessing.PulseLensDistortionIntensity(
