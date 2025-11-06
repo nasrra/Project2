@@ -25,6 +25,7 @@ namespace Entropek.Combat
 
         [RuntimeField] private Transform opponentTransform;
         [RuntimeField] private bool isEngaged = false;
+        public bool IsEngaged => isEngaged;
 
 
         /// <summary>

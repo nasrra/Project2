@@ -86,7 +86,7 @@ namespace Entropek.EntityStats{
             }
 
             healthValue -= amount;
-            if(maxHealthValue<=0){
+            if(healthValue<=0){
                 HealthDeadState();
             }
             else{
