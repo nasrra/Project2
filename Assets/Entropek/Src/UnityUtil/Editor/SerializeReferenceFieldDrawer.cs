@@ -10,7 +10,7 @@ using UnityEditor.PackageManager;
 namespace Entropek.UnityUtils
 {
 
-    public abstract class SerializeReferenceFieldDrawer<T> where T : UnityEngine.Object
+    public abstract class SerializeReferenceFieldDrawer
     {
         /// <summary>
         /// Retrieves all derived types (sub-classes) of the assigned field type.
@@ -24,7 +24,7 @@ namespace Entropek.UnityUtils
         /// <param name="target"></param>
         /// <param name="serializedProperty"></param>
 
-        public abstract void DrawMenu(T target,  in SerializedProperty serializedProperty);
+        public abstract void DrawMenu(UnityEngine.Object target,  in SerializedProperty serializedProperty);
     }
 
     /// <summary>
@@ -34,8 +34,7 @@ namespace Entropek.UnityUtils
     /// <typeparam name="TargetType">The type of the target.</typeparam>
     /// <typeparam name="FieldType">The Type of the field to manage and store its derived types.</typeparam>
     
-    public class SerializeReferenceFieldDrawer<TargetType, FieldType> : SerializeReferenceFieldDrawer<TargetType> 
-    where TargetType : UnityEngine.Object
+    public class SerializeReferenceFieldDrawer<FieldType> : SerializeReferenceFieldDrawer
     {
         // List types deriving from MySettings for the dropdown
         private Type[] derivedTypes;
@@ -99,7 +98,7 @@ namespace Entropek.UnityUtils
             return fieldType;
         }
 
-        public override void DrawMenu(TargetType target, in SerializedProperty serializedProperty)
+        public override void DrawMenu(UnityEngine.Object target, in SerializedProperty serializedProperty)
         {
             DrawMenu(target, in serializedProperty, serializedProperty.isArray? "Add Selected Type." : "Set To Selected Type.");
         }
@@ -111,7 +110,7 @@ namespace Entropek.UnityUtils
         /// <param name="serializedProperty"></param>
         /// <param name="buttonName">The text displayed on the modifier button.</param>
 
-        private void DrawMenu(TargetType target, in SerializedProperty serializedProperty, string buttonName)
+        private void DrawMenu(UnityEngine.Object target, in SerializedProperty serializedProperty, string buttonName)
         {
             // Indent the following controls to visually nest under the foldout
             EditorGUI.indentLevel++;
@@ -121,50 +120,54 @@ namespace Entropek.UnityUtils
 
             if (isValidType == true)
             {
+
+                // retrieve the field within the target.
+                var field = target.GetType().GetField(serializedProperty.name, BindingFlags.NonPublic | BindingFlags.Instance);
+
+
+                if (field == null)
+                {
+                    EditorGUILayout.HelpBox($"{target} does not implement the serializedProperty: {serializedProperty.name}.",MessageType.Error);                    
+                }
+                else if(field.GetValue(target) == null)
+                {
+                    EditorGUILayout.HelpBox($"{target} does not hold an instance for: {serializedProperty.name}.",MessageType.Warning);                            
+                }
+
                 // Draw your dropdown and add button inside the foldout area
                 selectedTypeIndex = EditorGUILayout.Popup("Selected Type", selectedTypeIndex, derivedTypeNames);
-
+                
                 if (GUILayout.Button(buttonName))
                 {
                     // Create an instance of the selected type
                     var instance = Activator.CreateInstance(derivedTypes[selectedTypeIndex]);
-                    
-                    // retrieve the field within the target.
-                    var field = target.GetType().GetField(serializedProperty.name, BindingFlags.NonPublic | BindingFlags.Instance);
-                    
+                                        
                     
                     // assign the value in the editor to the new instance value.
                     
-                    if (field != null)
+                    if (field.FieldType.IsArray)
                     {
-                        if (field.FieldType.IsArray)
-                        {
-                            var array = field.GetValue(target) as Array;
-                            // Create a new array with one extra slot.
-                            var elementType = array.GetType().GetElementType();
-                            var newArray = Array.CreateInstance(elementType, array.Length + 1);
-                            Array.Copy(array, newArray, array.Length);
-                            newArray.SetValue(instance, array.Length);
-                            field.SetValue(target, newArray);
-                        }
-
-                        else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
-                        {
-                            var ilist = field.GetValue(target) as System.Collections.IList;
-                            ilist.Add(instance);
-                        }
-
-                        else
-                        {
-                            field.SetValue(target, instance);
-                        }
-                        
-                        EditorUtility.SetDirty(target);
+                        var array = field.GetValue(target) as Array;
+                        // Create a new array with one extra slot.
+                        var elementType = array.GetType().GetElementType();
+                        var newArray = Array.CreateInstance(elementType, array.Length + 1);
+                        Array.Copy(array, newArray, array.Length);
+                        newArray.SetValue(instance, array.Length);
+                        field.SetValue(target, newArray);
                     }
+
+                    else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(List<>))
+                    {
+                        var ilist = field.GetValue(target) as System.Collections.IList;
+                        ilist.Add(instance);
+                    }
+
                     else
                     {
-                        EditorGUILayout.HelpBox($"{target} does not contain serilized property: {serializedProperty.name}.",MessageType.Error);                            
-                    }     
+                        field.SetValue(target, instance);
+                    }
+                    
+                    EditorUtility.SetDirty(target);
                 }
             }            
             else

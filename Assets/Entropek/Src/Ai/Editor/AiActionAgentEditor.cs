@@ -13,9 +13,9 @@ namespace Entropek.Ai{
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="U"></typeparam>
 
-    public abstract class AiActionAgentEditor<T,U> : AiAgentEditor<T>
-        where T : AiActionAgent<U>
-        where U : AiAction
+    [UnityEditor.CustomEditor(typeof(AiActionAgent))]
+    [CanEditMultipleObjects]
+    public class AiActionAgentEditor : AiAgentEditor
     {
 
 
@@ -45,7 +45,7 @@ namespace Entropek.Ai{
 
             // get a reference to the target.
 
-            T agent = (T)target;
+            AiActionAgent agent = (AiActionAgent)target;
 
             EditorGUILayout.Space();
 
@@ -64,7 +64,7 @@ namespace Entropek.Ai{
         /// 
 
 
-        private void DrawActionFovEditorToggle(T aiCombatAgent)
+        private void DrawActionFovEditorToggle(AiActionAgent aiCombatAgent)
         {
             drawActionFovEditor = EditorGUILayout.BeginToggleGroup("Action FOV Editor", drawActionFovEditor);
             if (drawActionFovEditor == true)
@@ -80,17 +80,17 @@ namespace Entropek.Ai{
         /// </summary>
         /// <param name="aiCombatAgent"></param>
 
-        private void DrawActionFovEditor(T aiCombatAgent)
+        private void DrawActionFovEditor(AiActionAgent aiActionAgent)
         {
 
             // options to choose from.
 
-            string[] options = new string[aiCombatAgent.AiCombatActions.Length + 1];
+            string[] options = new string[aiActionAgent.AiActions.Length + 1];
             options[0] = "None"; // default to none.
 
             // add all the names of the combat actions.
 
-            AiAction[] aiCombatActions = aiCombatAgent.AiCombatActions;
+            AiAction[] aiCombatActions = aiActionAgent.AiActions;
             for (int i = 0; i < aiCombatActions.Length; i++)
             {
                 options[i + 1] = aiCombatActions[i].Name;
@@ -140,7 +140,7 @@ namespace Entropek.Ai{
                 return; // dont draw anything if no action has been selected.
             }
 
-            Transform transform = ((T)target).transform;
+            Transform transform = ((AiActionAgent)target).transform;
 
 
             // draw the user defined max angle, where the combat angent cannot see in relation to the front of it.

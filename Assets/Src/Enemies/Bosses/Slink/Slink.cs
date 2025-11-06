@@ -1,4 +1,6 @@
 using System;
+using Entropek.Ai;
+using Entropek.Ai.Contexts;
 using UnityEngine;
 
 public class Slink : Enemy {
@@ -40,6 +42,8 @@ public class Slink : Enemy {
     private const float DashForwardLungeDecay = 60;
 
     private event Action FixedUpdateCallback;
+
+
 
 
     /// 

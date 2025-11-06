@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Entropek.Input
 {
-    [CustomEditor(typeof(InputSystem), editorForChildClasses: true)]
+    [UnityEditor.CustomEditor(typeof(InputSystem), editorForChildClasses: true)]
     [CanEditMultipleObjects]
     public class InputSystemEditor : RuntimeEditor<InputSystem>{}
 }

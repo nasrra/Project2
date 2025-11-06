@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Entropek.InventorySystem
 {
-    [CustomEditor(typeof(Inventory))]
+    [UnityEditor.CustomEditor(typeof(Inventory))]
     [CanEditMultipleObjects]
     public class InventoryEditor : RuntimeEditor<Inventory>
     {}    

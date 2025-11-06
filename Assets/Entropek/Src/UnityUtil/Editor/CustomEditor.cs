@@ -9,9 +9,9 @@ using UnityEngine;
 
 namespace Entropek.UnityUtils
 {
-    public class CustomEditor<T> : Editor where T : UnityEngine.Object
+    public class CustomEditor : Editor
     {
-        Dictionary<string, SerializeReferenceFieldDrawer<T>> seriliazedReferences;
+        Dictionary<string, SerializeReferenceFieldDrawer> seriliazedReferences;
 
         protected virtual void OnEnable()
         {
@@ -32,9 +32,9 @@ namespace Entropek.UnityUtils
 
                     Type propertyUnderlyingType = property.GetUnderlyingType();
                     
-                    Type drawerType = typeof(SerializeReferenceFieldDrawer<,>).MakeGenericType(typeof(T),propertyUnderlyingType);
+                    Type drawerType = typeof(SerializeReferenceFieldDrawer<>).MakeGenericType(propertyUnderlyingType);
 
-                    SerializeReferenceFieldDrawer<T> drawerInstance = (SerializeReferenceFieldDrawer<T>)Activator.CreateInstance(drawerType);
+                    SerializeReferenceFieldDrawer drawerInstance = (SerializeReferenceFieldDrawer)Activator.CreateInstance(drawerType);
 
                     seriliazedReferences.Add(property.name, drawerInstance);
                     
@@ -49,8 +49,6 @@ namespace Entropek.UnityUtils
 
         public override void OnInspectorGUI()
         {
-            T t = (T)target;
-
             // Draw all properties.
 
             SerializedProperty serializedProperty = serializedObject.GetIterator();
@@ -63,7 +61,7 @@ namespace Entropek.UnityUtils
                 
                 if (seriliazedReferences.ContainsKey(serializedProperty.name))
                 {
-                    DrawSerializeReferenceEditor(t, in serializedProperty);    
+                    DrawSerializeReferenceEditor(target, in serializedProperty);    
                 }
             }
    
@@ -78,7 +76,7 @@ namespace Entropek.UnityUtils
         /// <param name="target">The target script in the editor.</param>
         /// <param name="serializedProperty">The SerializeProperty to draw.</param>
 
-        protected void DrawSerializeReferenceEditor(T target, in SerializedProperty serializedProperty)
+        protected void DrawSerializeReferenceEditor(UnityEngine.Object target, in SerializedProperty serializedProperty)
         {
             seriliazedReferences[serializedProperty.name].DrawMenu(target, in serializedProperty);
         }

@@ -1,42 +1,56 @@
 using System;
+using Entropek.Ai.Contexts;
+using Entropek.Combat;
+using Entropek.EntityStats;
+using Entropek.Time;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Ai{
 
 
     [Serializable]
-    public class ComplexAiAction : AiAction{
+    public class ComplexCombatAiAction : AiAction{
 
-        public const float MaxWeight = 5;
+
+        /// 
+        /// Curves.
+        /// 
+
 
         [Header("Curves")]
 
         // The amount of health lost in a given time interval.
 
-        [SerializeField] private AnimationCurve damageTakenIntervalCurve = new AnimationCurve(new Keyframe(0f,1f), new Keyframe(1f,0f));
+        [SerializeField] private AnimationCurve damageTakenIntervalCurve;
         public AnimationCurve DamageTakenIntervalCurve => damageTakenIntervalCurve;
 
         // The Distance to the closest significant obstacle [walls, etc.]
 
-        [SerializeField] private AnimationCurve distanceToObstacleCurve = new AnimationCurve(new Keyframe(0f,1f), new Keyframe(1f,0f));
+        [SerializeField] private AnimationCurve distanceToObstacleCurve;
         public AnimationCurve DistanceToObstacleCurve => distanceToObstacleCurve;
 
         // The distance from the Ai to the opponent.
 
-        [SerializeField] private AnimationCurve distanceToOpponentCurve = new AnimationCurve(new Keyframe(0f,1f), new Keyframe(1f,0f));
+        [SerializeField] private AnimationCurve distanceToOpponentCurve;
         public AnimationCurve DistanceToOpponentCurve => distanceToOpponentCurve;
 
         // The amount of health of the opponent.
 
-        [SerializeField] private AnimationCurve normalisedOpponentHealthCurve = new AnimationCurve(new Keyframe(0f,1f), new Keyframe(1f,0f));
+        [SerializeField] private AnimationCurve normalisedOpponentHealthCurve;
         public AnimationCurve NormalisedOpponentHealthCurve => normalisedOpponentHealthCurve;
 
         // The amount of health this Ai currently has.
 
-        [SerializeField] private AnimationCurve normalisedSelfHealthCurve = new AnimationCurve(new Keyframe(0f,1f), new Keyframe(1f,0f));
+        [SerializeField] private AnimationCurve normalisedSelfHealthCurve;
         public AnimationCurve NormalisedSelfHealthCurve => normalisedSelfHealthCurve;
 
 
+        ///
+        /// Weights.
+        ///
+
+        public const float MaxWeight = 5;
 
         [Header("Weigths")]
         [Range(0,5f)][SerializeField] private float damageTakenIntervalWeight = 0;
@@ -54,35 +68,68 @@ namespace Entropek.Ai{
         [Range(0,5f)][SerializeField] private float normalisedSelfHealthWeight = 0;
         public float NormalisedSelfHealthWeight => normalisedSelfHealthWeight;
 
-        public float Evaluate(float damageTakenInterval, float distanceToOpponent, float distanceToObstacle, float normalisedOpponentHealth, float noramlisedSelfHealth)
-        {
+        ///
+        /// Cache.
+        /// 
 
+
+        IOpponentContext opponentContext;
+        IDamageIntervalContext damageIntervalContext;
+
+
+
+        /// 
+        /// Base.
+        /// 
+
+        public override float MaxScore => MaxWeight;
+
+        protected override bool IsPossible()
+        {
+            return 
+            WithinFov(opponentContext.DotDirectionToTarget) == true
+            && IsOnCooldown() == false;
+        }
+
+        protected override void RetrieveContextTypes(AiAgentContext context)
+        {
+            opponentContext = context as IOpponentContext;
+            damageIntervalContext = context as IDamageIntervalContext;
+        }
+
+        protected override float Evaluate()
+        {
             float selfHealthScore
                 = normalisedSelfHealthWeight > 0
-                ? normalisedSelfHealthCurve.Evaluate(noramlisedSelfHealth) * normalisedSelfHealthWeight
+                ? normalisedSelfHealthCurve.Evaluate(damageIntervalContext.SelfHealth.GetNormalisedHealthValue()) * normalisedSelfHealthWeight
                 : 0;
 
             float distanceToObstacleScore
                 = distanceToObstacleWeight > 0
-                ? distanceToObstacleCurve.Evaluate(distanceToObstacle) * distanceToObstacleWeight
+                ? distanceToObstacleCurve.Evaluate(0) * distanceToObstacleWeight
                 : 0;
 
             float distanceToOpponentScore
                 = distanceToOpponentWeight > 0
-                ? distanceToOpponentCurve.Evaluate(distanceToOpponent) * distanceToOpponentWeight
+                ? distanceToOpponentCurve.Evaluate(opponentContext.DistanceToTarget) * distanceToOpponentWeight
                 : 0;
 
             float opponentHealthScore
                 = normalisedOpponentHealthWeight > 0
-                ? normalisedOpponentHealthCurve.Evaluate(normalisedOpponentHealth) * normalisedOpponentHealthWeight
+                ? normalisedOpponentHealthCurve.Evaluate(opponentContext.HealthSystem.GetNormalisedHealthValue()) * normalisedOpponentHealthWeight
                 : 0;
 
             float damageTakenIntervalScore
                 = damageTakenIntervalWeight > 0
-                ? damageTakenIntervalCurve.Evaluate(damageTakenInterval) * damageTakenIntervalWeight
+                ? damageTakenIntervalCurve.Evaluate(damageIntervalContext.DamageTakenInCurrentInterval) * damageTakenIntervalWeight
                 : 0;
 
-            return selfHealthScore + distanceToObstacleScore + distanceToOpponentScore + opponentHealthScore + damageTakenIntervalScore;
+            return 
+                selfHealthScore 
+                + distanceToObstacleScore 
+                + distanceToOpponentScore 
+                + opponentHealthScore 
+                + damageTakenIntervalScore;            
         }
 
 #if UNITY_EDITOR
@@ -147,12 +194,6 @@ namespace Entropek.Ai{
             }
         }
 #endif
-
-        public override float GetMaxScore()
-        {
-            return MaxWeight;
-        }
-
     }
 
 

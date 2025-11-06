@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Entropek.Combat;
 
 public abstract class Enemy : MonoBehaviour 
 {
@@ -52,6 +53,27 @@ public abstract class Enemy : MonoBehaviour
         LinkEvents();
     }
 
+    void Start()
+    {
+        // immediately start tracking the player.
+
+        Entropek.Ai.Contexts.AiAgentContext combatContext = combatAgent.AiAgentContext;
+
+        switch (combatContext)
+        {
+            
+            // check IOpponentContext first as it implements the target context;
+
+            case Entropek.Ai.Contexts.IOpponentContext opponentContext:
+                opponentContext.Target = Opponent.Singleton.transform;
+                opponentContext.HealthSystem = Opponent.Singleton.HealthSystem;
+            break;
+            case Entropek.Ai.Contexts.ITargetContext targetContext:
+                targetContext.Target = Opponent.Singleton.transform;
+            break;
+        }
+    }
+
     void OnDestroy()
     {
         UnlinkEvents();
@@ -68,6 +90,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void AttackEndedState()
     {
+        combatAgent.BeginChosenActionCooldown();
+
         // get the attack that has just been completed. 
 
         Entropek.Ai.AiAction endedAttack = combatAgent.ChosenAction;
@@ -76,7 +100,10 @@ public abstract class Enemy : MonoBehaviour
 
         if (endedAttack.EvaluateOnIdleTimeout == true)
         {
-            stateQeueue.Enqueue(combatAgent.Evaluate);
+            if (combatAgent.Evaluate() == true)
+            {
+                return;
+            }
         }
 
         // start idle state.
@@ -174,13 +201,11 @@ public abstract class Enemy : MonoBehaviour
     private void LinkCombatAgentEvents()
     {
         combatAgent.OutcomeChosen += OnCombatActionChosenWrapper;
-        combatAgent.EngagedOpponent += OnOpponentEngaged;
     }
 
     private void UnlinkCombatAgentEvents()
     {
         combatAgent.OutcomeChosen -= OnCombatActionChosenWrapper;
-        combatAgent.EngagedOpponent -= OnOpponentEngaged;
     }
 
     private void OnCombatActionChosenWrapper(string actionName)
@@ -255,10 +280,6 @@ public abstract class Enemy : MonoBehaviour
     {
         switch (eventName)
         {
-            case "StartCombatActionCooldown":
-                combatAgent.BeginChosenActionCooldown();
-                return true;
-
             case "SetGraphicsObjectDirectionBackwards":
                 OnSetGraphicsObjectDirectionBackwardsAnimationEvent();
                 return true;

@@ -490,6 +490,7 @@ GameObject:
   - component: {fileID: 36969682}
   - component: {fileID: 36969683}
   - component: {fileID: 36969684}
+  - component: {fileID: 36969685}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -598,625 +599,6 @@ MonoBehaviour:
   fallCoyoteTimer: {fileID: 36969681}
   slashLeftHitBox: {fileID: 2040653720}
   slashRightHitBox: {fileID: 497542499}
-  actions4:
-  - rid: 5395954597618778241
-  - rid: 5395954597618778242
-  - rid: 5395954597618778243
-  - rid: 5395954597618778244
-  - rid: 5395954597618778251
-  fool:
-    rid: 5395954597618778255
-  references:
-    version: 2
-    RefIds:
-    - rid: 5395954597618778241
-      type: {class: BasicAiAction, ns: Entropek.Ai, asm: Assembly-CSharp}
-      data:
-        name: 
-        cooldownTimer: {fileID: 0}
-        maxFov: 0
-        minFov: 0
-        idleTime: 0
-        evaluateOnIdleTimeout: 0
-        enabled: 1
-        distanceToOpponentCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-    - rid: 5395954597618778242
-      type: {class: ComplexAiAction, ns: Entropek.Ai, asm: Assembly-CSharp}
-      data:
-        name: 
-        cooldownTimer: {fileID: 0}
-        maxFov: 0
-        minFov: 0
-        idleTime: 0
-        evaluateOnIdleTimeout: 0
-        enabled: 1
-        damageTakenIntervalCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToObstacleCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToOpponentCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedOpponentHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedSelfHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        damageTakenIntervalWeight: 0
-        distanceToObstacleWeight: 0
-        distanceToOpponentWeight: 0
-        normalisedOpponentHealthWeight: 0
-        normalisedSelfHealthWeight: 0
-    - rid: 5395954597618778243
-      type: {class: ComplexAiAction, ns: Entropek.Ai, asm: Assembly-CSharp}
-      data:
-        name: 
-        cooldownTimer: {fileID: 0}
-        maxFov: 0
-        minFov: 0
-        idleTime: 0
-        evaluateOnIdleTimeout: 0
-        enabled: 1
-        damageTakenIntervalCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToObstacleCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToOpponentCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedOpponentHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedSelfHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        damageTakenIntervalWeight: 0
-        distanceToObstacleWeight: 0
-        distanceToOpponentWeight: 0
-        normalisedOpponentHealthWeight: 0
-        normalisedSelfHealthWeight: 0
-    - rid: 5395954597618778244
-      type: {class: BasicAiAction, ns: Entropek.Ai, asm: Assembly-CSharp}
-      data:
-        name: 
-        cooldownTimer: {fileID: 0}
-        maxFov: 0
-        minFov: 0
-        idleTime: 0
-        evaluateOnIdleTimeout: 0
-        enabled: 1
-        distanceToOpponentCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-    - rid: 5395954597618778251
-      type: {class: ComplexAiAction, ns: Entropek.Ai, asm: Assembly-CSharp}
-      data:
-        name: 
-        cooldownTimer: {fileID: 0}
-        maxFov: 0
-        minFov: 0
-        idleTime: 0
-        evaluateOnIdleTimeout: 0
-        enabled: 1
-        damageTakenIntervalCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToObstacleCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToOpponentCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedOpponentHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedSelfHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        damageTakenIntervalWeight: 0
-        distanceToObstacleWeight: 0
-        distanceToOpponentWeight: 0
-        normalisedOpponentHealthWeight: 0
-        normalisedSelfHealthWeight: 0
-    - rid: 5395954597618778255
-      type: {class: ComplexAiAction, ns: Entropek.Ai, asm: Assembly-CSharp}
-      data:
-        name: 
-        cooldownTimer: {fileID: 0}
-        maxFov: 0
-        minFov: 0
-        idleTime: 0
-        evaluateOnIdleTimeout: 0
-        enabled: 1
-        damageTakenIntervalCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToObstacleCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        distanceToOpponentCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedOpponentHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        normalisedSelfHealthCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        damageTakenIntervalWeight: 0
-        distanceToObstacleWeight: 0
-        distanceToOpponentWeight: 0
-        normalisedOpponentHealthWeight: 0
-        normalisedSelfHealthWeight: 0
 --- !u!114 &36969667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,6 +747,19 @@ MonoBehaviour:
   - {fileID: 5083239825206977844, guid: 647e81b09f3b009e2b2c18bb2b7da336, type: 3}
   - {fileID: 6867150708108730610, guid: 1bf6c1d41170f303fab52f6fb1a2fd31, type: 3}
   - {fileID: 1939639467521596539, guid: b084e83e2a793e7a8abff5612ab6c5ad, type: 3}
+--- !u!114 &36969685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36969662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc94385c3267854296a7d148690b8fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSystem: {fileID: 36969673}
 --- !u!1001 &43038483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2074,87 +1469,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198368032}
   m_CullTransparentMesh: 1
---- !u!1 &200020851 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-  m_PrefabInstance: {fileID: 198800406371793293}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &200020852 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-  m_PrefabInstance: {fileID: 198800406371793293}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &200020853 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-  m_PrefabInstance: {fileID: 198800406371793293}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200020851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fb600d3f5c367c42a7bb6e61396b3ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &200020860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200020851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: Bite Cooldown
-  initialTime: 3.33
-  BeginOnEnable: 0
---- !u!114 &200020861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200020851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: TailSwipe
-  initialTime: 3.33
-  BeginOnEnable: 0
---- !u!114 &200020865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200020851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: Dash Forward
-  initialTime: 0
-  BeginOnEnable: 0
---- !u!114 &200020869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200020851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: Claw Slash Cooldown
-  initialTime: 0
-  BeginOnEnable: 0
 --- !u!43 &231071196
 Mesh:
   m_ObjectHideFlags: 0
@@ -3239,6 +2553,17 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &435199331 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+  m_PrefabInstance: {fileID: 1892636444}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892636446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69e8cc58b332e74e8d565840787ff62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &497542497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12271,42 +11596,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   globalVolume: {fileID: 832575518}
---- !u!1 &835695632 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2541619054214407840, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-  m_PrefabInstance: {fileID: 7801194787973268430}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &835695633 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-  m_PrefabInstance: {fileID: 7801194787973268430}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &835695634 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-  m_PrefabInstance: {fileID: 7801194787973268430}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835695632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2442264eed8bea49b146f878d7c4ee4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &835695637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835695632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: Test Cooldown
-  initialTime: 1
-  BeginOnEnable: 0
 --- !u!4 &856204668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7678704298130238203, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
@@ -12429,9 +11718,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 660546500}
-  - {fileID: 200020852}
   - {fileID: 1838991849}
   - {fileID: 799186846}
+  - {fileID: 1892636445}
   m_Father: {fileID: 2075580349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &941634251
@@ -17113,6 +16402,1104 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289a9596c46da76419e7b2c4e4a88141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1892636444
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 919281699}
+    m_Modifications:
+    - target: {fileID: 1809505232688274476, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: initialTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: m_Name
+      value: AiActionAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiAgentContext
+      value: 
+      objectReference: {fileID: 1892636451}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: aiActions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'aiActions.Array.data[0]'
+      value: 5395954617938608204
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'aiActions.Array.data[1]'
+      value: 5395954617938608206
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'aiActions.Array.data[2]'
+      value: 5395954617938608208
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'managedReferences[5395954617938608204]'
+      value: Assembly-CSharp Entropek.Ai.BasicCombatAiAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'managedReferences[5395954617938608205]'
+      value: Assembly-CSharp Entropek.Ai.BasicCombatAiAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'managedReferences[5395954617938608206]'
+      value: Assembly-CSharp Entropek.Ai.ComplexCombatAiAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: 'managedReferences[5395954617938608208]'
+      value: Assembly-CSharp Entropek.Ai.ComplexCombatAiAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].name
+      value: Bite
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].name
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].name
+      value: DashForward
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].name
+      value: TailSwipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].maxFov
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].minFov
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].maxFov
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].minFov
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].maxFov
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].minFov
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].maxFov
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].minFov
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].idleTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].idleTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].idleTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].idleTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].cooldownTimer
+      value: 
+      objectReference: {fileID: 1892636447}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].cooldownTimer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].cooldownTimer
+      value: 
+      objectReference: {fileID: 1892636448}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].cooldownTimer
+      value: 
+      objectReference: {fileID: 1892636449}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].evaluateOnIdleTimeout
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].evaluateOnIdleTimeout
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].evaluateOnIdleTimeout
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].evaluateOnIdleTimeout
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentWeight
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToObstacleWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentWeight
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedSelfHealthWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedOpponentHealthWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToObstacleCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToObstacleCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToObstacleCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedSelfHealthCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedSelfHealthCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedSelfHealthCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToObstacleCurve.m_Curve.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedOpponentHealthCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedOpponentHealthCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedSelfHealthCurve.m_Curve.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedOpponentHealthCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].normalisedOpponentHealthCurve.m_Curve.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].time
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].time
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].time
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].time
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].time
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
+      value: -0.06622209
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
+      value: -0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
+      value: -0.19894713
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
+      value: -0.06622209
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].inSlope
+      value: 0.1666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].inSlope
+      value: 0.16475984
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
+      value: -0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].inSlope
+      value: -0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].inSlope
+      value: -0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
+      value: -0.19894713
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
+      value: 0.5028986
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
+      value: 0.5064892
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].outSlope
+      value: 0.1666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].inWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].outSlope
+      value: 0.16475984
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].outSlope
+      value: -0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].outSlope
+      value: -0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
+      value: 0.5014493
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].outWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608204].distanceToOpponentCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608205].distanceToOpponentCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToObstacleCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].distanceToOpponentCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].distanceToOpponentCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].damageTakenIntervalCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608208].damageTakenIntervalCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedSelfHealthCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954617938608206].normalisedOpponentHealthCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1892636447}
+    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1892636448}
+    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1892636449}
+    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1892636451}
+  m_SourcePrefab: {fileID: 100100000, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+--- !u!4 &1892636445 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+  m_PrefabInstance: {fileID: 1892636444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1892636446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+  m_PrefabInstance: {fileID: 1892636444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1892636447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892636446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Bite Cooldown
+  initialTime: 3.33
+  BeginOnEnable: 0
+--- !u!114 &1892636448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892636446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: DashForwardCooldown
+  initialTime: 12
+  BeginOnEnable: 0
+--- !u!114 &1892636449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892636446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: TailSwipeCooldown
+  initialTime: 3.33
+  BeginOnEnable: 0
+--- !u!114 &1892636451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892636446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fa387e2cb55e64999537d056b977a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damgeTakenIntervalTimer: {fileID: 2075580373}
+  selfHealth: {fileID: 2075580361}
 --- !u!43 &1913618780
 Mesh:
   m_ObjectHideFlags: 0
@@ -18445,13 +18832,14 @@ GameObject:
   - component: {fileID: 2075580369}
   - component: {fileID: 2075580370}
   - component: {fileID: 2075580371}
+  - component: {fileID: 2075580373}
   m_Layer: 7
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2075580349
 Transform:
   m_ObjectHideFlags: 0
@@ -18485,7 +18873,7 @@ MonoBehaviour:
   graphicsObject: {fileID: 919281699}
   target: {fileID: 36969663}
   health: {fileID: 2075580361}
-  combatAgent: {fileID: 200020853}
+  combatAgent: {fileID: 435199331}
   animationEventReciever: {fileID: 660546501}
   movement: {fileID: 2075580367}
   forceApplier: {fileID: 2075580364}
@@ -18657,6 +19045,22 @@ MonoBehaviour:
   editorNameTag: Timed Action Queue
   initialTime: 0
   BeginOnEnable: 0
+--- !u!114 &2075580373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075580345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6638d0eec5ccbf157829adc9861bba31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Damage Taken Interval Timer
+  initialTime: 6
+  BeginOnEnable: 0
+  Loop: 1
 --- !u!1001 &2084166582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18930,7 +19334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2104434989
 Transform:
   m_ObjectHideFlags: 0
@@ -18944,7 +19348,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 835695633}
   - {fileID: 1792420860}
   - {fileID: 1201043234}
   - {fileID: 1098466082}
@@ -18965,7 +19368,7 @@ MonoBehaviour:
   graphicsObject: {fileID: 1792420860}
   target: {fileID: 36969663}
   health: {fileID: 2104434993}
-  combatAgent: {fileID: 835695634}
+  combatAgent: {fileID: 0}
   animationEventReciever: {fileID: 1792420863}
   movement: {fileID: 2104434994}
   forceApplier: {fileID: 2104434995}
@@ -19357,1095 +19760,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1001 &198800406371793293
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 919281699}
-    m_Modifications:
-    - target: {fileID: 2192116559576180027, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_Radius
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2443229024004812923, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4900296982674033762, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: initialTime
-      value: 3.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: m_Name
-      value: ComplexAiCombatAgent
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: selfHealth
-      value: 
-      objectReference: {fileID: 2075580361}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: 'managedReferences[-2]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: 'aiActions.Array.data[0]'
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: 'aiActions.Array.data[1]'
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: 'aiActions.Array.data[2]'
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: 'aiActions.Array.data[3]'
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].name
-      value: Bite
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].name
-      value: TailSwipe
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].name
-      value: DashForward
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].name
-      value: ClawSlash
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].minFov
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].maxFov
-      value: -0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].maxFov
-      value: -0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].minFov
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].idleTime
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].idleTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].idleTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].idleTime
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].name
-      value: Bite
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].name
-      value: TailSwipe
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].name
-      value: TestSwivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].name
-      value: DashForward
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].name
-      value: ClawSlash
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].minFov
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].maxFov
-      value: -0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].maxFov
-      value: -0.77
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].minFov
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020860}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020861}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020865}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020869}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].idleTime
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].idleTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].idleTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].idleTime
-      value: 0.167
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].idleTime
-      value: 0.167
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].turnToTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].turnToTarget
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].turnToTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020860}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020861}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020861}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020865}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].cooldownTimer
-      value: 
-      objectReference: {fileID: 200020865}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].evaluateOnIdleTimeout
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].evaluateOnIdleTimeout
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentWeight
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentWeight
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentWeight
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentWeight
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].damageTakenIntervalWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].evaluateOnIdleTimeout
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].evaluateOnIdleTimeout
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].evaluateOnIdleTimeout
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].evaluateOnIdleTimeout
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].evaluateOnIdleTimeout
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentWeight
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToObstacleWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentWeight
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentWeight
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentWeight
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentWeight
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].damageTakenIntervalWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].damageTakenIntervalCurve.m_PreInfinity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].damageTakenIntervalCurve.m_PostInfinity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].damageTakenIntervalCurve.m_PreInfinity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].damageTakenIntervalCurve.m_PostInfinity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].damageTakenIntervalCurve.m_Curve.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].time
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[1].time
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: -0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.00031382183
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: 0.0007936557
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.49332923
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: 0.0007936557
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.49332923
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: -0.06725644
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.00078511075
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: -0.06666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.5057971
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.00031382183
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].inSlope
-      value: -0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].inSlope
-      value: -0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: 0.0007936557
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.16811593
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.49332923
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[0].inSlope
-      value: 0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[1].inSlope
-      value: 0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: 0.0007936557
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.16811593
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.49332923
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: -0.06725644
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.5028986
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.00078511075
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].outSlope
-      value: -0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].outSlope
-      value: -0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[0].outSlope
-      value: 0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[1].outSlope
-      value: 0.16666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.49855074
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].time
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[1].time
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiActions.Array.data[2].damageTakenIntervalCurve.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: -0.033051632
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.01502164
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.2004762
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.2004762
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.2004762
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: -0.033051632
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.01502164
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: -0.033051632
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.01502164
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].inSlope
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].inSlope
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.2004762
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.2004762
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[0].inSlope
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[1].inSlope
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.2004762
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: -0.033051632
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.01502164
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].outSlope
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].outSlope
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.32083333
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[2].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.32083333
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[0].outSlope
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[1].outSlope
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.32083333
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[4].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[1].damageTakenIntervalCurve.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 6998588273972766867, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      propertyPath: aiCombatActions.Array.data[3].damageTakenIntervalCurve.m_Curve.Array.data[1].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 200020860}
-    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 200020861}
-    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 200020865}
-    - targetCorrespondingSourceObject: {fileID: 6412914074631662359, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 200020869}
-  m_SourcePrefab: {fileID: 100100000, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
 --- !u!1001 &793647828341617097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20645,7 +19959,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1623585486848858855, guid: 127123111df4fc84e91fcc396e33abb8, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3429919573716286829, guid: 127123111df4fc84e91fcc396e33abb8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20693,11 +20007,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8092850855904771284, guid: 127123111df4fc84e91fcc396e33abb8, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8364187088468405690, guid: 127123111df4fc84e91fcc396e33abb8, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20725,43 +20039,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 765405541648557980, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1541988670683841886, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1615657167521129019, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3323852230285731516, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4768529273973741848, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5492674235394218883, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5841289867429909698, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5936248462884583967, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6503154822169615552, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7146873122245100651, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7678704298130238203, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20809,7 +20123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8514475283980845161, guid: 69c8aaea4b093250cb3163b1a0b0dbe7, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20910,7 +20224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 694733675932202013, guid: 6de88274fcc7aab008a6eed45783e0c8, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3652297024676468630, guid: 6de88274fcc7aab008a6eed45783e0c8, type: 3}
       propertyPath: m_LocalScale.x
@@ -20998,210 +20312,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8581327948538117689, guid: 6de88274fcc7aab008a6eed45783e0c8, type: 3}
   m_PrefabInstance: {fileID: 7671116673558974225}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7801194787973268430
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2104434989}
-    m_Modifications:
-    - target: {fileID: 2541619054214407840, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_Name
-      value: BasicCombatAgent
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823356848600689600, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: 'managedReferences[-2]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: 'aiActions.Array.data[0]'
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].name
-      value: Shoot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].name
-      value: Shoot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].maxFov
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].minFov
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].cooldownTimer
-      value: 
-      objectReference: {fileID: 835695637}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].cooldownTimer
-      value: 
-      objectReference: {fileID: 835695637}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: scoreProbabtilityCurve.m_Curve.Array.data[0].inSlope
-      value: 2.0260308
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: scoreProbabtilityCurve.m_Curve.Array.data[1].inSlope
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: scoreProbabtilityCurve.m_Curve.Array.data[0].outSlope
-      value: 2.0260308
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: scoreProbabtilityCurve.m_Curve.Array.data[1].inWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: scoreProbabtilityCurve.m_Curve.Array.data[1].outSlope
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: scoreProbabtilityCurve.m_Curve.Array.data[0].outWeight
-      value: 0.49710146
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_PreInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_PostInfinity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
-      value: 0.00007531936
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: -0.04005021
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outSlope
-      value: 0.00007531936
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0.5016565
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: -0.04005021
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
-      value: 0.49998054
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].time
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[0].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6704358432416224947, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: aiCombatActions.Array.data[0].distanceToOpponentCurve.m_Curve.Array.data[1].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6728916146815721983, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      propertyPath: m_Radius
-      value: 15.87
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2541619054214407840, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 835695637}
-  m_SourcePrefab: {fileID: 100100000, guid: 68d41de93a216fc46bf4b3795c883b49, type: 3}
 --- !u!1001 &8112092323260250470
 PrefabInstance:
   m_ObjectHideFlags: 0

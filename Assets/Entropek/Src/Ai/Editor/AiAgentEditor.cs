@@ -6,7 +6,9 @@ using UnityEngine;
 
 namespace Entropek.Ai
 {   
-    public abstract class AiAgentEditor<T> : RuntimeEditor<T> where T : AiAgent
+    [UnityEditor.CustomEditor(typeof(AiAgent), true)]
+    [CanEditMultipleObjects]
+    public abstract class AiAgentEditor : RuntimeEditor<AiAgent>
     {
 
         private const int FieldLabelPixelWidth = 150;
@@ -22,7 +24,7 @@ namespace Entropek.Ai
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            T agent = (T)target;
+            AiAgent agent = (AiAgent)target;
 
             EditorGUILayout.Space();
 
@@ -35,7 +37,7 @@ namespace Entropek.Ai
         /// </summary>
         /// <param name="aiAgent">The specified AiAgent.</param>
 
-        protected void DrawPossibleOutcomeToggle(T aiAgent)
+        protected void DrawPossibleOutcomeToggle(AiAgent aiAgent)
         {
             possibleOutcomesToggled = EditorGUILayout.BeginToggleGroup("Possible Outcomes", possibleOutcomesToggled);
             if (possibleOutcomesToggled == true)
@@ -49,7 +51,7 @@ namespace Entropek.Ai
         /// Displays a list of possible outcomes that could have been chosen in an evaluation call.
         /// </summary>
 
-        protected void DrawPossibleOutcomes(T aiAgent)
+        protected void DrawPossibleOutcomes(AiAgent aiAgent)
         {
 
             List<AiPossibleOutcome> possibleOutcomes = aiAgent.PossibleOutcomes;

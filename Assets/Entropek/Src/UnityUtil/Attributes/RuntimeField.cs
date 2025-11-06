@@ -10,7 +10,7 @@ namespace Entropek.UnityUtils.Attributes
     /// Only while in Play Mode (intended for debugging).
     /// </summary>
 
-    [AttributeUsage(AttributeTargets.Field, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true)]
     public class RuntimeField : PropertyAttribute{}    
 }
 

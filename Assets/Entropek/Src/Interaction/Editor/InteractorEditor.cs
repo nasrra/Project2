@@ -4,6 +4,6 @@ using UnityEngine;
 
 namespace Entropek.Interaction
 {
-    [CustomEditor(typeof(Interactor))]
+    [UnityEditor.CustomEditor(typeof(Interactor))]
     public class InteractorEditor : RuntimeEditor<Interactor>{}    
 }

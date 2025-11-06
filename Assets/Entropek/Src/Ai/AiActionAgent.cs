@@ -1,15 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Ai
 {    
-    public abstract class AiActionAgent : AiAgent
+    public class AiActionAgent : AiAgent
     {        
         [Header("Components")]
         public AiAction ChosenAction {get; protected set;}
                     
+        [Header("Data")]
+        [SerializeReference] protected AiAction[] aiActions;
+        public AiAction[] AiActions => aiActions;
+
         /// <summary>
         /// Begins the cooldown timer for the chosen combat action, removing it as a possibility from the
         /// action choice pool until the timer has finished.
@@ -19,13 +24,6 @@ namespace Entropek.Ai
         {
             ChosenAction.CooldownTimer.Begin();
         }
-    }
-
-    public abstract class AiActionAgent<T> : AiActionAgent where T : AiAction
-    {        
-        [Header("Data")]
-        [SerializeField] protected T[] aiActions;
-        public T[] AiCombatActions => aiActions;
 
         protected override void OnPossibleOutcomeChosen(in AiPossibleOutcome chosenOutcome)
         {
@@ -39,6 +37,26 @@ namespace Entropek.Ai
             HaltEvaluationLoop();
         }
 
+        protected override void GeneratePossibleOutcomes()
+        {
+            for(int i = 0; i < aiActions.Length; i++)
+            {
+                AiAction evaluation = aiActions[i];
+
+                if(evaluation.Enabled == true && evaluation.IsPossible(AiAgentContext))
+                {
+                    possibleOutcomes.Add(
+                        new AiPossibleOutcome(
+                            evaluation.Name,
+                            evaluation.Evaluate(AiAgentContext),
+                            evaluation.MaxScore,
+                            i
+                        )
+                    );
+                }
+            }
+        }
+
 #if UNITY_EDITOR
         /// <summary>
         /// Calls the OnValidate inspector function for AiCombatActions in the unity editor.
@@ -47,6 +65,11 @@ namespace Entropek.Ai
         /// </summary>
         protected virtual void OnValidate()
         {
+            if(aiActions == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < aiActions.Length; i++)
             {
                 // call on validate for each action as they are not MonoBehaviour. 
@@ -55,6 +78,7 @@ namespace Entropek.Ai
             }
 
         }
+
 #endif
 
     }
