@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using Entropek.Time;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
@@ -34,7 +35,6 @@ namespace Entropek.Ai
             ChosenAction = aiActions[chosenOutcome.OutcomeIndex];
 
             // stop from evaluating any more.
-
             HaltEvaluationLoop();
         }
 

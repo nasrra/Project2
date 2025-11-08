@@ -134,7 +134,7 @@ public class Player : MonoBehaviour {
 
     private void OnEnable()
     {
-        Entropek.EntityStats.HealthBarHud.Singleton.HealthBar.DisplayHealth(health);
+        HealthBarHud.Singleton.HealthBar.Activate(health);
     }
 
     private void Update() {

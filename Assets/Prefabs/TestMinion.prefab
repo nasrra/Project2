@@ -87,8 +87,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vulnerable: 1
-  value: 4
-  maxValue: 4
+  value: 3
+  maxValue: 3
 --- !u!114 &2680361135054517317
 MonoBehaviour:
   m_ObjectHideFlags: 0

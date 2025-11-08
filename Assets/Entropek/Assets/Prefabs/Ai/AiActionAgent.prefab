@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6638d0eec5ccbf157829adc9861bba31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorNameTag: Evaluate
+  editorNameTag: Evaluate Action Agent
   initialTime: 1
   BeginOnEnable: 1
   Loop: 1

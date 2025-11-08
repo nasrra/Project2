@@ -144,7 +144,6 @@ namespace Entropek.Ai
         public virtual void HaltEvaluationLoop()
         {
             EvaluationIntervalTimer.Halt();
-
             // halt a linked AiAgent if there is one.
 
             if(aiAgentLinkedToEvaluationLoopToggle != null)
@@ -160,7 +159,6 @@ namespace Entropek.Ai
         public virtual void BeginEvaluationLoop()
         {
             EvaluationIntervalTimer.Begin();
-
             // begin a linked AiAgent if there is one.
 
             if(aiAgentLinkedToEvaluationLoopToggle != null)

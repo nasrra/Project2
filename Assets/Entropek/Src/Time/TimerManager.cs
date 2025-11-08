@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Entropek.Collections;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -39,98 +41,89 @@ namespace Entropek.Time{
             AddTimerToHaltedList(timer);
         }
 
+        public void DebugTimerState(Timer timer)
+        {
+            switch (GetTimerListState(timer))
+            {
+                case TimerState.Active:
+                    Debug.Log("a");
+                    break;
+                case TimerState.Halted:
+                    Debug.Log("h");
+                    break;
+                case TimerState.Paused:
+                    Debug.Log("p");
+                    break;
+            }
+        }
+
         public void DeregisterTimer(Timer timer)
         {
-
-            if (IsHalted(timer) == true)
+            switch (GetTimerListState(timer))
             {
-                RemoveTimerFromHaltedList(timer);
-            }
-            else if (IsActive(timer) == true)
-            {
-                RemoveTimerFromActiveList(timer);
-            }
-            else if (IsPaused(timer) == true)
-            {
-                RemoveTimerFromPausedList(timer);
+                case TimerState.Active:
+                    RemoveTimerFromActiveList(timer);
+                    break;
+                case TimerState.Halted:
+                    RemoveTimerFromHaltedList(timer);
+                    break;
+                case TimerState.Paused:
+                    RemoveTimerFromPausedList(timer);
+                    break;
             }
         }
 
         public bool BeginTimer(Timer timer)
         {
-
-            // short-circuit if the timer is already started; the lists dont have to be altered.
-
-            if (IsActive(timer) == true)
+            switch (GetTimerListState(timer))
             {
-                return true; // because the timer has already began.
-            }
-
-            // check and handle if the timer is in another state.
-
-            if (IsPaused(timer) == true)
-            {
-                RemoveTimerFromPausedList(timer);
-            }
-            else if (IsHalted(timer) == true)
-            {
-                RemoveTimerFromHaltedList(timer);
+                case TimerState.Active:
+                    return true; // already began (but return true as Begin may reset the initial time of the timer.)
+                case TimerState.Halted:
+                    RemoveTimerFromHaltedList(timer);
+                    break;
+                case TimerState.Paused:
+                    RemoveTimerFromPausedList(timer);
+                    break;
             }
 
             AddTimerToActiveList(timer);
-
             return true;
         }
 
         public bool HaltTimer(Timer timer)
         {
-
-            // short-circuit if the timer is already stopped; the lists dont have to be altered..
-
-            if (IsHalted(timer) == true)
+            switch (GetTimerListState(timer))
             {
-                return false; // because the timer has already halted.
-            }
-
-            // check and handle if the timer is in another state.
-
-            if (IsPaused(timer) == true)
-            {
-                RemoveTimerFromPausedList(timer);
-            }
-            else if (IsActive(timer) == true)
-            {
-                RemoveTimerFromActiveList(timer);
+                case TimerState.Active:
+                    RemoveTimerFromActiveList(timer);
+                    break;
+                case TimerState.Halted:
+                    return false; // timer is already halted.
+                case TimerState.Paused:
+                    RemoveTimerFromPausedList(timer);
+                    break;
             }
 
             AddTimerToHaltedList(timer);
-
             return true;
         }
 
         public bool PauseTimer(Timer timer)
         {
-
-            // short-circuit if the timer is already stopped; the lists dont have to be altered..
-
-            if (IsPaused(timer) == true)
+            switch (GetTimerListState(timer))
             {
-                return false; // because the timer has already been paused.
+                case TimerState.Active:
+                    RemoveTimerFromActiveList(timer);
+                    return true;
+                case TimerState.Halted:
+                    RemoveTimerFromHaltedList(timer);
+                    return true;
+                case TimerState.Paused:
+                    return false; // timer is already paused.
             }
-
-            // check and handle if the timer is in another state.
-
-            if (IsHalted(timer) == true)
-            {
-                RemoveTimerFromHaltedList(timer);
-            }
-            else if (IsActive(timer) == true)
-            {
-                RemoveTimerFromActiveList(timer);
-            }
-
+            
             AddTimerToPausedList(timer);
-
             return true;
         }
 
@@ -140,21 +133,30 @@ namespace Entropek.Time{
         /// 
 
 
-        public bool IsActive(Timer timer)
-        {
-            return activeTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID());
-        }
+        /// <summary>
+        /// Gets what timer state a timer would be, depending upon the list it is stored in.
+        /// </summary>
+        /// <param name="timer">The timer to check.</param>
+        /// <returns>The timer state of the given timer.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
 
-        public bool IsHalted(Timer timer)
+        private TimerState GetTimerListState(Timer timer)
         {
-            return haltedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID());
-        }
+            if (activeTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID()))
+            {
+                return TimerState.Active;
+            }
+            else if (haltedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID()))
+            {
+                return TimerState.Halted;
+            }
+            else if (pausedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID()))
+            {
+                return TimerState.Paused;
+            }
 
-        public bool IsPaused(Timer timer)
-        {
-            return pausedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID());
+            throw new InvalidOperationException($"{timer.name +" "+timer.EditorNameTag} timer with intstance id ({timer.GetInstanceID()}) has not been registered in this TimerManager.");
         }
-
 
         /// 
         /// Add Timer.
@@ -255,6 +257,7 @@ namespace Entropek.Time{
         void OnDestroy()
         {
             Clear();
+            Singleton = null;
         }
 
 

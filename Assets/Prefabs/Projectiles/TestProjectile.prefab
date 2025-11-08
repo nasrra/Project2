@@ -189,11 +189,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3761633219679703777, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
       propertyPath: ignoreTags.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3761633219679703777, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
       propertyPath: 'ignoreTags.Array.data[0]'
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761633219679703777, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
+      propertyPath: 'ignoreTags.Array.data[1]'
+      value: Boss
       objectReference: {fileID: 0}
     - target: {fileID: 6420136475699020602, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
       propertyPath: m_Name

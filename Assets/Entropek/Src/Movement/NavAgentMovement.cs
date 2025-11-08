@@ -47,12 +47,6 @@ namespace Entropek.Physics
 
         private bool paused = false;
 
-        protected override void Awake(){
-            base.Awake();
-            path = new NavMeshPath();
-        }
-
-
         /// 
         /// Base.
         /// 
@@ -94,6 +88,10 @@ namespace Entropek.Physics
 
         public bool StartPath(Vector3 destinationInWorldSpace)
         {
+            // create a new path if needed.
+
+            path??= new NavMeshPath();
+
             currentCornerIndex = 0;
 
             // set the RecalculatePath to this function call
@@ -132,12 +130,14 @@ namespace Entropek.Physics
 
         public bool StartPath(Transform target)
         {
-
-
             if (target == null)
             {
                 return false;
             }
+
+            // create a new path if needed.
+
+            path??= new NavMeshPath();
 
             currentCornerIndex = 0;
 
@@ -177,7 +177,11 @@ namespace Entropek.Physics
             {
                 return;
             }
-            
+
+            // create a new path if needed.
+
+            path??= new NavMeshPath();
+
             currentCornerIndex = 0;
 
             // set the RecalculatePath to this function call

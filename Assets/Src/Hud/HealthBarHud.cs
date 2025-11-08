@@ -1,6 +1,6 @@
+using Entropek.EntityStats;
 using UnityEngine;
 
-namespace Entropek.EntityStats{
 
 [DefaultExecutionOrder(-10)]
 public class HealthBarHud : MonoBehaviour{
@@ -13,7 +13,7 @@ public class HealthBarHud : MonoBehaviour{
 
     void OnEnable(){
         if(Singleton!=null){
-            throw new Exceptions.SingletonException();
+            throw new Entropek.Exceptions.SingletonException();
         }
         else{
             Singleton = this;
@@ -24,7 +24,3 @@ public class HealthBarHud : MonoBehaviour{
         Singleton = null;
     }
 }
-
-
-}
-

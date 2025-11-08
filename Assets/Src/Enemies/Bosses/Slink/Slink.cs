@@ -58,7 +58,7 @@ public class Slink : Enemy {
 
     public override void Kill()
     {
-        throw new NotImplementedException();
+        Destroy(gameObject);
     }
 
 

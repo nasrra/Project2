@@ -77,8 +77,8 @@ namespace Entropek.Camera
             // move towards the target look movement delta over delta time; to ensure camera sensitivity remains the same
             // across variable frame rates.
 
-            lookMovementDelta = Vector3.MoveTowards(lookMovementDelta, InputManager.Singleton.LookDelta, UnityEngine.Time.deltaTime * LookMovementDeltaTransitionSpeed);
-            ApplyDeltaMovementToLookRotation(lookMovementDelta);
+            // lookMovementDelta = Vector3.MoveTowards(lookMovementDelta, InputManager.Singleton.LookDelta, UnityEngine.Time.deltaTime * LookMovementDeltaTransitionSpeed);
+            ApplyDeltaMovementToLookRotation(InputManager.Singleton.LookDelta);
             
             
             // smoothly lerp to the follow targets position.
@@ -321,7 +321,7 @@ namespace Entropek.Camera
 
         private void ApplyDeltaMovementToLookRotation(Vector2 deltaMovement)
         {
-            deltaMovement *= inputSensitivity;
+            deltaMovement *= inputSensitivity * UnityEngine.Time.deltaTime;
             Vector3 eulerAngles = lookRotation.eulerAngles;
 
             // Convert pitch (x) to -180..180 range

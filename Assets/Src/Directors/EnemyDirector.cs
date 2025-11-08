@@ -1,9 +1,11 @@
 using Entropek.Combat;
+using Entropek.EntityStats;
 using Entropek.Exceptions;
 using Entropek.Time;
 using UnityEngine;
 using UnityEngine.AI;
 
+[DefaultExecutionOrder(-5)]
 public class EnemyDirector : MonoBehaviour
 {
     public static EnemyDirector Singleton {get; private set;}
@@ -44,7 +46,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        SlowState();
+        // SlowState();
     }
 
     void FixedUpdate()
@@ -75,19 +77,9 @@ public class EnemyDirector : MonoBehaviour
             for(int i = 0; i < spawnCards.Length; i++)
             {
                 EnemySpawnCard spawnCard = spawnCards[i];
-
-                Vector3 randomPosition = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
-                    spawnCard.GetNavMeshQueryFilter(),
-                    Opponent.Singleton.transform.position,
-                    SpawnRandomRadiusMin,
-                    SpawnRandomRadiusMax,
-                    SpawnQueryRadius,
-                    out bool foundPoint
-                );
-
-                if(foundPoint == true)
+                if(spawnCard.EnemyType == EnemyType.Minion)
                 {
-                    Instantiate(spawnCard.Prefab, position: randomPosition, rotation: Quaternion.identity);
+                    // SpawnAtRandomPosition(spawnCard);
                 }
             }
         }
@@ -105,6 +97,45 @@ public class EnemyDirector : MonoBehaviour
         evaluationTimer.Begin();
     }
 
+    public void SpawnMiniboss()
+    {
+        for(int i = 0; i < spawnCards.Length; i++)
+        {
+            EnemySpawnCard spawnCard = spawnCards[i];
+            if(spawnCard.EnemyType == EnemyType.MiniBoss)
+            {
+
+                // spawn miniboss.
+
+                GameObject miniboss = SpawnAtRandomPosition(spawnCard);
+                
+                // display boss health bar hud.
+                
+                Health health = miniboss.GetComponent<Health>();
+                BossHealthBarHud.Singleton.NamedHealthBar.Activate(health, miniboss.name.Replace("(Clone)", ""));
+                
+                break;
+            }
+        }
+    }
+
+    public GameObject SpawnAtRandomPosition(EnemySpawnCard spawnCard)
+    {
+        Vector3 centerPosition = Opponent.Singleton.transform.position;
+
+        Vector3 randomPosition = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
+            spawnCard.GetNavMeshQueryFilter(),
+            centerPosition,
+            SpawnRandomRadiusMin,
+            SpawnRandomRadiusMax,
+            SpawnQueryRadius,
+            out bool foundPoint,
+            iterations: 32
+        );
+
+        Vector3 spawnPosition = foundPoint==true? randomPosition : centerPosition; 
+        return Instantiate(spawnCard.Prefab, position: spawnPosition, rotation: Quaternion.identity);
+    }
 
     /// 
     /// Linkage.

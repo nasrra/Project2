@@ -58,6 +58,8 @@ namespace Entropek.Time{
         [SerializeField] public bool BeginOnEnable;
         public bool HasTimedOut => CurrentTime == 0;
 
+        private bool registered = false;
+
 
         /// 
         /// Base.
@@ -65,7 +67,7 @@ namespace Entropek.Time{
 
         protected virtual void Awake()
         {
-            TimerManager.Singleton.RegisterTimer(this);
+            RegisterInTimerManager();
         }
 
         protected virtual void OnEnable()
@@ -81,12 +83,51 @@ namespace Entropek.Time{
 
         protected virtual void OnDestroy()
         {
-            TimerManager.Singleton.DeregisterTimer(this);
+            DeregisterFromTimerManager();
         }
+
 
         /// 
         /// Functions.
         /// 
+
+
+        /// <summary>
+        /// Registers this Timer in the TimerManager Singleton.
+        /// </summary>
+
+        /// Note:
+        /// This function should be called in any public function to ensure
+        /// this timer is registered in at any stage of initialisation.
+        /// A parent object calling Begin on this in their Awake function may
+        /// skip this Timers Awake function; meaning the timer is never registered. 
+
+        private void RegisterInTimerManager()
+        {
+            if (registered == false)
+            {
+                TimerManager.Singleton.RegisterTimer(this);
+                registered = true;
+            }
+        }
+
+        /// <summary>
+        /// Deregisters this Timer from the TimerManager Singleton.
+        /// </summary>
+
+        private void DeregisterFromTimerManager()
+        {
+
+            if(registered == true)
+            {
+                // Lazy deregistering to avoid errors when unity destroys objects at random when exiting editor playmode.
+                // This is fine as TimerManagerSingleton uses the Bootstrap pattern; if that changes then this will have to
+                // as well :)
+
+                TimerManager.Singleton?.DeregisterTimer(this);
+                registered = false;
+            }
+        }
 
 
         /// <summary>
@@ -126,9 +167,10 @@ namespace Entropek.Time{
 
         public void Begin()
         {
-            Reset();
+            RegisterInTimerManager();
             if (TimerManager.Singleton.BeginTimer(this) == true)
             {
+                Reset();
                 state = TimerState.Active;
                 Began?.Invoke();
             }
@@ -140,7 +182,8 @@ namespace Entropek.Time{
 
         public void Halt()
         {
-            if (TimerManager.Singleton.HaltTimer(this) == true)
+            RegisterInTimerManager();
+            if(TimerManager.Singleton.HaltTimer(this))
             {
                 state = TimerState.Halted;
                 currentTime = 0;
@@ -154,6 +197,7 @@ namespace Entropek.Time{
 
         public void Pause()
         {
+            RegisterInTimerManager();
             if (TimerManager.Singleton.PauseTimer(this) == true)
             {
                 state = TimerState.Paused;
@@ -167,6 +211,7 @@ namespace Entropek.Time{
 
         public void Resume()
         {
+            RegisterInTimerManager();
             if (TimerManager.Singleton.BeginTimer(this) == true)
             {
                 state = TimerState.Active;
