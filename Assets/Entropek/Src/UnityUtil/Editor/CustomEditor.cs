@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Entropek.UnityUtils.Attributes;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace Entropek.UnityUtils
 
             serializedObject.Update();
 
+            var targetType = target.GetType();
             // Draw all properties.
 
             SerializedProperty property = serializedObject.GetIterator();
@@ -26,7 +28,7 @@ namespace Entropek.UnityUtils
             while (property.NextVisible(enterChildren))
             {
                 enterChildren = false;
-                if (IsSerializeReference(property) == true)
+                if (IsSerializeReference(targetType, property) == true)
                 {
                     // create a SerializeReferenceFieldDrawer for drawing the seriliazedReference.
 
@@ -58,7 +60,7 @@ namespace Entropek.UnityUtils
                 enterChildren = false;
                 
                 EditorGUILayout.PropertyField(serializedProperty, true);
-                
+
                 if (seriliazedReferences.ContainsKey(serializedProperty.name))
                 {
                     DrawSerializeReferenceEditor(target, in serializedProperty);    
@@ -87,16 +89,11 @@ namespace Entropek.UnityUtils
         /// <param name="serializedProperty">The SerialisedProperty to check.</param>
         /// <returns>true, if it implements the attribute; otherwise false.</returns>
 
-        protected bool IsSerializeReference(SerializedProperty serializedProperty)
+        protected bool IsSerializeReference(in Type targetType, in SerializedProperty serializedProperty)
         {
             // SerializeReference: A scripting attribute that instructs Unity to serialize a field as a reference instead of as a value; allowing polymorphism for sub-classes.
-            
-            var targetType = target.GetType();
             var field = targetType.GetField(serializedProperty.name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
             return field != null && field.GetCustomAttribute<SerializeReference>() != null;
         }
-
-
     }
 }

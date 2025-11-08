@@ -26,7 +26,7 @@ public class TestMinion : Minion
     {
         combatAgent.BeginEvaluationLoop();
         movement.ResumePath();
-        movement.MoveAway(target, 24);        
+        movement.MoveAway(target, 24);
     }
 
     public override void IdleState()

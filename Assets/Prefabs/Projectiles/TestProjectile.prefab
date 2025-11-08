@@ -180,6 +180,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3761633219679703777, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
+      propertyPath: damageType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761633219679703777, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
+      propertyPath: damageAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761633219679703777, guid: dd57b20d490ee6f4daa7600e79e6e5ac, type: 3}
       propertyPath: ignoreTags.Array.size
       value: 1
       objectReference: {fileID: 0}

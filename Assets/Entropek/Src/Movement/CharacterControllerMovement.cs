@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Entropek.Collections;
 using Entropek.Physics;
+using Entropek.UnityUtils.Attributes;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace Entropek.Physics
         protected Vector3 moveDirectionVelocity;      // desired move direction by entity.
         protected Vector3 totalForceVelocity;
 
-        [HideInInspector] public Vector3 moveDirection;
+        [RuntimeField] public Vector3 moveDirection;
 
         [SerializeField] private float acceleration;
         public float Acceleration => acceleration;

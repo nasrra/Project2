@@ -109,7 +109,19 @@ namespace Entropek.Physics
                 }
             };
 
-            return navAgent.CalculatePath(destinationInWorldSpace, path);
+            // warp to the target position then call Move so that the nav agent snaps
+            // back to the grid (if the agent is off the grid).
+
+            navAgent.Warp(destinationInWorldSpace);
+            navAgent.Move(Vector3.zero);
+
+            Vector3 destination = navAgent.transform.position;
+
+            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
+
+            navAgent.Warp(transform.position);
+
+            return navAgent.CalculatePath(destination, path);
         }
 
         /// <summary>
@@ -120,6 +132,7 @@ namespace Entropek.Physics
 
         public bool StartPath(Transform target)
         {
+
 
             if (target == null)
             {
@@ -136,7 +149,19 @@ namespace Entropek.Physics
                 StartPath(target);
             };
 
-            return navAgent.CalculatePath(target.position, path);
+            // warp to the target position then call Move so that the nav agent snaps
+            // back to the grid (if the agent is off the grid).
+
+            navAgent.Warp(target.position);
+            navAgent.Move(Vector3.zero);
+
+            Vector3 destination = navAgent.transform.position;
+
+            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
+
+            navAgent.Warp(transform.position);
+
+            return navAgent.CalculatePath(destination, path);
         }
 
         /// <summary>
@@ -147,11 +172,12 @@ namespace Entropek.Physics
 
         public void MoveAway(Transform target, float distance)
         {
+
             if(target == null)
             {
                 return;
             }
-
+            
             currentCornerIndex = 0;
 
             // set the RecalculatePath to this function call
@@ -162,25 +188,19 @@ namespace Entropek.Physics
                 MoveAway(target, distance);
             };
 
-            // calculate a point in the opposite direction of the target to move to. 
+            // Move the nav agent backwards from the target position; finding a point on the nav mesh away from the target.
 
-            Vector3 oppositeDirection = (transform.position - target.position).normalized;
-            Vector3 destinationPosition = (oppositeDirection * distance) + transform.position; 
-            
-            // check if the point is valid on this agents nav mesh surface..
+            Vector3 oppositeDirection = (transform.position - target.position).normalized;            
+            navAgent.Move(oppositeDirection * distance);
+            Vector3 destination = navAgent.transform.position;
 
-            if(NavMesh.SamplePosition(destinationPosition, out NavMeshHit hit, 3, navAgent.areaMask))
-            {
-                // go to path point.
+            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
 
-                navAgent.CalculatePath(hit.position, path);
-            }
-            else
-            {
-                // go to the point opposite the player; as a fallback if nothing was found.
-                
-                navAgent.CalculatePath(destinationPosition, path); 
-            }
+            navAgent.Warp(transform.position);
+
+            // move towards that desired destination.
+
+            navAgent.CalculatePath(destination, path);
         }
 
         public void PausePath()

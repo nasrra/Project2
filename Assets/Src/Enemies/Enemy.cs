@@ -48,16 +48,15 @@ public abstract class Enemy : MonoBehaviour
     /// 
 
 
-   void Awake()
+    void Awake()
     {
         LinkEvents();
-    }
 
-    void Start()
-    {
         // immediately start tracking the player.
 
         Entropek.Ai.Contexts.AiAgentContext combatContext = combatAgent.AiAgentContext;
+
+        target = Opponent.Singleton.transform;
 
         switch (combatContext)
         {
@@ -72,6 +71,7 @@ public abstract class Enemy : MonoBehaviour
                 targetContext.Target = Opponent.Singleton.transform;
             break;
         }
+
     }
 
     void OnDestroy()

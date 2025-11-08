@@ -1,0 +1,19 @@
+using Entropek.UnityUtils.Attributes;
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "ScriptableObject/Directors/EnemySpawnCard")]
+public class EnemySpawnCard : ScriptableObject
+{
+    [Header("Data")]
+    [Tooltip("The prefab to instantiate.")]
+    [SerializeField] private GameObject prefab;
+    public GameObject Prefab => prefab;
+
+    [Tooltip("The cost to instantiate the prefab.")]
+    [SerializeField] private float cost;
+    public float Cost => cost;
+
+    [Tooltip("The nav mesh used to find a position to place the prefab")]
+    [SerializeField, NavMeshAgentTypeField] private int navMeshAgentType;
+    public int NavMeshAgentType => navMeshAgentType;
+}

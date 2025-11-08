@@ -71,7 +71,7 @@ namespace Entropek.Camera
 
         private void LateUpdate()
         {
-            ApplyDeltaMovementToLookRotation(InputManager.Singleton.LookDelta * UnityEngine.Time.deltaTime);
+            ApplyDeltaMovementToLookRotation(InputManager.Singleton.LookDelta);
 
             // smoothly lerp to the follow targets position.
 

@@ -72,6 +72,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  InitialStateIndex: 0
   aiStates: []
   references:
     version: 2
@@ -90,5 +91,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorNameTag: Evaluate
   initialTime: 1
-  BeginOnEnable: 0
+  BeginOnEnable: 1
   Loop: 1

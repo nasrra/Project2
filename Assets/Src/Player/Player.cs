@@ -110,6 +110,8 @@ public class Player : MonoBehaviour {
     private const float DamagedMotionBlurDuration = 0.66f;
     private const float DamagedMotionBlurIntensity = 1f;
 
+    private const DamageType StaggerDamageType = DamageType.Heavy;
+
 
     /// 
     /// Vfx Ids.
@@ -512,7 +514,10 @@ public class Player : MonoBehaviour {
 
         audioPlayer.PlaySound("PlayerHit");
 
-        EnterStagger();
+        if((damageContext.DamageType & StaggerDamageType) != 0)
+        {
+            EnterStagger();
+        }
     }
 
     ///

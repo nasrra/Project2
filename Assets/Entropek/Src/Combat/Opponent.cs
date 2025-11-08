@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace Entropek.Combat
 {
+    // NOTE:
+    //  Default execution order should be before any class that needs this singleton,
+    //  as they need to get the singleton reference in Awake (such as enemies).
+    
+    [DefaultExecutionOrder(-1)]
+    
     public class Opponent : MonoBehaviour
     {
         [Header("Components")]

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiAgentLinkedToEvaluationLoopToggle: {fileID: 0}
   aiAgentContext: {fileID: 0}
+  evaluationIntervalTimer: {fileID: 1809505232688274476}
   scoreProbabtilityCurve:
     serializedVersion: 2
     m_Curve:
@@ -71,11 +72,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  opponentTransform: {fileID: 0}
-  evaluationIntervalTimer: {fileID: 1809505232688274476}
-  opponentLayer:
-    serializedVersion: 2
-    m_Bits: 0
   aiActions: []
   references:
     version: 2
@@ -94,5 +90,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorNameTag: Evaluate
   initialTime: 1
-  BeginOnEnable: 0
+  BeginOnEnable: 1
   Loop: 1
