@@ -25,6 +25,7 @@ namespace Entropek.Camera
         private Vector3 smoothedFollowPosition;
         private Vector3 desiredFollowDirection;
         private Vector3 targetShakerOffset;
+        private Vector3 lookMovementDelta;
         [SerializeField] private Vector3 followOffset;
         private Vector2 inputSensitivity;
         public Vector2 MouseSensitivity;
@@ -39,6 +40,7 @@ namespace Entropek.Camera
         private const float LowerPitchLimit = -45f;
         private const float CameraRadius = 0.33f;
         private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
+        private const float LookMovementDeltaTransitionSpeed = 1000;
 
         public bool isLockedOn { get; private set; }
 
@@ -71,8 +73,14 @@ namespace Entropek.Camera
 
         private void LateUpdate()
         {
-            ApplyDeltaMovementToLookRotation(InputManager.Singleton.LookDelta);
 
+            // move towards the target look movement delta over delta time; to ensure camera sensitivity remains the same
+            // across variable frame rates.
+
+            lookMovementDelta = Vector3.MoveTowards(lookMovementDelta, InputManager.Singleton.LookDelta, UnityEngine.Time.deltaTime * LookMovementDeltaTransitionSpeed);
+            ApplyDeltaMovementToLookRotation(lookMovementDelta);
+            
+            
             // smoothly lerp to the follow targets position.
 
             CalculateSmoothedFollowPosition();

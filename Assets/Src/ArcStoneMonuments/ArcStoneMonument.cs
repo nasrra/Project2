@@ -27,6 +27,25 @@ public class ArcStoneMonument : MonoBehaviour
     }
 
 
+    ///
+    /// Functions.
+    /// 
+
+
+    public void ActivatedState()
+    {
+        EnemyDirector.Singleton.FastState();
+        interactable.DisableInteraction();
+        arcField.Activate();        
+    }
+
+    public void ChargedState()
+    {
+        EnemyDirector.Singleton.SlowState();
+        arcStone.SetActive(true);
+    }
+
+
     /// 
     /// Linkage.
     /// 
@@ -56,8 +75,7 @@ public class ArcStoneMonument : MonoBehaviour
 
     private void OnInteracted(Entropek.Interaction.Interactor interactor)
     {
-        interactable.DisableInteraction();
-        arcField.Activate();
+        ActivatedState();
     }
 
     private void LinkArcFieldEvents()
@@ -72,7 +90,7 @@ public class ArcStoneMonument : MonoBehaviour
 
     private void OnArcFieldCharged()
     {
-        arcStone.SetActive(true);
+        ChargedState();
     }
 
 }

@@ -1,5 +1,6 @@
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
+using UnityEngine.AI;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Directors/EnemySpawnCard")]
 public class EnemySpawnCard : ScriptableObject
@@ -16,4 +17,13 @@ public class EnemySpawnCard : ScriptableObject
     [Tooltip("The nav mesh used to find a position to place the prefab")]
     [SerializeField, NavMeshAgentTypeField] private int navMeshAgentType;
     public int NavMeshAgentType => navMeshAgentType;
+
+    public NavMeshQueryFilter GetNavMeshQueryFilter()
+    {
+        return new NavMeshQueryFilter()
+        {
+            areaMask =  NavMesh.AllAreas,
+            agentTypeID = navMeshAgentType  
+        };
+    }
 }

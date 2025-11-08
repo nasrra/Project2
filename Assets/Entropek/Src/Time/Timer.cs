@@ -43,7 +43,7 @@ namespace Entropek.Time{
 
 
         [Header(nameof(Timer))]
-        [SerializeField] private float initialTime;
+        [SerializeField] protected float initialTime;
         public float InitialTime => initialTime;
         
         [RuntimeField] protected float currentTime;
@@ -178,7 +178,7 @@ namespace Entropek.Time{
         /// Resets the current time value to the initial time value.
         /// </summary>
 
-        public void Reset()
+        public virtual void Reset()
         {
             currentTime = initialTime;
         }

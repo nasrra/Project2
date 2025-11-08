@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Shoot Cooldown
-  initialTime: 3.33
+  initialTime: 6.66
   BeginOnEnable: 0
 --- !u!114 &3479598227594797709 stripped
 MonoBehaviour:

@@ -85,7 +85,7 @@ namespace Entropek.Ai
                 {
                     // add 0.1f for margin of error, and clamp value between -1 and 1 (min and max of dot product values).
 
-                    minFov = Mathf.Clamp((maxFov + 0.01f), -1, 1);
+                    minFov = Mathf.Clamp(maxFov + 0.01f, -1, 1);
                 }
             }
 
@@ -98,7 +98,7 @@ namespace Entropek.Ai
 
                     // subtract 0.1f for margin of error, and clamp value between -1 and 1 (min and max of dot product values).
 
-                    maxFov = Mathf.Clamp((minFov - 0.01f), -1, 1);
+                    maxFov = Mathf.Clamp(minFov - 0.01f, -1, 1);
                 }
             }
 

@@ -9,14 +9,19 @@ public class EnemyDirector : MonoBehaviour
     public static EnemyDirector Singleton {get; private set;}
    
     [Header("Components")]
-    [SerializeField] LoopedTimer evaluationTimer;
+    [SerializeField] RandomLoopedTimer evaluationTimer;
 
     [Header("Data")]
     [SerializeField] EnemySpawnCard[] spawnCards;
-    private const float SlowEvaluationTimeMin = 20;
-    private const float SlowEvaluationTimeMax = 30;
+    private const float SlowEvaluationTimeMin = 10;
+    private const float SlowEvaluationTimeMax = 20;
     private const float FastEvaluationTimeMin = 5;
     private const float FastEvaluationTimeMax = 10;
+
+    private const float SpawnRandomRadiusMin = 16.4f;
+    private const float SpawnRandomRadiusMax = 48;
+    private const float SpawnQueryRadius = 3.33f;
+
 
 
     /// 
@@ -38,6 +43,8 @@ public class EnemyDirector : MonoBehaviour
         // Evaluate();
 
         LinkEvents();
+    
+        SlowState();
     }
 
     void FixedUpdate()
@@ -70,14 +77,11 @@ public class EnemyDirector : MonoBehaviour
                 EnemySpawnCard spawnCard = spawnCards[i];
 
                 Vector3 randomPosition = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
-                    new NavMeshQueryFilter()
-                    {
-                        areaMask = NavMesh.AllAreas,
-                        agentTypeID = spawnCard.NavMeshAgentType
-                    },
+                    spawnCard.GetNavMeshQueryFilter(),
                     Opponent.Singleton.transform.position,
-                    40,
-                    1f,
+                    SpawnRandomRadiusMin,
+                    SpawnRandomRadiusMax,
+                    SpawnQueryRadius,
                     out bool foundPoint
                 );
 
@@ -87,6 +91,18 @@ public class EnemyDirector : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void FastState()
+    {
+        evaluationTimer.SetInitialTimeRange(FastEvaluationTimeMin, FastEvaluationTimeMax);
+        evaluationTimer.Begin();
+    }
+
+    public void SlowState()
+    {
+        evaluationTimer.SetInitialTimeRange(SlowEvaluationTimeMin, SlowEvaluationTimeMax);        
+        evaluationTimer.Begin();
     }
 
 
