@@ -14,6 +14,8 @@ namespace Entropek.Projectiles
         [SerializeField] ContinuousHitbox hitbox;
         [SerializeField] private float speed;
         [SerializeField] private float lifetime;
+        [SerializeField] private bool deactivateOnHitHealth = true;
+        [SerializeField] private bool deactivateOnHitOther = true;
         public float Speed => speed;
 
 
@@ -114,12 +116,18 @@ namespace Entropek.Projectiles
 
         private void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
         {
-            Deactivate();
+            if (deactivateOnHitHealth == true)
+            {
+                Deactivate();
+            }
         }
 
         private void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
         {
-            Deactivate();
+            if (deactivateOnHitOther)
+            {
+                Deactivate();
+            }
         }
     }
 }

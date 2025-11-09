@@ -14,6 +14,14 @@ namespace Entropek.Combat
         [Header("Data")]
         protected HashSet<int> hitGameObjectInstanceIds = new HashSet<int>();
 
+        void OnDisable()
+        {
+            // clear the hit gameobjects whenevering disabling so when it this is
+            // re-enabled, it wont have redundant data from the previous lifetime.
+
+            hitGameObjectInstanceIds.Clear();
+        }
+
         /// <summary>
         /// Hit an incoming hurtbox if it is outside the ignore collider parameters and has not already been hit during the current activation interval.
         /// </summary>

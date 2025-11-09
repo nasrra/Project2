@@ -17,8 +17,8 @@ public class EnemyDirector : MonoBehaviour
     [SerializeField] EnemySpawnCard[] spawnCards;
     private const float SlowEvaluationTimeMin = 10;
     private const float SlowEvaluationTimeMax = 20;
-    private const float FastEvaluationTimeMin = 5;
-    private const float FastEvaluationTimeMax = 10;
+    private const float FastEvaluationTimeMin = 1;
+    private const float FastEvaluationTimeMax = 2;
 
     private const float SpawnRandomRadiusMin = 16.4f;
     private const float SpawnRandomRadiusMax = 48;
@@ -46,7 +46,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        // SlowState();
+        FastState();
     }
 
     void FixedUpdate()
@@ -69,17 +69,25 @@ public class EnemyDirector : MonoBehaviour
     /// Functions.
     /// 
 
+    int x = 5;
 
     public void Evaluate()
     {
-        for(int j = 0; j < 2; j++)
+        if (x > 5)
+        {
+            return;
+        }
+
+        x++;
+
+        for(int j = 0; j < 20; j++)
         {            
             for(int i = 0; i < spawnCards.Length; i++)
             {
                 EnemySpawnCard spawnCard = spawnCards[i];
                 if(spawnCard.EnemyType == EnemyType.Minion)
                 {
-                    // SpawnAtRandomPosition(spawnCard);
+                    SpawnAtRandomPosition(spawnCard);
                 }
             }
         }

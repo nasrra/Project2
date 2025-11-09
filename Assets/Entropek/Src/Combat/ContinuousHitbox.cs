@@ -9,37 +9,26 @@ namespace Entropek.Combat
     /// A Hitbox that registers a hit on a Hurtbox everytime it enters the trigger collider.
     /// </summary>
 
-    public class ContinuousHitbox : Hitbox
+    public class ContinuousHitbox : SingleHitbox
     {
         /// <summary>
-        /// Hit an incoming hurtbox if it is outside the ignore collider parameters.
+        /// Removes an outgoing hurtbox if it is outside the ignore collider parameters.
         /// </summary>
         /// <param name="hitCollider"></param>
         /// <exception cref="Exceptions.ComponentNotFoundException"></exception>
 
-        protected override void OnTriggerEnter(Collider hitCollider)
+        protected void OnTriggerExit(Collider hitCollider)
         {
             if(IgnoreCollider(hitCollider) == true)
             {
                 return;
             }
 
-            GameObject hitGameObject = hitCollider.gameObject;
+            int hitGameObjectId = hitCollider.gameObject.GetInstanceID();
 
-            // Damage the health system of the hit gameobject.
-
-            if(hitGameObject.TryGetComponent(out Hurtbox hurtbox))
+            if(hitGameObjectInstanceIds.Contains(hitGameObjectId))
             {
-                HitHealthSystemComponent(hitCollider, hurtbox.Health);
-            }
-            else if(hitGameObject.TryGetComponent(out HealthSystem healthSystem))
-            {
-                HitHealthSystemComponent(hitCollider, healthSystem);
-            }
-            else
-            {
-                GetHitPoint(hitCollider, out Vector3 hitPoint);
-                InvokeHitOther(hitGameObject, hitPoint);
+                hitGameObjectInstanceIds.Remove(hitGameObjectId);
             }
         }
     }

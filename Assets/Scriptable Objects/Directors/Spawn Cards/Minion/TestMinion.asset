@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 777301287381677599, guid: c2b31c247cd44864c8a4029102b1048f, type: 3}
   cost: 1
-  navMeshAgentType: -1372625422
-  navMeshAreaMask: 0
+  navMeshAgentType: 0
+  enemyType: 0

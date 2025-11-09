@@ -1676,7 +1676,7 @@ Transform:
   m_GameObject: {fileID: 219205302}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13779,7 +13779,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 219205303}
@@ -13801,7 +13801,7 @@ MonoBehaviour:
   Player: {fileID: 36969666}
   projectileSpawner: {fileID: 1659911997}
   cooldownTimer: {fileID: 1659911999}
-  maxCharges: 3
+  maxCharges: 300
 --- !u!114 &1659911997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13830,7 +13830,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 2824496678240004254, guid: 1b83b66e47ec823498fd8a4fc0c88ced, type: 3}
+  - {fileID: 2824496678240004254, guid: 2e83cbdd4074772418fbcb7cc684eaf0, type: 3}
+  - {fileID: 2824496678240004254, guid: 02fe4e071a81d834586bfb6352bc9b80, type: 3}
+  - {fileID: 2824496678240004254, guid: e20dde6f3a9125d48b913685bdbec77f, type: 3}
 --- !u!114 &1659911999
 MonoBehaviour:
   m_ObjectHideFlags: 0
