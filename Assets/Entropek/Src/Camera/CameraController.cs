@@ -14,6 +14,8 @@ namespace Entropek.Camera
         Quaternion lookRotation;
 
         [Header("Componentes")]
+        [SerializeField] private new UnityEngine.Camera camera;
+        public UnityEngine.Camera Camera => camera; 
         [SerializeField] private Transform shaker;
         [SerializeField] private Transform followTarget;
         [SerializeField] private Transform lockOnTarget;

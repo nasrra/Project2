@@ -8,6 +8,9 @@ using Entropek.UnityUtils.AnimatorUtils;
 using Entropek.Vfx;
 using Entropek.UnityUtils.Attributes;
 using Entropek.Combat;
+using Entropek.Camera;
+using Entropek.EntityStats;
+using UnityEditor;
 
 public class Player : MonoBehaviour {
 
@@ -27,27 +30,46 @@ public class Player : MonoBehaviour {
 
 
     [Header("Components")]
-    [SerializeField] private Entropek.Camera.CameraController cam;
-    [SerializeField] private Entropek.Camera.CameraPostProcessingController cameraPostProcessing;
-    [SerializeField] private Entropek.EntityStats.Health health;
+    
+    [SerializeField] private CameraController cameraController;
+    public CameraController CameraController => cameraController;
+
+    [SerializeField] private CameraPostProcessingController cameraPostProcessing;
+    public CameraPostProcessingController CameraPostProcessingController => cameraPostProcessing;
+    
+    [SerializeField] private Health health;
+    public Health Health => health;
+
     [SerializeField] private JumpMovement jumpMovement;
-    [SerializeField] private CharacterControllerMovement movement;
+    public JumpMovement JumpMovement => jumpMovement;
+
+    [SerializeField] private CharacterControllerMovement characterControllerMovement;
+    public CharacterControllerMovement CharacterControllerMovement => characterControllerMovement;
+
     [SerializeField] private Animator animator;
+    public Animator Animator => animator;
+
     [SerializeField] private Interactor interactor;
-    [SerializeField] private SkinnedMeshTrailSystem arcGhost;
-    [SerializeField] private DodgeTrailController dodgeTrail;
-    [SerializeField] private GroundCheck groundChecker;
-    [SerializeField] private ForceApplier forceApplier;
+    public Interactor Interactor => interactor;
+
+    [SerializeField] private GroundCheck groundCheck;
+    public GroundCheck GroundCheck => groundCheck;
+
     [SerializeField] private AudioPlayer audioPlayer;
+    public AudioPlayer AudioPlayer => audioPlayer;
+
+    [SerializeField] private ForceApplier forceApplier;
+    public ForceApplier ForceApplier => forceApplier;
+
     [SerializeField] private AnimationEventReciever animationEventReciever;
-    [SerializeField] private VfxPlayerSpawner vfx;
+    public AnimationEventReciever AnimationEventReciever => animationEventReciever;
+
+    [SerializeField] private VfxPlayerSpawner vfxPlayerSpawner;
+    public VfxPlayerSpawner VfxPlayerSpawner => vfxPlayerSpawner;
 
     [Header("Timers")]
     [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
 
-    [Header("HitBoxes")]
-    [SerializeField] private Entropek.Combat.TimedSingleHitbox slashLeftHitBox;
-    [SerializeField] private Entropek.Combat.TimedSingleHitbox slashRightHitBox;
 
     /// 
     /// Data.
@@ -55,11 +77,20 @@ public class Player : MonoBehaviour {
 
 
     [Header("Data")]
+    [SerializeField] private Skill attackSkill;
+    [SerializeField] private Skill skill2;
+    [SerializeField] private Skill skill3;
+
+
+    /// 
+    /// Runtime Fields
+    /// 
+
+
     [RuntimeField] private PlayerState playerState = PlayerState.Idle;
     public PlayerState PlayerState => playerState;
     [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
     public CoyoteState CoyoteState => coyoteState;
-    private bool canDodge = true;
 
 
     /// 
@@ -69,35 +100,18 @@ public class Player : MonoBehaviour {
 
     private const string IdleAnimation = "Rig_Sword_Idle";
     private const string WalkAnimation = "Rig_Jog_Fwd_Loop";
-    private const string DodgeAnimation = "Rig_Roll";
     private const string JumpStartAnimation = "Rig_Jump_Start";
     private const string FallAnimation = "Rig_Jump_Loop";
     private const string GroundedAnimation = "Rig_Jump_Land";
-    private const string AttackAnimation = "Rig_Sword_Attack";
     private const string StaggerAnimation = "Rig_Stagger";
 
 
     /// 
     /// Data constants.
     /// 
-
-
-    private const float AttackLungeForce = 4.44f;
-    private const float AttackLungeDecaySpeed = AttackLungeForce * 3f;
-    private const float AttackShieldRestorationAmount = 5f;
-    private const float AttackHitCameraShakeForce = 4f;
-    private const float AttackHitCameraShakeTime = 0.167f;
-    private const float AttackHitLensDistortionIntensity = 0.24f;
-    private const float AttackHitLensDistortionDuration = 0.16f;
-    private const float AttackHitMotionBlurDuration = 0.33f;
-    private const float AttackHitMotionBlurIntensity = 1f;
-
-    private const float DodgeForce = 23.33f;
-    private const float DodgeDecaySpeed = DodgeForce * 2.66f;
     
     private const float FaceMoveDirectionSpeed = 16.7f;
-    private const float FaceAttackDirectionSpeed = 16.7f;
-    
+    private const float FaceAttackDirectionSpeed = 16.7f;    
     
     private const float DamagedCameraShakeStrength = 7.77f;
     private const float DamagedCameraShakeTime = 0.33f;
@@ -114,18 +128,9 @@ public class Player : MonoBehaviour {
 
 
     /// 
-    /// Vfx Ids.
-    /// 
-
-
-    private const int LeftSlashVfxId = 0;
-    private const int RightSlashVfxId = 1;
-    private const int AttackHitVfxId = 2;
-
-
-    /// 
     /// Base.
     /// 
+
 
     private void Awake()
     {
@@ -153,21 +158,37 @@ public class Player : MonoBehaviour {
 
     private Vector3 GetMoveDirectionRelativeToCamera(Vector2 moveDirection)
     {
-        Vector3 cameraForwardXZ = new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized;
-        Vector3 cameraRightXZ = new Vector3(cam.transform.right.x, 0, cam.transform.right.z).normalized;
+        Vector3 cameraForwardXZ = new Vector3(cameraController.transform.forward.x, 0, cameraController.transform.forward.z).normalized;
+        Vector3 cameraRightXZ = new Vector3(cameraController.transform.right.x, 0, cameraController.transform.right.z).normalized;
         return moveDirection.x * cameraRightXZ + moveDirection.y * cameraForwardXZ;
     }
 
-    private void FaceMoveDirection()
+    private void HandleFootstepEffects()
     {
-        Vector3 moveDirection = movement.moveDirection;
+        audioPlayer.PlaySound("FootstepGrassLight", transform.position);
+    }
+
+
+    /// 
+    /// Facing Direction.
+    /// 
+
+
+    public void FaceMoveDirection()
+    {
+        FaceChosenDirection = FaceMoveDirectionFixedUpdateCallback;
+    }
+
+    private void FaceMoveDirectionFixedUpdateCallback()
+    {
+        Vector3 moveDirection = characterControllerMovement.moveDirection;
         if (moveDirection != Vector3.zero)
         {
-            Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, movement.moveDirection, FaceMoveDirectionSpeed * Time.deltaTime);
+            Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, characterControllerMovement.moveDirection, FaceMoveDirectionSpeed * Time.deltaTime);
         }
     }
 
-    private void SnapToFaceMoveInput()
+    public void SnapToFaceMoveInput()
     {
         // only snap if there is a direction to snap to.
         // if we snap when input zero, the result is undefined behaviour.
@@ -180,30 +201,14 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void FaceAttackDirection()
+    public void FaceAttackDirection()
     {
-        Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, cam.transform.forward, FaceAttackDirectionSpeed * Time.deltaTime);
+        FaceChosenDirection = FaceAttackDirectionFixedUpdateCallback;
     }
 
-    private void SwordAttackFrame()
+    private void FaceAttackDirectionFixedUpdateCallback()
     {
-        forceApplier.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
-        audioPlayer.PlaySound("MeleeSwing", transform.position);
-        if (slashFlag == true)
-        {
-            slashRightHitBox.Activate();
-            vfx.PlayVfx(LeftSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
-        }
-        else
-        {
-            slashLeftHitBox.Activate();
-            vfx.PlayVfx(RightSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
-        }
-    }
-
-    private void HandleFootstepEffects()
-    {
-        audioPlayer.PlaySound("FootstepGrassLight", transform.position);
+        Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, cameraController.transform.forward, FaceAttackDirectionSpeed * Time.deltaTime);
     }
 
 
@@ -216,13 +221,11 @@ public class Player : MonoBehaviour {
     /// Returns the player to a resting state to branch from into different actions; depending upon their endivronmental circumnstances.
     /// </summary>
 
-    private void EnterRestState()
+    public void EnterRestState()
     {
-        if (groundChecker.IsGrounded == true) {
+        if (groundCheck.IsGrounded == true) {
 
             // only reset out dodge when grounded.
-
-            canDodge = true;
 
             if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
                 Run();
@@ -237,14 +240,14 @@ public class Player : MonoBehaviour {
 
         // set move direction back to the player input.
 
-        movement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
     }
 
     public void Idle()
     {
         playerState = PlayerState.Idle;
         FaceChosenDirection = null; // dont look face any direction when idle.
-        movement.moveDirection = GetMoveDirectionRelativeToCamera(Vector2.zero);
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(Vector2.zero);
         if (playerState != PlayerState.Jump && playerState != PlayerState.Fall)
         {
             animator.Play(IdleAnimation);
@@ -257,8 +260,8 @@ public class Player : MonoBehaviour {
 
     public void Run(Vector2 direction) {
         playerState = PlayerState.Run;
-        movement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
-        FaceChosenDirection = FaceMoveDirection;
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
+        FaceMoveDirection();
         if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
             animator.Play(WalkAnimation);
         }
@@ -278,91 +281,18 @@ public class Player : MonoBehaviour {
 
     public void StartDodge() {
 
-        // enter state.
-
-        playerState = PlayerState.Dodge;
-        canDodge = false;
-
-        SnapToFaceMoveInput();
-        FaceChosenDirection = FaceMoveDirection;
-
-        // move only in the direction of our dodge.
-
-        movement.moveDirection = Vector3.zero;
-        movement.HaltMoveDirectionVelocity();
-
-        movement.ClearGravityVelocity();
-
-        jumpMovement.StopJumping();
-
-        forceApplier.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
-
-        // play animations and vfx.
-
-        arcGhost.SpawnMeshes();
-        dodgeTrail.EnableTrail();
-        audioPlayer.PlaySound("Dodge", gameObject);
-
-        // rebind, so the transform of the skinned mesh is correctly reset to its 
-        // "rest" position before abruptly switching animations.
-        // Otherwise animations will retain their transform offsets from one animation to another
-        // if they are not modified by the new animation.
-
-        animator.Rebind();
-
-        // force animation to play with 0 normalisedTime, 
-        // ensuring to override an animation that may have been queued
-        // during a coyote state switch. 
-
-        animator.Play(DodgeAnimation, 0, 0);
-
-        // enable i-frames.
-
-        EnterIFrames();
+        if (skill2.Use() == true)
+        {
+            playerState = PlayerState.Dodge;
+        }
     }
 
-    public void StopDodge() {
-        EnterRestState();
-    }
-
-    bool slashFlag = false;
-
-    public void StartAttack()
+    public void Attack()
     {
-        playerState = PlayerState.Attack;
-
-
-        // swap slashes for next time.
-
-        slashFlag = !slashFlag;
-
-        // stop moving.
-
-        movement.moveDirection = Vector3.zero;
-        // movement.HaltMoveDirectionVelocity();
-        jumpMovement.StopJumping();
-
-        // rebind, so the transform of the skinned mesh is correctly reset to its 
-        // "rest" position before abruptly switching animations.
-        // Otherwise animations will retain their transform offsets from one animation to another
-        // if they are not modified by the new animation.
-
-        animator.Rebind();
-
-        // force animation to play with 0 normalisedTime, 
-        // ensuring to override an animation that may have been queued
-        // during a coyote state switch. 
-
-        animator.Play(AttackAnimation, 0, 0);
-
-        // face in the attack direction.
-
-        FaceChosenDirection = FaceAttackDirection;
-    }
-
-    public void StopAttack()
-    {
-        EnterRestState();
+        if (attackSkill.Use() == true)
+        {
+            playerState = PlayerState.Attack;
+        }
     }
 
     public void Fall() {
@@ -382,7 +312,7 @@ public class Player : MonoBehaviour {
     public void EnterStagger()
     {
         playerState = PlayerState.Stagger;
-        movement.moveDirection = Vector3.zero;
+        characterControllerMovement.moveDirection = Vector3.zero;
         animator.Play(StaggerAnimation);
     }
 
@@ -401,7 +331,7 @@ public class Player : MonoBehaviour {
     /// </summary>
     /// <param name="coyoteState"></param>
 
-    private void EnterCoyoteState(CoyoteState coyoteState)
+    public void EnterCoyoteState(CoyoteState coyoteState)
     {
         // enter the desired coyote state.
 
@@ -431,7 +361,7 @@ public class Player : MonoBehaviour {
     /// Exits the coyote state for input queuing, executing the latest desired queued action by the player.
     /// </summary>
 
-    private void ExitCoyoteState()
+    public void ExitCoyoteState()
     {
         if (CoyoteCallback != null){            
             CoyoteCallback();
@@ -458,7 +388,6 @@ public class Player : MonoBehaviour {
         LinkTimerEvents();
         LinkGroundCheckerEvents();
         LinkAnimationEventRecieverEvents();
-        LinkHitBoxEvents();
         LinkHealthEvents();
     }
 
@@ -473,7 +402,6 @@ public class Player : MonoBehaviour {
         UnlinkTimerEvents();
         UnlinkGroundCheckerEvents();
         UnlinkAnimationEventRecieverEvents();
-        UnlinkHitBoxEvents();
         UnlinkHealthEvents();
     }
 
@@ -493,7 +421,7 @@ public class Player : MonoBehaviour {
     }
 
     private void OnDamaged(DamageContext damageContext){
-        cam.StartShaking(DamagedCameraShakeStrength, DamagedCameraShakeTime);
+        cameraController.StartShaking(DamagedCameraShakeStrength, DamagedCameraShakeTime);
 
         cameraPostProcessing.PulseVignetteIntensity(
             DamagedVignettePulseInDuration,
@@ -526,14 +454,14 @@ public class Player : MonoBehaviour {
 
     private void LinkGroundCheckerEvents()
     {
-        groundChecker.Grounded += OnGrounded;
-        groundChecker.Airborne += OnAirborne;
+        groundCheck.Grounded += OnGrounded;
+        groundCheck.Airborne += OnAirborne;
     }
 
     private void UnlinkGroundCheckerEvents()
     {
-        groundChecker.Grounded -= OnGrounded;
-        groundChecker.Airborne += OnAirborne;
+        groundCheck.Grounded -= OnGrounded;
+        groundCheck.Airborne += OnAirborne;
     }
 
     private void OnGrounded()
@@ -552,10 +480,6 @@ public class Player : MonoBehaviour {
                 Idle();
             }
         }
-
-        // reset our dodge whenever grounded.
-
-        canDodge = true;
     }
 
     private void OnAirborne()
@@ -583,53 +507,17 @@ public class Player : MonoBehaviour {
     }
 
 
-    /// 
-    /// Hitbox Linkage.
-    /// 
-
-    private void LinkHitBoxEvents()
-    {
-        slashLeftHitBox.HitHealth += OnAttackHit;
-        slashRightHitBox.HitHealth += OnAttackHit;
-    }
-
-    private void UnlinkHitBoxEvents()
-    {
-        slashLeftHitBox.HitHealth -= OnAttackHit;
-        slashRightHitBox.HitHealth -= OnAttackHit;
-    }
-
-    private void OnAttackHit(GameObject other, Vector3 hitPoint)
-    {
-        vfx.PlayVfx(AttackHitVfxId, hitPoint, transform.forward);
-        health.Heal(AttackShieldRestorationAmount);
-        cam.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
-
-        cameraPostProcessing.PulseLensDistortionIntensity(
-            AttackHitLensDistortionDuration,
-            AttackHitLensDistortionIntensity
-        );
-
-        cameraPostProcessing.PulseMotionBlurIntensity(
-            AttackHitMotionBlurDuration,
-            AttackHitMotionBlurIntensity
-        );
-        
-        audioPlayer.PlaySound("MeleeHit", hitPoint);
-    }
-
-
     ///
     /// Camera Linkage.
     /// 
 
 
     private void LinkCameraEvents() {
-        cam.Rotated += OnCameraRotated;
+        cameraController.Rotated += OnCameraRotated;
     }
 
     private void UnlinkCameraEvents() {
-        cam.Rotated -= OnCameraRotated;
+        cameraController.Rotated -= OnCameraRotated;
     }
 
     private void OnCameraRotated() {
@@ -639,7 +527,7 @@ public class Player : MonoBehaviour {
             return;
         }
 
-        movement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput);
     }
 
 
@@ -699,8 +587,7 @@ public class Player : MonoBehaviour {
 
         // queue the action if we are attacking or dodging coyote states.
 
-        if (coyoteState == CoyoteState.Attack
-        || coyoteState == CoyoteState.Dodge
+        if (coyoteState == CoyoteState.AnimatedSkill
         || coyoteState == CoyoteState.Stagger)
         {
             CoyoteCallback = OnJumpInputCoyoteCallback;
@@ -715,7 +602,7 @@ public class Player : MonoBehaviour {
             return;            
         }
 
-        if ((playerState != PlayerState.Idle && playerState != PlayerState.Run) || groundChecker.IsGrounded == false)
+        if ((playerState != PlayerState.Idle && playerState != PlayerState.Run) || groundCheck.IsGrounded == false)
         {
             return;
         }
@@ -745,8 +632,7 @@ public class Player : MonoBehaviour {
 
     private void OnDodgeInput() {
 
-        if (coyoteState == CoyoteState.Dodge 
-        ||  coyoteState == CoyoteState.Attack
+        if (coyoteState == CoyoteState.AnimatedSkill
         ||  coyoteState == CoyoteState.Stagger)
         {
             CoyoteCallback = StartDodge;
@@ -754,8 +640,7 @@ public class Player : MonoBehaviour {
 
         if (playerState == PlayerState.Attack
         ||  playerState == PlayerState.Dodge
-        ||  playerState == PlayerState.Stagger
-        ||  canDodge == false)
+        ||  playerState == PlayerState.Stagger)
         {
             return;
         }
@@ -765,11 +650,10 @@ public class Player : MonoBehaviour {
 
     private void OnAttackInput() {
 
-        if (coyoteState == CoyoteState.Dodge
-        || coyoteState == CoyoteState.Attack
+        if (coyoteState == CoyoteState.AnimatedSkill
         || coyoteState == CoyoteState.Stagger)
         {
-            CoyoteCallback = StartAttack;
+            CoyoteCallback = Attack;
         }
 
         if (playerState == PlayerState.Attack
@@ -780,7 +664,7 @@ public class Player : MonoBehaviour {
         }
 
 
-        StartAttack();
+        Attack();
     }
 
     private void OnInteractInput() {
@@ -819,8 +703,6 @@ public class Player : MonoBehaviour {
 
             // Coyote States.
 
-            case "EnterAttackCoyoteState": EnterCoyoteState(CoyoteState.Attack); break;
-            case "EnterDodgeCoyoteState": EnterCoyoteState(CoyoteState.Dodge); break;
             case "EnterStaggerCoyoteState": EnterCoyoteState(CoyoteState.Stagger); break;
 
             // Note:
@@ -829,26 +711,11 @@ public class Player : MonoBehaviour {
             //  Do NOT put these exit coyote calls inside the actual functions, that will cause
             //  a recursive loop as exit coyote state calls the stop functions of a given player state. 
 
-            case "ExitDodgeState": StopDodge(); ExitCoyoteState(); break;
-            case "ExitAttackState": StopAttack(); ExitCoyoteState(); break;
             case "ExitStaggerState": ExitStagger(); ExitCoyoteState(); break;
-
-            // Player States.
-
-            case "EnterIFrames": EnterIFrames(); break;
-            case "ExitIFrames" : ExitIFrames(); break;
-
-            // attack frames.
-
-            case "SwordAttackFrame": SwordAttackFrame(); break;
             
             // miscellaneous.
             
             case "Footstep": HandleFootstepEffects(); break;
-            
-
-            default:
-                throw new InvalidOperationException($"animation event {eventName} not configured for player.");
         }
     }
 }

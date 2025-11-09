@@ -15,6 +15,12 @@ namespace Entropek.Projectiles
             // StartCoroutine(TestFire());
         }
 
+        /// <summary>
+        /// Spawn a projectile copying a spawn points position and rotate (both in world-space).
+        /// </summary>
+        /// <param name="projectilePrefabId">The id of the projectile prefab to spawn.</param>
+        /// <param name="shootPointId">The id of the point to spawn at.</param>
+
         public void Fire(int projectilePrefabId, int shootPointId)
         {
             Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
@@ -26,6 +32,13 @@ namespace Entropek.Projectiles
             projectileTransform.rotation = shootPoint.rotation;
         }
 
+        /// <summary>
+        /// Spawn a projectile copying a spawn points position (in world-space).
+        /// </summary>
+        /// <param name="projectilePrefabId">The id of the projectile prefab to spawn.</param>
+        /// <param name="shootPointId">The id of the point to spawn at.</param>
+        /// <param name="direction">The direction for the projectile to move in.</param>
+
         public void Fire(int projectilePrefabId, int shootPointId, Vector3 direction)
         {
             Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
@@ -36,6 +49,13 @@ namespace Entropek.Projectiles
             projectileTransform.position = shootPoint.position;
             projectileTransform.rotation = Quaternion.LookRotation(direction);
         }
+
+        /// <summary>
+        /// Spawn a projectile copying a spawn points position (in world-space).
+        /// </summary>
+        /// <param name="projectilePrefabId">The id of the projectile prefab to spawn.</param>
+        /// <param name="shootPointId">The id of the point to spawn at.</param>
+        /// <param name="transform">A transform component to fire towards.</param>
 
         public void Fire(int projectilePrefabId, int shootPointId, Transform transform)
         {

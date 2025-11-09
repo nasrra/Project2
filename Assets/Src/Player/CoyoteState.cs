@@ -3,8 +3,7 @@ using UnityEngine;
 public enum CoyoteState : byte
 {
     None,
-    Dodge,
-    Attack,
+    AnimatedSkill,
     Fall,
     Stagger,
 }
