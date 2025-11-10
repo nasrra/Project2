@@ -46,7 +46,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        FastState();
+        // FastState();
     }
 
     void FixedUpdate()

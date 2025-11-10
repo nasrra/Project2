@@ -115,10 +115,10 @@ namespace Entropek.Time{
             {
                 case TimerState.Active:
                     RemoveTimerFromActiveList(timer);
-                    return true;
+                    break;
                 case TimerState.Halted:
                     RemoveTimerFromHaltedList(timer);
-                    return true;
+                    break;
                 case TimerState.Paused:
                     return false; // timer is already paused.
             }

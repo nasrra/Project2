@@ -71,6 +71,17 @@ public class AttackSkill : Skill, IAnimatedSkill
         set => animationCompleted = value; 
     }
 
+    int IAnimatedSkill.AnimationLayer => 1;
+
+    Skill IAnimatedSkill.Skill => this;
+
+    Coroutine animationLayerWeightTransitionCoroutine;
+    Coroutine IAnimatedSkill.AnimationLayerWeightTransitionCoroutine 
+    { 
+        get => animationLayerWeightTransitionCoroutine; 
+        set => animationLayerWeightTransitionCoroutine = value; 
+    }
+
 
     /// 
     /// Cached Interface Types.
@@ -87,21 +98,26 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     public override bool Use()
     {
+        // dont execute if an animated skill is already being used.
+
+        if (Player.SkillCollection.AnimatedSkillIsInUse())
+        {
+            return false;
+        }
+
         // swap slashes for next time.
 
         slashFlag = !slashFlag;
-
-        // stop moving.
-
-        Player.CharacterControllerMovement.moveDirection = Vector3.zero;
-        // movement.HaltMoveDirectionVelocity();
-        Player.JumpMovement.StopJumping();
 
         // face in the attack direction.
 
         Player.FaceAttackDirection();
         
+        IAnimatedSkill.StarAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
         IAnimatedSkill.PlayAnimation();
+
+        inUse = true;
+
         return true;
     }
 
@@ -118,6 +134,11 @@ public class AttackSkill : Skill, IAnimatedSkill
         }
     }
 
+    void IAnimatedSkill.OnAnimationCompleted()
+    {
+        IAnimatedSkill.StarAnimationLayerWeightTransition(IAnimatedSkill.MinAnimationLayerWeight, 100);
+        inUse = false;
+    }
 
     /// 
     /// Functions.

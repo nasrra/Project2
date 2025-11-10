@@ -1,13 +1,17 @@
 using System;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 public abstract class Skill : MonoBehaviour
 {
     [Header(nameof(Skill)+" Data")]
-    [SerializeField] SkillHud skillHud;
-    public SkillHud SkillHud => skillHud;
+    [SerializeField] SkillHudData skillHudData;
+    public SkillHudData SkillHudData => skillHudData;
 
     [SerializeField] public Player Player;
+
+    [RuntimeField] protected bool inUse = false;
+    public bool InUse => inUse;
 
     protected virtual void Awake()
     {

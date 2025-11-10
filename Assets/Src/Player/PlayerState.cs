@@ -2,9 +2,8 @@ using UnityEngine;
 
 public enum PlayerState : byte
 {
+    None,
     Idle,
-    Attack,
-    Dodge,
     Run,
     Jump,
     Fall,

@@ -11,6 +11,7 @@ using Entropek.Combat;
 using Entropek.Camera;
 using Entropek.EntityStats;
 using UnityEditor;
+using FMOD.Studio;
 
 public class Player : MonoBehaviour {
 
@@ -77,10 +78,11 @@ public class Player : MonoBehaviour {
 
 
     [Header("Data")]
-    [SerializeField] private Skill attackSkill;
-    [SerializeField] private Skill skill2;
-    [SerializeField] private Skill skill3;
+    
+    [SerializeField] SkillCollection skillCollection;
+    public SkillCollection SkillCollection => skillCollection;
 
+    [RuntimeField] public bool blockMoveInput = false;
 
     /// 
     /// Runtime Fields
@@ -124,6 +126,10 @@ public class Player : MonoBehaviour {
     private const float DamagedMotionBlurDuration = 0.66f;
     private const float DamagedMotionBlurIntensity = 1f;
 
+    private const int Skill1Id = 0;
+    private const int Skill2Id = 1;
+    private const int Skill3Id = 2;
+
     private const DamageType StaggerDamageType = DamageType.Heavy;
 
 
@@ -135,6 +141,11 @@ public class Player : MonoBehaviour {
     private void Awake()
     {
         LinkEvents();
+    }
+
+    private void Start()
+    {   
+        SkillHudManager.Singleton.LinkToSkills(skillCollection.Skills);
     }
 
     private void OnEnable()
@@ -223,6 +234,11 @@ public class Player : MonoBehaviour {
 
     public void EnterRestState()
     {
+        // clear player state to guarantee that one of the state switches in this function
+        // will be set when called.
+
+        playerState = PlayerState.None;
+
         if (groundCheck.IsGrounded == true) {
 
             // only reset out dodge when grounded.
@@ -246,8 +262,10 @@ public class Player : MonoBehaviour {
     public void Idle()
     {
         playerState = PlayerState.Idle;
+        
         FaceChosenDirection = null; // dont look face any direction when idle.
         characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(Vector2.zero);
+                
         if (playerState != PlayerState.Jump && playerState != PlayerState.Fall)
         {
             animator.Play(IdleAnimation);
@@ -259,9 +277,16 @@ public class Player : MonoBehaviour {
     }
 
     public void Run(Vector2 direction) {
+        
         playerState = PlayerState.Run;
+        
         characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
-        FaceMoveDirection();
+
+        if (skillCollection.AnimatedSkillIsInUse() == false)
+        {
+            FaceMoveDirection();
+        }
+        
         if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
             animator.Play(WalkAnimation);
         }
@@ -279,20 +304,19 @@ public class Player : MonoBehaviour {
         EnterRestState();
     }
 
-    public void StartDodge() {
-
-        if (skill2.Use() == true)
-        {
-            playerState = PlayerState.Dodge;
-        }
+    public void Skill1()
+    {
+        skillCollection.UseSkill(Skill1Id);
     }
 
-    public void Attack()
+    public void Skill2() 
     {
-        if (attackSkill.Use() == true)
-        {
-            playerState = PlayerState.Attack;
-        }
+        skillCollection.UseSkill(Skill2Id);
+    }
+
+    public void Skill3()
+    {
+        skillCollection.UseSkill(Skill3Id); 
     }
 
     public void Fall() {
@@ -466,10 +490,9 @@ public class Player : MonoBehaviour {
 
     private void OnGrounded()
     {
-        // only enter the rest state if we are currently not performing any actions.
+        // only enter the rest state if we are currently not performing any skills.
 
-        if (playerState != PlayerState.Dodge 
-        && playerState != PlayerState.Attack) 
+        if (skillCollection.AnimatedSkillIsInUse()==false) 
         {
             if (InputManager.Singleton.moveInputSqrMagnitude > 0)
             {
@@ -522,8 +545,8 @@ public class Player : MonoBehaviour {
 
     private void OnCameraRotated() {
 
-        if (playerState != PlayerState.Run
-        && playerState != PlayerState.Jump) {
+        if (playerState == PlayerState.Stagger
+        || blockMoveInput == true) {
             return;
         }
 
@@ -548,6 +571,7 @@ public class Player : MonoBehaviour {
         input.Interact += OnInteractInput;
         input.NextInteractable += OnNextInteractable;
         input.PreviousInteractable += OnPreviousInteractable;
+        input.Skill3 += OnSkill3Input;
     }
 
     private void UnlinkInputEvents() {
@@ -562,9 +586,15 @@ public class Player : MonoBehaviour {
         input.Interact -= OnInteractInput;
         input.NextInteractable -= OnNextInteractable;
         input.PreviousInteractable -= OnPreviousInteractable;
+        input.Skill3 -= OnSkill3Input;
     }
 
     private void OnMoveInput(Vector2 moveInput) {
+
+        if(blockMoveInput == true)
+        {
+            return;
+        }
 
         if (playerState != PlayerState.Idle
         && playerState != PlayerState.Run
@@ -620,7 +650,8 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStopInput()
     {
-        if (playerState != PlayerState.Jump)
+        if (playerState != PlayerState.Jump
+        || skillCollection.AnimatedSkillIsInUse())
         {
             return;
         }
@@ -629,42 +660,57 @@ public class Player : MonoBehaviour {
 
     }
 
+    private void OnAttackInput() {
+
+        if (coyoteState == CoyoteState.AnimatedSkill
+        || coyoteState == CoyoteState.Stagger)
+        {
+            CoyoteCallback = Skill1;
+        }
+
+        if (skillCollection.SkillIsInUse(Skill1Id)
+        ||  playerState == PlayerState.Stagger)
+        {
+            return;
+        }
+
+
+        Skill1();
+    }
 
     private void OnDodgeInput() {
 
         if (coyoteState == CoyoteState.AnimatedSkill
         ||  coyoteState == CoyoteState.Stagger)
         {
-            CoyoteCallback = StartDodge;
+            CoyoteCallback = Skill2;
         }
 
-        if (playerState == PlayerState.Attack
-        ||  playerState == PlayerState.Dodge
+        if (skillCollection.SkillIsInUse(Skill2Id)
         ||  playerState == PlayerState.Stagger)
         {
             return;
         }
 
-        StartDodge();
+        Skill2();
     }
 
-    private void OnAttackInput() {
+
+    private void OnSkill3Input() {
 
         if (coyoteState == CoyoteState.AnimatedSkill
-        || coyoteState == CoyoteState.Stagger)
+        ||  coyoteState == CoyoteState.Stagger)
         {
-            CoyoteCallback = Attack;
+            CoyoteCallback = Skill3;
         }
 
-        if (playerState == PlayerState.Attack
-        ||  playerState == PlayerState.Stagger
-        ||  playerState == PlayerState.Dodge)
+        if (skillCollection.SkillIsInUse(Skill3Id)
+        ||  playerState == PlayerState.Stagger)
         {
             return;
         }
 
-
-        Attack();
+        Skill3();
     }
 
     private void OnInteractInput() {

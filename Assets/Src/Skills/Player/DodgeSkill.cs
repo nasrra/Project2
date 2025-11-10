@@ -54,6 +54,17 @@ public class DodgeSkill : Skill, IAnimatedSkill
 
     Player IAnimatedSkill.Player => Player;
 
+    int IAnimatedSkill.AnimationLayer => 0;
+
+    Skill IAnimatedSkill.Skill => this;
+
+    Coroutine animationLayerWeightTransitionCoroutine;
+    Coroutine IAnimatedSkill.AnimationLayerWeightTransitionCoroutine 
+    { 
+        get => animationLayerWeightTransitionCoroutine;
+        set => animationLayerWeightTransitionCoroutine = value; 
+    }
+
 
     /// 
     /// Base.
@@ -62,32 +73,41 @@ public class DodgeSkill : Skill, IAnimatedSkill
 
     public override bool Use()
     {
-        // enter state.
+        // dont execute if an animated skill is already being used.
 
-        Player.SnapToFaceMoveInput();
-        Player.FaceMoveDirection();
+        if (Player.SkillCollection.AnimatedSkillIsInUse())
+        {
+            return false;
+        }
+
+
+        inUse = true;
 
         // move only in the direction of our dodge.
 
+        Player.blockMoveInput = true;
+
+        Player.SnapToFaceMoveInput();
+        Player.FaceMoveDirection();
+        
         Player.CharacterControllerMovement.moveDirection = Vector3.zero;
         Player.CharacterControllerMovement.HaltMoveDirectionVelocity();
-
         Player.CharacterControllerMovement.ClearGravityVelocity();
-
         Player.JumpMovement.StopJumping();
-
+        
         Player.ForceApplier.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
+
+        // Make player invulnerable.
+
+        Player.EnterIFrames();
 
         // play animations and vfx.
 
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
         Player.AudioPlayer.PlaySound(DodgeSound, Player.gameObject);
-
-
-        Player.EnterIFrames();
-
         IAnimatedSkill.PlayAnimation();
+        
         return true;
     }
 
@@ -127,4 +147,9 @@ public class DodgeSkill : Skill, IAnimatedSkill
         }
     }
 
+    void IAnimatedSkill.OnAnimationCompleted()
+    {
+        inUse = false;
+        Player.blockMoveInput = false; // re-enable move input.
+    }
 }

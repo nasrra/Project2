@@ -148,7 +148,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
         {
             case AttackSkill.AttackFrameEventName:
                 projectileSpawner.Fire((maxCharges - charges) % 3, ProjectileSpawnPointId, Player.CameraController.Camera.transform.forward);
-                charges -= 1;
+                IBatchRechargeSkill.DepleteCharges(1);
             break;
         }
     }

@@ -138,6 +138,15 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         }
     }
 
+    public event Action Skill3;
+    void InputActions.IGameplayActions.OnSkill3(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Skill3?.Invoke();
+        }
+    }
+
 
     /// 
     /// Bootstrap Singleton.

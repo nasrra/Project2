@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Entropek.UnityUtils.AnimatorUtils;
 using UnityEngine;
 
@@ -6,13 +7,18 @@ using UnityEngine;
 public interface IAnimatedSkill
 {
     public const string CoyoteStateEventName = "EnterAnimatedSkillCoyoteState";
+    public const int MaxAnimationLayerWeight = 1;
+    public const int MinAnimationLayerWeight = 0;
 
+    Skill Skill{get;}
     Player Player{get;}
     Action AnimationCompleted {get; set;}
     Animator Animator {get;}
     AnimationEventReciever AnimationEventReciever {get;}
     string AnimationName{get;}
     string AnimationCompletedEventName{get;}
+    int AnimationLayer{get;}
+    Coroutine AnimationLayerWeightTransitionCoroutine{get; protected set;}
 
 
     /// <summary>
@@ -26,13 +32,14 @@ public interface IAnimatedSkill
         // Otherwise animations will retain their transform offsets from one animation to another
         // if they are not modified by the new animation.
 
-        Animator.Rebind();
+        // Animator.Rebind();
 
         // force animation to play with 0 normalisedTime, 
         // ensuring to override an animation that may have been queued
         // during a coyote state switch (For Player).
 
-        Animator.Play(AnimationName, 0, 0);
+        Animator.Play(AnimationName, AnimationLayer, 0);
+        Animator.Update(0); //<-- use this instead of rebind, does the same thing but doesnt completely refresh the entire animation state.
     }
 
 
@@ -79,7 +86,8 @@ public interface IAnimatedSkill
     {        
         if (eventName == AnimationCompletedEventName)
         {
-
+            OnAnimationCompleted();
+            
             //  Exit Coyote state directly after exiting an action/animation state
             //  to ensure any queued actions occur directly after the action has finished.
             
@@ -92,6 +100,31 @@ public interface IAnimatedSkill
             AnimationCompleted?.Invoke();
         }
     }
+
+    void StarAnimationLayerWeightTransition(float value, float speed)
+    {
+        if(AnimationLayerWeightTransitionCoroutine != null)
+        {
+            Skill.StopCoroutine(AnimationLayerWeightTransitionCoroutine);
+        }
+        AnimationLayerWeightTransitionCoroutine = Skill.StartCoroutine(AnimationLayerWeightTransition(value, speed));
+    }
+
+    IEnumerator AnimationLayerWeightTransition(float value, float speed)
+    {
+        float layerWeight = Animator.GetLayerWeight(AnimationLayer);
+        
+        while(layerWeight != value)
+        {
+            Animator.SetLayerWeight(AnimationLayer, Mathf.MoveTowards(layerWeight, value, Time.deltaTime * speed));
+            layerWeight = Animator.GetLayerWeight(AnimationLayer);
+            yield return new WaitForFixedUpdate();
+        }
+
+        yield break;
+    }
+
+    void OnAnimationCompleted();
 
     /// <summary>
     /// Switches the coyote state of the assigned PLayer to AnimatedSkill.

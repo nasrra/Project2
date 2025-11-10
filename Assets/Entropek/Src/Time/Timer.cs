@@ -117,7 +117,6 @@ namespace Entropek.Time{
 
         private void DeregisterFromTimerManager()
         {
-
             if(registered == true)
             {
                 // Lazy deregistering to avoid errors when unity destroys objects at random when exiting editor playmode.
@@ -202,6 +201,7 @@ namespace Entropek.Time{
             {
                 state = TimerState.Paused;
                 Paused?.Invoke();
+
             }
         }
 
