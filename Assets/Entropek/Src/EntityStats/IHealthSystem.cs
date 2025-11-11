@@ -7,14 +7,27 @@ namespace Entropek.EntityStats{
     [Serializable]
     public abstract class HealthSystem : MonoBehaviour{
         
-        public event Action<float> Healed;
+        public event Action<int> Healed;
         public event Action<DamageContext> Damaged;
         public event Action Death;
         public event Action Restored;
 
-        public abstract float GetNormalisedValue();
+        public abstract int GetNormalisedValue();
+
+        /// <summary>
+        /// Damages this Health instance
+        /// </summary>
+        /// <param name="damageContext">The context to apply damage with.</param>
+        /// <returns>true, if damage was succesfully dealt (in vulnerable state); otherwise false (invulneable state).</returns>
+
         public abstract bool Damage(in DamageContext damageContext);
-        public abstract void Heal(float amount);
+
+        /// <summary>
+        /// Heals this Health instance.
+        /// </summary>
+        /// <param name="amount">The amount to heal.</param>
+
+        public abstract void Heal(int amount);
 
         [Header(nameof(HealthSystem))]
         public bool Vulnerable = true; 
@@ -31,7 +44,7 @@ namespace Entropek.EntityStats{
             Restored?.Invoke();
         }
 
-        protected void InvokeHealed(float amount){
+        protected void InvokeHealed(int amount){
             Healed?.Invoke(amount);
         }
 

@@ -10,19 +10,27 @@ namespace Entropek.EntityStats{
         
 
         /// 
+        /// Callbacks.
+        /// 
+
+
+        public event Action<int> MaxValueSet;
+
+
+        /// 
         /// Data.
         /// 
 
 
         [Header("Data")]
-        [SerializeField] private float value;
-        public float Value => value;
-        [SerializeField] private float maxValue;
-        public float MaxValue => maxValue;
+        [SerializeField] private int value;
+        public int Value => value;
+        [SerializeField] private int maxValue;
+        public int MaxValue => maxValue;
         [HideInInspector] protected HealthState healthState;
         public HealthState HealthState => healthState;
 
-        public override float GetNormalisedValue()
+        public override int GetNormalisedValue()
         {
             return value / maxValue;    
         }
@@ -37,6 +45,7 @@ namespace Entropek.EntityStats{
 
         protected virtual void OnEnable(){
             SetInitialHealthState();
+            value = maxValue;
         }
 
 
@@ -104,7 +113,7 @@ namespace Entropek.EntityStats{
             return true;
         }
 
-        public override void Heal(float amount){
+        public override void Heal(int amount){
             value += amount;
             if(value >= maxValue){
                 RestoredState();
@@ -113,6 +122,21 @@ namespace Entropek.EntityStats{
                 AliveState();
                 InvokeHealed(amount);
             }
+        }
+
+        /// <summary>
+        /// Sets the max value of this Health instance.
+        /// </summary>
+        /// <param name="value">The value to set as the maximum health value.</param>
+
+        public void SetMaxValue(int value)
+        {
+            maxValue = value;
+            if(this.value > maxValue)
+            {
+                this.value = maxValue;
+            }
+            MaxValueSet?.Invoke(value);
         }
     }
 

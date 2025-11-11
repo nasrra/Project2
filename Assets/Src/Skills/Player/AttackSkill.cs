@@ -18,13 +18,13 @@ public class AttackSkill : Skill, IAnimatedSkill
     private const string AttackHitSound = "MeleeHit";
     private const float AttackLungeForce = 4.44f;
     private const float AttackLungeDecaySpeed = AttackLungeForce * 3f;
-    private const float AttackShieldRestorationAmount = 5f;
     private const float AttackHitCameraShakeForce = 4f;
     private const float AttackHitCameraShakeTime = 0.167f;
     private const float AttackHitLensDistortionIntensity = 0.24f;
     private const float AttackHitLensDistortionDuration = 0.16f;
     private const float AttackHitMotionBlurDuration = 0.33f;
     private const float AttackHitMotionBlurIntensity = 1f;
+    private const int AttackShieldRestorationAmount = 5;
     private const int LeftSlashVfxId = 0;
     private const int RightSlashVfxId = 1;
     private const int AttackHitVfxId = 2;

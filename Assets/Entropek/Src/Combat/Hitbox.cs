@@ -26,7 +26,7 @@ namespace Entropek.Combat
         [Tooltip("This trigger collider must always start disabled.")]
         [SerializeField] protected Collider triggerCollider;
         [TagSelector] [SerializeField] protected string[] ignoreTags;
-        [SerializeField] protected float damageAmount;
+        [SerializeField] protected int damageAmount;
         [SerializeField] protected DamageType damageType;
 
         /// <summary>

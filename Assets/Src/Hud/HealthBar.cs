@@ -88,7 +88,7 @@ public class HealthBar : MonoBehaviour{
         health.Death -= OnDeath;
     }
 
-    private void OnHealed(float amount){
+    private void OnHealed(int amount){
         slider.value = health.Value;
     }
 

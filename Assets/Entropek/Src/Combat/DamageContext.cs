@@ -15,7 +15,7 @@ namespace Entropek.Combat
         /// Gets the amount of damage to deal to a HealthSystem component.
         /// </summary>
         
-        public float DamageAmount{get; private set;}
+        public int DamageAmount{get; private set;}
         
         /// <summary>
         /// Gets the position (in world-space) where this DamageContext came from.
@@ -30,7 +30,7 @@ namespace Entropek.Combat
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="type">The type of damage.</param>
 
-        public DamageContext(Vector3 sourcePosition, float damageAmount, DamageType damageType)
+        public DamageContext(Vector3 sourcePosition, int damageAmount, DamageType damageType)
         {
             SourcePosition = sourcePosition;
             DamageAmount = damageAmount;

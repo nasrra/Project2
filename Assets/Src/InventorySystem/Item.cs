@@ -9,6 +9,7 @@ public abstract class Item : ScriptableObject
     /// </summary>
 
     public const string EditorAssetMenuName = "ScriptableObject/InventorySystem/";
+    public const string EditorLinearModifierTooltip = "+10% = 0.1";
 
     #endif
 

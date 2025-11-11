@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = Item.EditorAssetMenuName+nameof(LinearModifierMovementItem))]
-public class LinearModifierMovementItem : Item
+[CreateAssetMenu(menuName = Item.EditorAssetMenuName+nameof(MovementSpeedLinearModifierItem))]
+public class MovementSpeedLinearModifierItem : Item
 {
     [Tooltip("+10% = 0.1")]
     [SerializeField] float modifierValue;
