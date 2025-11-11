@@ -3,7 +3,7 @@ using Entropek.Systems.Trails;
 using Entropek.UnityUtils.AnimatorUtils;
 using UnityEngine;
 
-public class DodgeSkill : Skill, IAnimatedSkill
+public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 {
 
 
@@ -67,6 +67,23 @@ public class DodgeSkill : Skill, IAnimatedSkill
 
 
     /// 
+    /// IMovementSkill Field Overrides.
+    /// 
+
+    IMovementSkill IMovementSkill;
+
+
+    PlayerStats IMovementSkill.PlayerStats => Player.PlayerStats; 
+    
+    float moveSpeedModifier = 1;
+    float IMovementSkill.MoveSpeedModifier 
+    { 
+        get => moveSpeedModifier; 
+        set => moveSpeedModifier = value; 
+    }
+
+
+    /// 
     /// Base.
     /// 
 
@@ -96,7 +113,7 @@ public class DodgeSkill : Skill, IAnimatedSkill
         Player.CharacterControllerMovement.ClearGravityVelocity();
         Player.JumpMovement.StopJumping();
         
-        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, DodgeForce, DodgeDecaySpeed);
+        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, IMovementSkill.ApplyMoveSpeedModifier(DodgeForce), IMovementSkill.ApplyMoveSpeedModifier(DodgeDecaySpeed));
 
         // Make player invulnerable.
 
@@ -115,6 +132,7 @@ public class DodgeSkill : Skill, IAnimatedSkill
     protected override void GetInterfaceTypes()
     {
         IAnimatedSkill = this;
+        IMovementSkill = this;
     }
 
 
@@ -126,11 +144,13 @@ public class DodgeSkill : Skill, IAnimatedSkill
     protected override void LinkEvents()
     {
         IAnimatedSkill.LinkAnimatedSkillEvents();
+        IMovementSkill.LinkMovementSkillEvents();
     }
 
     protected override void UnlinkEvents()
     {
         IAnimatedSkill.UnlinkAnimatedSkillEvents();
+        IMovementSkill.UnlinkMovementSkillEvents();
     }
 
 

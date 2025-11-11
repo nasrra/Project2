@@ -3,7 +3,7 @@ using UnityEngine;
 public class ArcStone : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] Entropek.InventorySystem.CurrencyPickup currencyPickup;
+    [SerializeField] CurrencyPickup currencyPickup;
     [SerializeField] Entropek.Interaction.Interactable interactable;
     [SerializeField] Entropek.Audio.AudioPlayer audioPlayer;
     [SerializeField] GameObject graphicsObject;

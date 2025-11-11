@@ -71,6 +71,12 @@ public class Player : MonoBehaviour {
     [SerializeField] private VfxPlayerSpawner vfxPlayerSpawner;
     public VfxPlayerSpawner VfxPlayerSpawner => vfxPlayerSpawner;
 
+    [SerializeField] private PlayerStats playerStats;
+    public PlayerStats PlayerStats => playerStats;
+
+    [SerializeField] private Inventory inventory;
+    public Inventory Inventory => inventory;
+
     [Header("Timers")]
     [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
 
@@ -443,6 +449,7 @@ public class Player : MonoBehaviour {
         LinkGroundCheckerEvents();
         LinkAnimationEventRecieverEvents();
         LinkHealthEvents();
+        LinkInventoryEvents();
     }
 
     /// <summary>
@@ -457,6 +464,7 @@ public class Player : MonoBehaviour {
         UnlinkGroundCheckerEvents();
         UnlinkAnimationEventRecieverEvents();
         UnlinkHealthEvents();
+        UnlinkInventoryEvents();
     }
 
 
@@ -700,56 +708,33 @@ public class Player : MonoBehaviour {
     }
 
     private void OnAttackInput() {
-
-        if (coyoteState == CoyoteState.AnimatedSkill
-        || coyoteState == CoyoteState.Stagger)
-        {
-            CoyoteCallback = Skill1;
-        }
-
-        if (skillCollection.SkillIsInUse(Skill1Id)
-        ||  playerState == PlayerState.Stagger)
-        {
-            return;
-        }
-
-
-        Skill1();
+        OnSkillInput(Skill1, Skill1Id);
     }
 
     private void OnDodgeInput() {
-
-        if (coyoteState == CoyoteState.AnimatedSkill
-        ||  coyoteState == CoyoteState.Stagger)
-        {
-            CoyoteCallback = Skill2;
-        }
-
-        if (skillCollection.SkillIsInUse(Skill2Id)
-        ||  playerState == PlayerState.Stagger)
-        {
-            return;
-        }
-
-        Skill2();
+        OnSkillInput(Skill2, Skill2Id);
     }
 
 
     private void OnSkill3Input() {
+        OnSkillInput(Skill3, Skill3Id);
+    }
 
+    private void OnSkillInput(Action skillFunction, int skillId)
+    {
         if (coyoteState == CoyoteState.AnimatedSkill
         ||  coyoteState == CoyoteState.Stagger)
         {
-            CoyoteCallback = Skill3;
+            CoyoteCallback = skillFunction;
         }
 
-        if (skillCollection.SkillIsInUse(Skill3Id)
+        if (skillCollection.SkillIsInUse(skillId)
         ||  playerState == PlayerState.Stagger)
         {
             return;
         }
 
-        Skill3();
+        skillFunction();        
     }
 
     private void OnInteractInput() {
@@ -801,6 +786,40 @@ public class Player : MonoBehaviour {
             // miscellaneous.
             
             case "Footstep": HandleFootstepEffects(); break;
+        }
+    }
+
+
+    ///
+    /// Inventory Event Linkage.
+    /// 
+
+
+    private void LinkInventoryEvents()
+    {
+        inventory.ItemAdded += OnItemAdded;
+        inventory.ItemRemoved += OnItemRemoved;
+    }
+
+    private void UnlinkInventoryEvents()
+    {
+        inventory.ItemAdded -= OnItemAdded;
+        inventory.ItemRemoved -= OnItemRemoved;
+    }
+
+    private void OnItemAdded(ItemAddedContext itemAddedContext)
+    {
+        for(int i = 0; i < itemAddedContext.Amount; i++)
+        {
+            itemAddedContext.Item.ApplyModifier(playerStats);
+        }
+    }
+
+    private void OnItemRemoved(ItemRemovedContext itemRemovedContext)
+    {
+        for(int i = 0; i < itemRemovedContext.Amount; i++)
+        {
+            itemRemovedContext.Item.RemoveModifier(playerStats);
         }
     }
 }

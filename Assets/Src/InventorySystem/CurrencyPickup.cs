@@ -1,13 +1,13 @@
-using System.Reflection;
 using UnityEngine;
 
-public class WindTunnel : MonoBehaviour
+public class CurrencyPickup : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] Entropek.Interaction.Interactable interactable;
-    [SerializeField] ArcField arcField;
-    [SerializeField] Currency currencyTypeRequired;
-    [SerializeField] uint currentAmountRequired;
+    [SerializeField] private Entropek.Interaction.Interactable interactable;
+
+    [Header("Data")]
+    public Currency Currency;
+    public uint Amount;
 
 
     /// 
@@ -39,7 +39,7 @@ public class WindTunnel : MonoBehaviour
     private void UnlinkEvents()
     {
         UnlinkInteractableEvents();
-    } 
+    }
 
     private void LinkInteractableEvents()
     {
@@ -48,15 +48,16 @@ public class WindTunnel : MonoBehaviour
 
     private void UnlinkInteractableEvents()
     {
-        interactable.Interacted -= OnInteracted;
+        interactable.Interacted -= OnInteracted;            
     }
 
     private void OnInteracted(Entropek.Interaction.Interactor interactor)
     {
-        Inventory inventory = interactor.RootGameObject.GetComponent<Inventory>();
-        if(inventory.HasSufficientCurrency(currencyTypeRequired, currentAmountRequired))
-        {
-            arcField.Activate();
-        }
+        // access root gameobject as the interactor gameobject is not expected
+        // to contain te inventory component.
+
+        interactor.RootGameObject.GetComponent<Inventory>().AddCurrency(Currency, Amount);
     }
-}
+}    
+
+

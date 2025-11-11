@@ -68,6 +68,23 @@ namespace Entropek.Physics
         /// 
 
 
+        public void SetMaxSpeed(float value)
+        {
+            maxSpeed = value;
+            // set stick to floor force so this doesnt fly off of slopes.
+            stickToFloorForce = -maxSpeed;            
+        }
+
+        public void SetAcceleration(float value)
+        {
+            acceleration = value;
+        }
+
+        public void SetDecleration(float value)
+        {
+            deceleration = value;
+        }
+
         public void HaltMoveDirectionVelocity()
         {
             moveDirectionVelocity = Vector3.zero;
