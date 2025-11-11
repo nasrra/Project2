@@ -85,7 +85,8 @@ public class DodgeSkill : Skill, IAnimatedSkill
 
         // move only in the direction of our dodge.
 
-        Player.blockMoveInput = true;
+        Player.BlockMoveInput(); 
+        Player.BlockJumpInput();
 
         Player.SnapToFaceMoveInput();
         Player.FaceMoveDirection();
@@ -150,6 +151,9 @@ public class DodgeSkill : Skill, IAnimatedSkill
     void IAnimatedSkill.OnAnimationCompleted()
     {
         inUse = false;
-        Player.blockMoveInput = false; // re-enable move input.
+
+        // re-enable move input.
+        Player.UnblockMoveInput(); 
+        Player.UnblockJumpInput();
     }
 }

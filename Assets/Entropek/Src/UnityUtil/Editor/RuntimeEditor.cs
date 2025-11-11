@@ -35,17 +35,27 @@ namespace Entropek.UnityUtils
                 .Where(field => Attribute.IsDefined(field, typeof(Attributes.RuntimeField)))
                 .ToArray();
 
-            EditorApplication.update += EditorUpdate;
+            EditorApplication.delayCall += EditorUpdate;
 
         }
 
         protected virtual void OnDisable()
         {
-            EditorApplication.update -= EditorUpdate;
+            EditorApplication.delayCall -= EditorUpdate;
         }
 
         protected virtual void EditorUpdate()
         {
+            if(target == null)
+            {
+                return;
+            }
+
+            if(Selection.activeObject != target)
+            {
+                return;
+            }
+
             if (EditorApplication.isPlaying && target != null)
             {
                 Repaint();

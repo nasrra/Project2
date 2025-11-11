@@ -47,7 +47,7 @@ public class TestMinion : Minion
 
     public void Shoot(Transform target)
     {
-        projectileSpawner.Fire(0, 0, target);
+        projectileSpawner.FireAtTarget(0, 0, target);
         attackStateTimer.Begin();
     }
 

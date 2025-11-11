@@ -38,6 +38,9 @@ public class Player : MonoBehaviour {
     [SerializeField] private CameraPostProcessingController cameraPostProcessing;
     public CameraPostProcessingController CameraPostProcessingController => cameraPostProcessing;
     
+    [SerializeField] private CameraAimTarget cameraAimTarget;
+    public CameraAimTarget CameraAimTarget => cameraAimTarget;
+
     [SerializeField] private Health health;
     public Health Health => health;
 
@@ -83,6 +86,7 @@ public class Player : MonoBehaviour {
     public SkillCollection SkillCollection => skillCollection;
 
     [RuntimeField] public bool blockMoveInput = false;
+    [RuntimeField] public bool blockJumpInput = false;
 
     /// 
     /// Runtime Fields
@@ -344,6 +348,32 @@ public class Player : MonoBehaviour {
     {
         EnterRestState();
     }
+
+
+    ///
+    /// Input Blockers.
+    /// 
+
+    public void BlockMoveInput()
+    {
+        blockMoveInput = true;
+    }
+
+    public void UnblockMoveInput()
+    {
+        blockMoveInput = false;        
+    }
+
+    public void BlockJumpInput()
+    {
+        blockJumpInput = true;                
+    }
+
+    public void UnblockJumpInput()
+    {
+        blockJumpInput = false;        
+    }
+
 
     ///
     /// Coyote State Machine.
@@ -615,36 +645,45 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStartInput() {
 
-        // queue the action if we are attacking or dodging coyote states.
 
-        if (coyoteState == CoyoteState.AnimatedSkill
-        || coyoteState == CoyoteState.Stagger)
+
+        if (groundCheck.IsGrounded == true
+        && blockJumpInput == false)
         {
-            CoyoteCallback = OnJumpInputCoyoteCallback;
-            return;
+            JumpStart();
         }
-
-        // immediately perform the action if we are in falling coyote state.
-        if (coyoteState == CoyoteState.Fall)
+        else
         {
-            CoyoteCallback = OnJumpInputCoyoteCallback;
-            ExitCoyoteState();
-            return;            
-        }
+            // queue the action if we are attacking or dodging coyote states.
 
-        if ((playerState != PlayerState.Idle && playerState != PlayerState.Run) || groundCheck.IsGrounded == false)
-        {
-            return;
-        }
+            if (coyoteState == CoyoteState.AnimatedSkill
+            || coyoteState == CoyoteState.Stagger)
+            {
+                CoyoteCallback = OnJumpInputCoyoteCallback;
+                return;
+            }
 
-        JumpStart();
+            // immediately perform the action if we are in falling coyote state.
+            if (coyoteState == CoyoteState.Fall)
+            {
+                CoyoteCallback = OnJumpInputCoyoteCallback;
+                ExitCoyoteState();
+                return;            
+            }            
+        }
     }
 
     private void OnJumpInputCoyoteCallback()
     {
         if (InputManager.Singleton.IsJumpPressed == true)
         {
-            JumpStart();
+            // block check to ensure that exiting and re-entering a coyote state doesn't 
+            // trigger a jump start if both states dont allow it.
+
+            if(blockJumpInput == false)
+            {
+                JumpStart();
+            }
         }
     }
 

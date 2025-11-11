@@ -39,7 +39,7 @@ namespace Entropek.Projectiles
         /// <param name="shootPointId">The id of the point to spawn at.</param>
         /// <param name="direction">The direction for the projectile to move in.</param>
 
-        public void Fire(int projectilePrefabId, int shootPointId, Vector3 direction)
+        public void FireInDirection(int projectilePrefabId, int shootPointId, Vector3 direction)
         {
             Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
             
@@ -55,9 +55,9 @@ namespace Entropek.Projectiles
         /// </summary>
         /// <param name="projectilePrefabId">The id of the projectile prefab to spawn.</param>
         /// <param name="shootPointId">The id of the point to spawn at.</param>
-        /// <param name="transform">A transform component to fire towards.</param>
+        /// <param name="target">A transform component to fire towards.</param>
 
-        public void Fire(int projectilePrefabId, int shootPointId, Transform transform)
+        public void FireAtTarget(int projectilePrefabId, int shootPointId, Transform target)
         {
             Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
             
@@ -65,7 +65,25 @@ namespace Entropek.Projectiles
             Transform shootPoint = shootPoints[shootPointId];
 
             projectileTransform.position = shootPoint.position;
-            projectileTransform.LookAt(transform); 
+            projectileTransform.LookAt(target); 
+        }
+
+        /// <summary>
+        /// Spawn a projectile copying a spawn points position (in world-space).
+        /// </summary>
+        /// <param name="projectilePrefabId">The id of the projectile prefab to spawn.</param>
+        /// <param name="shootPointId">The id of the point to spawn at.</param>
+        /// <param name="position">A position (in world-space) to fire towards.</param>
+
+        public void FireAtPosition(int projectilePrefabId, int shootPointId, Vector3 position)
+        {
+            Projectile projectile = projectilePool.ActivateFromPool(projectilePrefabId);
+            
+            Transform projectileTransform = projectile.transform;
+            Transform shootPoint = shootPoints[shootPointId];
+
+            projectileTransform.position = shootPoint.position;
+            projectileTransform.LookAt(position); 
         }
 
         private IEnumerator TestFire()
