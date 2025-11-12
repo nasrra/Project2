@@ -118,6 +118,13 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
     protected override void UseInternal()
     {
+        // complete the other animation skill; so that the state is cancelled and the player cansafely transition into this skill.
+        
+        if(Player.SkillCollection.AnimatedSkillIsInUse(out IAnimatedSkill animatedSkill))
+        {
+            animatedSkill.Cancel(); 
+        }
+
         inUse = true;
 
         stateTimer.Begin();
@@ -150,6 +157,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         dodgeTrail.EnableTrail();
         Player.AudioPlayer.PlaySound(DashSound, Player.gameObject);
         IAnimatedSkill.PlayAnimation();
+
     }
 
     public override bool CanUse()

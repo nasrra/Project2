@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "Skill1",
                     "type": "Button",
                     "id": "6a40ec49-da34-46fd-bf71-69bf560ac598",
                     "expectedControlType": "",
@@ -43,9 +43,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dodge",
+                    "name": "Skill2",
                     "type": "Button",
                     "id": "703ddbaa-e236-42a9-ad58-43097cca1270",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill3",
+                    "type": "Button",
+                    "id": "5f83bcd6-2241-4450-8a0c-6211b98e1724",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -100,15 +109,6 @@
                     "name": "PreviousInteractable",
                     "type": "Button",
                     "id": "ad9ea2d8-901b-474c-abee-0d243c664949",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Skill3",
-                    "type": "Button",
-                    "id": "5f83bcd6-2241-4450-8a0c-6211b98e1724",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -330,7 +330,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Mouse",
-                    "action": "Attack",
+                    "action": "Skill1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -341,7 +341,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Attack",
+                    "action": "Skill1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -349,10 +349,10 @@
                     "name": "",
                     "id": "77d482b5-a458-4647-add9-2055c963a98b",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "Tap",
+                    "interactions": "",
                     "processors": "",
                     "groups": ";Mouse",
-                    "action": "Dodge",
+                    "action": "Skill2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -363,7 +363,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Dodge",
+                    "action": "Skill2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

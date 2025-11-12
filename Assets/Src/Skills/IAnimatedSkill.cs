@@ -32,12 +32,6 @@ public interface IAnimatedSkill
             return !Player.SkillCollection.AnimatedSkillIsInUse(out _);
         }
 
-        if(Player.SkillCollection.AnimatedSkillIsInUse(out IAnimatedSkill animatedSkill))
-        {
-            // complete the other animation skill; so that the state is cancelled and the player cansafely transition into this skill.
-            animatedSkill.Cancel(); 
-        }
-
         return true;
     }
 

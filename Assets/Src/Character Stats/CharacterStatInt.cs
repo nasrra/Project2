@@ -14,18 +14,15 @@ public class CharacterStatInt
     private int scaledValue;
     public int ScaledValue
     {
-        get
+        get 
         {
-            if(isDirty == true)
-            {
-                CalculateScaledValue();
-            }            
-            return scaledValue;
+            return scaledValueInitialised? scaledValue : baseValue;    
         }
         set
         {
             scaledValue = value;
         }
+
     }
 
     [SerializeField, RuntimeField] SwapbackList<float> flatModifiers = new();
@@ -33,50 +30,50 @@ public class CharacterStatInt
     [SerializeField, RuntimeField] SwapbackList<float> hyperbolicModifiers = new();
 
     // NOTE:
-    //  Is dirty checks are needed as unity cant guarantee 
+    //  Is initialised checks are needed as unity cant guarantee 
     //  reliably intialising scaled value properly through constructors.
 
-    private bool isDirty = true;
+    private bool scaledValueInitialised = false;
 
     public void AddFlatModifier(float value)
     {
         flatModifiers.Add(value);
-        isDirty = true;
+        CalculateScaledValue();
     }
 
     public void RemoveFlatModifier(float value)
     {
         flatModifiers.Remove(value);
-        isDirty = true;
+        CalculateScaledValue();
     }
 
     public void AddLinearModifier(float value)
     {
         linearModifiers.Add(value);
-        isDirty = true;
+        CalculateScaledValue();
     }
 
     public void RemoveLinearModifier(float value)
     {
         linearModifiers.Remove(value);
-        isDirty = true;
+        CalculateScaledValue();
     }
 
     public void AddHyperbolicModifier(float value)
     {
         hyperbolicModifiers.Add(value);
-        isDirty = true;
+        CalculateScaledValue();
     }
 
     public void RemoveHyperbolicModifier(float value)
     {
         hyperbolicModifiers.Remove(value);
-        isDirty = true;
+        CalculateScaledValue();
     }
 
     public void CalculateScaledValue()
     {
-        isDirty = false;
+        scaledValueInitialised = true;
         scaledValue = Mathf.RoundToInt(CalculateFlatModifierValue() + CalculateLinearModifierValue() + CalculateHyperbolicModifier());
         ScaledValueCalculated?.Invoke(scaledValue);
     }

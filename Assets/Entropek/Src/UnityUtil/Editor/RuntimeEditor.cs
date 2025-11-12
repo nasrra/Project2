@@ -51,10 +51,10 @@ namespace Entropek.UnityUtils
                 return;
             }
 
-            if(Selection.activeObject != target)
-            {
-                return;
-            }
+            // if(Selection.activeObject != target)
+            // {
+            //     return;
+            // }
 
             if (EditorApplication.isPlaying && target != null)
             {

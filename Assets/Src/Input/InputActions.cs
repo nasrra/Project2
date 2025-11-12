@@ -120,7 +120,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Skill1"",
                     ""type"": ""Button"",
                     ""id"": ""6a40ec49-da34-46fd-bf71-69bf560ac598"",
                     ""expectedControlType"": """",
@@ -129,9 +129,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dodge"",
+                    ""name"": ""Skill2"",
                     ""type"": ""Button"",
                     ""id"": ""703ddbaa-e236-42a9-ad58-43097cca1270"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill3"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f83bcd6-2241-4450-8a0c-6211b98e1724"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -186,15 +195,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""PreviousInteractable"",
                     ""type"": ""Button"",
                     ""id"": ""ad9ea2d8-901b-474c-abee-0d243c664949"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Skill3"",
-                    ""type"": ""Button"",
-                    ""id"": ""5f83bcd6-2241-4450-8a0c-6211b98e1724"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -416,7 +416,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Mouse"",
-                    ""action"": ""Attack"",
+                    ""action"": ""Skill1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -427,7 +427,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Attack"",
+                    ""action"": ""Skill1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -435,10 +435,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""77d482b5-a458-4647-add9-2055c963a98b"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": ""Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Mouse"",
-                    ""action"": ""Dodge"",
+                    ""action"": ""Skill2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -449,7 +449,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Dodge"",
+                    ""action"": ""Skill2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -673,15 +673,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
-        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
-        m_Gameplay_Dodge = m_Gameplay.FindAction("Dodge", throwIfNotFound: true);
+        m_Gameplay_Skill1 = m_Gameplay.FindAction("Skill1", throwIfNotFound: true);
+        m_Gameplay_Skill2 = m_Gameplay.FindAction("Skill2", throwIfNotFound: true);
+        m_Gameplay_Skill3 = m_Gameplay.FindAction("Skill3", throwIfNotFound: true);
         m_Gameplay_LockOnToggle = m_Gameplay.FindAction("LockOnToggle", throwIfNotFound: true);
         m_Gameplay_LockOnNext = m_Gameplay.FindAction("LockOnNext", throwIfNotFound: true);
         m_Gameplay_LockOnPrevious = m_Gameplay.FindAction("LockOnPrevious", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_NextInteractable = m_Gameplay.FindAction("NextInteractable", throwIfNotFound: true);
         m_Gameplay_PreviousInteractable = m_Gameplay.FindAction("PreviousInteractable", throwIfNotFound: true);
-        m_Gameplay_Skill3 = m_Gameplay.FindAction("Skill3", throwIfNotFound: true);
         m_Gameplay_RunToggle = m_Gameplay.FindAction("RunToggle", throwIfNotFound: true);
     }
 
@@ -766,15 +766,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_Jump;
-    private readonly InputAction m_Gameplay_Attack;
-    private readonly InputAction m_Gameplay_Dodge;
+    private readonly InputAction m_Gameplay_Skill1;
+    private readonly InputAction m_Gameplay_Skill2;
+    private readonly InputAction m_Gameplay_Skill3;
     private readonly InputAction m_Gameplay_LockOnToggle;
     private readonly InputAction m_Gameplay_LockOnNext;
     private readonly InputAction m_Gameplay_LockOnPrevious;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_NextInteractable;
     private readonly InputAction m_Gameplay_PreviousInteractable;
-    private readonly InputAction m_Gameplay_Skill3;
     private readonly InputAction m_Gameplay_RunToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
@@ -800,13 +800,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Attack".
+        /// Provides access to the underlying input action "Gameplay/Skill1".
         /// </summary>
-        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        public InputAction @Skill1 => m_Wrapper.m_Gameplay_Skill1;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Dodge".
+        /// Provides access to the underlying input action "Gameplay/Skill2".
         /// </summary>
-        public InputAction @Dodge => m_Wrapper.m_Gameplay_Dodge;
+        public InputAction @Skill2 => m_Wrapper.m_Gameplay_Skill2;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Skill3".
+        /// </summary>
+        public InputAction @Skill3 => m_Wrapper.m_Gameplay_Skill3;
         /// <summary>
         /// Provides access to the underlying input action "Gameplay/LockOnToggle".
         /// </summary>
@@ -831,10 +835,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/PreviousInteractable".
         /// </summary>
         public InputAction @PreviousInteractable => m_Wrapper.m_Gameplay_PreviousInteractable;
-        /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Skill3".
-        /// </summary>
-        public InputAction @Skill3 => m_Wrapper.m_Gameplay_Skill3;
         /// <summary>
         /// Provides access to the underlying input action "Gameplay/RunToggle".
         /// </summary>
@@ -874,12 +874,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
-            @Dodge.started += instance.OnDodge;
-            @Dodge.performed += instance.OnDodge;
-            @Dodge.canceled += instance.OnDodge;
+            @Skill1.started += instance.OnSkill1;
+            @Skill1.performed += instance.OnSkill1;
+            @Skill1.canceled += instance.OnSkill1;
+            @Skill2.started += instance.OnSkill2;
+            @Skill2.performed += instance.OnSkill2;
+            @Skill2.canceled += instance.OnSkill2;
+            @Skill3.started += instance.OnSkill3;
+            @Skill3.performed += instance.OnSkill3;
+            @Skill3.canceled += instance.OnSkill3;
             @LockOnToggle.started += instance.OnLockOnToggle;
             @LockOnToggle.performed += instance.OnLockOnToggle;
             @LockOnToggle.canceled += instance.OnLockOnToggle;
@@ -898,9 +901,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PreviousInteractable.started += instance.OnPreviousInteractable;
             @PreviousInteractable.performed += instance.OnPreviousInteractable;
             @PreviousInteractable.canceled += instance.OnPreviousInteractable;
-            @Skill3.started += instance.OnSkill3;
-            @Skill3.performed += instance.OnSkill3;
-            @Skill3.canceled += instance.OnSkill3;
             @RunToggle.started += instance.OnRunToggle;
             @RunToggle.performed += instance.OnRunToggle;
             @RunToggle.canceled += instance.OnRunToggle;
@@ -924,12 +924,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
-            @Dodge.started -= instance.OnDodge;
-            @Dodge.performed -= instance.OnDodge;
-            @Dodge.canceled -= instance.OnDodge;
+            @Skill1.started -= instance.OnSkill1;
+            @Skill1.performed -= instance.OnSkill1;
+            @Skill1.canceled -= instance.OnSkill1;
+            @Skill2.started -= instance.OnSkill2;
+            @Skill2.performed -= instance.OnSkill2;
+            @Skill2.canceled -= instance.OnSkill2;
+            @Skill3.started -= instance.OnSkill3;
+            @Skill3.performed -= instance.OnSkill3;
+            @Skill3.canceled -= instance.OnSkill3;
             @LockOnToggle.started -= instance.OnLockOnToggle;
             @LockOnToggle.performed -= instance.OnLockOnToggle;
             @LockOnToggle.canceled -= instance.OnLockOnToggle;
@@ -948,9 +951,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @PreviousInteractable.started -= instance.OnPreviousInteractable;
             @PreviousInteractable.performed -= instance.OnPreviousInteractable;
             @PreviousInteractable.canceled -= instance.OnPreviousInteractable;
-            @Skill3.started -= instance.OnSkill3;
-            @Skill3.performed -= instance.OnSkill3;
-            @Skill3.canceled -= instance.OnSkill3;
             @RunToggle.started -= instance.OnRunToggle;
             @RunToggle.performed -= instance.OnRunToggle;
             @RunToggle.canceled -= instance.OnRunToggle;
@@ -1068,19 +1068,26 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAttack(InputAction.CallbackContext context);
+        void OnSkill1(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Dodge" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Skill2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDodge(InputAction.CallbackContext context);
+        void OnSkill2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Skill3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkill3(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "LockOnToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -1123,13 +1130,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPreviousInteractable(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Skill3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSkill3(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "RunToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

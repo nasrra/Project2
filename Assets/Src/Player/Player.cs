@@ -529,9 +529,23 @@ public class Player : MonoBehaviour {
 
     public void ExitCoyoteState()
     {
-        if (CoyoteCallback != null){            
-            CoyoteCallback();
+        if (InputManager.Singleton.Skill1Pressed)
+        {
+            Skill1();
         }
+        else if (InputManager.Singleton.Skill2Pressed)
+        {
+            Skill2();
+        }
+        else if (InputManager.Singleton.Skill3Pressed)
+        {
+            Skill3();
+        }
+        else{            
+            CoyoteCallback?.Invoke();
+        }
+
+        CoyoteCallback = null;
 
         // reset the coyote state.
         coyoteState = CoyoteState.None;
@@ -713,13 +727,13 @@ public class Player : MonoBehaviour {
         input.Move += OnMoveInput;
         input.JumpStart += OnJumpStartInput;
         input.JumpStop += OnJumpStopInput;
-        input.Attack += OnAttackInput;
-        input.Dodge += OnDodgeInput;
         input.Interact += OnInteractInput;
         input.NextInteractable += OnNextInteractable;
         input.PreviousInteractable += OnPreviousInteractable;
-        input.Skill3 += OnSkill3Input;
         input.RunToggle += OnRunToggleInput;
+        input.Skill1 += OnSkill1Input;
+        input.Skill2 += OnSkill2Input;
+        input.Skill3 += OnSkill3Input;
     }
 
     private void UnlinkInputEvents() {
@@ -729,13 +743,13 @@ public class Player : MonoBehaviour {
         input.Move -= OnMoveInput;
         input.JumpStart -= OnJumpStartInput;
         input.JumpStop -= OnJumpStopInput;
-        input.Attack -= OnAttackInput;
-        input.Dodge -= OnDodgeInput;
         input.Interact -= OnInteractInput;
         input.NextInteractable -= OnNextInteractable;
         input.PreviousInteractable -= OnPreviousInteractable;
-        input.Skill3 -= OnSkill3Input;
         input.RunToggle -= OnRunToggleInput;
+        input.Skill1 -= OnSkill1Input;
+        input.Skill2 -= OnSkill2Input;
+        input.Skill3 -= OnSkill3Input;
     }
 
     private void OnMoveInput(Vector2 moveInput) {
@@ -819,11 +833,11 @@ public class Player : MonoBehaviour {
 
     }
 
-    private void OnAttackInput() {
+    private void OnSkill1Input() {
         OnSkillInput(Skill1, Skill1Id);
     }
 
-    private void OnDodgeInput() {
+    private void OnSkill2Input() {
         OnSkillInput(Skill2, Skill2Id);
     }
 

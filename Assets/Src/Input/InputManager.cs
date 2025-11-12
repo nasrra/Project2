@@ -1,4 +1,5 @@
 using System;
+using Entropek.UnityUtils.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -82,20 +83,54 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         }
     }
 
-    public event Action Attack;
-    void InputActions.IGameplayActions.OnAttack(InputAction.CallbackContext context){
+    [RuntimeField] private bool skill1Pressed;
+    public bool Skill1Pressed => skill1Pressed;
+    public event Action Skill1;
+    void InputActions.IGameplayActions.OnSkill1(InputAction.CallbackContext context){
         if(context.performed==true){
-            Attack?.Invoke();
+            skill1Pressed = true;
+            Skill1?.Invoke();
+        }
+
+        if (context.canceled == true)
+        {
+            skill1Pressed = false;
         }
     }
 
-    public event Action Dodge;
-    void InputActions.IGameplayActions.OnDodge(InputAction.CallbackContext context){
+    [RuntimeField] private bool skill2Pressed;
+    public bool Skill2Pressed => skill2Pressed;
+    public event Action Skill2;
+    void InputActions.IGameplayActions.OnSkill2(InputAction.CallbackContext context){
+        
         if(context.performed==true){
-            Dodge?.Invoke();
+            skill2Pressed = true;
+            Skill2?.Invoke();
+        }
+
+        if (context.canceled == true)
+        {
+            skill2Pressed = false;
         }
     }
     
+    [RuntimeField] private bool skill3Pressed;
+    public bool Skill3Pressed => skill3Pressed;
+    public event Action Skill3;
+    void InputActions.IGameplayActions.OnSkill3(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            skill3Pressed = true;
+            Skill3?.Invoke();
+        }
+
+        if(context.canceled)
+        {
+            skill3Pressed = false;
+        }
+    }
+
     public event Action LockOnToggle;
     void InputActions.IGameplayActions.OnLockOnToggle(InputAction.CallbackContext context){
         if(context.performed==true){
@@ -135,15 +170,6 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
     void InputActions.IGameplayActions.OnPreviousInteractable(InputAction.CallbackContext context){
         if(context.performed){
             PreviousInteractable?.Invoke();
-        }
-    }
-
-    public event Action Skill3;
-    void InputActions.IGameplayActions.OnSkill3(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Skill3?.Invoke();
         }
     }
 
