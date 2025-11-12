@@ -19,7 +19,27 @@ public interface IAnimatedSkill
     string AnimationCompletedEventName{get;}
     int AnimationLayer{get;}
     Coroutine AnimationLayerWeightTransitionCoroutine{get; protected set;}
+    bool AnimationCancel{get;}
 
+
+    bool CanUseAnimatedSkill()
+    {
+        if (AnimationCancel == false)
+        {
+            // only use an animated skill when another animated skill isnt currently in use.
+            // we dont allow animation cancelling for skills.
+
+            return !Player.SkillCollection.AnimatedSkillIsInUse(out _);
+        }
+
+        if(Player.SkillCollection.AnimatedSkillIsInUse(out IAnimatedSkill animatedSkill))
+        {
+            // complete the other animation skill; so that the state is cancelled and the player cansafely transition into this skill.
+            animatedSkill.Cancel(); 
+        }
+
+        return true;
+    }
 
     /// <summary>
     /// Immeditely plays the assigned animation via AnimationName.
@@ -101,7 +121,7 @@ public interface IAnimatedSkill
         }
     }
 
-    void StarAnimationLayerWeightTransition(float value, float speed)
+    void StartAnimationLayerWeightTransition(float value, float speed)
     {
         if(AnimationLayerWeightTransitionCoroutine != null)
         {
@@ -125,6 +145,8 @@ public interface IAnimatedSkill
     }
 
     void OnAnimationCompleted();
+
+    void Cancel();
 
     /// <summary>
     /// Switches the coyote state of the assigned PLayer to AnimatedSkill.

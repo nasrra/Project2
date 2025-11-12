@@ -93,18 +93,16 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
     /// 
 
 
-    public override bool Use()
+    public override bool CanUse()
     {
-        if (ICooldownSkill.CanUse() == false)
-        {
-            return false;
-        }
+        return ICooldownSkill.CanUseCooldownSkill();
+    }
 
+    protected override void UseInternal()
+    {
         // restore all charges to fire all 
 
         IBatchRechargeSkill.RestoreCharges(maxCharges);
-
-        return true;
     }
 
     protected override void GetInterfaceTypes()

@@ -110,10 +110,10 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    private const string IdleAnimation = "Rig_Sword_Idle";
-    private const string WalkAnimation = "Rig_Jog_Fwd_Loop";
-    private const string JumpStartAnimation = "Rig_Jump_Start";
-    private const string FallAnimation = "Rig_Jump_Loop";
+    private const string IdleAnimation = "HoldingIdle";
+    private const string WalkAnimation = "RunWithSword";
+    private const string JumpStartAnimation = "Jump";
+    private const string FallAnimation = "Fall";
     private const string GroundedAnimation = "Rig_Jump_Land";
     private const string StaggerAnimation = "Rig_Stagger";
 
@@ -292,7 +292,7 @@ public class Player : MonoBehaviour {
         
         characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
 
-        if (skillCollection.AnimatedSkillIsInUse() == false)
+        if (skillCollection.AnimatedSkillIsInUse(out _) == false)
         {
             FaceMoveDirection();
         }
@@ -530,7 +530,7 @@ public class Player : MonoBehaviour {
     {
         // only enter the rest state if we are currently not performing any skills.
 
-        if (skillCollection.AnimatedSkillIsInUse()==false) 
+        if (skillCollection.AnimatedSkillIsInUse(out _)==false) 
         {
             if (InputManager.Singleton.moveInputSqrMagnitude > 0)
             {
@@ -698,7 +698,7 @@ public class Player : MonoBehaviour {
     private void OnJumpStopInput()
     {
         if (playerState != PlayerState.Jump
-        || skillCollection.AnimatedSkillIsInUse())
+        || skillCollection.AnimatedSkillIsInUse(out _))
         {
             return;
         }

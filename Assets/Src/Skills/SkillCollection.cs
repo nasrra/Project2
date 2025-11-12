@@ -22,19 +22,23 @@ public class SkillCollection
     /// <summary>
     /// Checks whether or not any animated skill stored by this SkillCollection is currently in use.
     /// </summary>
+    /// <param name="animatedSkill">The first found instance of a IAnimatedSkill that is in use.</param>
     /// <returns>true, if an IAnimatedSkill is in use; otherwise false.</returns>
 
-    public bool AnimatedSkillIsInUse()
+    public bool AnimatedSkillIsInUse(out IAnimatedSkill animatedSkill)
     {
+        animatedSkill = null;
+        
         for(int i = 0; i < skills.Length; i++)
         {
             Skill skill = skills[i];
-            if(skill.InUse == true && skill is IAnimatedSkill)
+            if(skill.InUse == true && skill is IAnimatedSkill animated)
             {
+                animatedSkill = animated;
                 return true;
             }
         }
-
+        
         return false;
     }
 

@@ -6,7 +6,7 @@ public interface ICooldownSkill
 {
     [SerializeField] OneShotTimer CooldownTimer {get;}
 
-    bool CanUse()
+    bool CanUseCooldownSkill()
     {
         return CooldownTimer.CurrentTime == 0;
     }

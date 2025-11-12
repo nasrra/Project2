@@ -35,13 +35,13 @@ namespace Entropek.UnityUtils
                 .Where(field => Attribute.IsDefined(field, typeof(Attributes.RuntimeField)))
                 .ToArray();
 
-            EditorApplication.delayCall += EditorUpdate;
+            EditorApplication.update += EditorUpdate;
 
         }
 
         protected virtual void OnDisable()
         {
-            EditorApplication.delayCall -= EditorUpdate;
+            EditorApplication.update -= EditorUpdate;
         }
 
         protected virtual void EditorUpdate()

@@ -1,9 +1,10 @@
 using System;
 using Entropek.Systems.Trails;
+using Entropek.Time;
 using Entropek.UnityUtils.AnimatorUtils;
 using UnityEngine;
 
-public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
+public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 {
 
 
@@ -12,11 +13,11 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
     /// 
 
 
-    private const string DodgeSound = "Dodge";
-    private const string AnimationName = "Rig_Roll";
-    private const string AnimationCompletedEventName = "ExitDodgeState";
-    private const float DodgeForce = 23.33f;
-    private const float DodgeDecaySpeed = DodgeForce * 2.66f;    
+    private const string DashSound = "Dodge";
+    private const string AnimationName = "GroundDash";
+    private const string AnimationCompletedEventName = "ExitDashState";
+    private const float DashForce = 33.33f;
+    private const float DashDecaySpeed = DashForce;    
 
 
     /// 
@@ -33,8 +34,6 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
     /// IAnimated Skill Field Overrides.
     /// 
 
-
-    IAnimatedSkill IAnimatedSkill;
 
     private event Action animationCompleted;
 
@@ -67,12 +66,9 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 
     public bool AnimationCancel => true;
 
-
     /// 
     /// IMovementSkill Field Overrides.
     /// 
-
-    IMovementSkill IMovementSkill;
 
 
     PlayerStats IMovementSkill.PlayerStats => Player.PlayerStats; 
@@ -84,17 +80,37 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
         set => moveSpeedModifier = value; 
     }
 
-    bool IAnimatedSkill.AnimationCancel => throw new NotImplementedException();
 
+    /// 
+    /// ITimedStateSkill Field Overrides.
+    /// 
+
+    [SerializeField] OneShotTimer stateTimer;
+    OneShotTimer ITimedStateSkill.StateTimer => stateTimer;
+
+
+    ///
+    /// Cached Interface References.
+    /// 
+
+
+    ITimedStateSkill ITimedStateSkill;
+    IMovementSkill IMovementSkill;
+    IAnimatedSkill IAnimatedSkill;
 
 
     /// 
     /// Base.
     /// 
 
+
     protected override void UseInternal()
     {
         inUse = true;
+
+        stateTimer.Begin();
+
+        Player.EnterIFrames();
 
         // move only in the direction of our dodge.
 
@@ -109,7 +125,7 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
         Player.CharacterControllerMovement.ClearGravityVelocity();
         Player.JumpMovement.StopJumping();
         
-        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, IMovementSkill.ApplyMoveSpeedModifier(DodgeForce), IMovementSkill.ApplyMoveSpeedModifier(DodgeDecaySpeed));
+        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, IMovementSkill.ApplyMoveSpeedModifier(DashForce), IMovementSkill.ApplyMoveSpeedModifier(DashDecaySpeed));
 
         // Make player invulnerable.
 
@@ -119,19 +135,21 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
-        Player.AudioPlayer.PlaySound(DodgeSound, Player.gameObject);
+        Player.AudioPlayer.PlaySound(DashSound, Player.gameObject);
         IAnimatedSkill.PlayAnimation();
     }
 
     public override bool CanUse()
     {
-        return IAnimatedSkill.CanUseAnimatedSkill();
+        return IAnimatedSkill.CanUseAnimatedSkill()
+        && ITimedStateSkill.CanUseTimedStateSkill();
     }
 
     protected override void GetInterfaceTypes()
     {
         IAnimatedSkill = this;
         IMovementSkill = this;
+        ITimedStateSkill = this;
     }
 
 
@@ -144,12 +162,14 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
     {
         IAnimatedSkill.LinkAnimatedSkillEvents();
         IMovementSkill.LinkMovementSkillEvents();
+        ITimedStateSkill.LinkTimedStateSkillEvents();
     }
 
     protected override void UnlinkEvents()
     {
         IAnimatedSkill.UnlinkAnimatedSkillEvents();
         IMovementSkill.UnlinkMovementSkillEvents();
+        ITimedStateSkill.UnlinkTimedStateSkillEvents();
     }
 
 
@@ -160,24 +180,30 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 
     void IAnimatedSkill.OnAnimationEventTriggered(string eventName)
     {
-        switch (eventName)
-        {            
-            case "EnterIFrames": Player.EnterIFrames(); break;
-            case "ExitIFrames" : Player.ExitIFrames(); break;
-        }
+        // Do nothing as this is a Timed Skill;
+        // The dash shouldnt have any animation events as it is a looped animation.
     }
 
     void IAnimatedSkill.OnAnimationCompleted()
     {
+        // Do nothing as this is a Timed Skill.
+        // The animation is looped so this will never be called.
+        
+    }
+    void IAnimatedSkill.Cancel()
+    {
+        throw new NotImplementedException();
+    }
+
+    void ITimedStateSkill.OnStateTimerTimeout()
+    {
         inUse = false;
+
+        Player.ExitIFrames();
+        Player.EnterRestState();
 
         // re-enable move input.
         Player.UnblockMoveInput(); 
         Player.UnblockJumpInput();
-    }
-
-    void IAnimatedSkill.Cancel()
-    {
-        throw new NotImplementedException();
     }
 }

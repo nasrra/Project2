@@ -11,8 +11,9 @@ public class AttackSkill : Skill, IAnimatedSkill
     /// 
 
 
+    public const string IdleAnimation = "HoldingIdle";
     public const string AttackFrameEventName = "SwordAttackFrame";
-    private const string AnimationName = "Rig_Sword_Attack";
+    private const string AnimationName = "SwordOutwardSlash";
     private const string AnimationCompletedEventName = "ExitSwordAttackState";
     private const string AttackFrameSound = "MeleeSwing";
     private const string AttackHitSound = "MeleeHit";
@@ -25,6 +26,7 @@ public class AttackSkill : Skill, IAnimatedSkill
     private const float AttackHitMotionBlurDuration = 0.33f;
     private const float AttackHitMotionBlurIntensity = 1f;
     private const int AttackShieldRestorationAmount = 5;
+    private const int AnimationLayer = 1;
     private const int LeftSlashVfxId = 0;
     private const int RightSlashVfxId = 1;
     private const int AttackHitVfxId = 2;
@@ -71,7 +73,7 @@ public class AttackSkill : Skill, IAnimatedSkill
         set => animationCompleted = value; 
     }
 
-    int IAnimatedSkill.AnimationLayer => 1;
+    int IAnimatedSkill.AnimationLayer => AnimationLayer;
 
     Skill IAnimatedSkill.Skill => this;
 
@@ -82,6 +84,7 @@ public class AttackSkill : Skill, IAnimatedSkill
         set => animationLayerWeightTransitionCoroutine = value; 
     }
 
+    public bool AnimationCancel => false;
 
     /// 
     /// Cached Interface Types.
@@ -95,17 +98,20 @@ public class AttackSkill : Skill, IAnimatedSkill
     /// Base.
     /// 
 
-
-    public override bool Use()
+    protected override void GetInterfaceTypes()
     {
-        // dont execute if an animated skill is already being used.
+        IAnimatedSkill = this;
+    }
 
-        if (Player.SkillCollection.AnimatedSkillIsInUse())
-        {
-            return false;
-        }
+    public override bool CanUse()
+    {
+        return IAnimatedSkill.CanUseAnimatedSkill();
+    }
 
+    protected override void UseInternal()
+    {
         // swap slashes for next time.
+        inUse = true;
 
         slashFlag = !slashFlag;
 
@@ -113,17 +119,9 @@ public class AttackSkill : Skill, IAnimatedSkill
 
         Player.FaceAttackDirection();
         
-        IAnimatedSkill.StarAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
+        IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
         IAnimatedSkill.PlayAnimation();
 
-        inUse = true;
-
-        return true;
-    }
-
-    protected override void GetInterfaceTypes()
-    {
-        IAnimatedSkill = this;
     }
 
     void IAnimatedSkill.OnAnimationEventTriggered(string eventName)
@@ -136,7 +134,20 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     void IAnimatedSkill.OnAnimationCompleted()
     {
-        IAnimatedSkill.StarAnimationLayerWeightTransition(IAnimatedSkill.MinAnimationLayerWeight, 100);
+        IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MinAnimationLayerWeight, 100);
+        inUse = false;
+    }
+
+    void IAnimatedSkill.Cancel()
+    {
+        IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MinAnimationLayerWeight, 100);
+        
+        // instantly swap back to idle on the attack animation layer;
+        // so that the animation doesnt follow through when cancelled.
+        
+        Player.Animator.Play(IdleAnimation, AnimationLayer, 0);
+        Player.Animator.Update(0);
+        
         inUse = false;
     }
 
