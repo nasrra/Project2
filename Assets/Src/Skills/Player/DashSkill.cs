@@ -4,7 +4,7 @@ using Entropek.Time;
 using Entropek.UnityUtils.AnimatorUtils;
 using UnityEngine;
 
-public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
+public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill, ICooldownSkill
 {
 
 
@@ -85,8 +85,19 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     /// ITimedStateSkill Field Overrides.
     /// 
 
+
     [SerializeField] OneShotTimer stateTimer;
     OneShotTimer ITimedStateSkill.StateTimer => stateTimer;
+
+
+
+    /// 
+    /// ICooldownSkill Field Overrides.
+    /// 
+
+
+    [SerializeField] OneShotTimer cooldownTimer;
+    OneShotTimer ICooldownSkill.CooldownTimer => cooldownTimer;
 
 
     ///
@@ -97,6 +108,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     ITimedStateSkill ITimedStateSkill;
     IMovementSkill IMovementSkill;
     IAnimatedSkill IAnimatedSkill;
+    ICooldownSkill ICooldownSkill;
 
 
     /// 
@@ -109,6 +121,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         inUse = true;
 
         stateTimer.Begin();
+        cooldownTimer.Begin();
 
         Player.EnterIFrames();
 
@@ -142,7 +155,8 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     public override bool CanUse()
     {
         return IAnimatedSkill.CanUseAnimatedSkill()
-        && ITimedStateSkill.CanUseTimedStateSkill();
+        && ITimedStateSkill.CanUseTimedStateSkill()
+        && ICooldownSkill.CanUseCooldownSkill();
     }
 
     protected override void GetInterfaceTypes()
@@ -150,6 +164,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         IAnimatedSkill = this;
         IMovementSkill = this;
         ITimedStateSkill = this;
+        ICooldownSkill = this;
     }
 
 
@@ -195,6 +210,12 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         throw new NotImplementedException();
     }
 
+
+    /// 
+    /// ITimedStateSkill function overrides.
+    /// 
+
+
     void ITimedStateSkill.OnStateTimerTimeout()
     {
         inUse = false;
@@ -205,5 +226,15 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         // re-enable move input.
         Player.UnblockMoveInput(); 
         Player.UnblockJumpInput();
+    }
+
+
+    /// 
+    /// ICooldownSkill function overrides.
+    /// 
+
+    public void OnCooldownTimeout()
+    {
+        // do nothing.
     }
 }

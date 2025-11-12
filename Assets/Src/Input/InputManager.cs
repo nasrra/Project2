@@ -147,6 +147,15 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         }
     }
 
+    public event Action RunToggle;
+    void InputActions.IGameplayActions.OnRunToggle(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            RunToggle?.Invoke();
+        }
+    }
+
 
     /// 
     /// Bootstrap Singleton.

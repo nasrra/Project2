@@ -7,11 +7,36 @@ namespace Entropek.Camera
     public class CameraController : MonoBehaviour
     {
 
+
+        /// 
+        /// Constants.
+        /// 
+
+
+        private const float FollowSpeed = 13.33f;
+        private const float MouseInputSmoothSpeed = 1000f;
+        private const float LockOnTargetSmoothSpeed = 16.7f;
+        private const float UpperPitchLimit = 70f;
+        private const float LowerPitchLimit = -45f;
+        private const float CameraRadius = 0.33f;
+        private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
+        private const float LookMovementDeltaTransitionSpeed = 1000;
+        public const float InitialFov = 80; 
+
+
+        /// 
+        /// Callbacks.
+        /// 
+
+
         private event Action Shake;
         public event Action Rotated;
 
-        Quaternion previousRotation;
-        Quaternion lookRotation;
+
+        /// 
+        /// Components.
+        /// 
+
 
         [Header("Componentes")]
         [SerializeField] private new UnityEngine.Camera camera;
@@ -23,7 +48,15 @@ namespace Entropek.Camera
         [SerializeField] private LockOnTargetDetector lockOnTargetDetector; // this must be a separate game object childed to this one.
 
 
+        /// 
+        /// Data.
+        /// 
+
+
         [Header("Data")]
+        private Quaternion previousRotation;
+        private Quaternion lookRotation;
+        private Coroutine lerpFovCoroutine;
         private Vector3 smoothedFollowPosition;
         private Vector3 desiredFollowDirection;
         private Vector3 targetShakerOffset;
@@ -34,16 +67,6 @@ namespace Entropek.Camera
         public Vector2 JoystickSensitivity;
         [SerializeField] private LayerMask obstructionLayer;
         private float shakeStrength;
-
-        private const float FollowSpeed = 13.33f;
-        private const float MouseInputSmoothSpeed = 1000f;
-        private const float LockOnTargetSmoothSpeed = 16.7f;
-        private const float UpperPitchLimit = 70f;
-        private const float LowerPitchLimit = -45f;
-        private const float CameraRadius = 0.33f;
-        private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
-        private const float LookMovementDeltaTransitionSpeed = 1000;
-
         public bool isLockedOn { get; private set; }
 
 
@@ -54,6 +77,8 @@ namespace Entropek.Camera
 
         private void Awake()
         {
+            camera.fieldOfView = InitialFov;
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -100,7 +125,6 @@ namespace Entropek.Camera
 
             CheckIfRotated();
         }
-
 
         private void FixedUpdate()
         {
@@ -475,6 +499,33 @@ namespace Entropek.Camera
             {
                 inputSensitivity = JoystickSensitivity;
             }
+        }
+
+        
+        ///
+        /// Fov Handling. 
+        /// 
+
+
+        /// <summary>
+        /// Starts lerping the fov of this camera to the specified value from the current fov value.
+        /// </summary>
+        /// <param name="fov">The specified value to lerp towards.</param>
+        /// <param name="duration">The amount of time (scaled) to complete the lerp.</param>
+        /// <param name="completedCallback">An optional callback for when to trigger when the lerp completes.</param>
+
+        public void StartLerpingFov(float fov, float duration, Action completedCallback = null)
+        {
+            float initialValue = camera.fieldOfView;
+            UnityUtils.Coroutine.Replace(
+                this,
+                ref lerpFovCoroutine,
+                Tweening.Tween.IEnumerator(
+                    duration,
+                    step => camera.fieldOfView = Mathf.Lerp(initialValue, fov, step),
+                    completedCallback
+                )
+            );
         }
 
 

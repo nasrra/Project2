@@ -4,7 +4,7 @@ public enum PlayerState : byte
 {
     None,
     Idle,
-    Run,
+    Move,
     Jump,
     Fall,
     Stagger

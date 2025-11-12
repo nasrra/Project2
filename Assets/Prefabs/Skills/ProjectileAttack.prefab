@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Cooldown
-  initialTime: 3
+  initialTime: 12
   BeginOnEnable: 0
 --- !u!1 &4262796481690770947
 GameObject:

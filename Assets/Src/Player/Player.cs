@@ -17,6 +17,35 @@ public class Player : MonoBehaviour {
 
 
     /// 
+    /// Data constants.
+    /// 
+
+    private const string IdleAnimation = "HoldingIdle";
+    private const string WalkAnimation = "RunWithSword";
+    private const string RunAnimation = "Sprint";
+    private const string JumpStartAnimation = "Jump";
+    private const string FallAnimation = "Fall";
+    private const string GroundedAnimation = "Rig_Jump_Land";
+    private const string StaggerAnimation = "Rig_Stagger";
+    private const float FaceMoveDirectionSpeed = 16.7f;
+    private const float FaceAttackDirectionSpeed = 16.7f;    
+    private const float DamagedCameraShakeStrength = 7.77f;
+    private const float DamagedCameraShakeTime = 0.33f;
+    private const float DamagedVignettePulseInIntensity = 0.25f;
+    private const float DamagedVignettePulseOutIntensity = 0f;
+    private const float DamagedVignettePulseInDuration = 0.167f;
+    private const float DamagedVignettePulseOutDuration = 1f;
+    private const float DamagedLensDistortionIntensity = 0.45f;
+    private const float DamagedLensDistortionDuration = 0.16f;
+    private const float DamagedMotionBlurDuration = 0.66f;
+    private const float DamagedMotionBlurIntensity = 1f;
+    private const int Skill1Id = 0;
+    private const int Skill2Id = 1;
+    private const int Skill3Id = 2;
+    private const DamageType StaggerDamageType = DamageType.Heavy;
+
+
+    /// 
     /// Callbacks.
     /// 
 
@@ -101,46 +130,12 @@ public class Player : MonoBehaviour {
 
     [RuntimeField] private PlayerState playerState = PlayerState.Idle;
     public PlayerState PlayerState => playerState;
+    [RuntimeField] private PlayerMoveState playerMoveState = PlayerMoveState.Walk;
+    public PlayerMoveState PlayerMoveState => playerMoveState;
     [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
     public CoyoteState CoyoteState => coyoteState;
+    private string moveAnimation {get; set;} = WalkAnimation; // always start in the walk state.
 
-
-    /// 
-    /// Animations.
-    /// 
-
-
-    private const string IdleAnimation = "HoldingIdle";
-    private const string WalkAnimation = "RunWithSword";
-    private const string JumpStartAnimation = "Jump";
-    private const string FallAnimation = "Fall";
-    private const string GroundedAnimation = "Rig_Jump_Land";
-    private const string StaggerAnimation = "Rig_Stagger";
-
-
-    /// 
-    /// Data constants.
-    /// 
-    
-    private const float FaceMoveDirectionSpeed = 16.7f;
-    private const float FaceAttackDirectionSpeed = 16.7f;    
-    
-    private const float DamagedCameraShakeStrength = 7.77f;
-    private const float DamagedCameraShakeTime = 0.33f;
-    private const float DamagedVignettePulseInIntensity = 0.25f;
-    private const float DamagedVignettePulseOutIntensity = 0f;
-    private const float DamagedVignettePulseInDuration = 0.167f;
-    private const float DamagedVignettePulseOutDuration = 1f;
-    private const float DamagedLensDistortionIntensity = 0.45f;
-    private const float DamagedLensDistortionDuration = 0.16f;
-    private const float DamagedMotionBlurDuration = 0.66f;
-    private const float DamagedMotionBlurIntensity = 1f;
-
-    private const int Skill1Id = 0;
-    private const int Skill2Id = 1;
-    private const int Skill3Id = 2;
-
-    private const DamageType StaggerDamageType = DamageType.Heavy;
 
 
     /// 
@@ -156,10 +151,6 @@ public class Player : MonoBehaviour {
     private void Start()
     {   
         SkillHudManager.Singleton.LinkToSkills(skillCollection.Skills);
-    }
-
-    private void OnEnable()
-    {
         HealthBarHud.Singleton.HealthBar.Activate(health);
     }
 
@@ -254,7 +245,7 @@ public class Player : MonoBehaviour {
             // only reset out dodge when grounded.
 
             if (InputManager.Singleton.moveInputSqrMagnitude > 0) {
-                Run();
+                Move(InputManager.Singleton.moveInput);
             }
             else {
                 Idle();
@@ -282,16 +273,27 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void Run() {
-        Run(InputManager.Singleton.moveInput);
+    public void Move(Vector2 direction) {
+        
+        playerState = PlayerState.Move;
+
+        switch (playerMoveState)
+        {
+            case PlayerMoveState.Walk:
+                WalkMovement(direction);
+            break;
+            case PlayerMoveState.Run:
+                RunMovement(direction);
+            break;
+            default:
+                throw new InvalidOperationException($"{playerMoveState} has not been implemented.");
+        }
+
     }
 
-    public void Run(Vector2 direction) {
-        
-        playerState = PlayerState.Run;
-        
+    private void WalkMovement(Vector2 direction)
+    {
         characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
-
         if (skillCollection.AnimatedSkillIsInUse(out _) == false)
         {
             FaceMoveDirection();
@@ -299,6 +301,58 @@ public class Player : MonoBehaviour {
         
         if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
             animator.Play(WalkAnimation);
+        }        
+    }
+
+    private void RunMovement(Vector2 direction)
+    {
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
+        if (skillCollection.AnimatedSkillIsInUse(out _) == false)
+        {
+            FaceMoveDirection();
+        }
+        
+        if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
+            animator.Play(RunAnimation);
+        }        
+    }
+
+    private void ToggleRun()
+    {
+        switch (playerMoveState)
+        {
+            case PlayerMoveState.Walk:
+                EnterRunState();
+            break;
+            case PlayerMoveState.Run:
+                EnterWalkState();
+            break;
+        }
+    } 
+
+    private void EnterRunState()
+    {   
+        playerMoveState = PlayerMoveState.Run;
+        moveAnimation = RunAnimation;
+        characterControllerMovement.SetMaxSpeed(playerStats.RunMaxSpeed.ScaledValue);
+        cameraController.StartLerpingFov(90, 0.33f);
+
+        if(playerState == PlayerState.Move)
+        {
+            animator.Play(RunAnimation);            
+        }
+    }
+
+    private void EnterWalkState()
+    {
+        playerMoveState = PlayerMoveState.Walk;
+        moveAnimation = WalkAnimation;
+        characterControllerMovement.SetMaxSpeed(playerStats.WalkMaxSpeed.ScaledValue);        
+        cameraController.StartLerpingFov(CameraController.InitialFov, 0.167f);
+
+        if(playerState == PlayerState.Move)
+        {
+            animator.Play(WalkAnimation);     
         }
     }
 
@@ -534,7 +588,7 @@ public class Player : MonoBehaviour {
         {
             if (InputManager.Singleton.moveInputSqrMagnitude > 0)
             {
-                Run();
+                Move(InputManager.Singleton.moveInput);
             }
             else
             {
@@ -610,6 +664,7 @@ public class Player : MonoBehaviour {
         input.NextInteractable += OnNextInteractable;
         input.PreviousInteractable += OnPreviousInteractable;
         input.Skill3 += OnSkill3Input;
+        input.RunToggle += OnRunToggleInput;
     }
 
     private void UnlinkInputEvents() {
@@ -625,6 +680,7 @@ public class Player : MonoBehaviour {
         input.NextInteractable -= OnNextInteractable;
         input.PreviousInteractable -= OnPreviousInteractable;
         input.Skill3 -= OnSkill3Input;
+        input.RunToggle -= OnRunToggleInput;
     }
 
     private void OnMoveInput(Vector2 moveInput) {
@@ -635,7 +691,7 @@ public class Player : MonoBehaviour {
         }
 
         if (playerState != PlayerState.Idle
-        && playerState != PlayerState.Run
+        && playerState != PlayerState.Move
         && playerState != PlayerState.Fall) {
             return;
         }
@@ -645,9 +701,10 @@ public class Player : MonoBehaviour {
 
         if (moveInput.sqrMagnitude == 0) {
             Idle();
+            EnterWalkState();
         }
         else {
-            Run();
+            Move(InputManager.Singleton.moveInput);
         }
     }
 
@@ -748,6 +805,11 @@ public class Player : MonoBehaviour {
     private void OnNextInteractable()
     {
         interactor.NextInteractable();
+    }
+
+    private void OnRunToggleInput()
+    {
+        ToggleRun();
     }
 
 

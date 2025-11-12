@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 7474779682504488758}
   - component: {fileID: 5570364874686282678}
   - component: {fileID: 1259708055243596243}
+  - component: {fileID: 5505143143555412312}
   m_Layer: 3
   m_Name: DashSkill
   m_TagString: Untagged
@@ -249,6 +250,7 @@ MonoBehaviour:
   arcGhost: {fileID: 8127156848367419157}
   dodgeTrail: {fileID: 9079413324760603490}
   stateTimer: {fileID: 1259708055243596243}
+  cooldownTimer: {fileID: 5505143143555412312}
 --- !u!114 &1259708055243596243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,7 +264,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: State Time
-  initialTime: 1
+  initialTime: 0.77
+  BeginOnEnable: 0
+--- !u!114 &5505143143555412312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6018915548948545094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Cooldown Time
+  initialTime: 7
   BeginOnEnable: 0
 --- !u!1 &8312376052936267948
 GameObject:

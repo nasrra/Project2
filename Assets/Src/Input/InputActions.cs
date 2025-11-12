@@ -199,6 +199,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RunToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b2bc904-274f-432c-897e-453b18666d45"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -586,6 +595,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Skill3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1785770b-c15b-4aba-84ed-4f507038c6d3"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RunToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -651,6 +671,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_NextInteractable = m_Gameplay.FindAction("NextInteractable", throwIfNotFound: true);
         m_Gameplay_PreviousInteractable = m_Gameplay.FindAction("PreviousInteractable", throwIfNotFound: true);
         m_Gameplay_Skill3 = m_Gameplay.FindAction("Skill3", throwIfNotFound: true);
+        m_Gameplay_RunToggle = m_Gameplay.FindAction("RunToggle", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -743,6 +764,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_NextInteractable;
     private readonly InputAction m_Gameplay_PreviousInteractable;
     private readonly InputAction m_Gameplay_Skill3;
+    private readonly InputAction m_Gameplay_RunToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -802,6 +824,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Skill3".
         /// </summary>
         public InputAction @Skill3 => m_Wrapper.m_Gameplay_Skill3;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/RunToggle".
+        /// </summary>
+        public InputAction @RunToggle => m_Wrapper.m_Gameplay_RunToggle;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -864,6 +890,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Skill3.started += instance.OnSkill3;
             @Skill3.performed += instance.OnSkill3;
             @Skill3.canceled += instance.OnSkill3;
+            @RunToggle.started += instance.OnRunToggle;
+            @RunToggle.performed += instance.OnRunToggle;
+            @RunToggle.canceled += instance.OnRunToggle;
         }
 
         /// <summary>
@@ -911,6 +940,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Skill3.started -= instance.OnSkill3;
             @Skill3.performed -= instance.OnSkill3;
             @Skill3.canceled -= instance.OnSkill3;
+            @RunToggle.started -= instance.OnRunToggle;
+            @RunToggle.performed -= instance.OnRunToggle;
+            @RunToggle.canceled -= instance.OnRunToggle;
         }
 
         /// <summary>
@@ -1087,5 +1119,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkill3(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RunToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRunToggle(InputAction.CallbackContext context);
     }
 }

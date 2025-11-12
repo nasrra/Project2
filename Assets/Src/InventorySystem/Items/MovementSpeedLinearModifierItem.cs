@@ -8,19 +8,21 @@ public class MovementSpeedLinearModifierItem : Item
 
     public override void ApplyModifier(PlayerStats playerStats)
     {
-        playerStats.MaxSpeed.AddLinearModifier(modifierValue);
+        playerStats.RunMaxSpeed.AddLinearModifier(modifierValue);
+        playerStats.WalkMaxSpeed.AddLinearModifier(modifierValue);
         playerStats.Acceleration.AddLinearModifier(modifierValue);
         playerStats.Deceleration.AddLinearModifier(modifierValue);
-        playerStats.WalkAnimationSpeed.AddLinearModifier(modifierValue);
+        playerStats.MovementAnimationSpeed.AddLinearModifier(modifierValue);
         playerStats.SkillMoveSpeedModifier.AddLinearModifier(modifierValue);
     }
 
     public override void RemoveModifier(PlayerStats playerStats)
     {
-        playerStats.MaxSpeed.RemoveLinearModifier(modifierValue);
+        playerStats.RunMaxSpeed.RemoveLinearModifier(modifierValue);
+        playerStats.WalkMaxSpeed.RemoveLinearModifier(modifierValue);
         playerStats.Acceleration.RemoveLinearModifier(modifierValue);
         playerStats.Deceleration.RemoveLinearModifier(modifierValue);
-        playerStats.WalkAnimationSpeed.RemoveLinearModifier(modifierValue);
+        playerStats.MovementAnimationSpeed.RemoveLinearModifier(modifierValue);
         playerStats.SkillMoveSpeedModifier.RemoveLinearModifier(modifierValue);
     }
 }

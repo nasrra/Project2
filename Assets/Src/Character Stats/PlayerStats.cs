@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    private const string WalkSpeedAnimationParameter = "WalkSpeed";
+    private const string MovementSpeedAnimationParameter = "MovementSpeed";
     private const string AttackSpeedAnimationParameter = "AttackSpeed";
 
 
@@ -21,8 +21,11 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] CharacterControllerMovement characterControllerMovement;
     [SerializeField] Animator animator;
 
-    [SerializeField] CharacterStatFloat maxSpeed = new();
-    public CharacterStatFloat MaxSpeed => maxSpeed;
+    [SerializeField] CharacterStatFloat runMaxSpeed = new();
+    public CharacterStatFloat RunMaxSpeed => runMaxSpeed; 
+
+    [SerializeField] CharacterStatFloat walkMaxSpeed = new();
+    public CharacterStatFloat WalkMaxSpeed => walkMaxSpeed;
 
     [SerializeField] CharacterStatFloat acceleration = new();
     public CharacterStatFloat Acceleration => acceleration;
@@ -52,12 +55,11 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Animator Stats.")]
 
-    [SerializeField] CharacterStatFloat walkAnimationSpeed = new();
-    public CharacterStatFloat WalkAnimationSpeed => walkAnimationSpeed;
+    [SerializeField] CharacterStatFloat movementAnimationSpeed = new();
+    public CharacterStatFloat MovementAnimationSpeed => movementAnimationSpeed;
 
     [SerializeField] CharacterStatFloat attackSpeed = new();
     public CharacterStatFloat AttackSpeed => attackSpeed;
-
 
     private void Awake()
     {
@@ -79,14 +81,14 @@ public class PlayerStats : MonoBehaviour
 
     private void SetCharacterControllerMovementBaseValues()
     {
-        characterControllerMovement.SetMaxSpeed(maxSpeed.BaseValue);
+        characterControllerMovement.SetMaxSpeed(walkMaxSpeed.BaseValue); // <-- player is always starts in the walk state.
         characterControllerMovement.SetAcceleration(acceleration.BaseValue);
         characterControllerMovement.SetDecleration(deceleration.BaseValue);
     }
 
     private void SetAnimatorBaseValues()
     {
-        animator.SetFloat(WalkSpeedAnimationParameter, walkAnimationSpeed.BaseValue);
+        animator.SetFloat(MovementSpeedAnimationParameter, MovementAnimationSpeed.BaseValue);
         animator.SetFloat(AttackSpeedAnimationParameter, attackSpeed.BaseValue);
     }
 
@@ -122,21 +124,14 @@ public class PlayerStats : MonoBehaviour
 
     private void LinkCharacterControllerMovementEvents()
     {
-        maxSpeed.ScaledValueCalculated += OnMaxSpeedScaledValueCalculated;
         acceleration.ScaledValueCalculated += OnAccelerationScaledValueCalculated;
         deceleration.ScaledValueCalculated += OnDecelerationScaledValueCalculated;
     }
 
     private void UnlinkCharacterControllerMovementEvents()
     {
-        maxSpeed.ScaledValueCalculated -= OnMaxSpeedScaledValueCalculated;
         acceleration.ScaledValueCalculated -= OnAccelerationScaledValueCalculated;
         deceleration.ScaledValueCalculated -= OnDecelerationScaledValueCalculated;        
-    }
-
-    private void OnMaxSpeedScaledValueCalculated(float value)
-    {
-        characterControllerMovement.SetMaxSpeed(value);
     }
 
     private void OnAccelerationScaledValueCalculated(float value)
@@ -158,19 +153,19 @@ public class PlayerStats : MonoBehaviour
 
     private void LinkAnimatorEvents()
     {
-        walkAnimationSpeed.ScaledValueCalculated += OnWalkAnimationSpeedScaledValueCalculated;
+        movementAnimationSpeed.ScaledValueCalculated += OnWalkAnimationSpeedScaledValueCalculated;
         attackSpeed.ScaledValueCalculated += OnAttackSpeedScaledValueCalculated;
     }
 
     private void UnlinkAnimatorEvents()
     {
-        walkAnimationSpeed.ScaledValueCalculated -= OnWalkAnimationSpeedScaledValueCalculated;        
+        movementAnimationSpeed.ScaledValueCalculated -= OnWalkAnimationSpeedScaledValueCalculated;        
         attackSpeed.ScaledValueCalculated -= OnAttackSpeedScaledValueCalculated;
     }
 
     private void OnWalkAnimationSpeedScaledValueCalculated(float value)
     {
-        animator.SetFloat(WalkSpeedAnimationParameter, value);
+        animator.SetFloat(MovementSpeedAnimationParameter, value);
     }
 
     private void OnAttackSpeedScaledValueCalculated(float value)

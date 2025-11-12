@@ -113,6 +113,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RunToggle",
+                    "type": "Button",
+                    "id": "7b2bc904-274f-432c-897e-453b18666d45",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -498,6 +507,17 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "Skill3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1785770b-c15b-4aba-84ed-4f507038c6d3",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RunToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
