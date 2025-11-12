@@ -36,7 +36,7 @@ namespace Entropek.Camera
         private float shakeStrength;
 
         private const float FollowSpeed = 13.33f;
-        private const float MouseInputSmoothSpeed = 100f;
+        private const float MouseInputSmoothSpeed = 1000f;
         private const float LockOnTargetSmoothSpeed = 16.7f;
         private const float UpperPitchLimit = 70f;
         private const float LowerPitchLimit = -45f;
@@ -255,7 +255,7 @@ namespace Entropek.Camera
             }
             else
             {
-                deltaPosition = Vector3.MoveTowards(transform.position, desiredWorldPosition, MouseInputSmoothSpeed * UnityEngine.Time.deltaTime);
+                deltaPosition = Vector3.Slerp(transform.position, desiredWorldPosition, MouseInputSmoothSpeed * UnityEngine.Time.deltaTime);
             }
 
             // if we are currently not shaking.

@@ -1,5 +1,6 @@
 using Entropek.Combat;
 using Entropek.EntityStats;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class HealthBar : MonoBehaviour{
     
     [Header(nameof(HealthBar)+" Components")]
     [SerializeField] private Slider slider;
+    [SerializeField] private TextMeshProUGUI text;
     private Health health;
 
 
@@ -80,25 +82,43 @@ public class HealthBar : MonoBehaviour{
         health.Damaged += OnDamaged;
         health.Healed += OnHealed;
         health.Death += OnDeath;
+        health.MaxValueSet += OnMaxValueSet;
     }
 
     private void UnlinkHealth(){
         health.Damaged -= OnDamaged;
         health.Healed -= OnHealed;
         health.Death -= OnDeath;
+        health.MaxValueSet -= OnMaxValueSet;
     }
 
     private void OnHealed(int amount){
         slider.value = health.Value;
+        UpdateHealthText();
     }
 
     private void OnDamaged(DamageContext damageContext){
         slider.value = health.Value;
+        UpdateHealthText();
     }
 
     private void OnDeath()
     {
+        UpdateHealthText();
         Deactivate();
+    }
+
+    private void OnMaxValueSet(int value)
+    {
+        slider.maxValue = health.MaxValue;
+        slider.value = health.Value;
+
+        UpdateHealthText();
+    }
+
+    private void UpdateHealthText()
+    {
+        text.text = $"{health.Value} / {health.MaxValue}";
     }
 }
 
