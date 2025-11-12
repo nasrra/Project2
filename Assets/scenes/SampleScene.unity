@@ -10842,7 +10842,7 @@ MonoBehaviour:
   lockOnTargetDetector: {fileID: 2118517621}
   followOffset: {x: 0, y: 0, z: -4.44}
   MouseSensitivity: {x: 33, y: 33}
-  JoystickSensitivity: {x: 154, y: 130}
+  JoystickSensitivity: {x: 130, y: 100}
   obstructionLayer:
     serializedVersion: 2
     m_Bits: 64

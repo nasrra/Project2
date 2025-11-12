@@ -225,7 +225,7 @@ public class Player : MonoBehaviour {
 
 
     ///
-    /// Player State Machine.
+    /// Default Player States.
     /// 
 
 
@@ -273,9 +273,57 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void EnterIFrames() {
+        health.Vulnerable = false;
+    }
+
+    public void ExitIFrames()
+    {
+        health.Vulnerable = true;
+    }
+
+    public void EnterStagger()
+    {
+        playerState = PlayerState.Stagger;
+        characterControllerMovement.moveDirection = Vector3.zero;
+        animator.Play(StaggerAnimation);
+    }
+
+    public void ExitStagger()
+    {
+        EnterRestState();
+    }
+
+
+
+    /// 
+    /// Horizontal Movement Player States.
+    /// 
+
+
     public void Move(Vector2 direction) {
         
         playerState = PlayerState.Move;
+
+        // verify that we can run in a given direction if run is toggled.
+
+        if(playerMoveState == PlayerMoveState.Run)
+        {            
+            if (IsMoveDirectionRunnable(direction))
+            {
+                if(playerMoveState!=PlayerMoveState.Run)
+                {
+                    EnterRunState();
+                }
+            }
+            else
+            {
+                if (playerMoveState != PlayerMoveState.Walk)
+                {
+                    EnterWalkState();
+                }
+            }
+        }
 
         switch (playerMoveState)
         {
@@ -291,9 +339,9 @@ public class Player : MonoBehaviour {
 
     }
 
-    private void WalkMovement(Vector2 direction)
+    private void WalkMovement(Vector2 moveDirection)
     {
-        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(moveDirection);
         if (skillCollection.AnimatedSkillIsInUse(out _) == false)
         {
             FaceMoveDirection();
@@ -304,9 +352,9 @@ public class Player : MonoBehaviour {
         }        
     }
 
-    private void RunMovement(Vector2 direction)
+    private void RunMovement(Vector2 moveDirection)
     {
-        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(moveDirection);
         if (skillCollection.AnimatedSkillIsInUse(out _) == false)
         {
             FaceMoveDirection();
@@ -356,6 +404,25 @@ public class Player : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Checks whether or not a move direction vector can be moved in the Run PlayerMovementState.
+    /// </summary>
+    /// <returns>true, if the move direction can be ran in; otherwise false</returns>
+
+    private bool IsMoveDirectionRunnable(Vector2 moveDirection)
+    {
+        return
+        moveDirection.x <= 0.85
+        && moveDirection.x >= -0.85
+        && moveDirection.y >= 0;
+    }
+
+
+    /// 
+    /// Vertical Movement Player States.
+    /// 
+
+
     public void JumpStart() {
         playerState = PlayerState.Jump;
         jumpMovement.StartJumping();
@@ -367,6 +434,17 @@ public class Player : MonoBehaviour {
         jumpMovement.StopJumping();
         EnterRestState();
     }
+
+    public void Fall() {
+        playerState = PlayerState.Fall;
+        animator.Play(FallAnimation);
+    }
+
+
+    /// 
+    /// Skill Functions.
+    /// 
+
 
     public void Skill1()
     {
@@ -381,32 +459,6 @@ public class Player : MonoBehaviour {
     public void Skill3()
     {
         skillCollection.UseSkill(Skill3Id); 
-    }
-
-    public void Fall() {
-        playerState = PlayerState.Fall;
-        animator.Play(FallAnimation);
-    }
-
-    public void EnterIFrames() {
-        health.Vulnerable = false;
-    }
-
-    public void ExitIFrames()
-    {
-        health.Vulnerable = true;
-    }
-
-    public void EnterStagger()
-    {
-        playerState = PlayerState.Stagger;
-        characterControllerMovement.moveDirection = Vector3.zero;
-        animator.Play(StaggerAnimation);
-    }
-
-    public void ExitStagger()
-    {
-        EnterRestState();
     }
 
 
@@ -526,6 +578,7 @@ public class Player : MonoBehaviour {
     /// Health Event Linkage.
     /// 
 
+
     private void LinkHealthEvents()
     {
         health.Damaged += OnDamaged;
@@ -564,9 +617,11 @@ public class Player : MonoBehaviour {
         }
     }
 
+
     ///
     /// Ground check event linkage.
     /// 
+
 
     private void LinkGroundCheckerEvents()
     {
@@ -809,7 +864,10 @@ public class Player : MonoBehaviour {
 
     private void OnRunToggleInput()
     {
-        ToggleRun();
+        if (IsMoveDirectionRunnable(InputManager.Singleton.moveInput))
+        {
+            ToggleRun();
+        }
     }
 
 
