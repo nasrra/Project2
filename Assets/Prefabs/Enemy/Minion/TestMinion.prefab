@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6863469407753065145}
   - component: {fileID: 4689728430435315810}
   - component: {fileID: 2680361135054517317}
-  - component: {fileID: 2830788285503563993}
   - component: {fileID: 4519142253100921248}
   - component: {fileID: 7923544276146763982}
   - component: {fileID: 5963300093464873694}
@@ -20,7 +19,7 @@ GameObject:
   - component: {fileID: 3466198945852806324}
   - component: {fileID: 6149208914373165517}
   - component: {fileID: 2149740342391724041}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TestMinion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +62,6 @@ MonoBehaviour:
   combatAgent: {fileID: 3479598227594797709}
   animationEventReciever: {fileID: 1003746823429030799}
   movement: {fileID: 2680361135054517317}
-  forceApplier: {fileID: 2830788285503563993}
   audioPlayer: {fileID: 4519142253100921248}
   stateQeueue: {fileID: 7923544276146763982}
   groundChecker: {fileID: 5584480075394897596}
@@ -103,7 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 3466198945852806324}
   groundChecker: {fileID: 5584480075394897596}
-  forceApplier: {fileID: 2830788285503563993}
   moveDirection: {x: 0, y: 0, z: 0}
   acceleration: 50
   deceleration: 75
@@ -113,18 +110,6 @@ MonoBehaviour:
   SnapToGround: 1
   navAgent: {fileID: 2315315231443740072}
   cornerSpeed: 0.0167
---- !u!114 &2830788285503563993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777301287381677599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c386924acd1da4086a868a23031d6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4519142253100921248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +182,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 15287
+    m_Bits: 16191
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
@@ -355,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2799432291291344214}
   - component: {fileID: 2315315231443740072}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: NavAgent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
