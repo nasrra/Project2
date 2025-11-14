@@ -127,14 +127,14 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    [RuntimeField] private PlayerState playerState = PlayerState.Idle;
-    public PlayerState PlayerState => playerState;
-    [RuntimeField] private PlayerMoveState playerMoveState = PlayerMoveState.Walk;
-    public PlayerMoveState PlayerMoveState => playerMoveState;
+    private CharacterHorizontalMoveState previousMoveCallHorizontalMoveState = CharacterHorizontalMoveState.Walk;
+    [RuntimeField] private CharacterHorizontalMoveState horizontalMoveState = CharacterHorizontalMoveState.Walk;
+    [RuntimeField] private CharacterVerticalMoveState verticalMoveState = CharacterVerticalMoveState.None; 
     [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
     public CoyoteState CoyoteState => coyoteState;
     private string moveAnimation {get; set;} = WalkAnimation; // always start in the walk state.
     [RuntimeField] private int jumpCount;
+    [RuntimeField] private bool staggered = false;
 
 
     /// 
@@ -237,8 +237,6 @@ public class Player : MonoBehaviour {
         // clear player state to guarantee that one of the state switches in this function
         // will be set when called.
 
-        playerState = PlayerState.None;
-
         if (groundCheck.IsGrounded == true) {
 
             // only reset out dodge when grounded.
@@ -260,15 +258,11 @@ public class Player : MonoBehaviour {
     }
 
     public void Idle()
-    {
-        Debug.Log(PlayerState.Idle);
-
-        playerState = PlayerState.Idle;
-        
+    {        
         FaceChosenDirection = null; // dont look face any direction when idle.
         characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(Vector2.zero);
                 
-        if (playerState != PlayerState.Jump && playerState != PlayerState.Fall)
+        if (verticalMoveState == CharacterVerticalMoveState.None)
         {
             animator.Play(IdleAnimation);
         }
@@ -285,13 +279,14 @@ public class Player : MonoBehaviour {
 
     public void EnterStagger()
     {
-        playerState = PlayerState.Stagger;
+        staggered = true;
         characterControllerMovement.moveDirection = Vector3.zero;
         animator.Play(StaggerAnimation);
     }
 
     public void ExitStagger()
     {
+        staggered = false;
         EnterRestState();
     }
 
@@ -303,106 +298,62 @@ public class Player : MonoBehaviour {
 
 
     public void Move(Vector2 direction) {
-        
-        playerState = PlayerState.Move;
 
         // verify that we can run in a given direction if run is toggled.
 
-        if(playerMoveState == PlayerMoveState.Run)
-        {            
-            if (IsMoveDirectionRunnable(direction))
-            {
-                if(playerMoveState!=PlayerMoveState.Run)
-                {
-                    EnterRunState();
-                }
-            }
-            else
-            {
-                if (playerMoveState != PlayerMoveState.Walk)
-                {
-                    EnterWalkState();
-                }
-            }
-        }
-
-        switch (playerMoveState)
+        if (horizontalMoveState == CharacterHorizontalMoveState.Run && IsMoveDirectionRunnable(direction) == false)
         {
-            case PlayerMoveState.Walk:
-                WalkMovement(direction);
-            break;
-            case PlayerMoveState.Run:
-                RunMovement(direction);
-            break;
-            default:
-                throw new InvalidOperationException($"{playerMoveState} has not been implemented.");
-        }
+            EnterWalkState();
+        }   
 
-    }
-
-    private void WalkMovement(Vector2 moveDirection)
-    {
-        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(moveDirection);
+        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(direction);
         if (skillCollection.AnimatedSkillIsInUse(out _) == false)
         {
             FaceMoveDirection();
         }
-        
-        if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
-            animator.Play(WalkAnimation);
-        }        
-    }
 
-    private void RunMovement(Vector2 moveDirection)
-    {
-        characterControllerMovement.moveDirection = GetMoveDirectionRelativeToCamera(moveDirection);
-        if (skillCollection.AnimatedSkillIsInUse(out _) == false)
+        if(verticalMoveState == CharacterVerticalMoveState.None)
         {
-            FaceMoveDirection();
+            animator.Play(moveAnimation);            
         }
-        
-        if (playerState != PlayerState.Fall && playerState != PlayerState.Jump) {
-            animator.Play(RunAnimation);
-        }        
+
     }
 
     private void ToggleRun()
     {
-        switch (playerMoveState)
+        switch (horizontalMoveState)
         {
-            case PlayerMoveState.Walk:
+            case CharacterHorizontalMoveState.Walk:
                 EnterRunState();
-            break;
-            case PlayerMoveState.Run:
+                break;
+            case CharacterHorizontalMoveState.Run:
                 EnterWalkState();
-            break;
+                break;
+            default:
+                break;
         }
+
+        if(characterControllerMovement.moveDirection != Vector3.zero && verticalMoveState == CharacterVerticalMoveState.None)
+        {
+            animator.Play(moveAnimation);
+        }
+
     } 
 
     public void EnterRunState()
     {   
-        playerMoveState = PlayerMoveState.Run;
+        horizontalMoveState = CharacterHorizontalMoveState.Run;
         moveAnimation = RunAnimation;
         characterControllerMovement.SetMaxSpeed(playerStats.RunMaxSpeed.ScaledValue);
         cameraController.StartLerpingFov(90, 0.33f);
-
-        if(playerState == PlayerState.Move)
-        {
-            animator.Play(RunAnimation);            
-        }
     }
 
     public void EnterWalkState()
     {
-        playerMoveState = PlayerMoveState.Walk;
+        horizontalMoveState = CharacterHorizontalMoveState.Walk;
         moveAnimation = WalkAnimation;
         characterControllerMovement.SetMaxSpeed(playerStats.WalkMaxSpeed.ScaledValue);        
         cameraController.StartLerpingFov(CameraController.InitialFov, 0.167f);
-
-        if(playerState == PlayerState.Move)
-        {
-            animator.Play(WalkAnimation);     
-        }
     }
 
     /// <summary>
@@ -425,20 +376,20 @@ public class Player : MonoBehaviour {
 
 
     public void JumpStart() {
-        playerState = PlayerState.Jump;
+        verticalMoveState = CharacterVerticalMoveState.Jump;
         jumpMovement.StartJumping();
         animator.Play(JumpStartAnimation);
         characterControllerMovement.ClearGravityVelocity();
     }
 
     public void JumpStop() {
-        playerState = PlayerState.Jump;
+        verticalMoveState = CharacterVerticalMoveState.Jump;
         jumpMovement.StopJumping();
         EnterRestState();
     }
 
     public void Fall() {
-        playerState = PlayerState.Fall;
+        verticalMoveState = CharacterVerticalMoveState.Fall;
         animator.Play(FallAnimation);
     }
 
@@ -653,6 +604,7 @@ public class Player : MonoBehaviour {
 
     private void OnGrounded()
     {
+        verticalMoveState = CharacterVerticalMoveState.None;
         // only enter the rest state if we are currently not performing any skills.
 
         if (skillCollection.AnimatedSkillIsInUse(out _)==false) 
@@ -666,6 +618,8 @@ public class Player : MonoBehaviour {
                 Idle();
             }
         }
+
+
         jumpCount = 0;
     }
 
@@ -709,7 +663,7 @@ public class Player : MonoBehaviour {
 
     private void OnCameraRotated() {
 
-        if (playerState == PlayerState.Stagger
+        if (staggered == true
         || blockMoveInput == true) {
             return;
         }
@@ -757,20 +711,14 @@ public class Player : MonoBehaviour {
 
     private void OnMoveInput(Vector2 moveInput) {
 
-        if(blockMoveInput == true)
+        if(blockMoveInput == true || staggered == true)
         {
             return;
         }
 
-        if (playerState != PlayerState.Idle
-        && playerState != PlayerState.Move
-        && playerState != PlayerState.Fall) {
-            return;
-        }
-
-        if (moveInput.sqrMagnitude == 0 && playerState != PlayerState.Fall) {
-            Idle();
+        if (moveInput.sqrMagnitude == 0) {
             EnterWalkState();
+            EnterRestState();
         }
         else {
             Move(InputManager.Singleton.moveInput);
@@ -823,7 +771,7 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStopInput()
     {
-        if (playerState != PlayerState.Jump
+        if (verticalMoveState != CharacterVerticalMoveState.Jump
         || skillCollection.AnimatedSkillIsInUse(out _))
         {
             return;
@@ -855,7 +803,7 @@ public class Player : MonoBehaviour {
         }
 
         if (skillCollection.SkillIsInUse(skillId)
-        ||  playerState == PlayerState.Stagger)
+        ||  staggered == true)
         {
             return;
         }

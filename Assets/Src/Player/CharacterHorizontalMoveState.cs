@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum PlayerMoveState
+public enum CharacterHorizontalMoveState
 {
     Walk,
     Run
