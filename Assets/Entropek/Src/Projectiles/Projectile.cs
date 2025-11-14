@@ -1,16 +1,23 @@
 using System;
 using System.Collections;
+using Entropek.Audio;
 using Entropek.Combat;
+using Entropek.Vfx;
 using UnityEngine;
 
 namespace Entropek.Projectiles
 {
     public class Projectile : MonoBehaviour, IDeactivatable{
 
+        private const string HitSound = "MeleeHit";
+        private const int HitVfxId = 0;
+
         public event Action Deactivated;
         public event Action Activated;
 
         [Header("Components")]
+        [SerializeField] VfxPlayerSpawner vfxPlayerSpawner;
+        [SerializeField] AudioPlayer audioPlayer;
         [SerializeField] ContinuousHitbox hitbox;
         [SerializeField] private float speed;
         [SerializeField] private float lifetime;
@@ -116,6 +123,8 @@ namespace Entropek.Projectiles
 
         private void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
         {
+            vfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
+            audioPlayer.PlaySound(HitSound, hitPoint);
             if (deactivateOnHitHealth == true)
             {
                 Deactivate();
@@ -124,6 +133,7 @@ namespace Entropek.Projectiles
 
         private void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
         {
+            vfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
             if (deactivateOnHitOther)
             {
                 Deactivate();

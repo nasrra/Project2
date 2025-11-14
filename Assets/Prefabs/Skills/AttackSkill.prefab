@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1653087341239968192}
   - component: {fileID: 2797616359337493542}
+  - component: {fileID: 5012495129435246321}
   m_Layer: 3
   m_Name: AttackSkill
   m_TagString: Untagged
@@ -50,6 +51,22 @@ MonoBehaviour:
   Player: {fileID: 0}
   slashLeftHitBox: {fileID: 2720072914632149636}
   slashRightHitBox: {fileID: 889116831200017943}
+  onHitGravityDisableTimer: {fileID: 5012495129435246321}
+--- !u!114 &5012495129435246321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2996090192703535743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: gravity disable
+  initialTime: 0.167
+  BeginOnEnable: 0
 --- !u!1001 &2182871904119425127
 PrefabInstance:
   m_ObjectHideFlags: 0

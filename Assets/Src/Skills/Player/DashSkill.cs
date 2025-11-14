@@ -23,7 +23,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     private const string HitSound = "MeleeHit";
     private const float HitCameraShakeForce = 4f;
     private const float HitCameraShakeTime = 0.167f;
-    private const float HitLensDistortionIntensity = 0.24f;
+    private const float HitLensDistortionIntensity = -0.48f;
     private const float HitLensDistortionDuration = 0.16f;
     private const float HitMotionBlurDuration = 0.33f;
     private const float HitMotionBlurIntensity = 1f;
@@ -152,7 +152,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
         // Apply the dash force relative to the camera's rotation.
 
-        Player.CharacterControllerMovement.ImpulseRelativeToGround(Player.CameraController.transform.forward, forceCurve);
+        Player.CharacterControllerMovement.Impulse(Player.CameraController.transform.forward, forceCurve);
         Player.CharacterControllerMovement.UseGravity = false;
 
         // move only in the direction of our dodge.
@@ -167,7 +167,6 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         Player.CharacterControllerMovement.HaltMoveDirectionVelocity();
         Player.CharacterControllerMovement.ClearGravityVelocity();
         Player.JumpMovement.StopJumping();
-        Player.EnterWalkState();
 
         // Make player invulnerable and dash through enemies.
 
@@ -303,7 +302,6 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
         Player.CharacterControllerMovement.CharacterController.excludeLayers = previousStateExcludeLayers;
         Player.ExitIFrames();
-        Player.EnterRestState();
 
         // re-enable move input.
 
@@ -323,6 +321,8 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
             dashChainWindowTimer.Begin();
             hitHealthObjectThisDash = false;            
         }
+
+        Player.EnterRestState();
     }
 
     private void DashChainCompleted()

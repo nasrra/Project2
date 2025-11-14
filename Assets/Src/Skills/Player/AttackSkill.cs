@@ -1,4 +1,6 @@
 using System;
+using Entropek.Combat;
+using Entropek.Time;
 using Entropek.UnityUtils.AnimatorUtils;
 using UnityEngine;
 
@@ -38,8 +40,10 @@ public class AttackSkill : Skill, IAnimatedSkill
 
 
     [Header("Components")]
-    [SerializeField] private Entropek.Combat.TimedSingleHitbox slashLeftHitBox;
-    [SerializeField] private Entropek.Combat.TimedSingleHitbox slashRightHitBox;
+    [SerializeField] private TimedSingleHitbox slashLeftHitBox;
+    [SerializeField] private TimedSingleHitbox slashRightHitBox;
+    [SerializeField] private OneShotTimer onHitGravityDisableTimer;
+
 
 
     /// 
@@ -183,12 +187,19 @@ public class AttackSkill : Skill, IAnimatedSkill
     {
         LinkHitBoxEvents();
         IAnimatedSkill.LinkAnimatedSkillEvents();
+        onHitGravityDisableTimer.Timeout += OnHitGravityDiableTimeout;
     }
 
     protected override void UnlinkEvents()
     {
         UnlinkHitBoxEvents();
         IAnimatedSkill.UnlinkAnimatedSkillEvents();
+        onHitGravityDisableTimer.Timeout -= OnHitGravityDiableTimeout;
+    }
+
+    private void OnHitGravityDiableTimeout()
+    {
+        Player.CharacterControllerMovement.UseGravity = true;
     }
 
 
@@ -199,7 +210,10 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     private void OnAttackHit(GameObject other, Vector3 hitPoint)
     {
-        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
+        Player.CharacterControllerMovement.UseGravity = false;
+        Player.CharacterControllerMovement.ClearGravityVelocity();
+        onHitGravityDisableTimer.Begin();
+
         Player.Health.Heal(HealthRestorationAmount);
         Player.CameraController.StartShaking(HitCameraShakeForce, HitCameraShakeTime);
 
@@ -213,6 +227,7 @@ public class AttackSkill : Skill, IAnimatedSkill
             HitMotionBlurIntensity
         );
         
+        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
         Player.AudioPlayer.PlaySound(HitSound, hitPoint);
     }
 
