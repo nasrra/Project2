@@ -91,9 +91,6 @@ public class Player : MonoBehaviour {
     [SerializeField] private AudioPlayer audioPlayer;
     public AudioPlayer AudioPlayer => audioPlayer;
 
-    [SerializeField] private ForceApplier forceApplier;
-    public ForceApplier ForceApplier => forceApplier;
-
     [SerializeField] private AnimationEventReciever animationEventReciever;
     public AnimationEventReciever AnimationEventReciever => animationEventReciever;
 
@@ -378,7 +375,7 @@ public class Player : MonoBehaviour {
         }
     } 
 
-    private void EnterRunState()
+    public void EnterRunState()
     {   
         playerMoveState = PlayerMoveState.Run;
         moveAnimation = RunAnimation;
@@ -391,7 +388,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void EnterWalkState()
+    public void EnterWalkState()
     {
         playerMoveState = PlayerMoveState.Walk;
         moveAnimation = WalkAnimation;

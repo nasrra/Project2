@@ -16,8 +16,8 @@ namespace Entropek.Camera
         private const float FollowSpeed = 13.33f;
         private const float MouseInputSmoothSpeed = 1000f;
         private const float LockOnTargetSmoothSpeed = 16.7f;
-        private const float UpperPitchLimit = 70f;
-        private const float LowerPitchLimit = -45f;
+        private const float UpperPitchLimit = 80f;
+        private const float LowerPitchLimit = -80f;
         private const float CameraRadius = 0.33f;
         private const float LookAtLockOnTargetSmoothSpeed = 6.66f;
         private const float LookMovementDeltaTransitionSpeed = 1000;
@@ -100,7 +100,6 @@ namespace Entropek.Camera
 
         private void LateUpdate()
         {
-
             // move towards the target look movement delta over delta time; to ensure camera sensitivity remains the same
             // across variable frame rates.
 

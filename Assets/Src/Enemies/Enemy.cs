@@ -18,7 +18,6 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Entropek.Ai.AiActionAgent combatAgent;
     [SerializeField] protected Entropek.UnityUtils.AnimatorUtils.AnimationEventReciever animationEventReciever;
     [SerializeField] protected Entropek.Physics.NavAgentMovement movement;
-    [SerializeField] protected Entropek.Physics.ForceApplier forceApplier;
     [SerializeField] protected Entropek.Audio.AudioPlayer audioPlayer;
     [SerializeField] protected Entropek.Time.TimedActionQueue stateQeueue;
 

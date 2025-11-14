@@ -14,7 +14,7 @@ namespace Entropek.Ai
 #if UNITY_EDITOR
         public virtual void OnValidate()
         {
-            UnityUtils.AnimationCurve.Clamp01AnimationCurveKeyValues(stateSwitchChanceOverLifetime);
+            UnityUtils.AnimationCurve.Clamp01KeyValues(stateSwitchChanceOverLifetime);
         }
 #endif
 

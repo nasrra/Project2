@@ -1,7 +1,10 @@
 using System;
+using Entropek.Combat;
 using Entropek.Systems.Trails;
 using Entropek.Time;
 using Entropek.UnityUtils.AnimatorUtils;
+using Entropek.UnityUtils.Attributes;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill, ICooldownSkill
@@ -14,10 +17,17 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
 
     private const string DashSound = "Dodge";
-    private const string AnimationName = "GroundDash";
+    private const string AnimationName = "AirDash";
     private const string AnimationCompletedEventName = "ExitDashState";
-    private const float DashForce = 33.33f;
-    private const float DashDecaySpeed = DashForce;    
+    private const int MaxDashChain = 2; // chain up to 2 additional dashes.
+    private const string HitSound = "MeleeHit";
+    private const float HitCameraShakeForce = 4f;
+    private const float HitCameraShakeTime = 0.167f;
+    private const float HitLensDistortionIntensity = 0.24f;
+    private const float HitLensDistortionDuration = 0.16f;
+    private const float HitMotionBlurDuration = 0.33f;
+    private const float HitMotionBlurIntensity = 1f;
+    private const int HitVfxId = 2;
 
 
     /// 
@@ -26,9 +36,26 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
 
     [Header("Components")]
+    [Tooltip("The amount (from the start of a dash) to disable gravity for; enabling it again on timeout.")]
+    [SerializeField] private OneShotTimer gravityDisableTimer;
+    [Tooltip("The window for how long a dash chain can be executed after successfully hitting a health component.")]
+    [SerializeField] private OneShotTimer dashChainWindowTimer;
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
     [SerializeField] private DodgeTrailController dodgeTrail;
+    [SerializeField] private AnimationCurve forceCurve;
+    [SerializeField] private SingleHitbox hitbox;
 
+
+    ///
+    /// Unique Data.
+    /// 
+
+    [Header("Data")]
+    [Tooltip("The layers to exclude when dashing")]
+    [SerializeField] LayerMask dashStateExcludeLayers;
+    LayerMask previousStateExcludeLayers; // the layer mask for the state before (idle state) dashing.
+    [RuntimeField] private bool hitHealthObjectThisDash = false;
+    [RuntimeField] private int dashChainCount = 0;
 
     /// 
     /// IAnimated Skill Field Overrides.
@@ -73,13 +100,6 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
     PlayerStats IMovementSkill.PlayerStats => Player.PlayerStats; 
     
-    float moveSpeedModifier = 1;
-    float IMovementSkill.MoveSpeedModifier 
-    { 
-        get => moveSpeedModifier; 
-        set => moveSpeedModifier = value; 
-    }
-
 
     /// 
     /// ITimedStateSkill Field Overrides.
@@ -88,7 +108,6 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
     [SerializeField] OneShotTimer stateTimer;
     OneShotTimer ITimedStateSkill.StateTimer => stateTimer;
-
 
 
     /// 
@@ -128,9 +147,13 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         inUse = true;
 
         stateTimer.Begin();
-        cooldownTimer.Begin();
+        gravityDisableTimer.Begin();
+        dashChainWindowTimer.Halt();
 
-        Player.EnterIFrames();
+        // Apply the dash force relative to the camera's rotation.
+
+        Player.CharacterControllerMovement.ImpulseRelativeToGround(Player.CameraController.transform.forward, forceCurve);
+        Player.CharacterControllerMovement.UseGravity = false;
 
         // move only in the direction of our dodge.
 
@@ -144,20 +167,24 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         Player.CharacterControllerMovement.HaltMoveDirectionVelocity();
         Player.CharacterControllerMovement.ClearGravityVelocity();
         Player.JumpMovement.StopJumping();
-        
-        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, IMovementSkill.ApplyMoveSpeedModifier(DashForce), IMovementSkill.ApplyMoveSpeedModifier(DashDecaySpeed));
+        Player.EnterWalkState();
 
-        // Make player invulnerable.
+        // Make player invulnerable and dash through enemies.
 
         Player.EnterIFrames();
+        previousStateExcludeLayers = Player.CharacterControllerMovement.CharacterController.excludeLayers;
+        Player.CharacterControllerMovement.CharacterController.excludeLayers = dashStateExcludeLayers;
 
         // play animations and vfx.
-
+        
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
         Player.AudioPlayer.PlaySound(DashSound, Player.gameObject);
         IAnimatedSkill.PlayAnimation();
 
+        // enable the dash hitbox.
+
+        hitbox.Activate();
     }
 
     public override bool CanUse()
@@ -183,16 +210,62 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
     protected override void LinkEvents()
     {
+        gravityDisableTimer.Timeout += OnAerialGravityDisableTimeout;
         IAnimatedSkill.LinkAnimatedSkillEvents();
         IMovementSkill.LinkMovementSkillEvents();
         ITimedStateSkill.LinkTimedStateSkillEvents();
+        hitbox.HitHealth += OnHitHealth;
+        dashChainWindowTimer.Timeout += OnDashChainWindowTimeout;
     }
 
     protected override void UnlinkEvents()
     {
+        gravityDisableTimer.Timeout -= OnAerialGravityDisableTimeout;
         IAnimatedSkill.UnlinkAnimatedSkillEvents();
         IMovementSkill.UnlinkMovementSkillEvents();
         ITimedStateSkill.UnlinkTimedStateSkillEvents();
+        dashChainWindowTimer.Timeout -= OnDashChainWindowTimeout;
+    }
+
+    private void OnAerialGravityDisableTimeout()
+    {
+        Player.CharacterControllerMovement.UseGravity = true;
+    }
+
+    private void OnHitHealth(GameObject other, Vector3 hitPoint)
+    {
+
+        // queue another dash in the chain on the first hit of a health component.
+        // and we have not exceeded our maximum dash amount.
+
+        if(hitHealthObjectThisDash == false && dashChainCount < MaxDashChain)
+        {
+            dashChainCount++;
+            hitHealthObjectThisDash = true;
+        }
+
+        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
+        Player.CameraController.StartShaking(HitCameraShakeForce, HitCameraShakeTime);
+
+        Player.CameraPostProcessingController.PulseLensDistortionIntensity(
+            HitLensDistortionDuration,
+            HitLensDistortionIntensity
+        );
+
+        Player.CameraPostProcessingController.PulseMotionBlurIntensity(
+            HitMotionBlurDuration,
+            HitMotionBlurIntensity
+        );
+        
+        Player.AudioPlayer.PlaySound(HitSound, hitPoint);
+    }
+
+    private void OnDashChainWindowTimeout()
+    {
+        // complete our dash chain if the player does not execute a
+        // dash within the given window of time.
+
+        DashChainCompleted();
     }
 
 
@@ -228,12 +301,35 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     {
         inUse = false;
 
+        Player.CharacterControllerMovement.CharacterController.excludeLayers = previousStateExcludeLayers;
         Player.ExitIFrames();
         Player.EnterRestState();
 
         // re-enable move input.
+
         Player.UnblockMoveInput(); 
         Player.UnblockJumpInput();
+    
+        // deacivate the hitbox.
+
+        hitbox.Deactivate();
+
+        if(hitHealthObjectThisDash == false)
+        {
+            DashChainCompleted();
+        }
+        else
+        {
+            dashChainWindowTimer.Begin();
+            hitHealthObjectThisDash = false;            
+        }
+    }
+
+    private void DashChainCompleted()
+    {        
+        cooldownTimer.Begin();
+        dashChainCount = 0;
+        hitHealthObjectThisDash = false;
     }
 
 
@@ -241,8 +337,20 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     /// ICooldownSkill function overrides.
     /// 
 
+
     public void OnCooldownTimeout()
     {
         // do nothing.
+    }
+
+
+    /// 
+    /// IMovementSkill function overrides.
+    /// 
+
+
+    void IMovementSkill.OnCalculatedScaledMoveSpeedModifier(float value)
+    {
+        Entropek.UnityUtils.AnimationCurve.MultiplyKeyValues(forceCurve, value); 
     }
 }

@@ -11,7 +11,7 @@ namespace Entropek.UnityUtils
         /// <param name="animationCurve">The animation curve to clamp</param>
         /// <exception cref="NullReferenceException"></exception>
 
-        public static void Clamp01AnimationCurveKeyValues(UnityEngine.AnimationCurve animationCurve)
+        public static void Clamp01KeyValues(UnityEngine.AnimationCurve animationCurve)
         {
             #if UNITY_EDITOR
             if(animationCurve == null)
@@ -34,6 +34,32 @@ namespace Entropek.UnityUtils
 
             // Reassign.
 
+            animationCurve.keys = keys;
+        }
+
+        public static void MultiplyKeyValues(UnityEngine.AnimationCurve animationCurve, float factor)
+        {
+
+            #if UNITY_EDITOR
+            if(animationCurve == null)
+            {
+                throw new NullReferenceException($"Cannot clamp an Animation Curve that is null.");
+            }
+            #endif
+
+            // get a copy of the key frames.
+
+            // Note that the array is "by value", i.e. getting keys returns a copy of all keys and setting keys copies them into the curve.
+            // https://docs.unity3d.com/6000.2/Documentation/ScriptReference/AnimationCurve-keys.html
+
+            Keyframe[] keys = animationCurve.keys;
+
+            for(int i = 0; i < keys.Length; i++)
+            {
+                keys[i].value *= factor;
+            }
+
+            // reassign.
             animationCurve.keys = keys;
         }
     }    

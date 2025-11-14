@@ -146,7 +146,7 @@ public class Slink : Enemy {
 
     private void OnBiteLungeAnimationEvent()
     {
-        forceApplier.ImpulseRelativeToGround(graphicsObject.forward, BiteLungeForce, BiteLungeDecaySpeed);
+        movement.ImpulseRelativeToGround(graphicsObject.forward, BiteLungeForce, BiteLungeDecaySpeed);
     }
 
     private void OnBiteAttackFrameAnimationEvent()
@@ -197,7 +197,7 @@ public class Slink : Enemy {
 
     private void OnDashForwardLungeAnimationEvent()
     {
-        forceApplier.ImpulseRelativeToGround(graphicsObject.forward, DashForwardLungeForce, DashForwardLungeDecay);
+        movement.ImpulseRelativeToGround(graphicsObject.forward, DashForwardLungeForce, DashForwardLungeDecay);
     }
 
     ///

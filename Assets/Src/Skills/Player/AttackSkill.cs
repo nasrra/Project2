@@ -16,20 +16,20 @@ public class AttackSkill : Skill, IAnimatedSkill
     private const string AnimationName = "SwordOutwardSlash";
     private const string AnimationCompletedEventName = "ExitSwordAttackState";
     private const string AttackFrameSound = "MeleeSwing";
-    private const string AttackHitSound = "MeleeHit";
-    private const float AttackLungeForce = 4.44f;
-    private const float AttackLungeDecaySpeed = AttackLungeForce * 3f;
-    private const float AttackHitCameraShakeForce = 4f;
-    private const float AttackHitCameraShakeTime = 0.167f;
-    private const float AttackHitLensDistortionIntensity = 0.24f;
-    private const float AttackHitLensDistortionDuration = 0.16f;
-    private const float AttackHitMotionBlurDuration = 0.33f;
-    private const float AttackHitMotionBlurIntensity = 1f;
-    private const int AttackShieldRestorationAmount = 5;
+    private const string HitSound = "MeleeHit";
+    private const float LungeForce = 4.44f;
+    private const float LungeDecaySpeed = LungeForce * 3f;
+    private const float HitCameraShakeForce = 4f;
+    private const float HitCameraShakeTime = 0.167f;
+    private const float HitLensDistortionIntensity = 0.24f;
+    private const float HitLensDistortionDuration = 0.16f;
+    private const float HitMotionBlurDuration = 0.33f;
+    private const float HitMotionBlurIntensity = 1f;
+    private const int HealthRestorationAmount = 5;
     private const int AnimationLayer = 1;
     private const int LeftSlashVfxId = 0;
     private const int RightSlashVfxId = 1;
-    private const int AttackHitVfxId = 2;
+    private const int HitVfxId = 2;
 
 
     /// 
@@ -158,7 +158,7 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     private void AttackFrame()
     {
-        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, AttackLungeForce, AttackLungeDecaySpeed);
+        Player.CharacterControllerMovement.ImpulseRelativeToGround(transform.forward, LungeForce, LungeDecaySpeed);
         Player.AudioPlayer.PlaySound(AttackFrameSound, Player.transform.position);
         if (slashFlag == true)
         {
@@ -199,21 +199,21 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     private void OnAttackHit(GameObject other, Vector3 hitPoint)
     {
-        Player.VfxPlayerSpawner.PlayVfx(AttackHitVfxId, hitPoint, transform.forward);
-        Player.Health.Heal(AttackShieldRestorationAmount);
-        Player.CameraController.StartShaking(AttackHitCameraShakeForce, AttackHitCameraShakeTime);
+        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
+        Player.Health.Heal(HealthRestorationAmount);
+        Player.CameraController.StartShaking(HitCameraShakeForce, HitCameraShakeTime);
 
         Player.CameraPostProcessingController.PulseLensDistortionIntensity(
-            AttackHitLensDistortionDuration,
-            AttackHitLensDistortionIntensity
+            HitLensDistortionDuration,
+            HitLensDistortionIntensity
         );
 
         Player.CameraPostProcessingController.PulseMotionBlurIntensity(
-            AttackHitMotionBlurDuration,
-            AttackHitMotionBlurIntensity
+            HitMotionBlurDuration,
+            HitMotionBlurIntensity
         );
         
-        Player.AudioPlayer.PlaySound(AttackHitSound, hitPoint);
+        Player.AudioPlayer.PlaySound(HitSound, hitPoint);
     }
 
     private void LinkHitBoxEvents()

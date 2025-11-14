@@ -15,8 +15,8 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
     private const string DodgeSound = "Dodge";
     private const string AnimationName = "Rig_Roll";
     private const string AnimationCompletedEventName = "ExitDodgeState";
-    private const float DodgeForce = 23.33f;
-    private const float DodgeDecaySpeed = DodgeForce * 2.66f;    
+    private const float BaseDodgeForce = 23.33f;
+    private const float BaseDodgeDecaySpeed = BaseDodgeForce * 2.66f;
 
 
     /// 
@@ -27,6 +27,15 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
     [Header("Components")]
     [SerializeField] private SkinnedMeshTrailSystem arcGhost;
     [SerializeField] private DodgeTrailController dodgeTrail;
+
+
+    ///
+    /// Data.
+    /// 
+
+
+    private float dodgeForce = BaseDodgeForce;
+    private float dodgeDecaySpeed = BaseDodgeDecaySpeed;
 
 
     /// 
@@ -77,13 +86,6 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 
     PlayerStats IMovementSkill.PlayerStats => Player.PlayerStats; 
     
-    float moveSpeedModifier = 1;
-    float IMovementSkill.MoveSpeedModifier 
-    { 
-        get => moveSpeedModifier; 
-        set => moveSpeedModifier = value; 
-    }
-
     bool IAnimatedSkill.AnimationCancel => throw new NotImplementedException();
 
 
@@ -109,7 +111,7 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
         Player.CharacterControllerMovement.ClearGravityVelocity();
         Player.JumpMovement.StopJumping();
         
-        Player.ForceApplier.ImpulseRelativeToGround(transform.forward, IMovementSkill.ApplyMoveSpeedModifier(DodgeForce), IMovementSkill.ApplyMoveSpeedModifier(DodgeDecaySpeed));
+        Player.CharacterControllerMovement.ImpulseRelativeToGround(transform.forward, dodgeForce, dodgeDecaySpeed);
 
         // Make player invulnerable.
 
@@ -179,5 +181,11 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
     void IAnimatedSkill.Cancel()
     {
         throw new NotImplementedException();
+    }
+
+    void IMovementSkill.OnCalculatedScaledMoveSpeedModifier(float value)
+    {
+        dodgeForce = BaseDodgeForce * value;
+        dodgeDecaySpeed = BaseDodgeDecaySpeed * value;
     }
 }
