@@ -42,6 +42,7 @@ public class Player : MonoBehaviour {
     private const int Skill1Id = 0;
     private const int Skill2Id = 1;
     private const int Skill3Id = 2;
+    private const int MaxJumpCount = 2;
     private const DamageType StaggerDamageType = DamageType.Heavy;
 
 
@@ -120,6 +121,7 @@ public class Player : MonoBehaviour {
     [RuntimeField] public bool blockMoveInput = false;
     [RuntimeField] public bool blockJumpInput = false;
 
+
     /// 
     /// Runtime Fields
     /// 
@@ -132,7 +134,7 @@ public class Player : MonoBehaviour {
     [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
     public CoyoteState CoyoteState => coyoteState;
     private string moveAnimation {get; set;} = WalkAnimation; // always start in the walk state.
-
+    [RuntimeField] private int jumpCount;
 
 
     /// 
@@ -259,6 +261,8 @@ public class Player : MonoBehaviour {
 
     public void Idle()
     {
+        Debug.Log(PlayerState.Idle);
+
         playerState = PlayerState.Idle;
         
         FaceChosenDirection = null; // dont look face any direction when idle.
@@ -424,6 +428,7 @@ public class Player : MonoBehaviour {
         playerState = PlayerState.Jump;
         jumpMovement.StartJumping();
         animator.Play(JumpStartAnimation);
+        characterControllerMovement.ClearGravityVelocity();
     }
 
     public void JumpStop() {
@@ -661,6 +666,7 @@ public class Player : MonoBehaviour {
                 Idle();
             }
         }
+        jumpCount = 0;
     }
 
     private void OnAirborne()
@@ -762,10 +768,7 @@ public class Player : MonoBehaviour {
             return;
         }
 
-        // TODO:
-        //  Add a falling state evaluation.
-
-        if (moveInput.sqrMagnitude == 0) {
+        if (moveInput.sqrMagnitude == 0 && playerState != PlayerState.Fall) {
             Idle();
             EnterWalkState();
         }
@@ -776,12 +779,12 @@ public class Player : MonoBehaviour {
 
     private void OnJumpStartInput() {
 
-
-
-        if (groundCheck.IsGrounded == true
-        && blockJumpInput == false)
+        if (
+        (groundCheck.IsGrounded == true || jumpCount < MaxJumpCount)
+        &&  blockJumpInput == false)
         {
             JumpStart();
+            jumpCount++;
         }
         else
         {
