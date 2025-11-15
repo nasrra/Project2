@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphicsObject: {fileID: 3719046861437036160}
+  navAgentMovementTarget: {fileID: 0}
   target: {fileID: 0}
   health: {fileID: 4689728430435315810}
   combatAgent: {fileID: 3479598227594797709}
@@ -109,6 +110,7 @@ MonoBehaviour:
   UseGravity: 1
   SnapToGround: 1
   navAgent: {fileID: 2315315231443740072}
+  navMeshSurfacePrefab: {fileID: 8966075605718644302, guid: 2f65284eeff5dd74f9ed8d95dcbb1ced, type: 3}
   cornerSpeed: 0.0167
 --- !u!114 &4519142253100921248
 MonoBehaviour:
@@ -370,7 +372,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8335467758102767309}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8

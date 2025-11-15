@@ -1,5 +1,6 @@
 using System;
 using Entropek.UnityUtils.Attributes;
+using TreeEditor;
 using Unity.AI.Navigation;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.Rendering;
@@ -35,6 +36,7 @@ namespace Entropek.Physics
         private Action RecalculatePath;
 
         [Header(nameof(NavAgentMovement) + " Components")]
+        [Tooltip("The NavMeshAgent must be on a child object of this scripts gameobject in order to funciton properly.")]
         [SerializeField] protected NavMeshAgent navAgent;
         [SerializeField] protected NavMeshSurface navMeshSurfacePrefab; 
 
@@ -44,7 +46,7 @@ namespace Entropek.Physics
 
         [RuntimeField] protected NavMeshPath path;
 
-        private const float cornerDistanceThreshold = 0.05f;
+        private const float cornerDistanceThreshold = 0.66f;
         private const int fixedFramesPerRecalculate = 30; // recalc every 25 frames or half a second.
         
         private int fixedFrameCounter = 0;
@@ -56,6 +58,11 @@ namespace Entropek.Physics
         protected override void Awake()
         {
             base.Awake();
+
+            // stop the nav agent from moving,
+            // as this script uses the SetDestination function to see if
+            // the agent is currently on a mesh link.
+
             navAgent.isStopped = true;
         }
 
@@ -80,8 +87,13 @@ namespace Entropek.Physics
                 return;
             }
 
-            // handle the recacluate path recursion.
-            
+            if (navAgent.isOnOffMeshLink == false)
+            {
+                ProjectWorldPositionOnNavMeshAgent(navAgent, navMeshSurfacePrefab);
+            }
+
+            // handle the recacluate path recursion.            
+
             fixedFrameCounter++;
             if (fixedFrameCounter >= fixedFramesPerRecalculate)
             {
@@ -92,19 +104,19 @@ namespace Entropek.Physics
                 fixedFrameCounter = 0;
             }
 
-            if (path == null)
+            if (path != null)
             {
-                return;
+                if(UpdatePath(out NavAgentPathCornerContext currentCornerContext)){
+                    if (path == null || HaveReachedDestination())
+                    {
+                        return;
+                    }
+
+                    MoveToNextPathPoint(ref currentCornerContext);                
+                }
+
             }
 
-            NavAgentPathCornerContext currentCornerContext = UpdatePath();
-
-            if (path == null || HaveReachedDestination())
-            {
-                return;
-            }
-
-            MoveToNextPathPoint(ref currentCornerContext);
             UpdateTick();
         }
 
@@ -115,41 +127,12 @@ namespace Entropek.Physics
 
 
         /// <summary>
-        /// Set the agent to calculate and start moving along a path towards a target position in world space.
-        /// </summary>
-        /// <param name="destinationInWorldSpace"></param>
-        /// <returns> true if a path was found </returns>
-
-        public void StartPath(Vector3 destinationInWorldSpace)
-        {
-            // create a new path if needed.
-
-            path??= new NavMeshPath();
-
-            currentCornerIndex = 0;
-
-            // set the RecalculatePath to this function call
-            // to recursively update.
-
-            RecalculatePath = () =>
-            {
-                StartPath(destinationInWorldSpace);
-            };
-
-            Vector3 destination = ProjectWorldPositionOnMesh(destinationInWorldSpace);
-
-            navAgent.CalculatePath(destination, path);
-
-            IsOnNavMeshLink();
-        }
-
-        /// <summary>
         /// Set the agent to calculate and start moving along a path towards a transform's position.
         /// </summary>
         /// <param name="target"></param>
         /// <returns> true if a path was found. </returns>
 
-        public void StartPath(Transform target)
+        public void StartPath(NavAgentMovementTarget target)
         {
             if (target == null)
             {
@@ -170,7 +153,7 @@ namespace Entropek.Physics
                 StartPath(target);
             };
 
-            Vector3 destination = ProjectWorldPositionOnMesh(target.position);
+            Vector3 destination = target.transform.position;
 
             navAgent.CalculatePath(destination, path);
 
@@ -183,7 +166,7 @@ namespace Entropek.Physics
         /// <param name="target">The transform to target.</param>
         /// <param name="distance">The distance away from the NavAgentMovement gameObject to check for a valid point to move to.</param>
 
-        public void MoveAway(Transform target, float distance)
+        public void MoveAway(NavAgentMovementTarget target, float distance)
         {
 
             if(target == null)
@@ -205,13 +188,26 @@ namespace Entropek.Physics
                 MoveAway(target, distance);
             };
 
-            Vector3 oppositeDirection = (transform.position - target.position).normalized;            
-            Vector3 destination = ProjectWorldPositionOnMesh(oppositeDirection * distance);
+            Vector3 oppositeDirection = (transform.position - target.transform.position).normalized;            
+            Vector3 destination = oppositeDirection * distance;
 
+            Vector3 currentNavMeshWorldPosition = navAgent.transform.position; 
+
+            // warp to the target position then call Move so that the nav agent snaps
+            // back to the grid (if the agent is off the grid).
+
+            // navAgent.Warp(destination);
+            navAgent.Move(destination);
+
+            Vector3 positionOnMesh = navAgent.transform.position;
+
+            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
+
+            navAgent.Warp(currentNavMeshWorldPosition);
 
             // move towards that desired destination.
 
-            navAgent.CalculatePath(destination, path);
+            navAgent.CalculatePath(positionOnMesh, path);
 
             IsOnNavMeshLink();
         }
@@ -248,11 +244,30 @@ namespace Entropek.Physics
             }
         }
 
+        /// <summary>
+        /// Checks whether or not the nav agent is currently on a mesh link.
+        /// </summary>
+        /// <returns>true, if the agent is on a mesh link; otherwise false.</returns>
+
         private bool IsOnNavMeshLink()
         {
+
+            // always complete the off mesh link as the NavMeshAgent does not automatically set 
+            // the flag to false after moving across a link (Unity is awesome!)
+
             navAgent.CompleteOffMeshLink();
-            navAgent.SetDestination(path.corners[Math.Clamp(currentCornerIndex, 0, path.corners.Length-1)]);
+
+            if(0 < path.corners.Length - 1)
+            {
+                navAgent.SetDestination(path.corners[Math.Clamp(currentCornerIndex, 0, path.corners.Length-1)]);
+            }
+            else
+            {
+                navAgent.SetDestination(navAgent.transform.position);                
+            }
+
             navAgent.isStopped = true;
+
             return navAgent.isOnOffMeshLink;
         }
 
@@ -263,14 +278,16 @@ namespace Entropek.Physics
         /// and if this agent has reached its destination.
         /// </summary>
 
-        private NavAgentPathCornerContext UpdatePath()
+        private bool UpdatePath(out NavAgentPathCornerContext context)
         {
-            NavAgentPathCornerContext currentCornerContext = CalculateCornerContext(currentCornerIndex);
             
             // if there is still path points to traverse along.
 
             if (path.corners.Length > 0 && currentCornerIndex < path.corners.Length)
             {
+                // out the current vorner this agent is moving towards.
+
+                context = CalculateCornerContext(currentCornerIndex);
 
                 // get the current speed this agent is moving at and
                 // factor that into the distance threshold when determining whether or not
@@ -279,11 +296,13 @@ namespace Entropek.Physics
                 float currentSpeed = controller.velocity.magnitude * 0.1f;
                 float speedThreshold = Mathf.Clamp(currentSpeed, cornerDistanceThreshold, 1.0f);
 
-                if (currentCornerContext.DistanceToCorner <= speedThreshold)
+                if (context.DistanceToCorner <= speedThreshold)
                 {
                     currentCornerIndex++;
                     
-                    IsOnNavMeshLink();                    
+                    //  check if the next corner is a path on a mesh link.
+
+                    IsOnNavMeshLink();
 
                     if (currentCornerIndex >= path.corners.Length)
                     {
@@ -294,106 +313,26 @@ namespace Entropek.Physics
                     }
                     else
                     {
-                        currentCornerContext = CalculateCornerContext(currentCornerIndex);
+                        
+                        // out the next corner this agent is trying to move towards.
+
+                        context = CalculateCornerContext(currentCornerIndex);
                     }
                 }
+
+                return true;
             }
 
-            return currentCornerContext;
+            // out nothing if there is no path to traverse.
+
+            context = new();
+
+            return false;
         }
 
         protected bool HaveReachedDestination()
         {
             return path.corners.Length == 0 || (path.corners.Length > 0 && currentCornerIndex >= path.corners.Length);
-        }
-
-        /// <summary>
-        /// Projects a world position onto the given NavAgents NavMeshSurface.
-        /// </summary>
-        /// <param name="worldPosition">The specified position to project.</param>
-        /// <returns>The projected position.</returns>
-
-        private Vector3 ProjectWorldPositionOnMesh(Vector3 worldPosition)
-        {            
-            Vector3 currentNavMeshWorldPosition = navAgent.transform.position; 
-
-            // warp to the target position then call Move so that the nav agent snaps
-            // back to the grid (if the agent is off the grid).
-
-            navAgent.Warp(worldPosition);
-            navAgent.Move(Vector3.zero);
-
-            Vector3 positionOnMesh = navAgent.transform.position;
-
-            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
-
-            navAgent.Warp(currentNavMeshWorldPosition);
-
-            // Note:
-            //  The equality check is only for the x and z-axis, the y-axis should be freeform
-            //  as nav agents can jump, hover, and fly.
-            //  this check is needed for when agents go completely off the mesh, allowing them to return
-            //  and course correct.
-
-            // if(navAgent.transform.position.x != transform.position.x
-            // || navAgent.transform.position.z != transform.position.z)
-            // {
-            //     RaycastHit hit;
-            //     bool aboveTraversableTerrain = UnityEngine.Physics.Raycast(
-            //         transform.position, 
-            //         Vector3.down, 
-            //         out hit, 
-            //         float.MaxValue, 
-            //         navMeshSurfacePrefab.layerMask
-            //     );
-                
-            //     if(aboveTraversableTerrain)
-            //     {
-            //         NavMeshHit navHit;
-            //         bool foundNavAgentPoint = NavMesh.SamplePosition(hit.point, out navHit, navAgent.radius * 2, NavMesh.AllAreas);
-            //         if (foundNavAgentPoint)
-            //         {
-            //             navAgent.Warp(navHit.position);
-            //             return navHit.position;
-            //         }       
-            //     }
-
-            //     // warp to the closest possible position at our transform.
-                
-            //     if (navAgent.isOnNavMesh == false || navAgent.Warp(transform.position) == false)
-            //     {                    
-            //         paused = true;
-            //         return Vector3.zero;
-            //     }
-                
-            // }
-
-            // // call move to ensure it snaps to the grid.
-            // navAgent.Move(Vector3.zero);
-
-
-            if(navAgent.transform.position.x != transform.position.x
-            || navAgent.transform.position.z != transform.position.z)
-            {
-                // warp to the closest possible position at our transform.
-                navAgent.Warp(transform.position);
-                
-                // call move to ensure it snaps to the grid.
-
-                navAgent.Move(Vector3.zero);
-
-                if(navAgent.isOnNavMesh == false)
-                {
-                    
-                    // warp back if our transform position is way too far away from a nav mesh
-                    // it isnt even snapped to one.
-
-                    navAgent.Warp(currentNavMeshWorldPosition);                    
-                }
-            }
-
-
-            return positionOnMesh;
         }
 
         /// <summary>
@@ -413,6 +352,70 @@ namespace Entropek.Physics
                 direction,
                 distance
             );
+        }
+
+
+        /// <summary>
+        /// Ensures that the nav mesh agent snaps back to ar recoverable position when this transform moves to an inaccessible space.
+        /// </summary>
+        /// <param name="agent"></param>
+        /// <param name="surface"></param>
+
+        private void ProjectWorldPositionOnNavMeshAgent(NavMeshAgent agent, NavMeshSurface surface)
+        {            
+
+            // check if the agents position has been offsetted from our actual position.
+            // note the exclusion of the y-axis, this is because agents can jump and fly.
+
+            Vector3 agentPosition = agent.transform.position; 
+            if(agentPosition.x == transform.position.x && agentPosition.z == transform.position.z)
+            {
+                return;
+            }
+
+            // Only sample the nav mesh that is of the agents type id.
+
+            NavMeshQueryFilter filter = new NavMeshQueryFilter()
+            {
+                agentTypeID = agent.agentTypeID,
+                areaMask = NavMesh.AllAreas  
+            };
+
+            // use radius * 2 so there is a wider range of error
+            // when querying a possible position to place the agent at.
+
+            float radius = agent.radius * 2;
+
+            // sample a position at the agents transform and snap to it if possible.
+
+            NavMeshHit navHit;
+            if (NavMesh.SamplePosition(transform.position, out navHit, radius, filter))
+            {
+                agent.Warp(navHit.position);
+                return;
+            }       
+
+            // check below this gameobject and sample a position at the hit position, snapping where possible.
+
+            RaycastHit rayHit;
+            if(UnityEngine.Physics.Raycast(
+                transform.position, 
+                Vector3.down, 
+                out rayHit, 
+                float.MaxValue,
+                surface.layerMask)){
+                
+                if(NavMesh.SamplePosition(rayHit.point, out navHit, radius, filter))
+                {
+                    agent.Warp(navHit.position);
+                    return;
+                }
+            }
+
+            // fall back is to snap to this transforms position.
+
+            Vector3 position = new Vector3(transform.position.x, navHit.position.y, transform.position.z); 
+            agent.Warp(position);
         }
 
 

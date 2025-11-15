@@ -20,10 +20,10 @@ public class Slink : Enemy {
     [SerializeField] Entropek.UnityUtils.BoneStagger boneStagger;
 
     [Header("Hitboxes")]
-    [SerializeField] Entropek.Combat.TimedSingleHitbox biteHitbox;
-    [SerializeField] Entropek.Combat.TimedSingleHitbox tailHitbox;
-    [SerializeField] Entropek.Combat.TimedSingleHitbox biteLungeHitbox;
-    [SerializeField] Entropek.Combat.TimedSingleHitbox clawSlashHitbox;
+    [SerializeField] TimedSingleHitbox biteHitbox;
+    [SerializeField] TimedSingleHitbox tailHitbox;
+    [SerializeField] TimedSingleHitbox biteLungeHitbox;
+    [SerializeField] TimedSingleHitbox clawSlashHitbox;
 
     [Header("Vfx")]
     [SerializeField] Entropek.Vfx.CompositeVfxPlayer biteVfx;
@@ -113,7 +113,7 @@ public class Slink : Enemy {
         FixedUpdateCallback = ChaseStateFixedUpdate;
         combatAgent.BeginEvaluationLoop();
         movement.ResumePath();
-        movement.StartPath(target);
+        movement.StartPath(navAgentMovementTarget);
         animator.CrossFade(ChaseAnimation, 0.167f);
     }
 

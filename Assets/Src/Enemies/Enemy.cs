@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Entropek.Combat;
+using Entropek.Physics;
 
 public abstract class Enemy : MonoBehaviour 
 {
@@ -13,6 +14,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header(nameof(Enemy) + " Required Components")]
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
+    [SerializeField] protected NavAgentMovementTarget navAgentMovementTarget;
     [SerializeField] protected Transform target;
     [SerializeField] protected Entropek.EntityStats.HealthSystem health;
     [SerializeField] protected Entropek.Ai.AiActionAgent combatAgent;
@@ -56,6 +58,7 @@ public abstract class Enemy : MonoBehaviour
         Entropek.Ai.Contexts.AiAgentContext combatContext = combatAgent.AiAgentContext;
 
         target = Opponent.Singleton.transform;
+        navAgentMovementTarget = Opponent.Singleton.NavAgentMovementTarget;
 
         switch (combatContext)
         {

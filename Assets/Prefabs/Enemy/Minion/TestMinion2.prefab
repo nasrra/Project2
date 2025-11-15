@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphicsObject: {fileID: 7394140949812227555}
+  navAgentMovementTarget: {fileID: 0}
   target: {fileID: 0}
   health: {fileID: 8220533152704142039}
   combatAgent: {fileID: 1923347564281524974}
@@ -272,7 +273,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   hoverSpeed: 0.0167
-  hoverSmooth: 10
 --- !u!1 &7111816295649535380
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,11 +577,11 @@ PrefabInstance:
       objectReference: {fileID: 327080954800463254}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: InitialStateIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: aiStates.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: 'managedReferences[-2]'
@@ -589,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: 'aiStates.Array.data[0]'
-      value: 5395954619543453764
+      value: 5395954811947974787
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: 'aiStates.Array.data[1]'
@@ -604,11 +604,19 @@ PrefabInstance:
       value: Assembly-CSharp Entropek.Ai.TargetBasedAiState
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: 'managedReferences[5395954811947974787]'
+      value: Assembly-CSharp Entropek.Ai.TargetBasedAiState
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].name
       value: Flee
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].name
+      value: Chase
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].name
       value: Chase
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -620,6 +628,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToTargetCurve.m_PreInfinity
       value: 2
       objectReference: {fileID: 0}
@@ -628,11 +640,19 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToTargetCurve.m_PostInfinity
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].distanceToTargetCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_PostInfinity
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -649,6 +669,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].distanceToTargetCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_RotationOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -676,6 +700,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToOpponentCurve.m_Curve.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -692,6 +720,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].stateSwitchChanceOverLifetime.m_PostInfinity
       value: 2
       objectReference: {fileID: 0}
@@ -700,11 +732,19 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].stateSwitchChanceOverLifetime.m_RotationOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].stateSwitchChanceOverLifetime.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_RotationOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -732,6 +772,18 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToTargetCurve.m_Curve.Array.data[0].value
       value: 1
       objectReference: {fileID: 0}
@@ -745,6 +797,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].distanceToTargetCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].value
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -796,6 +856,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToTargetCurve.m_Curve.Array.data[0].inWeight
       value: 0
       objectReference: {fileID: 0}
@@ -828,6 +896,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToOpponentCurve.m_Curve.Array.data[0].inSlope
       value: 0
       objectReference: {fileID: 0}
@@ -857,6 +941,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].distanceToTargetCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].outWeight
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -924,6 +1016,14 @@ PrefabInstance:
       value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToTargetCurve.m_Curve.Array.data[0].weightedMode
       value: 0
       objectReference: {fileID: 0}
@@ -953,6 +1053,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].time
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].distanceToTargetCurve.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].time
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -988,6 +1104,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].distanceToOpponentCurve.m_Curve.Array.data[0].weightedMode
       value: 0
       objectReference: {fileID: 0}
@@ -1017,6 +1141,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].inSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].inSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].inSlope
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -1052,6 +1184,22 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].outSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].outSlope
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].outWeight
       value: 0.9985507
       objectReference: {fileID: 0}
@@ -1065,6 +1213,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].outWeight
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
@@ -1084,6 +1240,14 @@ PrefabInstance:
       value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453764].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].weightedMode
       value: 0
       objectReference: {fileID: 0}
@@ -1097,6 +1261,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
       propertyPath: managedReferences[5395954619543453765].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[0].weightedMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7793114804939478174, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}
+      propertyPath: managedReferences[5395954811947974787].stateSwitchChanceOverLifetime.m_Curve.Array.data[1].weightedMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7842405981673044788, guid: 786114059998cf5488651bf5fb8c0c6d, type: 3}

@@ -1,5 +1,6 @@
 using Entropek.EntityStats;
 using Entropek.Exceptions;
+using Entropek.Physics;
 using UnityEngine;
 
 namespace Entropek.Combat
@@ -15,6 +16,9 @@ namespace Entropek.Combat
         [Header("Components")]
         [SerializeField] HealthSystem healthSystem;
         public HealthSystem HealthSystem => healthSystem; 
+
+        [SerializeField] NavAgentMovementTarget navAgentMovementTarget;
+        public NavAgentMovementTarget NavAgentMovementTarget => navAgentMovementTarget; 
 
         public static Opponent Singleton;
 

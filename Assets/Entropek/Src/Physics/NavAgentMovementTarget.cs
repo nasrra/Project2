@@ -43,15 +43,22 @@ namespace Entropek.Physics
         /// <returns>The projected position.</returns>
 
         private void ProjectWorldPositionOnNavMeshAgent(NavMeshAgent agent, NavMeshSurface surface)
-        {            
-            Vector3 currentNavMeshWorldPosition = agent.transform.position; 
+        {   
+            // Only sample the nav mesh that is of the agents type id.
+
             NavMeshQueryFilter filter = new NavMeshQueryFilter()
             {
                 agentTypeID = agent.agentTypeID,
                 areaMask = NavMesh.AllAreas  
             };
             
+            // use radius * 2 so there is a wider range of error
+            // when querying a possible position to place the agent at.
+
             float radius = agent.radius * 2;
+
+
+            // sample a position at the agents transform and snap to it if possible.
 
             NavMeshHit navHit;
             if (NavMesh.SamplePosition(transform.position, out navHit, radius, filter))
@@ -59,6 +66,8 @@ namespace Entropek.Physics
                 agent.Warp(navHit.position);
                 return;
             }       
+
+            // check below this gameobject and sample a position at the hit position, snapping where possible.
 
             RaycastHit rayHit;
             if(UnityEngine.Physics.Raycast(

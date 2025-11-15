@@ -19,14 +19,14 @@ public class TestMinion : Minion
     {
         combatAgent.BeginEvaluationLoop();
         movement.ResumePath();
-        movement.StartPath(target);     
+        movement.StartPath(navAgentMovementTarget);
     }
 
     public void FleeState()
     {
         combatAgent.BeginEvaluationLoop();
         movement.ResumePath();
-        movement.MoveAway(target, 24);
+        movement.MoveAway(navAgentMovementTarget, 24);
     }
 
     public override void IdleState()
