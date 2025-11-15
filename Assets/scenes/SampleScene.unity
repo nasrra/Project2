@@ -16247,12 +16247,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 331726132}
     - target: {fileID: 6131493110936356892, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
+      propertyPath: hoverSpeed
+      value: 0.0167
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131493110936356892, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
       propertyPath: cornerSpeed
       value: 0.088
       objectReference: {fileID: 0}
     - target: {fileID: 6131493110936356892, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
+      propertyPath: hoverSmooth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131493110936356892, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
       propertyPath: entityRadius
       value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131493110936356892, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 6131493110936356892, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
       propertyPath: obstructionLayers.m_Bits

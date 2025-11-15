@@ -1,49 +1,79 @@
 using Entropek.Physics;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class AerialNavAgentMovement : NavAgentMovement
 {
-    [Header(nameof(AerialNavAgentMovement)+" Components")]
-    [SerializeField] private float entityRadius;
-    [SerializeField] GameObject test;
-    [SerializeField] LayerMask obstructionLayers;
+    private enum HoverState : byte
+    {
+        Descend,
+        Ascend
+    }
+
+    [Header(nameof(AerialNavAgentMovement)+" Data")]
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float hoverSpeed = 1;
+    [SerializeField] float hoverSmooth = 1;
+    [RuntimeField] float hoverWeight;
+    [RuntimeField] HoverState hoverState = HoverState.Ascend;
+    [RuntimeField] Vector3 hoverMovement;
     RaycastHit hit;
 
     protected override void Update()
     {
         base.Update();
-        if (navAgent.isOnOffMeshLink)
-        {
-            // Agent is currently traversing a link
-            Debug.Log("Agent is on a link!");
-        }
+        Debug.Log(navAgent.isOnOffMeshLink);
     }
 
-    protected override void MoveToNextPathPoint()
+    protected override void FixedUpdate()
     {
-        if(path == null || HaveReachedDestination() == true)
+        base.FixedUpdate();
+
+
+        if (navAgent.isOnOffMeshLink == false)
         {
-            return;
+            // apply the hover movement.
+
+            Vector3 desiredMovement = 
+                hoverState == HoverState.Ascend
+                ? Vector3.up
+                : Vector3.down;
+            
+            desiredMovement *= hoverSpeed * hoverWeight;
+            hoverMovement = Vector3.MoveTowards(hoverMovement, desiredMovement, hoverSpeed * UnityEngine.Time.deltaTime);
+
+            controller.Move(hoverMovement);
+
+            CalculateHover();
         }
-
-        // NOTE:
-        //  Unlink the base NavAgentMovement, we use the actual transform position, rather than the
-        //  NavMeshAgent as we need y-positional data.
-
-        Vector3 distance = path.corners[currentCornerIndex] - navAgent.transform.position;
-        
-        Vector3 direction = distance.normalized;
-
-        // The Vector3.up check here is done to ensure to skip over the path point
-        // that is incorrectly calculated when the target is above, below, or in the same location as this agent.
-
-        if (direction == Vector3.up || direction == -Vector3.up)
-        {
-            currentCornerIndex++;
-            return;
-        }
-
-        moveDirection = Vector3.MoveTowards(moveDirection, direction, cornerSpeed);
     }
+
+    private void CalculateHover()
+    {
+        float desiredHeight = navAgent.height;
+        
+        if(Physics.Raycast(transform.position, Vector3.down, out hit, desiredHeight * 2, groundLayer))
+        {
+            float distance = (hit.point - transform.position).magnitude;
+
+            // larger the difference, hover weight is 1
+            // smaller the difference (distance == navAgent.height), hover weight is 0.
+
+            hoverWeight = 1 - (1f / (1f + distance));
+
+            // ascend when below our desired height, otherwise descend.
+
+            hoverState = distance <= desiredHeight 
+            ? HoverState.Ascend
+            : HoverState.Descend;
+            // Debug.Log(1);
+        }
+        else
+        {
+            hoverState = HoverState.Descend;
+            hoverWeight = 1;
+        }
+    }
+
 }

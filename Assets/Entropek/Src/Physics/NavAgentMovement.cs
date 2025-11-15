@@ -68,7 +68,7 @@ namespace Entropek.Physics
             // for better performance with minimal difference in smoothness.
         }
 
-        protected void FixedUpdate(){
+        protected virtual void FixedUpdate(){
             UpdateTick();
 
             // short-circuit if we are paused.
