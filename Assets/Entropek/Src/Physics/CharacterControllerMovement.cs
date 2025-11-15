@@ -59,13 +59,17 @@ namespace Entropek.Physics
 
         protected virtual void Update()
         {
+            UpdateTick();
+        }
+
+        protected void UpdateTick()
+        {            
             totalForceVelocity = ForceVelocityTick();
             HandleMoveDirection();
             HandleGravity();
             Vector3 velocity = moveDirectionVelocity + gravityVelocity + totalForceVelocity;
             controller.Move(velocity * UnityEngine.Time.deltaTime);
         }
-
 
         /// 
         /// Functions.

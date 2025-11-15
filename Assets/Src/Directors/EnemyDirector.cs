@@ -42,8 +42,6 @@ public class EnemyDirector : MonoBehaviour
             Singleton = this;
         }
 
-        // Evaluate();
-
         LinkEvents();
     
         // FastState();
@@ -51,7 +49,6 @@ public class EnemyDirector : MonoBehaviour
 
     void FixedUpdate()
     {
-        
     }
 
     void OnDestroy()
@@ -68,18 +65,10 @@ public class EnemyDirector : MonoBehaviour
     ///
     /// Functions.
     /// 
-
-    int x = 5;
+        int x = 0;
 
     public void Evaluate()
     {
-        if (x > 5)
-        {
-            return;
-        }
-
-        x++;
-
         for(int j = 0; j < 20; j++)
         {            
             for(int i = 0; i < spawnCards.Length; i++)
@@ -88,9 +77,11 @@ public class EnemyDirector : MonoBehaviour
                 if(spawnCard.EnemyType == EnemyType.Minion)
                 {
                     SpawnAtRandomPosition(spawnCard);
+                    x++;
                 }
             }
         }
+        Debug.Log(x);
     }
 
     public void FastState()

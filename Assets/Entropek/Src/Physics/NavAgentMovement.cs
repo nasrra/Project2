@@ -1,4 +1,7 @@
 using System;
+using Entropek.UnityUtils.Attributes;
+using Unity.IO.LowLevel.Unsafe;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -35,24 +38,38 @@ namespace Entropek.Physics
 
         [Header("Data")]
         [Tooltip("how fast this agent adjusts its move direction after passing a corner.")]
-        [SerializeField][Range(0,1)] float cornerSpeed = 1;
+        [SerializeField][Range(0,1)] protected float cornerSpeed = 1;
 
-        NavMeshPath path;
+        [RuntimeField] protected NavMeshPath path;
 
         private const float cornerDistanceThreshold = 0.05f;
-        private const int fixedFramesPerRecalculate = 25; // recalc every 25 frames or half a second.
+        private const int fixedFramesPerRecalculate = 30; // recalc every 25 frames or half a second.
         
         private int fixedFrameCounter = 0;
-        private int currentCornerIndex = 0;
+        [RuntimeField] protected int currentCornerIndex = 0;
 
         private bool paused = false;
+
+
+        protected override void Awake()
+        {
+            navAgent.isStopped = true;
+        }
+
 
         /// 
         /// Base.
         /// 
 
 
+        protected override void Update()
+        {
+            // put the update tick in Fixed update for enemies,
+            // for better performance with minimal difference in smoothness.
+        }
+
         protected void FixedUpdate(){
+            UpdateTick();
 
             // short-circuit if we are paused.
 
@@ -66,7 +83,10 @@ namespace Entropek.Physics
             fixedFrameCounter++;
             if (fixedFrameCounter >= fixedFramesPerRecalculate)
             {
-                RecalculatePath?.Invoke();
+                if (navAgent.isOnOffMeshLink == false)
+                {
+                    RecalculatePath?.Invoke();
+                }
                 fixedFrameCounter = 0;
             }
 
@@ -86,7 +106,7 @@ namespace Entropek.Physics
         /// <param name="destinationInWorldSpace"></param>
         /// <returns> true if a path was found </returns>
 
-        public bool StartPath(Vector3 destinationInWorldSpace)
+        public void StartPath(Vector3 destinationInWorldSpace)
         {
             // create a new path if needed.
 
@@ -101,25 +121,18 @@ namespace Entropek.Physics
             {
                 // recalc path until we cant anymore.
 
-                if (StartPath(destinationInWorldSpace))
-                {
-                    RecalculatePath = null;
-                }
+                // if (StartPath(destinationInWorldSpace))
+                // {
+                //     RecalculatePath = null;
+                // }
+                StartPath(destinationInWorldSpace);
             };
 
-            // warp to the target position then call Move so that the nav agent snaps
-            // back to the grid (if the agent is off the grid).
+            Vector3 destination = ProjectWorldPositionOnMesh(destinationInWorldSpace);
 
-            navAgent.Warp(destinationInWorldSpace);
-            navAgent.Move(Vector3.zero);
+            navAgent.CalculatePath(destination, path);
 
-            Vector3 destination = navAgent.transform.position;
-
-            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
-
-            navAgent.Warp(transform.position);
-
-            return navAgent.CalculatePath(destination, path);
+            IsOnNavMeshLink();
         }
 
         /// <summary>
@@ -128,11 +141,11 @@ namespace Entropek.Physics
         /// <param name="target"></param>
         /// <returns> true if a path was found. </returns>
 
-        public bool StartPath(Transform target)
+        public void StartPath(Transform target)
         {
             if (target == null)
             {
-                return false;
+                return;
             }
 
             // create a new path if needed.
@@ -149,19 +162,11 @@ namespace Entropek.Physics
                 StartPath(target);
             };
 
-            // warp to the target position then call Move so that the nav agent snaps
-            // back to the grid (if the agent is off the grid).
+            Vector3 destination = ProjectWorldPositionOnMesh(target.position);
 
-            navAgent.Warp(target.position);
-            navAgent.Move(Vector3.zero);
+            navAgent.CalculatePath(destination, path);
 
-            Vector3 destination = navAgent.transform.position;
-
-            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
-
-            navAgent.Warp(transform.position);
-
-            return navAgent.CalculatePath(destination, path);
+            IsOnNavMeshLink();
         }
 
         /// <summary>
@@ -192,19 +197,15 @@ namespace Entropek.Physics
                 MoveAway(target, distance);
             };
 
-            // Move the nav agent backwards from the target position; finding a point on the nav mesh away from the target.
-
             Vector3 oppositeDirection = (transform.position - target.position).normalized;            
-            navAgent.Move(oppositeDirection * distance);
-            Vector3 destination = navAgent.transform.position;
+            Vector3 destination = ProjectWorldPositionOnMesh(oppositeDirection * distance);
 
-            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
-
-            navAgent.Warp(transform.position);
 
             // move towards that desired destination.
 
             navAgent.CalculatePath(destination, path);
+
+            IsOnNavMeshLink();
         }
 
         public void PausePath()
@@ -222,37 +223,38 @@ namespace Entropek.Physics
         /// Sets the move direction to the direction from the nav agent to the next path point/corner.
         /// </summary>
 
-        private void MoveToNextPathPoint()
+        protected virtual void MoveToNextPathPoint()
         {
-            // if there is still path points to traverse along.
-
-            if (path.corners.Length > 0 && currentCornerIndex < path.corners.Length)
+            if (path == null || HaveReachedDestination())
             {
+                return;
+            }
 
-                // traverse along them.
+            // traverse along them.
 
-                Vector3 corner = path.corners[currentCornerIndex];
-                Vector3 direction = (path.corners[currentCornerIndex] - navAgent.transform.position).normalized;
+            Vector3 direction = (path.corners[currentCornerIndex] - navAgent.transform.position).normalized;
 
-                // The Vector3.up check here is done to ensure to skip over the path point
-                // that is incorrectly calculated when the target is above, below, or in the same location as this agent.
+            // The Vector3.up check here is done to ensure to skip over the path point
+            // that is incorrectly calculated when the target is above, below, or in the same location as this agent.
 
-                if (direction == Vector3.up)
-                {
-                    currentCornerIndex++;
-                }
-                else
-                {
-                    // move in the direction of the next path point.
+            if (direction == Vector3.up)
+            {
+                currentCornerIndex++;
+            }
+            else
+            {
+                // move in the direction of the next path point.
 
-                    moveDirection = Vector3.MoveTowards(moveDirection, direction, cornerSpeed);
-                }
+                moveDirection = Vector3.MoveTowards(moveDirection, direction, cornerSpeed);
             }
         }
 
-        private bool IsOnNavMeshOrMeshLink()
+        private bool IsOnNavMeshLink()
         {
-            return navAgent.isOnNavMesh || navAgent.isOnOffMeshLink;
+            navAgent.CompleteOffMeshLink();
+            navAgent.SetDestination(path.corners[Math.Clamp(currentCornerIndex, 0, path.corners.Length-1)]);
+            navAgent.isStopped = true;
+            return navAgent.isOnOffMeshLink;
         }
 
 
@@ -264,6 +266,11 @@ namespace Entropek.Physics
 
         private void UpdatePath()
         {
+            if(path == null)
+            {
+                return;
+            }
+
             // if there is still path points to traverse along.
 
             if (path.corners.Length > 0 && currentCornerIndex < path.corners.Length)
@@ -280,19 +287,95 @@ namespace Entropek.Physics
                 {
 
                     currentCornerIndex++;
+                    IsOnNavMeshLink();
                     if (currentCornerIndex >= path.corners.Length)
                     {
                         // reached path.
+                        path = null;
                         moveDirection = Vector3.zero;
                         ReachedDestination?.Invoke();
                     }
                 }
             }
-            else
+        }
+
+        protected bool HaveReachedDestination()
+        {
+            return path.corners.Length == 0 || (path.corners.Length > 0 && currentCornerIndex >= path.corners.Length);
+        }
+
+        private Vector3 ProjectWorldPositionOnMesh(Vector3 worldPosition)
+        {            
+            Vector3 currentNavMeshWorldPosition = navAgent.transform.position; 
+
+            // warp to the target position then call Move so that the nav agent snaps
+            // back to the grid (if the agent is off the grid).
+
+            navAgent.Warp(worldPosition);
+            navAgent.Move(Vector3.zero);
+
+            Vector3 positionOnMesh = navAgent.transform.position;
+
+            // warp back the nav agent to our position so that the nav agent isnt located at the desired destination.
+
+            navAgent.Warp(currentNavMeshWorldPosition);
+
+            // Note:
+            //  The equality check is only for the x and z-axis, the y-axis should be freeform
+            //  as nav agents can jump, hover, and fly.
+            //  this check is needed for when agents go completely off the mesh, allowing them to return
+            //  and course correct.
+
+            if(navAgent.transform.position.x != transform.position.x
+            || navAgent.transform.position.z != transform.position.z)
             {
-                moveDirection = Vector3.zero;
+                // warp to the closest possible position at our transform.
+                navAgent.Warp(transform.position);
+                
+                // call move to ensure it snaps to the grid.
+
+                navAgent.Move(Vector3.zero);
+
+                if(navAgent.isOnNavMesh == false)
+                {
+                    
+                    // warp back if our transform position is way too far away from a nav mesh
+                    // it isnt even snapped to one.
+
+                    navAgent.Warp(currentNavMeshWorldPosition);                    
+                }
+            }
+
+
+            return positionOnMesh;
+        }
+
+        #if UNITY_EDITOR
+
+        private void OnDrawGizmos()
+        {
+            if(path == null || path.corners.Length == 0)
+            {
+                return;
+            }
+
+
+
+            for(int i = 0; i < path.corners.Length; i++)
+            {
+                if (i == currentCornerIndex)
+                {
+                    Gizmos.color = Color.red;                    
+                }
+                else
+                {
+                    Gizmos.color = Color.green;
+                }
+                Gizmos.DrawCube(path.corners[i], Vector3.one);
             }
         }
+
+        #endif
 
     }
 
