@@ -17,7 +17,7 @@ namespace Entropek.Physics
         [Header(nameof(AerialNavAgentMovement)+" Data")]
         [SerializeField] LayerMask groundLayer;
         [SerializeField] float hoverSpeed = 1;
-        [SerializeField] float hoverSmooth = 1;
+        // [SerializeField] float hoverSmooth = 1;
         [RuntimeField] float hoverWeight;
         [RuntimeField] HoverState hoverState = HoverState.Ascend;
         [RuntimeField] Vector3 hoverMovement;
@@ -67,7 +67,6 @@ namespace Entropek.Physics
                 hoverState = distance <= desiredHeight 
                 ? HoverState.Ascend
                 : HoverState.Descend;
-                // Debug.Log(1);
             }
             else
             {

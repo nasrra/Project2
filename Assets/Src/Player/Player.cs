@@ -127,7 +127,6 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    private CharacterHorizontalMoveState previousMoveCallHorizontalMoveState = CharacterHorizontalMoveState.Walk;
     [RuntimeField] private CharacterHorizontalMoveState horizontalMoveState = CharacterHorizontalMoveState.Walk;
     [RuntimeField] private CharacterVerticalMoveState verticalMoveState = CharacterVerticalMoveState.None; 
     [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
