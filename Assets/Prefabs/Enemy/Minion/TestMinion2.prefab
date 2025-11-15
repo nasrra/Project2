@@ -266,8 +266,13 @@ MonoBehaviour:
   UseGravity: 0
   SnapToGround: 0
   navAgent: {fileID: 3001001090442440332}
-  cornerSpeed: 0.0167
-  entityRadius: 1
+  navMeshSurfacePrefab: {fileID: 2777472823727176045, guid: b3cd7a342076bdb4b8759bc2166a8934, type: 3}
+  cornerSpeed: 0.044
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  hoverSpeed: 0.0167
+  hoverSmooth: 10
 --- !u!1 &7111816295649535380
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,7 +385,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 6
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -500,6 +505,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SphereHurtbox
       objectReference: {fileID: 0}
+    - target: {fileID: 6243199514328673572, guid: 0afa4ede6bed234478b9f250f510af23, type: 3}
+      propertyPath: health
+      value: 
+      objectReference: {fileID: 8220533152704142039}
     - target: {fileID: 7375289252430893960, guid: 0afa4ede6bed234478b9f250f510af23, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

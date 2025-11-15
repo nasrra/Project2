@@ -21,9 +21,9 @@ namespace Entropek.Physics
         [SerializeField] protected GroundCheck groundChecker;
 
         [Header("Data")]
-        protected Vector3 gravityVelocity;            // gravity.
-        protected Vector3 moveDirectionVelocity;      // desired move direction by entity.
-        protected Vector3 totalForceVelocity;
+        [RuntimeField] protected Vector3 gravityVelocity;            // gravity.
+        [RuntimeField] protected Vector3 moveDirectionVelocity;      // desired move direction by entity.
+        [RuntimeField] protected Vector3 totalForceVelocity;
 
         [RuntimeField] public Vector3 moveDirection;
 

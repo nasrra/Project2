@@ -1,5 +1,6 @@
 using System;
 using Entropek.UnityUtils.Attributes;
+using Unity.AI.Navigation;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -35,6 +36,7 @@ namespace Entropek.Physics
 
         [Header(nameof(NavAgentMovement) + " Components")]
         [SerializeField] protected NavMeshAgent navAgent;
+        [SerializeField] protected NavMeshSurface navMeshSurfacePrefab; 
 
         [Header("Data")]
         [Tooltip("how fast this agent adjusts its move direction after passing a corner.")]
@@ -53,6 +55,7 @@ namespace Entropek.Physics
 
         protected override void Awake()
         {
+            base.Awake();
             navAgent.isStopped = true;
         }
 
@@ -69,7 +72,6 @@ namespace Entropek.Physics
         }
 
         protected virtual void FixedUpdate(){
-            UpdateTick();
 
             // short-circuit if we are paused.
 
@@ -90,8 +92,20 @@ namespace Entropek.Physics
                 fixedFrameCounter = 0;
             }
 
-            UpdatePath();
-            MoveToNextPathPoint();
+            if (path == null)
+            {
+                return;
+            }
+
+            NavAgentPathCornerContext currentCornerContext = UpdatePath();
+
+            if (path == null || HaveReachedDestination())
+            {
+                return;
+            }
+
+            MoveToNextPathPoint(ref currentCornerContext);
+            UpdateTick();
         }
 
 
@@ -119,12 +133,6 @@ namespace Entropek.Physics
 
             RecalculatePath = () =>
             {
-                // recalc path until we cant anymore.
-
-                // if (StartPath(destinationInWorldSpace))
-                // {
-                //     RecalculatePath = null;
-                // }
                 StartPath(destinationInWorldSpace);
             };
 
@@ -223,21 +231,12 @@ namespace Entropek.Physics
         /// Sets the move direction to the direction from the nav agent to the next path point/corner.
         /// </summary>
 
-        protected virtual void MoveToNextPathPoint()
+        protected virtual void MoveToNextPathPoint(ref NavAgentPathCornerContext context)
         {
-            if (path == null || HaveReachedDestination())
-            {
-                return;
-            }
-
-            // traverse along them.
-
-            Vector3 direction = (path.corners[currentCornerIndex] - navAgent.transform.position).normalized;
-
             // The Vector3.up check here is done to ensure to skip over the path point
             // that is incorrectly calculated when the target is above, below, or in the same location as this agent.
 
-            if (direction == Vector3.up)
+            if (context.DirectionToCorner == Vector3.up)
             {
                 currentCornerIndex++;
             }
@@ -245,7 +244,7 @@ namespace Entropek.Physics
             {
                 // move in the direction of the next path point.
 
-                moveDirection = Vector3.MoveTowards(moveDirection, direction, cornerSpeed);
+                moveDirection = Vector3.MoveTowards(moveDirection, context.DirectionToCorner, cornerSpeed);
             }
         }
 
@@ -264,13 +263,10 @@ namespace Entropek.Physics
         /// and if this agent has reached its destination.
         /// </summary>
 
-        private void UpdatePath()
+        private NavAgentPathCornerContext UpdatePath()
         {
-            if(path == null)
-            {
-                return;
-            }
-
+            NavAgentPathCornerContext currentCornerContext = CalculateCornerContext(currentCornerIndex);
+            
             // if there is still path points to traverse along.
 
             if (path.corners.Length > 0 && currentCornerIndex < path.corners.Length)
@@ -283,11 +279,12 @@ namespace Entropek.Physics
                 float currentSpeed = controller.velocity.magnitude * 0.1f;
                 float speedThreshold = Mathf.Clamp(currentSpeed, cornerDistanceThreshold, 1.0f);
 
-                if (Vector3.Distance(navAgent.transform.position, path.corners[currentCornerIndex]) <= speedThreshold)
+                if (currentCornerContext.DistanceToCorner <= speedThreshold)
                 {
-
                     currentCornerIndex++;
-                    IsOnNavMeshLink();
+                    
+                    IsOnNavMeshLink();                    
+
                     if (currentCornerIndex >= path.corners.Length)
                     {
                         // reached path.
@@ -295,14 +292,26 @@ namespace Entropek.Physics
                         moveDirection = Vector3.zero;
                         ReachedDestination?.Invoke();
                     }
+                    else
+                    {
+                        currentCornerContext = CalculateCornerContext(currentCornerIndex);
+                    }
                 }
             }
+
+            return currentCornerContext;
         }
 
         protected bool HaveReachedDestination()
         {
             return path.corners.Length == 0 || (path.corners.Length > 0 && currentCornerIndex >= path.corners.Length);
         }
+
+        /// <summary>
+        /// Projects a world position onto the given NavAgents NavMeshSurface.
+        /// </summary>
+        /// <param name="worldPosition">The specified position to project.</param>
+        /// <returns>The projected position.</returns>
 
         private Vector3 ProjectWorldPositionOnMesh(Vector3 worldPosition)
         {            
@@ -325,6 +334,43 @@ namespace Entropek.Physics
             //  as nav agents can jump, hover, and fly.
             //  this check is needed for when agents go completely off the mesh, allowing them to return
             //  and course correct.
+
+            // if(navAgent.transform.position.x != transform.position.x
+            // || navAgent.transform.position.z != transform.position.z)
+            // {
+            //     RaycastHit hit;
+            //     bool aboveTraversableTerrain = UnityEngine.Physics.Raycast(
+            //         transform.position, 
+            //         Vector3.down, 
+            //         out hit, 
+            //         float.MaxValue, 
+            //         navMeshSurfacePrefab.layerMask
+            //     );
+                
+            //     if(aboveTraversableTerrain)
+            //     {
+            //         NavMeshHit navHit;
+            //         bool foundNavAgentPoint = NavMesh.SamplePosition(hit.point, out navHit, navAgent.radius * 2, NavMesh.AllAreas);
+            //         if (foundNavAgentPoint)
+            //         {
+            //             navAgent.Warp(navHit.position);
+            //             return navHit.position;
+            //         }       
+            //     }
+
+            //     // warp to the closest possible position at our transform.
+                
+            //     if (navAgent.isOnNavMesh == false || navAgent.Warp(transform.position) == false)
+            //     {                    
+            //         paused = true;
+            //         return Vector3.zero;
+            //     }
+                
+            // }
+
+            // // call move to ensure it snaps to the grid.
+            // navAgent.Move(Vector3.zero);
+
 
             if(navAgent.transform.position.x != transform.position.x
             || navAgent.transform.position.z != transform.position.z)
@@ -349,6 +395,31 @@ namespace Entropek.Physics
 
             return positionOnMesh;
         }
+
+        /// <summary>
+        /// Calculates a data struct relative to the corner index of the path stored by this NavAgentMovement.
+        /// </summary>
+        /// <param name="cornerIndex">The specified corner index.</param>
+        /// <returns>NavAgentPathCornerContext</returns>
+
+        private NavAgentPathCornerContext CalculateCornerContext(int cornerIndex)
+        {
+            Vector3 vectorDistance = path.corners[currentCornerIndex] - navAgent.transform.position;
+            Vector3 direction = vectorDistance.normalized;
+            float distance = vectorDistance.magnitude;
+
+            return new NavAgentPathCornerContext(
+                vectorDistance,
+                direction,
+                distance
+            );
+        }
+
+
+        /// 
+        /// Editor
+        /// 
+
 
         #if UNITY_EDITOR
 

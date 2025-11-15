@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 848301ccbeddb72d4bedbb1c744eb455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CheckStartPostion: {x: 0, y: 0, z: 0}
+  CheckStartPostion: {x: 0, y: 0.5, z: 0}
   CheckRadius: 0.5
   CheckLength: 0.1
   groundLayers:

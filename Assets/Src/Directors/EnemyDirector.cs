@@ -44,11 +44,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        // FastState();
-    }
-
-    void FixedUpdate()
-    {
+        FastState();
     }
 
     void OnDestroy()
@@ -69,7 +65,7 @@ public class EnemyDirector : MonoBehaviour
 
     public void Evaluate()
     {
-        for(int j = 0; j < 20; j++)
+        for(int j = 0; j < 2; j++)
         {            
             for(int i = 0; i < spawnCards.Length; i++)
             {
@@ -108,6 +104,11 @@ public class EnemyDirector : MonoBehaviour
 
                 GameObject miniboss = SpawnAtRandomPosition(spawnCard);
                 
+                if(miniboss == null)
+                {
+                    continue;
+                }
+
                 // display boss health bar hud.
                 
                 Health health = miniboss.GetComponent<Health>();
@@ -132,7 +133,19 @@ public class EnemyDirector : MonoBehaviour
             iterations: 32
         );
 
-        Vector3 spawnPosition = foundPoint==true? randomPosition : centerPosition; 
+        if (foundPoint == false)
+        {
+            return null;
+        }
+
+        Vector3 spawnPosition = randomPosition;
+
+        // spawn aerial enemies at their base height value.
+        
+        spawnPosition += spawnCard.SpawnType == EnemySpawnType.Aerial
+        ? Vector3.up * NavMesh.GetSettingsByID(spawnCard.NavMeshAgentType).agentHeight
+        : Vector3.zero;
+        
         return Instantiate(spawnCard.Prefab, position: spawnPosition, rotation: Quaternion.identity);
     }
 

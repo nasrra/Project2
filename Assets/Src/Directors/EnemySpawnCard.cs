@@ -21,6 +21,9 @@ public class EnemySpawnCard : ScriptableObject
     [SerializeField] private EnemyType enemyType;
     public EnemyType EnemyType => enemyType;
 
+    [SerializeField] private EnemySpawnType spawnType;
+    public EnemySpawnType SpawnType => spawnType;
+
     public NavMeshQueryFilter GetNavMeshQueryFilter()
     {
         return new NavMeshQueryFilter()
