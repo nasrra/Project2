@@ -18201,22 +18201,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3305615543810006691, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
-      propertyPath: initialTime
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
       propertyPath: Player
       value: 
       objectReference: {fileID: 36969666}
-    - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
-      propertyPath: fov.max
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
-      propertyPath: fov.min
-      value: 0.66
-      objectReference: {fileID: 0}
     - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
       propertyPath: fov2.max
       value: 1
@@ -18224,10 +18212,6 @@ PrefabInstance:
     - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
       propertyPath: fov2.min
       value: 0.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
-      propertyPath: attackRadius
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
       propertyPath: baseNode.Array.size

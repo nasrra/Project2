@@ -19,20 +19,31 @@ public interface IAnimatedSkill
     string AnimationCompletedEventName{get;}
     int AnimationLayer{get;}
     Coroutine AnimationLayerWeightTransitionCoroutine{get; protected set;}
-    bool AnimationCancel{get;}
+    bool AllowsAnimationCancel{get;}
+    bool CausesAnimationCancel{get;}
 
 
     bool CanUseAnimatedSkill()
     {
-        if (AnimationCancel == false)
+        if(CausesAnimationCancel == true)
+        {
+
+            // this skill can be used if the animated skill in use allows animation cancel or when there are no skills in use.
+
+            if(Player.SkillCollection.AnimatedSkillIsInUse(out IAnimatedSkill inUseAnimatedSkill)
+            && inUseAnimatedSkill.AllowsAnimationCancel == false)
+            {
+                return false;
+            }
+            return true;
+        }
+        else
         {
             // only use an animated skill when another animated skill isnt currently in use.
             // we dont allow animation cancelling for skills.
 
             return !Player.SkillCollection.AnimatedSkillIsInUse(out _);
         }
-
-        return true;
     }
 
     /// <summary>

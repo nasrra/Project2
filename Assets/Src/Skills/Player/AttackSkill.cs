@@ -79,6 +79,9 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     int IAnimatedSkill.AnimationLayer => AnimationLayer;
 
+    bool IAnimatedSkill.AllowsAnimationCancel => true;
+    bool IAnimatedSkill.CausesAnimationCancel => false;
+
     Skill IAnimatedSkill.Skill => this;
 
     Coroutine animationLayerWeightTransitionCoroutine;
@@ -89,6 +92,7 @@ public class AttackSkill : Skill, IAnimatedSkill
     }
 
     public bool AnimationCancel => false;
+
 
     /// 
     /// Cached Interface Types.

@@ -22,7 +22,13 @@ namespace Entropek.Vfx
 
         public void PlayVfx(int vfxId, Vector3 worldSpacePosition)
         {
-            PlayVfx(vfxId, worldSpacePosition, Vector3.zero);
+            PlayVfx(vfxId, worldSpacePosition, Quaternion.identity);
+        }
+
+        public void PlayVfx(int vfxId, Vector3 worldSpacePosition, Quaternion rotation)
+        {
+            VfxPlayer vfx = vfxPool.ActivateFromPool(vfxId);
+            vfx.Play(worldSpacePosition, rotation);
         }
     }
 

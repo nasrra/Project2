@@ -125,9 +125,15 @@ namespace Entropek.Camera
             CheckIfRotated();
         }
 
+        int shakeCounter = 0;
         private void FixedUpdate()
         {
-            Shake?.Invoke();
+            if(shakeCounter == 1)
+            {
+                Shake?.Invoke();
+                shakeCounter = 0;
+            }
+            shakeCounter++;
         }
 
 

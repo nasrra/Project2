@@ -118,6 +118,9 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     [SerializeField] OneShotTimer cooldownTimer;
     OneShotTimer ICooldownSkill.CooldownTimer => cooldownTimer;
 
+    bool IAnimatedSkill.AllowsAnimationCancel => false;
+    bool IAnimatedSkill.CausesAnimationCancel => true;
+
 
     ///
     /// Cached Interface References.

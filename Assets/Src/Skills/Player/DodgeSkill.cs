@@ -86,7 +86,8 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 
     PlayerStats IMovementSkill.PlayerStats => Player.PlayerStats; 
     
-    bool IAnimatedSkill.AnimationCancel => throw new NotImplementedException();
+    public bool AllowsAnimationCancel => false;
+    public bool CausesAnimationCancel => true;
 
 
 

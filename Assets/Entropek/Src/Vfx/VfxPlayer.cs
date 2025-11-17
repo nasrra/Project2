@@ -66,6 +66,18 @@ namespace Entropek.Vfx
             transform.rotation = Quaternion.LookRotation(rotationEuler);
             Play(worldSpacePosition);
         }
+
+        /// <summary>
+        /// Plays a Vfx instance, moving this VfxPlayer to a world position at a specified rotation.
+        /// </summary>
+        /// <param name="worldSpacePosition">The world position to play at.</param>
+        /// <param name="rotation">The rotation to be at when playing.</param>
+
+        public virtual void Play(Vector3 worldSpacePosition, Quaternion rotation)
+        {
+            transform.rotation = rotation;
+            Play(worldSpacePosition);
+        }
         
         /// <summary>
         /// Checks whether or not the vfx instance has completed playing.
