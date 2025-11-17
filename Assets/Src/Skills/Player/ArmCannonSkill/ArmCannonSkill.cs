@@ -97,7 +97,6 @@ public class ArmCannonSkill : Skill, ICooldownSkill
         PullEntities();
 
         Player.CharacterControllerMovement.ClearGravityVelocity();
-        Player.CharacterControllerMovement.Impulse(Vector3.up, 3, 3*1.5f);
 
         Player.EnterWalkState();
         Player.BlockRunToggleInput();
@@ -227,7 +226,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill
         // apply a force pushing the enemy away from this position.
         // Note:
         //  The force is stronger the closer the enemy is.
-        float distanceFactor = distance / attackRadius * attackRadius;
+        float distanceFactor = (1 - distance / attackRadius) * attackRadius;
 
         character.Impulse(direction, distanceFactor * force, distanceFactor * forceDecay);
     }
