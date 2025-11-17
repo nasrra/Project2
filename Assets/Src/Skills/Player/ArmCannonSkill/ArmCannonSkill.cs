@@ -1,31 +1,29 @@
+using System;
 using System.Collections.Generic;
 using Entropek;
 using Entropek.Physics;
 using Entropek.Time;
+using Entropek.UnityUtils.AnimatorUtils;
 using Entropek.UnityUtils.Attributes;
 using TreeEditor;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class ArmCannonSkill : Skill, ICooldownSkill
+public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 {
 
     /// 
     /// Constants.
     /// 
 
-
-    
+    private const string AnimationCompletedEventName = "ExitArmCannonState";
+    private const string AnimationName = "ArmCannon";
+    private const string ArmCannonBlastEventName = "ArmCannonBlast";
     private const float PullForceFactor = 4.8f;
-    
     private const float PullFoceDecayFactor = PullForceFactor *(PullForceFactor * 1f);
-    
     private const float PushForceViewFactor = 1.33f; // the factor to apply to push force when the camera is looking at an affected target.
-
     private const float PushForceFactor = 4.8f;
-
     private const float PushForceDecayFactor = PushForceFactor;
-
     private const float LowGravityModifier = 1;
     private const float JumpForce = 3.33f;
     private const float JumpForceDecay = JumpForce * JumpForce;
@@ -36,9 +34,8 @@ public class ArmCannonSkill : Skill, ICooldownSkill
     /// 
 
     [Header("Components")]
-    [SerializeField] OneShotTimer pullStateTimer;
-    [SerializeField] OneShotTimer pushStateTimer;
     [DotProductRangeVisualise, SerializeField] private DotProductRange fov;
+
 
     /// 
     /// ICooldownSkill field overrides.
@@ -47,18 +44,54 @@ public class ArmCannonSkill : Skill, ICooldownSkill
     
     [SerializeField] OneShotTimer cooldownTimer;
     OneShotTimer ICooldownSkill.CooldownTimer => cooldownTimer;
-    
+
+
+    /// 
+    /// IAnimatedSkill Field Overrides.
+    /// 
+
+
+    Skill IAnimatedSkill.Skill => this;
+
+    Player IAnimatedSkill.Player => Player;
+
+    public event Action AnimationCompleted;
+    Action IAnimatedSkill.AnimationCompleted 
+    { 
+        get => AnimationCompleted; 
+        set => AnimationCompleted = value; 
+    }
+
+    Animator IAnimatedSkill.Animator => Player.Animator;
+
+    AnimationEventReciever IAnimatedSkill.AnimationEventReciever => Player.AnimationEventReciever;
+
+    string IAnimatedSkill.AnimationName => AnimationName;
+
+    string IAnimatedSkill.AnimationCompletedEventName => AnimationCompletedEventName;
+
+    int IAnimatedSkill.AnimationLayer => 1;
+
+    private Coroutine animationLayerWeightTransitionCoroutine;
+    Coroutine IAnimatedSkill.AnimationLayerWeightTransitionCoroutine 
+    { 
+        get => animationLayerWeightTransitionCoroutine; 
+        set => animationLayerWeightTransitionCoroutine = value; 
+    }
+
+    bool IAnimatedSkill.AnimationCancel => true;
+
+    private float previousStateGravityModifier = 0;
+
 
     ///
     /// Unique Data. 
     /// 
-
     
     [Header("Unique Data")]
     [RuntimeField] Collider[] overlapColliders;
     [SerializeField] float attackRadius = 1;
     public float AttackRadius => attackRadius;
-    private float previousStateGravityModifier = 0;
     [SerializeField] LayerMask obstructionLayers;
     [SerializeField] LayerMask effectedEntityLayers;
 
@@ -69,11 +102,12 @@ public class ArmCannonSkill : Skill, ICooldownSkill
 
 
     ICooldownSkill ICooldownSkill;
+    IAnimatedSkill IAnimatedSkill;
 
 
     public override bool CanUse()
     {
-        return ICooldownSkill.CanUseCooldownSkill();
+        return ICooldownSkill.CanUseCooldownSkill() && IAnimatedSkill.CanUseAnimatedSkill();
     }
 
     public void OnCooldownTimeout()
@@ -84,8 +118,8 @@ public class ArmCannonSkill : Skill, ICooldownSkill
     protected override void GetInterfaceTypes()
     {
         ICooldownSkill = this;
+        IAnimatedSkill = this;
     }
-
 
     protected override void UseInternal()
     {
@@ -101,7 +135,9 @@ public class ArmCannonSkill : Skill, ICooldownSkill
         Player.EnterWalkState();
         Player.BlockRunToggleInput();
         Player.BlockJumpInput();
-        pullStateTimer.Begin();
+
+        IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
+        IAnimatedSkill.PlayAnimation();
     }
 
     void PullEntities()
@@ -264,40 +300,43 @@ public class ArmCannonSkill : Skill, ICooldownSkill
     protected override void LinkEvents()
     {
         ICooldownSkill.LinkCooldownSkillEvents();
-        LinkTimerEvents();
+        IAnimatedSkill.LinkAnimatedSkillEvents();
     }
 
     protected override void UnlinkEvents()
     {
         ICooldownSkill.UnlinkCooldownSkillEvents();
-        UnlinkTimerEvents();
+        IAnimatedSkill.UnlinkAnimatedSkillEvents();
     }
 
-    private void LinkTimerEvents()
-    {
-        pullStateTimer.Timeout += OnPullStateTimeout;        
-        pushStateTimer.Timeout += OnPushStateTimeout;
-    }
-    
-    private void UnlinkTimerEvents()
-    {
-        pullStateTimer.Timeout -= OnPullStateTimeout;
-        pushStateTimer.Timeout -= OnPushStateTimeout;
-    }
-
-    private void OnPullStateTimeout()
+    private void ArmCannonBlast()
     {
         ApplyJumpForce();        
         ExitLowGravityState();
         PushEntities();
-        pushStateTimer.Begin();
     }
 
-    private void OnPushStateTimeout()
+    void IAnimatedSkill.OnAnimationCompleted()
     {
         inUse = false;
         cooldownTimer.Begin();
         Player.UnblockRunToggleInput();
         Player.UnblockJumpInput();
+        IAnimatedSkill.StartAnimationLayerWeightTransition(0, 100);
+    }
+
+    void IAnimatedSkill.Cancel()
+    {
+        throw new NotImplementedException();
+    }
+
+    void IAnimatedSkill.OnAnimationEventTriggered(string eventName)
+    {
+        switch (eventName)
+        {
+            case ArmCannonBlastEventName:
+                ArmCannonBlast();
+                break;
+        }
     }
 }

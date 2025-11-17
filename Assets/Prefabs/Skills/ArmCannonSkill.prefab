@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 305669089054280886}
   - component: {fileID: 7945553794990527961}
   - component: {fileID: 3305615543810006691}
-  - component: {fileID: 8142106572083565842}
-  - component: {fileID: 8845643142032019805}
   m_Layer: 3
   m_Name: ArmCannonSkill
   m_TagString: Untagged
@@ -49,8 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillHudData: {fileID: 11400000, guid: f1b5fc59fdb02df43aac55a8001b979f, type: 2}
   Player: {fileID: 0}
-  pullStateTimer: {fileID: 8142106572083565842}
-  pushStateTimer: {fileID: 8845643142032019805}
+  fov:
+    min: 0
+    max: 0
   cooldownTimer: {fileID: 3305615543810006691}
   attackRadius: 5
   obstructionLayers:
@@ -73,34 +72,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorNameTag: CooldownTimer
   initialTime: 5
-  BeginOnEnable: 0
---- !u!114 &8142106572083565842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833103349873654236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: Pull State
-  initialTime: 0.5
-  BeginOnEnable: 0
---- !u!114 &8845643142032019805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833103349873654236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorNameTag: Push State
-  initialTime: 1
   BeginOnEnable: 0
