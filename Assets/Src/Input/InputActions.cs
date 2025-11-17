@@ -120,7 +120,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Skill1"",
+                    ""name"": ""PrimarySkill"",
                     ""type"": ""Button"",
                     ""id"": ""6a40ec49-da34-46fd-bf71-69bf560ac598"",
                     ""expectedControlType"": """",
@@ -129,7 +129,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Skill2"",
+                    ""name"": ""SecondarySkill"",
                     ""type"": ""Button"",
                     ""id"": ""703ddbaa-e236-42a9-ad58-43097cca1270"",
                     ""expectedControlType"": """",
@@ -138,9 +138,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Skill3"",
+                    ""name"": ""UtilitySkill"",
                     ""type"": ""Button"",
                     ""id"": ""5f83bcd6-2241-4450-8a0c-6211b98e1724"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""c886ef77-69de-4c90-8283-b0e6e614df57"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -416,7 +425,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Mouse"",
-                    ""action"": ""Skill1"",
+                    ""action"": ""PrimarySkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -427,7 +436,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Skill1"",
+                    ""action"": ""PrimarySkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -438,7 +447,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Mouse"",
-                    ""action"": ""Skill2"",
+                    ""action"": ""SecondarySkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -449,7 +458,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Skill2"",
+                    ""action"": ""SecondarySkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -588,11 +597,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""870b8b24-a422-4c7a-82ef-8e1917a9340f"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""Skill3"",
+                    ""action"": ""UtilitySkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -615,6 +624,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RunToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""578e89f7-b6b3-4d96-9fb1-5dd672c395f6"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -673,9 +693,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
-        m_Gameplay_Skill1 = m_Gameplay.FindAction("Skill1", throwIfNotFound: true);
-        m_Gameplay_Skill2 = m_Gameplay.FindAction("Skill2", throwIfNotFound: true);
-        m_Gameplay_Skill3 = m_Gameplay.FindAction("Skill3", throwIfNotFound: true);
+        m_Gameplay_PrimarySkill = m_Gameplay.FindAction("PrimarySkill", throwIfNotFound: true);
+        m_Gameplay_SecondarySkill = m_Gameplay.FindAction("SecondarySkill", throwIfNotFound: true);
+        m_Gameplay_UtilitySkill = m_Gameplay.FindAction("UtilitySkill", throwIfNotFound: true);
+        m_Gameplay_SpecialSkill = m_Gameplay.FindAction("SpecialSkill", throwIfNotFound: true);
         m_Gameplay_LockOnToggle = m_Gameplay.FindAction("LockOnToggle", throwIfNotFound: true);
         m_Gameplay_LockOnNext = m_Gameplay.FindAction("LockOnNext", throwIfNotFound: true);
         m_Gameplay_LockOnPrevious = m_Gameplay.FindAction("LockOnPrevious", throwIfNotFound: true);
@@ -766,9 +787,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_Jump;
-    private readonly InputAction m_Gameplay_Skill1;
-    private readonly InputAction m_Gameplay_Skill2;
-    private readonly InputAction m_Gameplay_Skill3;
+    private readonly InputAction m_Gameplay_PrimarySkill;
+    private readonly InputAction m_Gameplay_SecondarySkill;
+    private readonly InputAction m_Gameplay_UtilitySkill;
+    private readonly InputAction m_Gameplay_SpecialSkill;
     private readonly InputAction m_Gameplay_LockOnToggle;
     private readonly InputAction m_Gameplay_LockOnNext;
     private readonly InputAction m_Gameplay_LockOnPrevious;
@@ -800,17 +822,21 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Skill1".
+        /// Provides access to the underlying input action "Gameplay/PrimarySkill".
         /// </summary>
-        public InputAction @Skill1 => m_Wrapper.m_Gameplay_Skill1;
+        public InputAction @PrimarySkill => m_Wrapper.m_Gameplay_PrimarySkill;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Skill2".
+        /// Provides access to the underlying input action "Gameplay/SecondarySkill".
         /// </summary>
-        public InputAction @Skill2 => m_Wrapper.m_Gameplay_Skill2;
+        public InputAction @SecondarySkill => m_Wrapper.m_Gameplay_SecondarySkill;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Skill3".
+        /// Provides access to the underlying input action "Gameplay/UtilitySkill".
         /// </summary>
-        public InputAction @Skill3 => m_Wrapper.m_Gameplay_Skill3;
+        public InputAction @UtilitySkill => m_Wrapper.m_Gameplay_UtilitySkill;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/SpecialSkill".
+        /// </summary>
+        public InputAction @SpecialSkill => m_Wrapper.m_Gameplay_SpecialSkill;
         /// <summary>
         /// Provides access to the underlying input action "Gameplay/LockOnToggle".
         /// </summary>
@@ -874,15 +900,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Skill1.started += instance.OnSkill1;
-            @Skill1.performed += instance.OnSkill1;
-            @Skill1.canceled += instance.OnSkill1;
-            @Skill2.started += instance.OnSkill2;
-            @Skill2.performed += instance.OnSkill2;
-            @Skill2.canceled += instance.OnSkill2;
-            @Skill3.started += instance.OnSkill3;
-            @Skill3.performed += instance.OnSkill3;
-            @Skill3.canceled += instance.OnSkill3;
+            @PrimarySkill.started += instance.OnPrimarySkill;
+            @PrimarySkill.performed += instance.OnPrimarySkill;
+            @PrimarySkill.canceled += instance.OnPrimarySkill;
+            @SecondarySkill.started += instance.OnSecondarySkill;
+            @SecondarySkill.performed += instance.OnSecondarySkill;
+            @SecondarySkill.canceled += instance.OnSecondarySkill;
+            @UtilitySkill.started += instance.OnUtilitySkill;
+            @UtilitySkill.performed += instance.OnUtilitySkill;
+            @UtilitySkill.canceled += instance.OnUtilitySkill;
+            @SpecialSkill.started += instance.OnSpecialSkill;
+            @SpecialSkill.performed += instance.OnSpecialSkill;
+            @SpecialSkill.canceled += instance.OnSpecialSkill;
             @LockOnToggle.started += instance.OnLockOnToggle;
             @LockOnToggle.performed += instance.OnLockOnToggle;
             @LockOnToggle.canceled += instance.OnLockOnToggle;
@@ -924,15 +953,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Skill1.started -= instance.OnSkill1;
-            @Skill1.performed -= instance.OnSkill1;
-            @Skill1.canceled -= instance.OnSkill1;
-            @Skill2.started -= instance.OnSkill2;
-            @Skill2.performed -= instance.OnSkill2;
-            @Skill2.canceled -= instance.OnSkill2;
-            @Skill3.started -= instance.OnSkill3;
-            @Skill3.performed -= instance.OnSkill3;
-            @Skill3.canceled -= instance.OnSkill3;
+            @PrimarySkill.started -= instance.OnPrimarySkill;
+            @PrimarySkill.performed -= instance.OnPrimarySkill;
+            @PrimarySkill.canceled -= instance.OnPrimarySkill;
+            @SecondarySkill.started -= instance.OnSecondarySkill;
+            @SecondarySkill.performed -= instance.OnSecondarySkill;
+            @SecondarySkill.canceled -= instance.OnSecondarySkill;
+            @UtilitySkill.started -= instance.OnUtilitySkill;
+            @UtilitySkill.performed -= instance.OnUtilitySkill;
+            @UtilitySkill.canceled -= instance.OnUtilitySkill;
+            @SpecialSkill.started -= instance.OnSpecialSkill;
+            @SpecialSkill.performed -= instance.OnSpecialSkill;
+            @SpecialSkill.canceled -= instance.OnSpecialSkill;
             @LockOnToggle.started -= instance.OnLockOnToggle;
             @LockOnToggle.performed -= instance.OnLockOnToggle;
             @LockOnToggle.canceled -= instance.OnLockOnToggle;
@@ -1068,26 +1100,33 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Skill1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "PrimarySkill" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSkill1(InputAction.CallbackContext context);
+        void OnPrimarySkill(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Skill2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "SecondarySkill" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSkill2(InputAction.CallbackContext context);
+        void OnSecondarySkill(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Skill3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "UtilitySkill" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSkill3(InputAction.CallbackContext context);
+        void OnUtilitySkill(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SpecialSkill" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpecialSkill(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "LockOnToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

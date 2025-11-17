@@ -39,9 +39,10 @@ public class Player : MonoBehaviour {
     private const float DamagedLensDistortionDuration = 0.16f;
     private const float DamagedMotionBlurDuration = 0.66f;
     private const float DamagedMotionBlurIntensity = 1f;
-    private const int Skill1Id = 0;
-    private const int Skill2Id = 1;
-    private const int Skill3Id = 2;
+    private const int PrimarySkillId = 0;
+    private const int SecondarySkillId = 1;
+    private const int UtilitySkillId = 2;
+    private const int SpecialSkillId = 3;
     private const int MaxJumpCount = 2;
     private const DamageType StaggerDamageType = DamageType.Heavy;
 
@@ -118,8 +119,9 @@ public class Player : MonoBehaviour {
     [SerializeField] SkillCollection skillCollection;
     public SkillCollection SkillCollection => skillCollection;
 
-    [RuntimeField] public bool blockMoveInput = false;
-    [RuntimeField] public bool blockJumpInput = false;
+    [RuntimeField] private bool blockRunToggleInput = false;
+    [RuntimeField] private bool blockMoveInput = false;
+    [RuntimeField] private bool blockJumpInput = false;
 
 
     /// 
@@ -398,19 +400,24 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    public void Skill1()
+    public void PrimarySkill()
     {
-        skillCollection.UseSkill(Skill1Id);
+        skillCollection.UseSkill(PrimarySkillId);
     }
 
-    public void Skill2() 
+    public void SecondarySkill() 
     {
-        skillCollection.UseSkill(Skill2Id);
+        skillCollection.UseSkill(SecondarySkillId);
     }
 
-    public void Skill3()
+    public void UtilitySkill()
     {
-        skillCollection.UseSkill(Skill3Id); 
+        skillCollection.UseSkill(UtilitySkillId); 
+    }
+
+    public void SpecialSkill()
+    {
+        skillCollection.UseSkill(SpecialSkillId);
     }
 
 
@@ -436,6 +443,16 @@ public class Player : MonoBehaviour {
     public void UnblockJumpInput()
     {
         blockJumpInput = false;        
+    }
+
+    public void BlockRunToggleInput()
+    {
+        blockRunToggleInput = true;
+    }
+
+    public void UnblockRunToggleInput()
+    {
+        blockRunToggleInput = false;
     }
 
 
@@ -481,17 +498,21 @@ public class Player : MonoBehaviour {
 
     public void ExitCoyoteState()
     {
-        if (InputManager.Singleton.Skill1Pressed)
+        if (InputManager.Singleton.PrimarySkillPressed)
         {
-            Skill1();
+            PrimarySkill();
         }
-        else if (InputManager.Singleton.Skill2Pressed)
+        else if (InputManager.Singleton.SecondarySkillPressed)
         {
-            Skill2();
+            SecondarySkill();
         }
-        else if (InputManager.Singleton.Skill3Pressed)
+        else if (InputManager.Singleton.UtilitySkillPressed)
         {
-            Skill3();
+            UtilitySkill();
+        }
+        else if (InputManager.Singleton.SpecialSkillPressed)
+        {
+            SpecialSkill();
         }
         else{            
             CoyoteCallback?.Invoke();
@@ -680,32 +701,50 @@ public class Player : MonoBehaviour {
 
         InputManager input = InputManager.Singleton;
 
+        // move input.
+
         input.Move += OnMoveInput;
+        input.RunToggle += OnRunToggleInput;
         input.JumpStart += OnJumpStartInput;
         input.JumpStop += OnJumpStopInput;
+        
+        // interact input.
+
         input.Interact += OnInteractInput;
         input.NextInteractable += OnNextInteractable;
         input.PreviousInteractable += OnPreviousInteractable;
-        input.RunToggle += OnRunToggleInput;
-        input.Skill1 += OnSkill1Input;
-        input.Skill2 += OnSkill2Input;
-        input.Skill3 += OnSkill3Input;
+        
+        // skill input.
+
+        input.PrimarySkill += OnPrimarySkillInput;
+        input.SecondarySkill += OnSecondarySkillInput;
+        input.UtilitySkill += OnUtilitySkillInput;
+        input.SpecialSkill += OnSpecialSkillInput;
     }
 
     private void UnlinkInputEvents() {
 
         InputManager input = InputManager.Singleton;
 
+        // move input.
+
         input.Move -= OnMoveInput;
+        input.RunToggle -= OnRunToggleInput;
         input.JumpStart -= OnJumpStartInput;
         input.JumpStop -= OnJumpStopInput;
+        
+        // interact input.
+
         input.Interact -= OnInteractInput;
         input.NextInteractable -= OnNextInteractable;
         input.PreviousInteractable -= OnPreviousInteractable;
-        input.RunToggle -= OnRunToggleInput;
-        input.Skill1 -= OnSkill1Input;
-        input.Skill2 -= OnSkill2Input;
-        input.Skill3 -= OnSkill3Input;
+        
+        // Skill input.
+        
+        input.PrimarySkill -= OnPrimarySkillInput;
+        input.SecondarySkill -= OnSecondarySkillInput;
+        input.UtilitySkill -= OnUtilitySkillInput;
+        input.SpecialSkill -= OnSpecialSkillInput;
     }
 
     private void OnMoveInput(Vector2 moveInput) {
@@ -780,17 +819,24 @@ public class Player : MonoBehaviour {
 
     }
 
-    private void OnSkill1Input() {
-        OnSkillInput(Skill1, Skill1Id);
+    private void OnPrimarySkillInput() 
+    {
+        OnSkillInput(PrimarySkill, PrimarySkillId);
     }
 
-    private void OnSkill2Input() {
-        OnSkillInput(Skill2, Skill2Id);
+    private void OnSecondarySkillInput() 
+    {
+        OnSkillInput(SecondarySkill, SecondarySkillId);
     }
 
+    private void OnUtilitySkillInput() 
+    {
+        OnSkillInput(UtilitySkill, UtilitySkillId);
+    }
 
-    private void OnSkill3Input() {
-        OnSkillInput(Skill3, Skill3Id);
+    private void OnSpecialSkillInput()
+    {
+        OnSkillInput(SpecialSkill, SpecialSkillId);    
     }
 
     private void OnSkillInput(Action skillFunction, int skillId)
@@ -825,6 +871,11 @@ public class Player : MonoBehaviour {
 
     private void OnRunToggleInput()
     {
+        if(blockRunToggleInput == true)
+        {
+            return;
+        }
+
         if (IsMoveDirectionRunnable(InputManager.Singleton.moveInput))
         {
             ToggleRun();

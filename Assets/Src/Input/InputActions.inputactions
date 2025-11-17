@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill1",
+                    "name": "PrimarySkill",
                     "type": "Button",
                     "id": "6a40ec49-da34-46fd-bf71-69bf560ac598",
                     "expectedControlType": "",
@@ -43,7 +43,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill2",
+                    "name": "SecondarySkill",
                     "type": "Button",
                     "id": "703ddbaa-e236-42a9-ad58-43097cca1270",
                     "expectedControlType": "",
@@ -52,9 +52,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill3",
+                    "name": "UtilitySkill",
                     "type": "Button",
                     "id": "5f83bcd6-2241-4450-8a0c-6211b98e1724",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpecialSkill",
+                    "type": "Button",
+                    "id": "c886ef77-69de-4c90-8283-b0e6e614df57",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -330,7 +339,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Mouse",
-                    "action": "Skill1",
+                    "action": "PrimarySkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -341,7 +350,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Skill1",
+                    "action": "PrimarySkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -352,7 +361,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Mouse",
-                    "action": "Skill2",
+                    "action": "SecondarySkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -363,7 +372,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Skill2",
+                    "action": "SecondarySkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -502,11 +511,11 @@
                 {
                     "name": "",
                     "id": "870b8b24-a422-4c7a-82ef-8e1917a9340f",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "Skill3",
+                    "action": "UtilitySkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -529,6 +538,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "RunToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "578e89f7-b6b3-4d96-9fb1-5dd672c395f6",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

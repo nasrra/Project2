@@ -4,7 +4,7 @@ using Entropek.Ai.Contexts;
 using Entropek.Combat;
 using UnityEngine;
 
-public class Slink : Enemy {
+public class Slink : Boss {
 
 
     private enum State : byte
@@ -102,7 +102,7 @@ public class Slink : Enemy {
     public override void AttackState()
     {
         FixedUpdateCallback = AttackingStateFixedUpdate;
-        movement.PausePath();
+        navAgentMovement.PausePath();
     }
 
     private void AttackingStateFixedUpdate(){
@@ -112,8 +112,8 @@ public class Slink : Enemy {
     public override void ChaseState(){
         FixedUpdateCallback = ChaseStateFixedUpdate;
         combatAgent.BeginEvaluationLoop();
-        movement.ResumePath();
-        movement.StartPath(navAgentMovementTarget);
+        navAgentMovement.ResumePath();
+        navAgentMovement.StartPath(navAgentMovementTarget);
         animator.CrossFade(ChaseAnimation, 0.167f);
     }
 
@@ -146,7 +146,7 @@ public class Slink : Enemy {
 
     private void OnBiteLungeAnimationEvent()
     {
-        movement.ImpulseRelativeToGround(graphicsObject.forward, BiteLungeForce, BiteLungeDecaySpeed);
+        navAgentMovement.ImpulseRelativeToGround(graphicsObject.forward, BiteLungeForce, BiteLungeDecaySpeed);
     }
 
     private void OnBiteAttackFrameAnimationEvent()
@@ -197,7 +197,7 @@ public class Slink : Enemy {
 
     private void OnDashForwardLungeAnimationEvent()
     {
-        movement.ImpulseRelativeToGround(graphicsObject.forward, DashForwardLungeForce, DashForwardLungeDecay);
+        navAgentMovement.ImpulseRelativeToGround(graphicsObject.forward, DashForwardLungeForce, DashForwardLungeDecay);
     }
 
     ///

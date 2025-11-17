@@ -44,7 +44,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        FastState();
+        // FastState();
     }
 
     void OnDestroy()
@@ -61,11 +61,18 @@ public class EnemyDirector : MonoBehaviour
     ///
     /// Functions.
     /// 
-        int x = 0;
 
+    int x = 0;
     public void Evaluate()
     {
-        for(int j = 0; j < 2; j++)
+
+        if (x >= 100)
+        {
+            return;
+        }
+
+
+        for(int j = 0; j < 10; j++)
         {            
             for(int i = 0; i < spawnCards.Length; i++)
             {
@@ -77,6 +84,7 @@ public class EnemyDirector : MonoBehaviour
                 }
             }
         }
+
         Debug.Log(x);
     }
 

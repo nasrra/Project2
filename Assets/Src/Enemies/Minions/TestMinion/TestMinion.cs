@@ -18,15 +18,15 @@ public class TestMinion : Minion
     public override void ChaseState()
     {
         combatAgent.BeginEvaluationLoop();
-        movement.ResumePath();
-        movement.StartPath(navAgentMovementTarget);
+        navAgentMovement.ResumePath();
+        navAgentMovement.StartPath(navAgentMovementTarget);
     }
 
     public void FleeState()
     {
         combatAgent.BeginEvaluationLoop();
-        movement.ResumePath();
-        movement.MoveAway(navAgentMovementTarget, 24);
+        navAgentMovement.ResumePath();
+        navAgentMovement.MoveAway(navAgentMovementTarget, 24);
     }
 
     public override void IdleState()
@@ -139,18 +139,14 @@ public class TestMinion : Minion
         }
     }
 
-    protected override void EnterStaggerState(float time)
+    protected override void EnterStaggerStateInternal()
     {
-        combatAgent.HaltEvaluationLoop();
-        stateAgent.HaltEvaluationLoop();
-        movement.PausePath();
-        staggerTimer.Begin(time);
+        
     }
 
-    protected override void ExitStaggerState()
+    protected override void ExitStaggerStateInternal()
     {
-        combatAgent.BeginEvaluationLoop();
-        stateAgent.BeginEvaluationLoop();
-        movement.ResumePath();
+        
     }
+
 }

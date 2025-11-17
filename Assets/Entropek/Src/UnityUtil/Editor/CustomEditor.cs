@@ -13,10 +13,12 @@ namespace Entropek.UnityUtils
     public class CustomEditor : Editor
     {
         Dictionary<string, SerializeReferenceFieldDrawer> seriliazedReferences;
+        Dictionary<string, AdvancedPropertyAttribute> advancedPropertyAttributes;
 
         protected virtual void OnEnable()
         {
             seriliazedReferences = new();
+            advancedPropertyAttributes = new();
 
             serializedObject.Update();
 
@@ -41,37 +43,56 @@ namespace Entropek.UnityUtils
                     seriliazedReferences.Add(property.name, drawerInstance);
                     
                     drawerInstance.RetrieveDerivedTypes();
-                } 
-            }
-   
-           // Your custom list rendering here...
+                }
 
-            serializedObject.ApplyModifiedProperties();            
+                if(IsAdanvedPropertyAttribute(targetType, property, out AdvancedPropertyAttribute advancedPropertyAttribute) == true)
+                {
+                    advancedPropertyAttributes.Add(property.name, advancedPropertyAttribute);
+                }
+            }
         }
 
         public override void OnInspectorGUI()
         {
             // Draw all properties.
-
             SerializedProperty serializedProperty = serializedObject.GetIterator();
             bool enterChildren = true;
+
             while (serializedProperty.NextVisible(enterChildren))
             {
                 enterChildren = false;
-                
-                EditorGUILayout.PropertyField(serializedProperty, true);
 
+                // Handle AdvancedPropertyAttribute
+                if (advancedPropertyAttributes.ContainsKey(serializedProperty.name))
+                {
+                    advancedPropertyAttributes[serializedProperty.name].OnInspectorGUI(serializedProperty);
+                }
+                else
+                {
+                    EditorGUILayout.PropertyField(serializedProperty, true);
+                }
+
+                // Handle [SerializeReference] entries
                 if (seriliazedReferences.ContainsKey(serializedProperty.name))
                 {
-                    DrawSerializeReferenceEditor(target, in serializedProperty);    
+                    // Use your separate function to draw the managed reference
+                    DrawSerializeReferenceEditor(target, in serializedProperty);
                 }
             }
-   
-           // Your custom list rendering here...
+
+            // apply any modifications to the SerialisedProperty back to the object.
 
             serializedObject.ApplyModifiedProperties();
         }
 
+        protected virtual void OnSceneGUI()
+        {
+            foreach (KeyValuePair<string, AdvancedPropertyAttribute> kvp in advancedPropertyAttributes)
+            {   
+                kvp.Value.OnSceneGUI(target);
+            }
+        }
+        
         /// <summary>
         /// Draws the menu in the inspector to modify a field implementing the SerializeReference attribute. 
         /// </summary>
@@ -94,6 +115,21 @@ namespace Entropek.UnityUtils
             // SerializeReference: A scripting attribute that instructs Unity to serialize a field as a reference instead of as a value; allowing polymorphism for sub-classes.
             var field = targetType.GetField(serializedProperty.name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             return field != null && field.GetCustomAttribute<SerializeReference>() != null;
+        }
+
+        protected bool IsAdanvedPropertyAttribute(in Type targetType, in SerializedProperty serializedProperty, out AdvancedPropertyAttribute advancedPropertyAttribute)
+        {
+            advancedPropertyAttribute = null;
+            
+            var field = targetType.GetField(serializedProperty.name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (field == null)
+            {
+                return false;
+            }
+
+            advancedPropertyAttribute = field.GetCustomAttribute<DotProductRangeVisualise>();
+            return advancedPropertyAttribute != null;            
         }
     }
 }

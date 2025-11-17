@@ -83,51 +83,68 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         }
     }
 
-    [RuntimeField] private bool skill1Pressed;
-    public bool Skill1Pressed => skill1Pressed;
-    public event Action Skill1;
-    void InputActions.IGameplayActions.OnSkill1(InputAction.CallbackContext context){
+    [RuntimeField] private bool primarySkillPressed;
+    public bool PrimarySkillPressed => primarySkillPressed;
+    public event Action PrimarySkill;
+    void InputActions.IGameplayActions.OnPrimarySkill(InputAction.CallbackContext context){
         if(context.performed==true){
-            skill1Pressed = true;
-            Skill1?.Invoke();
+            primarySkillPressed = true;
+            PrimarySkill?.Invoke();
         }
 
-        if (context.canceled == true)
+        else if (context.canceled == true)
         {
-            skill1Pressed = false;
+            primarySkillPressed = false;
         }
     }
 
-    [RuntimeField] private bool skill2Pressed;
-    public bool Skill2Pressed => skill2Pressed;
-    public event Action Skill2;
-    void InputActions.IGameplayActions.OnSkill2(InputAction.CallbackContext context){
+    [RuntimeField] private bool secondarySkillPressed;
+    public bool SecondarySkillPressed => secondarySkillPressed;
+    public event Action SecondarySkill;
+    void InputActions.IGameplayActions.OnSecondarySkill(InputAction.CallbackContext context){
         
         if(context.performed==true){
-            skill2Pressed = true;
-            Skill2?.Invoke();
+            secondarySkillPressed = true;
+            SecondarySkill?.Invoke();
         }
 
-        if (context.canceled == true)
+        else if (context.canceled == true)
         {
-            skill2Pressed = false;
+            secondarySkillPressed = false;
         }
     }
     
-    [RuntimeField] private bool skill3Pressed;
-    public bool Skill3Pressed => skill3Pressed;
-    public event Action Skill3;
-    void InputActions.IGameplayActions.OnSkill3(InputAction.CallbackContext context)
+    [RuntimeField] private bool utilitySkillPressed;
+    public bool UtilitySkillPressed => utilitySkillPressed;
+    public event Action UtilitySkill;
+    void InputActions.IGameplayActions.OnUtilitySkill(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            skill3Pressed = true;
-            Skill3?.Invoke();
+            utilitySkillPressed = true;
+            UtilitySkill?.Invoke();
         }
 
-        if(context.canceled)
+        else if(context.canceled)
         {
-            skill3Pressed = false;
+            utilitySkillPressed = false;
+        }
+    }
+
+    [RuntimeField] private bool specialSkillPressed;
+    public bool SpecialSkillPressed => specialSkillPressed;
+    public event Action SpecialSkill;
+    void InputActions.IGameplayActions.OnSpecialSkill(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            specialSkillPressed = true;
+            SpecialSkill?.Invoke();
+        }
+
+        else if (context.canceled)
+        {
+            specialSkillPressed = false;
         }
     }
 

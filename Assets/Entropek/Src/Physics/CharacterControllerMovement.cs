@@ -37,6 +37,8 @@ namespace Entropek.Physics
         public float MaxSpeed => maxSpeed;
 
         [SerializeField] private float gravityModifier;
+        public float GravityModifier => gravityModifier;
+
         protected const float GravityForce = -9.81f;
         protected float gravity;
 

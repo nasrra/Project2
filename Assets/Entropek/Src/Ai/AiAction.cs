@@ -1,4 +1,5 @@
 using System;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Ai
@@ -14,12 +15,8 @@ namespace Entropek.Ai
 
         [Header("Parameters")]
         [Tooltip("Fov is measured by dot product value (-1 - 1), not by angle")]
-        [SerializeField][Range(-1,1)] private float maxFov;
-        public float MaxFov => maxFov;
-
-        [Tooltip("Fov is measured by dot product value (-1 - 1), not by angle")]
-        [SerializeField][Range(-1, 1)] private float minFov;
-        public float MinFov => minFov;
+        [DotProductRangeVisualise, SerializeField] protected DotProductRange fov;
+        public DotProductRange Fov => fov;
 
         [Header("Parameters")]
 
@@ -40,7 +37,7 @@ namespace Entropek.Ai
 
         public bool WithinFov(float dotProduct)
         {
-            return dotProduct >= MinFov && dotProduct <= MaxFov; 
+            return dotProduct >= fov.Min && dotProduct <= fov.Max; 
         }
 
         /// <summary>
@@ -64,48 +61,8 @@ namespace Entropek.Ai
 
         public virtual void OnValidate()
         {
-            EditorRegulateFovValues();
+            fov = fov.RegulateValues();
         }
-
-        /// <summary>
-        /// Ensures that min fov is never greater than max fov and max fov is never less than min fov.
-        /// </summary>
-
-        private float editorLastValidateMinFov;
-        private float editorLastValidateMaxFov;
-        
-        private void EditorRegulateFovValues()
-        {
-
-            /// Ensures that min fov is never greater than max fov.
-
-            if (editorLastValidateMinFov != minFov)
-            {                
-                if (minFov > maxFov)
-                {
-                    // add 0.1f for margin of error, and clamp value between -1 and 1 (min and max of dot product values).
-
-                    minFov = Mathf.Clamp(maxFov + 0.01f, -1, 1);
-                }
-            }
-
-            // ensure that max fov is never less than min fov.
-
-            if (editorLastValidateMaxFov != maxFov)
-            {
-                if (maxFov < minFov)
-                {
-
-                    // subtract 0.1f for margin of error, and clamp value between -1 and 1 (min and max of dot product values).
-
-                    maxFov = Mathf.Clamp(minFov - 0.01f, -1, 1);
-                }
-            }
-
-            editorLastValidateMaxFov = maxFov;
-            editorLastValidateMinFov = minFov;
-        }
-
 #endif
 
     }    

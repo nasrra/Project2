@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Entropek.UnityUtils.Attributes;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,9 +54,10 @@ namespace Entropek.Ai{
 
         }
 
-        protected void OnSceneGUI()
+        protected override void OnSceneGUI()
         {
-            DebugDrawSelectedActionFov();
+            base.OnSceneGUI();
+            DotProductRangeVisualise.DrawVisualiser(target, fovMinAngle, fovMaxAngle);
         }
 
 
@@ -125,84 +127,9 @@ namespace Entropek.Ai{
 
             // convert the dot product values to actual angles for easier visual debugging.
 
-            fovMinAngle = Mathf.Acos(selectedAction.MinFov) * Mathf.Rad2Deg;
-            fovMaxAngle = Mathf.Acos(selectedAction.MaxFov) * Mathf.Rad2Deg;
+            fovMinAngle = selectedAction.Fov.GetMinAngle();
+            fovMaxAngle = selectedAction.Fov.GetMaxAngle();
         }
-
-        /// <summary>
-        /// Draws two discs, one along the x-axis and another along the y-axis, visually showing the fov of an selected action.
-        /// </summary>
-
-        private void DebugDrawSelectedActionFov()
-        {
-            if (drawActionFovEditor == false || selectedActionToDebugFov == 0)
-            {
-                return; // dont draw anything if no action has been selected.
-            }
-
-            Transform transform = ((AiActionAgent)target).transform;
-
-
-            // draw the user defined max angle, where the combat angent cannot see in relation to the front of it.
-
-            DrawHorizontalFovArc(transform, OutsideFovColor, -fovMaxAngle, fovMaxAngle);
-            DrawVerticalFovArc(transform, OutsideFovColor, 0, fovMaxAngle);
-            DrawVerticalFovArc(transform, OutsideFovColor, 0, -fovMaxAngle);
-
-            // draw the remaining area that is less than the minimum viewing angle,
-
-            DrawHorizontalFovArc(transform, OutsideFovColor, -fovMinAngle, -180);
-            DrawHorizontalFovArc(transform, OutsideFovColor, fovMinAngle, 180);
-            DrawVerticalFovArc(transform, OutsideFovColor, -fovMinAngle, -180);
-            DrawVerticalFovArc(transform, OutsideFovColor, fovMinAngle, 180);
-
-            // draw the min angle, where the combat agent can consider the action when the target is within said angle.
-
-            DrawHorizontalFovArc(transform, InsideFovColor, fovMaxAngle, fovMinAngle);
-            DrawHorizontalFovArc(transform, InsideFovColor, -fovMaxAngle, -fovMinAngle);
-            DrawVerticalFovArc(transform, InsideFovColor, -fovMaxAngle, -fovMinAngle);
-            DrawVerticalFovArc(transform, InsideFovColor, fovMaxAngle, fovMinAngle);
-        }
-
-        /// <summary>
-        /// Draws a filled arc along the local x-axis in relation to a transforms position. 
-        /// </summary>
-        /// <param name="transform">The specified transform.</param>
-        /// <param name="color">The fill color of the arc.</param>
-        /// <param name="minAngle">The minimum angle of the arc.</param>
-        /// <param name="maxAngle">The maximum angle of the ar.</param>
-
-        private void DrawHorizontalFovArc(Transform transform, Color color, float minAngle, float maxAngle)
-        {
-            Handles.color = color;
-
-            // Start direction (rotated from forward by minAngle around local up)
-            Vector3 minDir = Quaternion.AngleAxis(minAngle, transform.up) * transform.forward;
-
-            // Draw around local up axis
-            Handles.DrawSolidArc(transform.position, transform.up, minDir, maxAngle - minAngle, 1);
-        }
-
-        /// <summary>
-        /// Draws a filled arc along the local y-axis in relation to a transforms position. 
-        /// </summary>
-        /// <param name="transform">The specified transform.</param>
-        /// <param name="color">The fill color of the arc.</param>
-        /// <param name="minAngle">The minimum angle of the arc.</param>
-        /// <param name="maxAngle">The maximum angle of the ar.</param>
-
-        private void DrawVerticalFovArc(Transform transform, Color color, float minAngle, float maxAngle)
-        {
-            Handles.color = color;
-
-            // Start direction (rotated up/down from forward around local right)
-            Vector3 minDir = Quaternion.AngleAxis(minAngle, transform.right) * transform.forward;
-
-            // Draw around local right axis
-            Handles.DrawSolidArc(transform.position, transform.right, minDir, maxAngle - minAngle, 1);
-        }
-
-
 
     }
 

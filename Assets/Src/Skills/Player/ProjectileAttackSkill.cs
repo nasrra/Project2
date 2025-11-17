@@ -71,7 +71,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
     [SerializeField] private int maxCharges;
     int IBatchRechargeSkill.MaxCharges => maxCharges;
 
-    [RuntimeField] private int charges;
+    [RuntimeField] private int charges = 0;
     int IBatchRechargeSkill.Charges 
     { 
         get => charges; 
@@ -121,7 +121,6 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
     {
         ICooldownSkill.LinkCooldownSkillEvents();
         Player.AnimationEventReciever.AnimationEventTriggered += OnAnimationEventTriggered;
-        IBatchRechargeSkill.RestoreCharges(maxCharges);
     }
 
     protected override void UnlinkEvents()

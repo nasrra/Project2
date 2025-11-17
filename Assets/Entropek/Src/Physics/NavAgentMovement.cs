@@ -1,9 +1,6 @@
 using System;
 using Entropek.UnityUtils.Attributes;
-using TreeEditor;
 using Unity.AI.Navigation;
-using Unity.IO.LowLevel.Unsafe;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -82,40 +79,39 @@ namespace Entropek.Physics
 
             // short-circuit if we are paused.
 
-            if (paused == true)
-            {
-                return;
-            }
-
-            if (navAgent.isOnOffMeshLink == false)
-            {
-                ProjectWorldPositionOnNavMeshAgent(navAgent, navMeshSurfacePrefab);
-            }
-
-            // handle the recacluate path recursion.            
-
-            fixedFrameCounter++;
-            if (fixedFrameCounter >= fixedFramesPerRecalculate)
+            if (paused == false)
             {
                 if (navAgent.isOnOffMeshLink == false)
                 {
-                    RecalculatePath?.Invoke();
+                    ProjectWorldPositionOnNavMeshAgent(navAgent, navMeshSurfacePrefab);
                 }
-                fixedFrameCounter = 0;
-            }
 
-            if (path != null)
-            {
-                if(UpdatePath(out NavAgentPathCornerContext currentCornerContext)){
-                    if (path == null || HaveReachedDestination())
+                // handle the recacluate path recursion.            
+
+                fixedFrameCounter++;
+                if (fixedFrameCounter >= fixedFramesPerRecalculate)
+                {
+                    if (navAgent.isOnOffMeshLink == false)
                     {
-                        return;
+                        RecalculatePath?.Invoke();
+                    }
+                    fixedFrameCounter = 0;
+                }
+
+                if (path != null)
+                {
+                    if(UpdatePath(out NavAgentPathCornerContext currentCornerContext)){
+                        if (path == null || HaveReachedDestination())
+                        {
+                            return;
+                        }
+
+                        MoveToNextPathPoint(ref currentCornerContext);                
                     }
 
-                    MoveToNextPathPoint(ref currentCornerContext);                
                 }
-
             }
+
 
             UpdateTick();
         }
@@ -259,7 +255,7 @@ namespace Entropek.Physics
 
             if(0 < path.corners.Length - 1)
             {
-                navAgent.SetDestination(path.corners[Math.Clamp(currentCornerIndex, 0, path.corners.Length-1)]);
+                navAgent.SetDestination(path.corners[System.Math.Clamp(currentCornerIndex, 0, path.corners.Length-1)]);
             }
             else
             {

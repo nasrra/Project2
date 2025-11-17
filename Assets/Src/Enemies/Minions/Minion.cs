@@ -20,14 +20,38 @@ public abstract class Minion : Enemy
 
     protected virtual void LinkTimerEvents()
     {
-        staggerTimer.Timeout += ExitStaggerState;
+        staggerTimer.Timeout += OnStaggerTimeout;
     }
 
     protected virtual void UnlinkTimerEvents()
     {
-        staggerTimer.Timeout -= ExitStaggerState;        
+        staggerTimer.Timeout -= OnStaggerTimeout;
     }
 
-    protected abstract void EnterStaggerState(float time);
-    protected abstract void ExitStaggerState();
+    private void OnStaggerTimeout()
+    {
+        ExitStaggerState();
+    }
+
+    public void EnterStaggerState(float time)
+    {
+        navAgentMovement.PausePath();
+        combatAgent.HaltEvaluationLoop();
+        stateQeueue.Halt();
+        staggerTimer.Begin(time);
+
+        EnterStaggerStateInternal();    
+    }
+
+    protected abstract void EnterStaggerStateInternal();
+
+    private void ExitStaggerState()
+    {
+        navAgentMovement.ResumePath();
+        combatAgent.BeginEvaluationLoop();
+        stateQeueue.Begin();
+        ExitStaggerStateInternal();
+    }
+
+    protected abstract void ExitStaggerStateInternal();
 }
