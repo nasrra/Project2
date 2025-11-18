@@ -99,6 +99,33 @@ MonoBehaviour:
   lastModified: 638973842118318688
   FileSizes: []
   Exists: 1
+--- !u!114 &-6809821346968836308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Weapons/ArmCannonSkillPull
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Weapons/ArmCannonSkillPull
+  Guid:
+    Data1: -1306595400
+    Data2: 1141558853
+    Data3: 1319408547
+    Data4: -2025605358
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 50
+  Length: 1149
 --- !u!114 &-6666042072242068795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +180,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 4022
+--- !u!114 &-5068848814348647152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Weapons/ArmCannonSkillPush
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Weapons/ArmCannonSkillPush
+  Guid:
+    Data1: 821402201
+    Data2: 1285752315
+    Data3: 1221663365
+    Data4: -169504200
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 50
+  Length: 1560
 --- !u!114 &-4093084935808055269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,7 +341,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638975703285442779
+  lastModified: 638990706005160518
   FileSizes: []
   Exists: 1
 --- !u!114 &-2854114135667232134
@@ -359,7 +413,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638975702728849073
+  lastModified: 638990698419724264
   FileSizes: []
   Exists: 1
 --- !u!114 &-2267910940784852343
@@ -449,13 +503,16 @@ MonoBehaviour:
   - {fileID: 3731092912885796876}
   - {fileID: -5416507813752684155}
   - {fileID: -6666042072242068795}
+  - {fileID: 4533323373934556179}
+  - {fileID: -5068848814348647152}
+  - {fileID: -6809821346968836308}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2519853073427545565}
   StringsBanks:
   - {fileID: 8146968385664048423}
   cacheVersion: 131849
-  cacheTime: 638975703285442779
+  cacheTime: 638990706005160518
   SerializableEventsDict:
   - key: event:/Sfx/Enemies/Slink/SlinkGrowl
     index: 0
@@ -489,6 +546,12 @@ MonoBehaviour:
     index: 14
   - key: event:/Sfx/Items/ArcStone/ArcStonePickup
     index: 15
+  - key: event:/Sfx/Weapons/WindBladeSkillUsed
+    index: 16
+  - key: event:/Sfx/Weapons/ArmCannonSkillPush
+    index: 17
+  - key: event:/Sfx/Weapons/ArmCannonSkillPull
+    index: 18
 --- !u!114 &292067498568191822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,6 +795,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1080
+--- !u!114 &4533323373934556179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Weapons/WindBladeSkillUsed
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Weapons/WindBladeSkillUsed
+  Guid:
+    Data1: 1583207682
+    Data2: 1199079852
+    Data3: 1225600421
+    Data4: 887085799
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 50
+  Length: 1567
 --- !u!114 &6198180318605954092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,10 +918,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638975702728862104
+  lastModified: 638990698419734299
   FileSizes:
   - Name: 
-    Value: 1756
+    Value: 1910
   Exists: 1
 --- !u!114 &8248852890597649268
 MonoBehaviour:

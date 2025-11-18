@@ -15,6 +15,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
     
     private const int ProjectilePrefabId = 0;
     private const int ProjectileSpawnPointId = 0;
+    private const string UseSfx = "WindBladeSkillUsed";
 
 
     /// 
@@ -95,14 +96,16 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
 
     public override bool CanUse()
     {
-        return ICooldownSkill.CanUseCooldownSkill();
+        return ICooldownSkill.CanUseCooldownSkill() && inUse == false;
     }
 
     protected override void UseInternal()
     {
         // restore all charges to fire all 
 
+        inUse = true;
         IBatchRechargeSkill.RestoreCharges(MaxCharges);
+        Player.AudioPlayer.PlaySound(UseSfx, Player.gameObject);
     }
 
     protected override void GetInterfaceTypes()
@@ -174,6 +177,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
     void IBatchRechargeSkill.OnChargesFullyDepleted()
     {
         cooldownTimer.Begin();
+        inUse = false;
     }
 
     void IBatchRechargeSkill.OnChargesFullyRestored()

@@ -25,6 +25,9 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
     private const string AnimationCompletedEventName = "ExitArmCannonState";
     private const string AnimationName = "ArmCannon";
     private const string ArmCannonBlastEventName = "ArmCannonBlast";
+    private const string PushSfx = "ArmCannonSkillPush";
+    private const string PullSfx = "ArmCannonSkillPull";
+
     private const float PullForceFactor = 4.8f;
     private const float PullForceDecayFactor = PullForceFactor *(PullForceFactor * 1f);
     private const float PushForceViewFactor = 1.33f; // the factor to apply to push force when the camera is looking at an affected target.
@@ -172,6 +175,8 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         IAnimatedSkill.PlayAnimation();
 
         Player.CameraController.StartLerpingFov(PullCameraFov, PullCameraFovLerpInDuration);
+
+        Player.AudioPlayer.PlaySound(PullSfx, Player.gameObject);
     }
 
 
@@ -451,6 +456,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 
     private void PlayBlastVfxAndSfx()
     {
+        Player.AudioPlayer.PlaySound(PushSfx, Player.gameObject);
         Player.CameraController.StartShaking(PushCameraShakeForce, PushCameraShakeTime);
 
         Player.CameraPostProcessingController.PulseLensDistortionIntensity(

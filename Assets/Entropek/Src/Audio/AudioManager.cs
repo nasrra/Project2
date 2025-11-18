@@ -106,6 +106,17 @@ namespace Entropek.Audio
         {
             EventInstance instance = RuntimeManager.CreateInstance(loadedEventReferences[eventName]);
 
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
+            {
+                position    = AudioManager.Singleton.UnityToFmodVector(attachedGameObject.transform.position),
+                velocity    = new FMOD.VECTOR { x = 0, y = 0, z = 0 },
+                forward     = new FMOD.VECTOR { x = 0, y = 0, z = 1},
+                up          = new FMOD.VECTOR { x = 0, y = 1, z = 0}
+            };
+
+
+            instance.set3DAttributes(attributes);
+
             RuntimeManager.AttachInstanceToGameObject(instance, attachedGameObject);
 
             instance.start();
