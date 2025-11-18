@@ -74,7 +74,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        FastState();
+        // FastState();
     }
 
     void OnDestroy()
@@ -85,6 +85,7 @@ public class EnemyDirector : MonoBehaviour
         }
 
         UnlinkEvents();
+        ClearEvents();
     }
 
 
@@ -208,8 +209,6 @@ public class EnemyDirector : MonoBehaviour
 
                 Enemy enemy = minion.GetComponent<Enemy>();
                 enemy.Health.Death += OnMinionDeath;
-
-                break;
             }
         }
     }
@@ -240,6 +239,11 @@ public class EnemyDirector : MonoBehaviour
     protected void UnlinkEvents()
     {
         UnlinkTimerEvents();
+    }
+
+    protected void ClearEvents()
+    {
+        AwardCurrency = null;
     }
 
     protected void LinkTimerEvents()

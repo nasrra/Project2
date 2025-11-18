@@ -975,6 +975,7 @@ public class Player : MonoBehaviour {
 
     private void UnlinkEnemyDirectorEvents()
     {        
+
         EnemyDirector.Singleton.AwardCurrency -= OnAwardCurrency;
     }
 

@@ -49,7 +49,6 @@ public class SkillHudManager : MonoBehaviour
 
     public void LinkToSkills(in Skill[] skills)
     {
-        Debug.Log("link to skills");
         for(int i = 0; i < skills.Length; i++)
         {
             skillHuds[i].LinkToSkill(skills[i]);

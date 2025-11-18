@@ -130,7 +130,6 @@ public class AttackSkill : Skill, IAnimatedSkill
         IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
         IAnimatedSkill.PlayAnimation();
 
-        Debug.Log("use");
     }
 
     void IAnimatedSkill.OnAnimationEventTriggered(string eventName)
