@@ -131,14 +131,23 @@ public interface IAnimatedSkill
         if(AnimationLayerWeightTransitionCoroutine != null)
         {
             Skill.StopCoroutine(AnimationLayerWeightTransitionCoroutine);
+            Debug.Log("stop");
         }
         AnimationLayerWeightTransitionCoroutine = Skill.StartCoroutine(AnimationLayerWeightTransition(value, speed));
     }
 
     IEnumerator AnimationLayerWeightTransition(float value, float speed)
     {
+
+        // NOTE:
+        //  set layer weight immediately first to ensure the value is set even at really high speeds.
+        //  Do not remove this line.
+
         float layerWeight = Animator.GetLayerWeight(AnimationLayer);
+        Animator.SetLayerWeight(AnimationLayer, Mathf.MoveTowards(layerWeight, value, Time.deltaTime * speed));
         
+        yield return new WaitForFixedUpdate();
+
         while(layerWeight != value)
         {
             Animator.SetLayerWeight(AnimationLayer, Mathf.MoveTowards(layerWeight, value, Time.deltaTime * speed));

@@ -1,3 +1,4 @@
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Physics
@@ -12,14 +13,20 @@ namespace Entropek.Physics
         [SerializeField] private CharacterControllerMovement movement;
 
         [Header("Data")]
-        private Vector3 initialJumpVelocity;
-        private Vector3 jumpVelocity;
+        [RuntimeField] private Vector3 initialJumpVelocity;
+        [RuntimeField] private Vector3 jumpVelocity;
 
         [SerializeField] private float jumpSpeed;
         public float JumpSpeed => jumpSpeed;
 
         [SerializeField] private float jumpDecay;
         public float JumpDecay => jumpDecay;
+
+        [SerializeField] private float jumpCancelDecay;
+        public float JumpCancelDecay => jumpCancelDecay;
+
+        [SerializeField] private float gravityThresholdSqrd;
+        public float GravityThresholdSqrd => gravityThresholdSqrd; 
 
         private bool isJumping = false;
 
@@ -57,21 +64,30 @@ namespace Entropek.Physics
 
         public void HandleJumping()
         {
-            if (isJumping == true && jumpVelocity.sqrMagnitude > 0)
+            if (isJumping == true)
             {
-                jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpDecay * UnityEngine.Time.deltaTime);
-                controller.Move(jumpVelocity * UnityEngine.Time.deltaTime);
-                movement.SnapToGround = false;
+                if(jumpVelocity.sqrMagnitude > 0)
+                {
+                    jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpDecay * UnityEngine.Time.deltaTime);
+                    controller.Move(jumpVelocity * UnityEngine.Time.deltaTime);
+                    movement.SnapToGround = false;                    
+                }
+                
+                if(jumpVelocity.sqrMagnitude > GravityThresholdSqrd)
+                {
+                    movement.ClearGravityVelocity();
+                }
             }
             else
             {
+                jumpVelocity = Vector3.MoveTowards(jumpVelocity, Vector3.zero, jumpCancelDecay * UnityEngine.Time.deltaTime);
+                controller.Move(jumpVelocity * UnityEngine.Time.deltaTime);
                 movement.SnapToGround = true;
             }
         }
 
         public void StopJumping()
         {
-            jumpVelocity = Vector3.zero;
             isJumping = false;
         }
     }

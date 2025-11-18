@@ -548,7 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: ArmCannonBlast
-  triggerTime: 0.436
+  triggerTime: 0.33
 --- !u!1102 &7864819011645725138
 AnimatorState:
   serializedVersion: 6

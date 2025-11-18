@@ -130,6 +130,7 @@ public class AttackSkill : Skill, IAnimatedSkill
         IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
         IAnimatedSkill.PlayAnimation();
 
+        Debug.Log("use");
     }
 
     void IAnimatedSkill.OnAnimationEventTriggered(string eventName)
@@ -148,6 +149,8 @@ public class AttackSkill : Skill, IAnimatedSkill
 
     void IAnimatedSkill.Cancel()
     {
+        Debug.Log("Cancel");
+
         IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MinAnimationLayerWeight, 100);
         
         // instantly swap back to idle on the attack animation layer;

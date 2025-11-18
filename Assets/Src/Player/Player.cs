@@ -266,6 +266,7 @@ public class Player : MonoBehaviour {
         if (verticalMoveState == CharacterVerticalMoveState.None)
         {
             animator.Play(IdleAnimation);
+            animator.Update(0);
         }
     }
 
@@ -315,7 +316,8 @@ public class Player : MonoBehaviour {
 
         if(verticalMoveState == CharacterVerticalMoveState.None)
         {
-            animator.Play(moveAnimation);            
+            animator.Play(moveAnimation);    
+            animator.Update(0);        
         }
 
     }
@@ -392,6 +394,7 @@ public class Player : MonoBehaviour {
     public void Fall() {
         verticalMoveState = CharacterVerticalMoveState.Fall;
         animator.Play(FallAnimation);
+        animator.Update(0);
     }
 
 

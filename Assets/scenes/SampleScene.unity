@@ -596,7 +596,7 @@ MonoBehaviour:
   acceleration: 0
   deceleration: 0
   maxSpeed: 0
-  gravityModifier: 3.33
+  gravityModifier: 4.44
   UseGravity: 1
   SnapToGround: 1
 --- !u!114 &36969666
@@ -646,8 +646,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 36969664}
   movement: {fileID: 36969665}
-  jumpSpeed: 24.415
-  jumpDecay: 49.805
+  jumpSpeed: 22
+  jumpDecay: 44
+  jumpCancelDecay: 66
+  gravityThresholdSqrd: 24
 --- !u!114 &36969676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18265,6 +18267,10 @@ PrefabInstance:
     - target: {fileID: 305669089054280886, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3305615543810006691, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
+      propertyPath: initialTime
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7945553794990527961, guid: 94efda60281e23c43b4618aa8d9d8441, type: 3}
       propertyPath: Player

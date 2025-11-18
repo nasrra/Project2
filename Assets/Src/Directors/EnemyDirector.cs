@@ -44,7 +44,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        FastState();
+        // FastState();
     }
 
     void OnDestroy()
@@ -85,7 +85,7 @@ public class EnemyDirector : MonoBehaviour
             }
         }
 
-        Debug.Log(x);
+        // Debug.Log(x);
     }
 
     public void FastState()
