@@ -1,3 +1,5 @@
+using System;
+using Entropek.Collections;
 using Entropek.Combat;
 using Entropek.EntityStats;
 using Entropek.Exceptions;
@@ -8,13 +10,21 @@ using UnityEngine.AI;
 [DefaultExecutionOrder(-5)]
 public class EnemyDirector : MonoBehaviour
 {
-    public static EnemyDirector Singleton {get; private set;}
-   
-    [Header("Components")]
-    [SerializeField] RandomLoopedTimer evaluationTimer;
 
-    [Header("Data")]
-    [SerializeField] EnemySpawnCard[] spawnCards;
+
+    /// 
+    /// Singleton.
+    /// 
+
+
+    public static EnemyDirector Singleton {get; private set;}
+
+
+    /// 
+    /// Constants.
+    /// 
+
+
     private const float SlowEvaluationTimeMin = 10;
     private const float SlowEvaluationTimeMax = 20;
     private const float FastEvaluationTimeMin = 5;
@@ -24,6 +34,26 @@ public class EnemyDirector : MonoBehaviour
     private const float SpawnRandomRadiusMax = 48;
     private const float SpawnQueryRadius = 3.33f;
 
+    private const int MinionDeathGoldAwardMin = 10;
+    private const int MinionDeathGoldAwardMax = 17;
+    private const int MiniBossDeathGoldAwardMin = 25;
+    private const int MiniBossDeathGoldAwardMax = 32; 
+
+
+    /// 
+    /// Callbacks.
+    /// 
+
+
+    public event Action<Currency, int> AwardCurrency;
+
+
+    [Header("Components")]
+    [SerializeField] RandomLoopedTimer evaluationTimer;
+
+    [Header("Data")]
+    [SerializeField] EnemySpawnCard[] spawnCards;
+    [SerializeField] Currency awardedCurrency;
 
 
     /// 
@@ -44,7 +74,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        // SlowState();
+        FastState();
     }
 
     void OnDestroy()
@@ -59,35 +89,10 @@ public class EnemyDirector : MonoBehaviour
 
 
     ///
-    /// Functions.
+    /// State Machine.
     /// 
-
-    int x = 0;
-    public void Evaluate()
-    {
-
-        if (x >= 100)
-        {
-            return;
-        }
-
-
-        for(int j = 0; j < 10; j++)
-        {            
-            for(int i = 0; i < spawnCards.Length; i++)
-            {
-                EnemySpawnCard spawnCard = spawnCards[i];
-                if(spawnCard.EnemyType == EnemyType.Minion)
-                {
-                    SpawnAtRandomPosition(spawnCard);
-                    x++;
-                }
-            }
-        }
-
-        // Debug.Log(x);
-    }
-
+    
+    
     public void FastState()
     {
         evaluationTimer.SetInitialTimeRange(FastEvaluationTimeMin, FastEvaluationTimeMax);
@@ -100,35 +105,39 @@ public class EnemyDirector : MonoBehaviour
         evaluationTimer.Begin();
     }
 
-    public void SpawnMiniboss()
+    // int x = 0;
+    public void Evaluate()
     {
-        for(int i = 0; i < spawnCards.Length; i++)
-        {
-            EnemySpawnCard spawnCard = spawnCards[i];
-            if(spawnCard.EnemyType == EnemyType.MiniBoss)
-            {
 
-                // spawn miniboss.
+        // if (x >= 100)
+        // {
+        //     return;
+        // }
 
-                GameObject miniboss = SpawnAtRandomPosition(spawnCard);
-                
-                if(miniboss == null)
-                {
-                    continue;
-                }
 
-                // display boss health bar hud.
-                
-                Health health = miniboss.GetComponent<Health>();
-                BossHealthBarHud.Singleton.NamedHealthBar.Activate(health, miniboss.name.Replace("(Clone)", ""));
-                
-                break;
-            }
+        for(int j = 0; j < 10; j++)
+        {            
+            SpawnMinion();
         }
     }
 
-    public GameObject SpawnAtRandomPosition(EnemySpawnCard spawnCard)
+
+    ///
+    /// Spawn Card Handling.
+    /// 
+
+
+    /// <summary>
+    /// Spawns the prefab stored within a EnemySpawn card at a random location determined by its nav agent AgentTypeId.
+    /// </summary>
+    /// <param name="spawnCard">The specified EnemySpawnCard to evaluatate.</param>
+    /// <param name="instantiatedGameObject">The instantiated enemy gameobject.</param>
+    /// <returns>true, if a random point was found to spawn the enemy at.</returns>
+
+    public bool SpawnAtRandomPosition(EnemySpawnCard spawnCard, out GameObject instantiatedGameObject)
     {
+        instantiatedGameObject = null;
+
         Vector3 centerPosition = Opponent.Singleton.transform.position;
 
         Vector3 randomPosition = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
@@ -143,7 +152,7 @@ public class EnemyDirector : MonoBehaviour
 
         if (foundPoint == false)
         {
-            return null;
+            return false;
         }
 
         Vector3 spawnPosition = randomPosition;
@@ -154,8 +163,69 @@ public class EnemyDirector : MonoBehaviour
         ? Vector3.up * NavMesh.GetSettingsByID(spawnCard.NavMeshAgentType).agentHeight
         : Vector3.zero;
         
-        return Instantiate(spawnCard.Prefab, position: spawnPosition, rotation: Quaternion.identity);
+        instantiatedGameObject = Instantiate(spawnCard.Prefab, position: spawnPosition, rotation: Quaternion.identity);
+        return true;
     }
+
+    public void SpawnMiniboss()
+    {
+        for(int i = 0; i < spawnCards.Length; i++)
+        {
+            EnemySpawnCard spawnCard = spawnCards[i];
+            if(spawnCard.EnemyType == EnemyType.MiniBoss)
+            {
+
+                // spawn miniboss.
+                
+                if(SpawnAtRandomPosition(spawnCard, out GameObject miniboss)==false)
+                {
+                    continue;
+                }
+
+                // display boss health bar hud.
+                
+                Health health = miniboss.GetComponent<Health>();
+                BossHealthBarHud.Singleton.NamedHealthBar.Activate(health, miniboss.name.Replace("(Clone)", ""));
+                
+                break;
+            }
+        }
+    }
+
+    public void SpawnMinion()
+    {
+        for(int i = 0; i < spawnCards.Length; i++)
+        {
+            EnemySpawnCard spawnCard = spawnCards[i];
+            if(spawnCard.EnemyType == EnemyType.Minion)
+            {
+                // spawn enemy.
+
+                if(SpawnAtRandomPosition(spawnCard, out GameObject minion) == false)
+                {
+                    continue;
+                }
+
+                Enemy enemy = minion.GetComponent<Enemy>();
+                enemy.Health.Death += OnMinionDeath;
+
+                break;
+            }
+        }
+    }
+
+
+    ///
+    /// Enemy Death Handling.
+    /// 
+
+
+    private void OnMinionDeath()
+    {
+        int amount = UnityEngine.Random.Range(MinionDeathGoldAwardMin, MinionDeathGoldAwardMax + 1); // add one as its exclusive.
+        AwardCurrency?.Invoke(awardedCurrency, amount);
+    }
+
 
     /// 
     /// Linkage.

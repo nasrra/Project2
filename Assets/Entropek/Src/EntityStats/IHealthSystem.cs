@@ -12,6 +12,16 @@ namespace Entropek.EntityStats{
         public event Action Death;
         public event Action Restored;
 
+        private void OnDestroy()
+        {
+            // clear all callbacks to ensure GC.
+
+            Healed = null;
+            Damaged = null;
+            Death = null;
+            Restored = null;
+        }
+
         public abstract int GetNormalisedValue();
 
         /// <summary>
@@ -47,6 +57,7 @@ namespace Entropek.EntityStats{
         protected void InvokeHealed(int amount){
             Healed?.Invoke(amount);
         }
+
 
     }
 

@@ -537,6 +537,7 @@ public class Player : MonoBehaviour {
     /// Links all component events to their respective callbacks.
     /// </summary>
 
+
     private void LinkEvents()
     {
         LinkCameraEvents();
@@ -546,11 +547,13 @@ public class Player : MonoBehaviour {
         LinkAnimationEventRecieverEvents();
         LinkHealthEvents();
         LinkInventoryEvents();
+        LinkEnemyDirectorEvents();
     }
 
     /// <summary>
     /// Unlinks all component events from theiur respective callbacks.
     /// </summary>
+
 
     private void UnlinkEvents()
     {
@@ -561,6 +564,7 @@ public class Player : MonoBehaviour {
         UnlinkAnimationEventRecieverEvents();
         UnlinkHealthEvents();
         UnlinkInventoryEvents();
+        UnlinkEnemyDirectorEvents();
     }
 
 
@@ -957,4 +961,26 @@ public class Player : MonoBehaviour {
             itemRemovedContext.Item.RemoveModifier(playerStats);
         }
     }
+
+
+    ///
+    /// Enemy Director Linkage.
+    /// 
+
+
+    private void LinkEnemyDirectorEvents()
+    {
+        EnemyDirector.Singleton.AwardCurrency += OnAwardCurrency;
+    }
+
+    private void UnlinkEnemyDirectorEvents()
+    {        
+        EnemyDirector.Singleton.AwardCurrency -= OnAwardCurrency;
+    }
+
+    private void OnAwardCurrency(Currency currency, int amount)
+    {
+        Inventory.AddCurrency(currency, amount);
+    }
+
 }

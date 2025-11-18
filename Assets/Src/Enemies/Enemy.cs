@@ -3,6 +3,7 @@ using Entropek.Combat;
 using Entropek.Physics;
 using Entropek.Time;
 using UnityEditor.Experimental.GraphView;
+using Entropek.EntityStats;
 
 public abstract class Enemy : MonoBehaviour 
 {
@@ -17,7 +18,10 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
     [SerializeField] protected NavAgentMovementTarget navAgentMovementTarget;
     [SerializeField] protected Transform target;
-    [SerializeField] protected Entropek.EntityStats.HealthSystem health;
+    
+    [SerializeField] protected HealthSystem health;
+    public HealthSystem Health => health;
+
     [SerializeField] protected Entropek.Ai.AiActionAgent combatAgent;
     [SerializeField] protected Entropek.UnityUtils.AnimatorUtils.AnimationEventReciever animationEventReciever;
     [SerializeField] protected NavAgentMovement navAgentMovement;

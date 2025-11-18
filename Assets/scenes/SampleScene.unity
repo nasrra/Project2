@@ -16837,6 +16837,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5e83c17463e94743bfadc4fc94c649b, type: 2}
   - {fileID: 11400000, guid: ec7bf72c94243b94ea164678863557e2, type: 2}
   - {fileID: 11400000, guid: ecb0b0a56a764b54f8cde504b67679a4, type: 2}
+  awardedCurrency: {fileID: 11400000, guid: 2fd03f23fccdb8549b5ce061992b124c, type: 2}
 --- !u!114 &2139258493
 MonoBehaviour:
   m_ObjectHideFlags: 0
