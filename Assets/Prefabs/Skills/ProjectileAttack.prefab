@@ -52,7 +52,6 @@ MonoBehaviour:
   Player: {fileID: 0}
   projectileSpawner: {fileID: 8466115861980703420}
   cooldownTimer: {fileID: 2894243814148537508}
-  maxCharges: 300
 --- !u!114 &6508479368606669401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Cooldown
-  initialTime: 12
+  initialTime: 20
   BeginOnEnable: 0
 --- !u!1 &4262796481690770947
 GameObject:

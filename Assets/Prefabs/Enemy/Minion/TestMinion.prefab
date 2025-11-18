@@ -62,14 +62,14 @@ MonoBehaviour:
   health: {fileID: 4689728430435315810}
   combatAgent: {fileID: 3479598227594797709}
   animationEventReciever: {fileID: 1003746823429030799}
-  movement: {fileID: 2680361135054517317}
+  navAgentMovement: {fileID: 2680361135054517317}
   audioPlayer: {fileID: 4519142253100921248}
   stateQeueue: {fileID: 7923544276146763982}
   groundChecker: {fileID: 5584480075394897596}
   faceTargetDirectionSpeed: 3.33
   faceMoveDirectionSpeed: 3.33
   faceTargetDotThreshold: 0.9
-  staggerTimer: {fileID: 2149740342391724041}
+  stunTimer: {fileID: 2149740342391724041}
   projectileSpawner: {fileID: 5419374591475288203}
   attackStateTimer: {fileID: 6149208914373165517}
   stateAgent: {fileID: 8749040930683538465}
@@ -1185,6 +1185,14 @@ PrefabInstance:
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954619543453776].fov.max
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
+      propertyPath: managedReferences[5395954619543453776].fov.min
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].idleTime

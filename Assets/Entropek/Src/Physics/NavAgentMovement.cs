@@ -30,7 +30,7 @@ namespace Entropek.Physics
     {
 
         public event Action ReachedDestination;
-        private Action RecalculatePath;
+        private Action RecalculatePathCallback;
 
         [Header(nameof(NavAgentMovement) + " Components")]
         [Tooltip("The NavMeshAgent must be on a child object of this scripts gameobject in order to funciton properly.")]
@@ -44,7 +44,7 @@ namespace Entropek.Physics
         [RuntimeField] protected NavMeshPath path;
 
         private const float cornerDistanceThreshold = 0.66f;
-        private const int fixedFramesPerRecalculate = 30; // recalc every 25 frames or half a second.
+        private const int TicksPerRecalculate = 30; // recalc every 25 frames or half a second.
         
         private int fixedFrameCounter = 0;
         [RuntimeField] protected int currentCornerIndex = 0;
@@ -86,15 +86,9 @@ namespace Entropek.Physics
                     ProjectWorldPositionOnNavMeshAgent(navAgent, navMeshSurfacePrefab);
                 }
 
-                // handle the recacluate path recursion.            
-
                 fixedFrameCounter++;
-                if (fixedFrameCounter >= fixedFramesPerRecalculate)
+                if (RecalculatePathTick(fixedFrameCounter))
                 {
-                    if (navAgent.isOnOffMeshLink == false)
-                    {
-                        RecalculatePath?.Invoke();
-                    }
                     fixedFrameCounter = 0;
                 }
 
@@ -108,7 +102,6 @@ namespace Entropek.Physics
 
                         MoveToNextPathPoint(ref currentCornerContext);                
                     }
-
                 }
             }
 
@@ -116,11 +109,36 @@ namespace Entropek.Physics
             UpdateTick();
         }
 
+        /// <summary>
+        /// Invokes the RecalculatePathCallback if the specified 'tick' is greater than or equal to TicksPerRecalculate.
+        /// </summary>
+        /// <param name="tick">The specified tick</param>
+        /// <returns>true, when the callback can been invoked; otherwise false.</returns>
 
-        /// 
-        /// Functions.
-        /// 
+        private bool RecalculatePathTick(int tick)
+        {
+            if (tick >= TicksPerRecalculate && navAgent.isOnOffMeshLink == false)
+            {
+                RecalculatePathCallback?.Invoke();
+                return true;
+            }            
+            return false;
+        }
 
+        /// <summary>
+        /// Recalculates an assigned path to a target. 
+        /// </summary>
+        /// <returns>true, if there is a RecalculatePathCallback set; otherwise false.</returns>
+
+        public bool RecalculatePath()
+        {
+            if(RecalculatePathCallback != null)
+            {
+                RecalculatePathCallback();
+                return true;
+            }
+            return false;
+        }
 
         /// <summary>
         /// Set the agent to calculate and start moving along a path towards a transform's position.
@@ -144,7 +162,7 @@ namespace Entropek.Physics
             // set the RecalculatePath to this function call
             // to recursively update.
 
-            RecalculatePath = () =>
+            RecalculatePathCallback = () =>
             {
                 StartPath(target);
             };
@@ -179,7 +197,7 @@ namespace Entropek.Physics
             // set the RecalculatePath to this function call
             // to recursively update.
 
-            RecalculatePath = () =>
+            RecalculatePathCallback = () =>
             {
                 MoveAway(target, distance);
             };

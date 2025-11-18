@@ -133,20 +133,20 @@ public class TestMinion : Minion
         
         // if the damaging type is of stagger type.
 
-        if((damageContext.DamageType & StaggerDamageType) != 0)
-        {
-            EnterStaggerState(0.64f);
-        }
+        // if((damageContext.DamageType & StaggerDamageType) != 0)
+        // {
+        //     EnterStunState(0.64f);
+        // }
     }
 
-    protected override void EnterStaggerStateInternal()
+    protected override void EnterStunStateInternal()
     {
-        
+        // do nothing.        
     }
 
-    protected override void ExitStaggerStateInternal()
+    protected override void ExitStunStateInternal()
     {
-        
+        // do nothing.
     }
 
 }

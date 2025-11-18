@@ -68,8 +68,8 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
         set => ChargesFullyRestored = value; 
     }
 
-    [SerializeField] private int maxCharges;
-    int IBatchRechargeSkill.MaxCharges => maxCharges;
+    private const int MaxCharges = 6;
+    int IBatchRechargeSkill.MaxCharges => MaxCharges;
 
     [RuntimeField] private int charges = 0;
     int IBatchRechargeSkill.Charges 
@@ -102,7 +102,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
     {
         // restore all charges to fire all 
 
-        IBatchRechargeSkill.RestoreCharges(maxCharges);
+        IBatchRechargeSkill.RestoreCharges(MaxCharges);
     }
 
     protected override void GetInterfaceTypes()
@@ -145,7 +145,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
         {
             case AttackSkill.AttackFrameEventName:
                 projectileSpawner.FireAtPosition(
-                    (maxCharges - charges) % 3, 
+                    (MaxCharges - charges) % 3, 
                     ProjectileSpawnPointId, 
                     Player.CameraAimTarget.transform.position);
 

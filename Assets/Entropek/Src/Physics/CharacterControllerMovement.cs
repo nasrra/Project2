@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Entropek.Collections;
 using Entropek.Physics;
 using Entropek.UnityUtils.Attributes;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -280,6 +281,17 @@ namespace Entropek.Physics
         /// Linear Force Handling.
         /// 
 
+
+        
+        public void Impulse(CharacterControllerMovementLinearImpulse impulse)
+        {
+            linearForceVelocities.Add(new LinearForceVelocity(impulse.Direction * impulse.Force, impulse.DecaySpeed));
+        }
+
+        public void Impulse(in LinearForceVelocity linearForceVelocity)
+        {
+            linearForceVelocities.Add(linearForceVelocity);
+        }
 
         public void Impulse(Vector3 direction, float force, float decaySpeed)
         {

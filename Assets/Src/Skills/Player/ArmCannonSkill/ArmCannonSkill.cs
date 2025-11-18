@@ -16,9 +16,11 @@ using UnityEngine.TextCore.Text;
 public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 {
 
+
     /// 
     /// Constants.
     /// 
+
 
     private const string AnimationCompletedEventName = "ExitArmCannonState";
     private const string AnimationName = "ArmCannon";
@@ -48,12 +50,14 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
     private const int HitVfxId = 0;
     private const string HitSfx = "MeleeHit";
 
-    private const int Damage = 3;
+    private const int Damage = 0;
     private const DamageType TypeOfDamage = DamageType.Heavy;
+
 
     /// 
     /// Components.
     /// 
+
 
     [Header("Components")]
     [SerializeField] VfxPlayerSpawner vfxPlayerSpawner;
@@ -160,14 +164,13 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         ApplyJumpForce();
         PullEntities();
 
-        Player.CharacterControllerMovement.ClearGravityVelocity();
-
-        Player.EnterWalkState();
         Player.BlockRunToggleInput();
         Player.BlockJumpInput();
+        Player.EnterWalkState();
 
         IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
         IAnimatedSkill.PlayAnimation();
+
         Player.CameraController.StartLerpingFov(PullCameraFov, PullCameraFovLerpInDuration);
     }
 
@@ -211,7 +214,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 
             if(other.TryGetComponent(out Minion minion))
             {                    
-                PullCharacterControllerMovement(minion.NavAgentMovement, direction, distance);   
+                PullCharacterControllerMovement(minion.NavAgentMovement, direction, distance, out _);   
             }
 
             // do this last to ensure boss and minion components are always found;
@@ -219,7 +222,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 
             else if(other.TryGetComponent(out CharacterControllerMovement characterControllerMovement))
             {
-                PullCharacterControllerMovement(characterControllerMovement, direction, distance);
+                PullCharacterControllerMovement(characterControllerMovement, direction, distance, out _);
             }
         }
     }
@@ -271,15 +274,20 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
             }
 
             if(other.TryGetComponent(out Minion minion))
-            {                    
-                PushCharacterControllerMovement(minion.NavAgentMovement, direction, distance);   
+            {
+                if(PushCharacterControllerMovement(
+                    minion.NavAgentMovement, 
+                    direction, 
+                    distance, 
+                    out CharacterControllerMovementLinearImpulse impulse)
+                )
+                {
+                    minion.EnterStunState(CalculatePushStunTime(impulse.Force, impulse.DecaySpeed));
+                }
             }
             else if(other.TryGetComponent(out CharacterControllerMovement characterControllerMovement))
             {
-                // do this last to ensure boss and minion components are always found;
-                // as they both implement CharacterControllerMovement subclasses. 
-
-                PushCharacterControllerMovement(characterControllerMovement, direction, distance);
+                PushCharacterControllerMovement(characterControllerMovement, direction, distance, out _);
             }
         }
     }
@@ -293,17 +301,23 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
     /// <param name="character">The CharacterControllerMovement to apply the force to.</param>
     /// <param name="direction">The direction to move in the opposite direction from (away-direction)</param>
     /// <param name="distance">The distance the character is away from this gameobject.</param>
+    /// <param name="impulse">The impulse force that was applied to the CharacterControllerMovement.</param>
+    /// <returns>true, if a force was successfully applied; otherwise false.</returns>
 
-    void PullCharacterControllerMovement(CharacterControllerMovement character, Vector3 direction, float distance)
+    bool PullCharacterControllerMovement(CharacterControllerMovement character, Vector3 direction, float distance, out CharacterControllerMovementLinearImpulse impulse)
     {                
         float force = distance * PullForceFactor;
         float forceDecay = distance * PullForceDecayFactor;
+        impulse = new();
 
         if(force > 0 && forceDecay > 0) // avoid edge cases where the distance is at the attack radius.
         {
-            character.Impulse(-direction, distance * PullForceFactor, distance * PullForceDecayFactor);
+            impulse = new(-direction, force, forceDecay);
+            character.Impulse(impulse);
+            return true;
         }
 
+        return false;
     }
 
     /// <summary>
@@ -315,17 +329,19 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
     /// <param name="character">The CharacterControllerMovement to apply the force to.</param>
     /// <param name="direction">The direction to move in.</param>
     /// <param name="distance">The distance the character is away from this gameobject.</param>
+    /// <param name="impulse">The impulse force that was applied to the CharacterControllerMovement.</param>
+    /// <returns>true, if a force was successfully applied; otherwise false.</returns>
 
-    void PushCharacterControllerMovement(CharacterControllerMovement character, Vector3 direction, float distance)
+    bool PushCharacterControllerMovement(CharacterControllerMovement character, Vector3 direction, float distance, out CharacterControllerMovementLinearImpulse impulse)
     {
-        Vector3 cameraForwardDirection = Player.CameraController.transform.forward;
-        
-        float dot = Vector3.Dot(direction, cameraForwardDirection);
 
         float force = PushForceFactor;
         float forceDecay = PushForceDecayFactor;
 
         // if the character is within view range of the camera.
+
+        Vector3 cameraForwardDirection = Player.CameraController.transform.forward;
+        float dot = Vector3.Dot(direction, cameraForwardDirection);
 
         if(dot >= fov.Min)
         {
@@ -343,16 +359,21 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         // apply a force pushing the enemy away from this position.
         // Note:
         //  The force is stronger the closer the enemy is.
+        
         float distanceFactor = (1 - distance / attackRadius) * attackRadius;
-
         force *= distanceFactor;
         forceDecay *= distanceFactor;
+
         
         if(force > 0 && forceDecay > 0) // avoid edge cases where the distance is at the attack radius.
         {
-            character.Impulse(direction, force, forceDecay);
+            impulse = new CharacterControllerMovementLinearImpulse(direction, force, forceDecay);
+            character.Impulse(impulse);
+            return true;
         }
 
+        impulse = new();
+        return false;
     }
 
     void EnterLowGravityState()
@@ -387,6 +408,21 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         return Vector3.MoveTowards(direction, flat, amount).normalized;
     }
 
+    /// <summary>
+    /// Calculates the time to stun an Minion depending on an impulse force and its decay speed.
+    /// Note:
+    ///     the stun time increases when the decay factor is lower then the force factor.
+    /// </summary>
+    /// <param name="force"></param>
+    /// <param name="forceDecay"></param>
+    /// <returns>The time (in seconds) to stun the Minion.</returns>
+
+    private float CalculatePushStunTime(float force, float forceDecay)
+    {    
+        // force divide by speed equals time.
+
+        return PushForceFactor / PushForceDecayFactor + (1 - forceDecay / force);
+    }
 
     /// 
     /// Linkage.
@@ -410,9 +446,11 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         ApplyJumpForce();        
         ExitLowGravityState();
         PushAndDamageEntities();
+        PlayBlastVfxAndSfx();
+    }
 
-        // Vfx & sfx.
-
+    private void PlayBlastVfxAndSfx()
+    {
         Player.CameraController.StartShaking(PushCameraShakeForce, PushCameraShakeTime);
 
         Player.CameraPostProcessingController.PulseLensDistortionIntensity(
@@ -428,16 +466,16 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         Player.CameraController.StartLerpingFov(
             PushCameraFov, 
             PushCameraFovLerpInDuration,
-            ()=>{Player.CameraController.StartLerpingFov(CameraController.InitialFov, PushCameraFovLerpOutDuration);});
+            ()=>{Player.CameraController.StartLerpingFov(CameraController.InitialFov, PushCameraFovLerpOutDuration);});        
     }
 
     void IAnimatedSkill.OnAnimationCompleted()
     {
         inUse = false;
         cooldownTimer.Begin();
+        IAnimatedSkill.StartAnimationLayerWeightTransition(0, 100);
         Player.UnblockRunToggleInput();
         Player.UnblockJumpInput();
-        IAnimatedSkill.StartAnimationLayerWeightTransition(0, 100);
     }
 
     void IAnimatedSkill.Cancel()

@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Minion : Enemy
 {
     [Header(nameof(Minion)+" Components")]
-    [SerializeField] protected OneShotTimer staggerTimer;
+    [SerializeField] protected OneShotTimer stunTimer;
 
     protected override void LinkEvents()
     {
@@ -20,38 +20,48 @@ public abstract class Minion : Enemy
 
     protected virtual void LinkTimerEvents()
     {
-        staggerTimer.Timeout += OnStaggerTimeout;
+        stunTimer.Timeout += OnStunTimeout;
     }
 
     protected virtual void UnlinkTimerEvents()
     {
-        staggerTimer.Timeout -= OnStaggerTimeout;
+        stunTimer.Timeout -= OnStunTimeout;
     }
 
-    private void OnStaggerTimeout()
+    private void OnStunTimeout()
     {
-        ExitStaggerState();
+        ExitStunState();
     }
 
-    public void EnterStaggerState(float time)
+    /// <summary>
+    /// Stuns this Minion for an amount of time.
+    /// </summary>
+    /// <param name="time">The specified amount of time to remain in the stunned state.</param>
+
+    public void EnterStunState(float time)
     {
         navAgentMovement.PausePath();
         combatAgent.HaltEvaluationLoop();
         stateQeueue.Halt();
-        staggerTimer.Begin(time);
+        stunTimer.Begin(time);
 
-        EnterStaggerStateInternal();    
+        EnterStunStateInternal();    
     }
 
-    protected abstract void EnterStaggerStateInternal();
+    protected abstract void EnterStunStateInternal();
 
-    private void ExitStaggerState()
+    /// <summary>
+    /// Forces this Minion to exit its stun state.
+    /// </summary>
+
+    private void ExitStunState()
     {
         navAgentMovement.ResumePath();
+        navAgentMovement.RecalculatePath();
         combatAgent.BeginEvaluationLoop();
         stateQeueue.Begin();
-        ExitStaggerStateInternal();
+        ExitStunStateInternal();
     }
 
-    protected abstract void ExitStaggerStateInternal();
+    protected abstract void ExitStunStateInternal();
 }
