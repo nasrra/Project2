@@ -140,12 +140,8 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
     protected override void UseInternal()
     {
-        // complete the other animation skill; so that the state is cancelled and the player cansafely transition into this skill.
         
-        if(Player.SkillCollection.AnimatedSkillIsInUse(out IAnimatedSkill animatedSkill))
-        {
-            animatedSkill.Cancel(); 
-        }
+        IAnimatedSkill.UseAnimatedSkill();
 
         inUse = true;
 
@@ -182,7 +178,6 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
         Player.AudioPlayer.PlaySound(DashSound, Player.gameObject);
-        IAnimatedSkill.PlayAnimation();
 
         // enable the dash hitbox.
 
@@ -191,9 +186,10 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
     public override bool CanUse()
     {
-        return IAnimatedSkill.CanUseAnimatedSkill()
-        && ITimedStateSkill.CanUseTimedStateSkill()
-        && ICooldownSkill.CanUseCooldownSkill();
+        return
+            IAnimatedSkill.CanUseAnimatedSkill()
+            && ITimedStateSkill.CanUseTimedStateSkill()
+            && ICooldownSkill.CanUseCooldownSkill();
     }
 
     protected override void GetInterfaceTypes()

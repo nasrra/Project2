@@ -159,6 +159,8 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 
     protected override void UseInternal()
     {
+        IAnimatedSkill.UseAnimatedSkill();
+
         inUse = true;
 
         Player.FaceAttackDirection();
@@ -172,7 +174,6 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
         Player.EnterWalkState();
 
         IAnimatedSkill.StartAnimationLayerWeightTransition(IAnimatedSkill.MaxAnimationLayerWeight, 100);
-        IAnimatedSkill.PlayAnimation();
 
         Player.CameraController.StartLerpingFov(PullCameraFov, PullCameraFovLerpInDuration);
 

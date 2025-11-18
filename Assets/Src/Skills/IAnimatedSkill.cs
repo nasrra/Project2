@@ -46,6 +46,17 @@ public interface IAnimatedSkill
         }
     }
 
+    void UseAnimatedSkill()
+    {
+        if(Player.SkillCollection.AnimatedSkillIsInUse(out IAnimatedSkill animatedSkill))
+        {
+            // complete the other animation skill; so that the state is cancelled and the player cansafely transition into this skill.
+            animatedSkill.Cancel();
+        }
+
+        PlayAnimation();
+    }
+
     /// <summary>
     /// Immeditely plays the assigned animation via AnimationName.
     /// </summary>
@@ -131,7 +142,6 @@ public interface IAnimatedSkill
         if(AnimationLayerWeightTransitionCoroutine != null)
         {
             Skill.StopCoroutine(AnimationLayerWeightTransitionCoroutine);
-            Debug.Log("stop");
         }
         AnimationLayerWeightTransitionCoroutine = Skill.StartCoroutine(AnimationLayerWeightTransition(value, speed));
     }
