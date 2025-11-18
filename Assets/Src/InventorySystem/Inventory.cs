@@ -6,10 +6,26 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+
+
+    /// 
+    /// Callbacks.
+    /// 
+
+
     public event Action<ItemAddedContext> ItemAdded;
     public event Action<ItemRemovedContext> ItemRemoved;
-    [RuntimeField] Dictionary<Currency, uint> Currencies = new();
-    [RuntimeField] Dictionary<Item, uint> Items = new();
+    public event Action<Currency, int> CurrencyAdded;
+    public event Action<Currency, int> CurrencyRemoved;
+
+
+    /// 
+    /// Data.
+    /// 
+
+
+    [RuntimeField] Dictionary<Currency, int> Currencies = new();
+    [RuntimeField] Dictionary<Item, int> Items = new();
 
     /// <summary>
     /// Get the amount of a currenecy stored in this inventory.
@@ -17,7 +33,7 @@ public class Inventory : MonoBehaviour
     /// <param name="currency">The currency to query.</param>
     /// <returns>A uint value representing the amount of currency currently stored.</returns>
 
-    public uint GetCurrencyAmount(Currency currency)
+    public int GetCurrencyAmount(Currency currency)
     {
         return Currencies.ContainsKey(currency) == true
         ? Currencies[currency]
@@ -30,7 +46,7 @@ public class Inventory : MonoBehaviour
     /// <param name="currency">The specified currency type.</param>
     /// <param name="amount">The amount to add.</param>
 
-    public void AddCurrency(Currency currency, uint amount)
+    public void AddCurrency(Currency currency, int amount)
     {
         // short-circuit if no amount is to be added.
 
@@ -49,6 +65,8 @@ public class Inventory : MonoBehaviour
         {
             Currencies[currency] += amount;
         }
+
+        CurrencyAdded?.Invoke(currency, amount);
     }
 
     /// <summary>
@@ -58,7 +76,7 @@ public class Inventory : MonoBehaviour
     /// <param name="amount">The amount to remove.</param>
     /// <returns>true when successful to remove the required amount; false if failed.</returns>
 
-    public bool RemoveCurrency(Currency currency, uint amount)
+    public bool RemoveCurrency(Currency currency, int amount)
     {
         // short-circuit if nothing is to be removed.
 
@@ -77,6 +95,7 @@ public class Inventory : MonoBehaviour
         if((Currencies[currency] -= amount) <= 0)
         {
             Currencies.Remove(currency);
+            CurrencyRemoved?.Invoke(currency, amount);
         }
         
         return true;
@@ -89,7 +108,7 @@ public class Inventory : MonoBehaviour
     /// <param name="amount">The amount required.</param>
     /// <returns>true if this inventory has the required amount; otherwise false.</returns>
 
-    public bool HasSufficientCurrency(Currency currency, uint amount)
+    public bool HasSufficientCurrency(Currency currency, int amount)
     {            
         // fail if this inventory does not contain the currency.
 
@@ -113,11 +132,11 @@ public class Inventory : MonoBehaviour
         return true;   
     }
 
-    public bool RemoveItem(Item item, uint amount)
+    public bool RemoveItem(Item item, int amount)
     {
         if(Items.ContainsKey(item) == true)
         {
-            uint storedAmount = Items[item];
+            int storedAmount = Items[item];
             storedAmount -= amount;
             
             // check if the item can be removed.
@@ -149,7 +168,7 @@ public class Inventory : MonoBehaviour
     }
 
 
-    public void AddItem(Item item, uint amount)
+    public void AddItem(Item item, int amount)
     {
         
         // Add item.

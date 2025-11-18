@@ -150,7 +150,7 @@ public class Player : MonoBehaviour {
 
     private void Start()
     {   
-        SkillHudManager.Singleton.LinkToSkills(skillCollection.Skills);
+        CurrencyHudManager.Singleton.LinkHudsToInventory(inventory);
         HealthBarHud.Singleton.HealthBar.Activate(health);
     }
 

@@ -17,8 +17,8 @@ public class EnemyDirector : MonoBehaviour
     [SerializeField] EnemySpawnCard[] spawnCards;
     private const float SlowEvaluationTimeMin = 10;
     private const float SlowEvaluationTimeMax = 20;
-    private const float FastEvaluationTimeMin = 1;
-    private const float FastEvaluationTimeMax = 2;
+    private const float FastEvaluationTimeMin = 5;
+    private const float FastEvaluationTimeMax = 10;
 
     private const float SpawnRandomRadiusMin = 16.4f;
     private const float SpawnRandomRadiusMax = 48;
@@ -44,7 +44,7 @@ public class EnemyDirector : MonoBehaviour
 
         LinkEvents();
     
-        // FastState();
+        // SlowState();
     }
 
     void OnDestroy()

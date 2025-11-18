@@ -41,11 +41,31 @@ public class SkillHudManager : MonoBehaviour
     /// Functions.
     /// 
 
+
+    /// <summary>
+    /// Links this the stored skill huds to a respective skill.
+    /// </summary>
+    /// <param name="skills"></param>
+
     public void LinkToSkills(in Skill[] skills)
     {
+        Debug.Log("link to skills");
         for(int i = 0; i < skills.Length; i++)
         {
             skillHuds[i].LinkToSkill(skills[i]);
+        }
+    }
+
+
+    /// <summary>
+    /// Unlinks all stored skill huds from their linked skills.
+    /// </summary>
+
+    public void UnlinkFromSkills()
+    {
+        for(int i = 0; i < skillHuds.Length; i++)
+        {
+            skillHuds[i].UnlinkFromSkill();
         }
     }
 }

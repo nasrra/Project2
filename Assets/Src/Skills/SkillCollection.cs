@@ -2,11 +2,21 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class SkillCollection
+public class SkillCollection : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Skill[] skills;
     public Skill[] Skills => skills;
+
+    private void Awake()
+    {
+        SkillHudManager.Singleton.LinkToSkills(Skills);
+    }
+
+    private void OnDestroy()
+    {
+        SkillHudManager.Singleton?.UnlinkFromSkills();        
+    }
 
     /// <summary>
     /// Uses a Skill stored by this SkillCollection.

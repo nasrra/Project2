@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class SkillHud : MonoBehaviour
 {
+
+    
     [Header("Components")]
     [SerializeField] RawImage icon;
     
@@ -14,15 +16,38 @@ public class SkillHud : MonoBehaviour
     [SerializeField] CooldownSkillHud cooldownHud;
 
     private SkillHudData hudData;
-    private Action LateUpdateCallback;
+    private Skill skill;
 
-    private void LateUpdate()
+
+    /// 
+    /// Base.
+    /// 
+
+
+    private void OnDestroy()
     {
-        LateUpdateCallback?.Invoke();
+        UnlinkFromSkill();
     }
+
+
+    ///
+    /// Functions.
+    /// 
+
+
+    /// <summary>
+    /// Links a skill to this instance.
+    /// </summary>
+    /// <param name="skill">The skill to link to.</param>
+    /// <exception cref="System.Exception">Thrown when this instance is already linked to a Skill.</exception>
 
     public void LinkToSkill(in Skill skill)
     {
+        if(this.skill != null)
+        {
+            throw new System.Exception("SkillHud can only be linked to one Skill at a time!");
+        }
+
         hudData = skill.SkillHudData;
         icon.texture = hudData.Icon;
 
@@ -30,5 +55,26 @@ public class SkillHud : MonoBehaviour
         {
             cooldownHud.LinkToSkill(cooldownSkill);
         }
+
+        this.skill = skill;
+    }
+
+    /// <summary>
+    /// Unlinks this instance from the currently linked Skill.
+    /// </summary>
+
+    public void UnlinkFromSkill()
+    {
+        if(skill == null)
+        {
+            return;
+        }
+
+        if(skill is ICooldownSkill)
+        {
+            cooldownHud.UnlinkFromSkill();
+        }
+
+        skill = null;
     }
 }

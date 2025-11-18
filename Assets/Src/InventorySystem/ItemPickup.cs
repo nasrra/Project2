@@ -7,7 +7,7 @@ public class ItemPickup : MonoBehaviour
 
     [Header("Data")]
     public Item Item;
-    public uint Amount;
+    public int Amount;
 
 
     /// 

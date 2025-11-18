@@ -7,7 +7,7 @@ public class CurrencyPickup : MonoBehaviour
 
     [Header("Data")]
     public Currency Currency;
-    public uint Amount;
+    public int Amount;
 
 
     /// 
