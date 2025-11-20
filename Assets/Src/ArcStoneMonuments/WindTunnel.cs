@@ -6,8 +6,7 @@ public class WindTunnel : MonoBehaviour
     [Header("Components")]
     [SerializeField] Entropek.Interaction.Interactable interactable;
     [SerializeField] ArcField arcField;
-    [SerializeField] Currency currencyTypeRequired;
-    [SerializeField] int currentAmountRequired;
+    [SerializeField] CurrencyRequirement currencyRequirement;
 
 
     /// 
@@ -53,8 +52,7 @@ public class WindTunnel : MonoBehaviour
 
     private void OnInteracted(Entropek.Interaction.Interactor interactor)
     {
-        Inventory inventory = interactor.RootGameObject.GetComponent<Inventory>();
-        if(inventory.RemoveCurrency(currencyTypeRequired, currentAmountRequired))
+        if(currencyRequirement.FullfillRequirement(interactor.RootGameObject) == true)
         {
             arcField.Activate();
         }

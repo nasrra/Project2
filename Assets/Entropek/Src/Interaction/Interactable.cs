@@ -1,45 +1,73 @@
 using System;
+using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
 namespace Entropek.Interaction{
 
 
-    [RequireComponent(typeof(SphereCollider))]
-    [RequireComponent(typeof(Rigidbody))]
     public class Interactable : MonoBehaviour{
 
+
+        /// <summary>
+        /// Callbacks.
+        /// </summary>
+
+
         public event Action<Interactor> Interacted;
-        public event Action EnteredInteractorSight;
-        public event Action ExitedInteractorSight;
+        public event Action<Interactor> EnteredInteractorSight;
+        public event Action<Interactor> ExitedInteractorSight;
+
+        public event Action<Interactor> EnteredInteractorRange;
+        public event Action<Interactor> ExitedInteractorRange;
+
         public event Action EnabledInteraction;
         public event Action DisabledInteraction;
-        [SerializeField] private bool IsInteractable = true;
-        [SerializeField] public bool IsInSight {get; private set;}
+
+        [SerializeField] private bool isInteractable = true;
+        public bool IsInteractable => isInteractable;
+
+        [RuntimeField] InteractableState interactableState = InteractableState.NotInSight;
+        public InteractableState InteractableState => interactableState;
+
+        [SerializeField] private LayerMask interactorLayer;
 
         public void Interact(Interactor interactor){
-            if(IsInteractable==true){
+            if(isInteractable==true){
                 Interacted?.Invoke(interactor);
             }
         }
 
         public void EnableInteraction(){
-            IsInteractable = true;
             EnabledInteraction?.Invoke();
         }
 
         public void DisableInteraction(){
-            IsInteractable = false;
+            isInteractable = false;
             DisabledInteraction?.Invoke();
         }
 
-        public void EnterInteractorSight(){
-            IsInSight = true;
-            EnteredInteractorSight?.Invoke();
+        public void EnterInteractorSight(Interactor interactor){
+            interactableState |= InteractableState.InSight;
+            interactableState &= ~InteractableState.NotInSight;
+            EnteredInteractorSight?.Invoke(interactor);
         }
 
-        public void ExitInteractorSight(){
-            IsInSight = false;
-            ExitedInteractorSight?.Invoke();
+        public void ExitInteractorSight(Interactor interactor){
+            interactableState &= ~InteractableState.InSight;
+            interactableState |= InteractableState.NotInSight;
+            ExitedInteractorSight?.Invoke(interactor);
+        }
+
+        public void EnterInteractorRange(Interactor interactor)
+        {
+            interactableState |= InteractableState.InRange;
+            EnteredInteractorRange?.Invoke(interactor);
+        }
+
+        public void ExitInteractorRange(Interactor interactor)
+        {
+            interactableState &= ~InteractableState.InRange;
+            ExitedInteractorRange?.Invoke(interactor);
         }
 
     }

@@ -57,6 +57,7 @@ public class ItemPickup : MonoBehaviour
         // to contain te inventory component.
 
         interactor.RootGameObject.GetComponent<Inventory>().AddItem(Item, Amount);
+        Destroy(gameObject);
     }
 }    
 

@@ -29,7 +29,7 @@ public class ItemDropper : MonoBehaviour
             droppedItem = itemDropPoolScriptableObject.GetRandomLegendaryItem();
         }
 
-        Debug.Log(droppedItem.name);
+        droppedItem.SpawnItemPickupPrefab(transform.position + Vector3.up * 2, Quaternion.identity);
     }
 
 

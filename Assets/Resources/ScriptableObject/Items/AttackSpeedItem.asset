@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e57d8eae78f79745bb5017162e8b54c, type: 3}
-  m_Name: Shoes
+  m_Script: {fileID: 11500000, guid: e910c3cd673e1db48aaa677b14c44016, type: 3}
+  m_Name: AttackSpeedItem
   m_EditorClassIdentifier: 
-  id: 0
-  modifierValue: 0.1
+  id: 1
+  itemPickupPrefab: {fileID: 5394492611033696187, guid: 62981214b22e5404e8fdb3b41608d6d9, type: 3}
+  modifierValue: 0.2

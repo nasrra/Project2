@@ -152,6 +152,9 @@ public class Player : MonoBehaviour {
     {   
         CurrencyHudManager.Singleton.LinkHudsToInventory(inventory);
         HealthBarHud.Singleton.HealthBar.Activate(health);
+
+        Currency currency = Resources.Load<Currency>("ScriptableObject/Currency/Gold");
+        inventory.AddCurrency(currency, 999);
     }
 
     private void Update() {
@@ -975,8 +978,13 @@ public class Player : MonoBehaviour {
 
     private void UnlinkEnemyDirectorEvents()
     {        
+        // this is fine as EnemyDirector sets AwardCurrency to null
+        // upon destruction; avoiding memory leaks.
 
-        EnemyDirector.Singleton.AwardCurrency -= OnAwardCurrency;
+        if(EnemyDirector.Singleton != null)
+        {
+            EnemyDirector.Singleton.AwardCurrency -= OnAwardCurrency;
+        }
     }
 
     private void OnAwardCurrency(Currency currency, int amount)

@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e910c3cd673e1db48aaa677b14c44016, type: 3}
-  m_Name: Whetstone
+  m_Script: {fileID: 11500000, guid: 7e57d8eae78f79745bb5017162e8b54c, type: 3}
+  m_Name: MoveSpeedItem
   m_EditorClassIdentifier: 
-  id: 1
-  modifierValue: 0.2
+  id: 0
+  itemPickupPrefab: {fileID: 1251042537447628003, guid: b194e216dfc4a9847aa89455284b5e7b, type: 3}
+  modifierValue: 0.1

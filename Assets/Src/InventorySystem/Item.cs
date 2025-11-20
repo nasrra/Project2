@@ -17,10 +17,23 @@ public abstract class Item : ScriptableObject
     //  ID is used for hash coding in Dictionaries and equality checks.
 
     [SerializeField] private ushort id;
+    [SerializeField] ItemPickup itemPickupPrefab;
+    public ItemPickup ItemPickupPrefab => itemPickupPrefab;
     public ushort Id => id;
 
     public abstract void ApplyModifier(PlayerStats playerStats);
     public abstract void RemoveModifier(PlayerStats playerStats);
+
+    /// <summary>
+    /// Spawns the item prefab at an position and rotation in world space.
+    /// </summary>
+    /// <param name="position">The position to spawn at.</param>
+    /// <param name="rotation">The rotation to spawn at.</param>
+
+    public void SpawnItemPickupPrefab(Vector3 position, Quaternion rotation)
+    {
+        Instantiate(itemPickupPrefab, position, rotation);
+    }
 
     public override bool Equals(object obj)
     {

@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33a71c67032aaec4ca07bce0b53f23c2, type: 3}
-  m_Name: Flower
+  m_Name: MaxHealthItem
   m_EditorClassIdentifier: 
   id: 2
+  itemPickupPrefab: {fileID: 7068094575662862594, guid: 50206e5dd8d6c7d47ba83cf8e38f32f4, type: 3}
   modifierValue: 0.2
