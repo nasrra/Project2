@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MoveSpeedItem
   m_EditorClassIdentifier: 
   id: 0
-  itemPickupPrefab: {fileID: 1251042537447628003, guid: b194e216dfc4a9847aa89455284b5e7b, type: 3}
+  itemPickupPrefab: {fileID: 3213428886980551971, guid: 23bd35e98fd12a24793771cbe813471c, type: 3}
   modifierValue: 0.1

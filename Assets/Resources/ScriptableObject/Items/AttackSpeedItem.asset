@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AttackSpeedItem
   m_EditorClassIdentifier: 
   id: 1
-  itemPickupPrefab: {fileID: 5394492611033696187, guid: 62981214b22e5404e8fdb3b41608d6d9, type: 3}
+  itemPickupPrefab: {fileID: 2274475528163684725, guid: 15d0c10fdedbd7040b6fbc39ca4b4eeb, type: 3}
   modifierValue: 0.2

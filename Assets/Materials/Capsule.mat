@@ -59,6 +59,7 @@ Material:
     - _ADDITIONAL_LIGHTS: 1
     - _ADDITIONAL_LIGHTSHADOWS: 0
     - _ADDITIONAL_LIGHT_SHADOWS: 1
+    - _Alpha: 1
     - _EdgeDiffuse: 1
     - _EdgeDistanceAttenuation: 1
     - _EdgeRimLight: 0
@@ -81,7 +82,7 @@ Material:
     - _SpecularThreshold: 1
     - _StepRamp: 3
     m_Colors:
-    - _Tint: {r: 0.4666667, g: 1, b: 0.6094653, a: 1}
+    - _Tint: {r: 0.15098791, g: 0.8207547, b: 0.44781634, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2067863974783365004

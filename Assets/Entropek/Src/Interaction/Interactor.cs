@@ -135,6 +135,7 @@ namespace Entropek.Interaction{
                 obstructionLayers, 
                 QueryTriggerInteraction.Collide
             );
+            
         }
 
         public void NextInteractable(){
@@ -237,7 +238,6 @@ namespace Entropek.Interaction{
             
             if (interactablesInSight.Contains(interactable))
             {
-                interactablesInSight.Remove(interactable);    
                 interactable.EnterInteractorRange(this);
             }
 

@@ -67,7 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70317e4d194d42d4d8f56101dde76e2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsInteractable: 1
+  isInteractable: 1
+  interactorLayer:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!54 &4677989875996566972
 Rigidbody:
   m_ObjectHideFlags: 0
