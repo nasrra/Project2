@@ -73,13 +73,13 @@ Material:
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RimLightStrength: 0.8325
-    - _RimLightThreshold: 0.33
+    - _RimLightStrength: 1
+    - _RimLightThreshold: 3.33
     - _SHADOWS_SOFT: 1
     - _ShadowLight: 0.0835
     - _Shininess: 0
     - _SpecularStrength: 0
-    - _SpecularThreshold: 1
+    - _SpecularThreshold: 0
     - _StepRamp: 3
     m_Colors:
     - _Tint: {r: 0.15098791, g: 0.8207547, b: 0.44781634, a: 1}
