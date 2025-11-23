@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SwordHilt
+  m_Name: Grass (The Hollow) 1
   m_Shader: {fileID: -6465566751694194690, guid: ee7d5fbe1a69d8943ad2133c6979c460, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -67,22 +67,22 @@ Material:
     - _EdgeShadowAttenuation: 1
     - _EdgeSpecular: 1
     - _EdgeSpecularOffset: 1
-    - _Emission: 1
+    - _Emission: 33.33
     - _FullLight: 0.167
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RimLightStrength: 3.33
-    - _RimLightThreshold: 1.67
+    - _RimLightStrength: 1
+    - _RimLightThreshold: 3.33
     - _SHADOWS_SOFT: 1
     - _ShadowLight: 0.0835
     - _Shininess: 0
-    - _SpecularStrength: 0.33
-    - _SpecularThreshold: 1
+    - _SpecularStrength: 0
+    - _SpecularThreshold: 0
     - _StepRamp: 3
     m_Colors:
-    - _Tint: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
+    - _Tint: {r: 0.082858644, g: 0.9245283, b: 0.38757777, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2067863974783365004

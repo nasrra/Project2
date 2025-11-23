@@ -101,8 +101,8 @@
         // the lighter the surface will appear.
 
         float rimLight = (1 - dot(surface.view, surface.normal)) * surface.rimLightStrength;
-        // rimLight *= pow(diffuse, surface.rimLightThreshold); // add or remove the rim lighting effect depending upon the threshold.    
-        rimLight = pow(rimLight, surface.rimLightThreshold); // apply threshold.    
+        rimLight *= pow(diffuse, surface.rimLightThreshold); // add or remove the rim lighting effect depending upon the threshold.    
+        // rimLight = pow(rimLight, surface.rimLightThreshold); // apply threshold.    
         return rimLight;
     }
 
