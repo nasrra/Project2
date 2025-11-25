@@ -43,6 +43,8 @@ float GetColourSimilarity(float4 colorA, float4 colorB)
 
         float textureCount,
 
+        float uvScale,
+
         out float3 Color
     ){
         
@@ -52,7 +54,7 @@ float GetColourSimilarity(float4 colorA, float4 colorB)
         
         #else
 
-        Color = textures.Sample(splatMapSampler, float3(uv * 50, 0)).rgb;
+        Color = textures.Sample(splatMapSampler, float3(uv * uvScale, 0)).rgb;
 
         // get the pixel color on the splat map texture.
 
@@ -64,11 +66,11 @@ float GetColourSimilarity(float4 colorA, float4 colorB)
                         
             // get the decal textures color to apply to the splat map (eg, grass, bricks, stone, etc).
 
-            float4 textureColor = textures.Sample(splatMapSampler, float3(uv * 50, i));
+            float4 textureColor = textures.Sample(splatMapSampler, float3(uv * uvScale, i));
 
             // get the color id for the texture.
 
-            float4 textureColorId = splatMapToTextureColorIds.Sample(colorIdSampler, float3(uv * 50, i));
+            float4 textureColorId = splatMapToTextureColorIds.Sample(colorIdSampler, float3(uv * uvScale, i));
 
             // apply the texture color based on how similar the actual splat map color is 
             // compared to this textures splat map color id. 
