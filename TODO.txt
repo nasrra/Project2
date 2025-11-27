@@ -46,34 +46,9 @@
 + Teleporter Charge Field.
 + GameObject pooler refactor for vfx.
 + Projectile management.
++ Slink.
 
 ======== TODO ========
-
-// NOTE:
-//  Look at Great Jagras fight from Monster Hunter World for inspiration.
-
-- Slink:
-    
-    - Attacks.
-        + Bite.
-        + Tail Swipe.
-        + Claw Swipe.
-        - Dive Bomb.
-
-    - Disengage.
-        - Jump Back (flap wings to jump back).
-        + Jump Forward(flap wings to jump forward and turn around.)
-
-            - Technichal Notes:
-                - Check on the nav mesh surface if the slink desired position is within the grid, if not then dont do it.
-
-    - Behvaiours:
-        - Patrol.
-        - Circle Walk Around Target.
-        + Turn Around To Target (may only do this when choosing an attack option though).
-
-- rework health class to callback Damage for both health a shield damage.
-- clip callback float for Damage to not exceed health when going below zero.
 
 
 ==== BACK BURNER =====
