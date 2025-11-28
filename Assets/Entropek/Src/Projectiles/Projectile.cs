@@ -8,17 +8,12 @@ using UnityEngine;
 namespace Entropek.Projectiles
 {
     public class Projectile : MonoBehaviour, IDeactivatable{
-
-        private const string HitSound = "MeleeHit";
-        private const int HitVfxId = 0;
-
+        
         public event Action Deactivated;
         public event Action Activated;
 
-        [Header("Components")]
-        [SerializeField] VfxPlayerSpawner vfxPlayerSpawner;
-        [SerializeField] AudioPlayer audioPlayer;
-        [SerializeField] ContinuousHitbox hitbox;
+        [Header("Projectile Components")]
+        [SerializeField] Hitbox hitbox;
         [SerializeField] private float speed;
         [SerializeField] private float lifetime;
         [SerializeField] private bool deactivateOnHitHealth = true;
@@ -81,13 +76,13 @@ namespace Entropek.Projectiles
         /// 
 
 
-        public void Deactivate()
+        public virtual void Deactivate()
         {
             gameObject.SetActive(false);
             Deactivated?.Invoke();
         }
 
-        public void Activate()
+        public virtual void Activate()
         {
             gameObject.SetActive(true);
             Activated?.Invoke();            
@@ -121,19 +116,16 @@ namespace Entropek.Projectiles
             hitbox.HitOther -= OnHitOther;            
         }
 
-        private void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
+        protected virtual void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
         {
-            vfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
-            audioPlayer.PlaySound(HitSound, hitPoint);
             if (deactivateOnHitHealth == true)
             {
                 Deactivate();
             }
         }
 
-        private void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
+        protected virtual void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
         {
-            vfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
             if (deactivateOnHitOther)
             {
                 Deactivate();

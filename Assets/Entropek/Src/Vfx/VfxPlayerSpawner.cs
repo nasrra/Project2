@@ -14,21 +14,23 @@ namespace Entropek.Vfx
         [Header("Components")]
         [SerializeField] VfxPlayerPool vfxPool;        
 
-        public void PlayVfx(int vfxId, Vector3 worldSpacePosition, Vector3 rotationEuler)
+        public VfxPlayer PlayVfx(int vfxId, Vector3 worldSpacePosition, Vector3 rotationEuler)
         {
             VfxPlayer vfx = vfxPool.ActivateFromPool(vfxId);
             vfx.Play(worldSpacePosition, rotationEuler);
+            return vfx;
         }
 
-        public void PlayVfx(int vfxId, Vector3 worldSpacePosition)
+        public VfxPlayer PlayVfx(int vfxId, Vector3 worldSpacePosition)
         {
-            PlayVfx(vfxId, worldSpacePosition, Quaternion.identity);
+            return PlayVfx(vfxId, worldSpacePosition, Quaternion.identity);
         }
 
-        public void PlayVfx(int vfxId, Vector3 worldSpacePosition, Quaternion rotation)
+        public VfxPlayer PlayVfx(int vfxId, Vector3 worldSpacePosition, Quaternion rotation)
         {
             VfxPlayer vfx = vfxPool.ActivateFromPool(vfxId);
             vfx.Play(worldSpacePosition, rotation);
+            return vfx;
         }
     }
 

@@ -341,7 +341,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638990706005160518
+  lastModified: 638999467835378928
   FileSizes: []
   Exists: 1
 --- !u!114 &-2854114135667232134
@@ -413,7 +413,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638990698419724264
+  lastModified: 638999460283519890
   FileSizes: []
   Exists: 1
 --- !u!114 &-2267910940784852343
@@ -443,6 +443,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 35
   Length: 600
+--- !u!114 &-1134125873721042992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Projectiles/FireballProjectileIgnition
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Projectiles/FireballProjectileIgnition
+  Guid:
+    Data1: -795969819
+    Data2: 1218083595
+    Data3: 699899069
+    Data4: 1490977187
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 30
+  Length: 1490
 --- !u!114 &-568547559401313771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,13 +533,15 @@ MonoBehaviour:
   - {fileID: 4533323373934556179}
   - {fileID: -5068848814348647152}
   - {fileID: -6809821346968836308}
+  - {fileID: -1134125873721042992}
+  - {fileID: 4591951661939271914}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2519853073427545565}
   StringsBanks:
   - {fileID: 8146968385664048423}
   cacheVersion: 131849
-  cacheTime: 638990706005160518
+  cacheTime: 638999467835378928
   SerializableEventsDict:
   - key: event:/Sfx/Enemies/Slink/SlinkGrowl
     index: 0
@@ -552,6 +581,10 @@ MonoBehaviour:
     index: 17
   - key: event:/Sfx/Weapons/ArmCannonSkillPull
     index: 18
+  - key: event:/Sfx/Projectiles/FireballProjectileIgnition
+    index: 19
+  - key: event:/Sfx/Projectiles/FireballProjectileLoop
+    index: 20
 --- !u!114 &292067498568191822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,6 +855,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 50
   Length: 1567
+--- !u!114 &4591951661939271914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Projectiles/FireballProjectileLoop
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Projectiles/FireballProjectileLoop
+  Guid:
+    Data1: -1922993921
+    Data2: 1308451610
+    Data3: -1361098312
+    Data4: -1880653110
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 30
+  Length: 19192
 --- !u!114 &6198180318605954092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,10 +978,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638990698419734299
+  lastModified: 638999460283529902
   FileSizes:
   - Name: 
-    Value: 1910
+    Value: 2038
   Exists: 1
 --- !u!114 &8248852890597649268
 MonoBehaviour:

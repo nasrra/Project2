@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Entropek.Vfx
@@ -43,7 +44,7 @@ namespace Entropek.Vfx
 
             Activate();
         }
-        
+
         /// <summary>
         /// Plays the Vfx instance and moves this VfxPlayer to the specfied world position.
         /// </summary>
@@ -78,6 +79,31 @@ namespace Entropek.Vfx
             transform.rotation = rotation;
             Play(worldSpacePosition);
         }
+
+
+        /// <summary>
+        /// Stops a vfx instance.
+        /// </summary>
+        /// <param name="deactivateTime">The time - in seconds - to wait before deactivation; freeing this vfx player in the pooler.</param>
+
+        public void Stop(float deactivateTime)
+        {
+            StopInternal();
+            StartCoroutine(DefferedDeactivate(deactivateTime));
+        }
+
+        protected IEnumerator DefferedDeactivate(float deactivateTime)
+        {
+            yield return new WaitForSeconds(deactivateTime);
+            Deactivate();
+            yield break;
+        }
+
+        /// <summary>
+        /// The internal implementation for stopping a vfx player.
+        /// </summary>
+
+        protected abstract void StopInternal();
         
         /// <summary>
         /// Checks whether or not the vfx instance has completed playing.

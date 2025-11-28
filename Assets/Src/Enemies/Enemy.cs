@@ -22,6 +22,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected HealthSystem health;
     public HealthSystem Health => health;
 
+    [SerializeField] protected Animator animator;
     [SerializeField] protected Entropek.Ai.AiActionAgent combatAgent;
     [SerializeField] protected Entropek.UnityUtils.AnimatorUtils.AnimationEventReciever animationEventReciever;
     [SerializeField] protected NavAgentMovement navAgentMovement;

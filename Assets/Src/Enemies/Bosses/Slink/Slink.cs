@@ -16,7 +16,6 @@ public class Slink : Boss {
 
 
     [Header(nameof(Slink) + " Components")]
-    [SerializeField] Animator animator;
     [SerializeField] Entropek.UnityUtils.BoneStagger boneStagger;
 
     [Header("Hitboxes")]

@@ -24,6 +24,11 @@ namespace Entropek.Vfx
             base.Play();
             vfx.Play();
         }
+
+        protected override void StopInternal()
+        {
+            vfx.Stop();
+        }
     }
     
 }

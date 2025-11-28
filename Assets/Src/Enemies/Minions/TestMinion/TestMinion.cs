@@ -10,6 +10,11 @@ public class TestMinion : Minion
 
     const DamageType StaggerDamageType = DamageType.Light | DamageType.Heavy;
 
+    private void FixedUpdate()
+    {
+        FaceMoveDirection();
+    }
+
     public override void AttackState()
     {
         throw new System.NotImplementedException();
