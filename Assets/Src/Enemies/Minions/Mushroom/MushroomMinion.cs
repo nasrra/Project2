@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class MushroomMinion : Minion
 {
-    private const string FootStepSfx = "FootstepGrassMedium";
     private const string FootStepAnimationEvent = "Footstep";
     private const string StunAnimation = "SA_Mushroom_Damage";
     private const string HeadbuttAnimation = "SA_Mushroom_Headbutt";
@@ -102,6 +101,14 @@ public abstract class MushroomMinion : Minion
     }
 
 
+    ///
+    /// Unique Functions.
+    /// 
+
+    
+    protected abstract string GetFootstepSfx();
+
+
     /// 
     /// Animation Events.
     /// 
@@ -128,7 +135,7 @@ public abstract class MushroomMinion : Minion
 
     private void OnFootstepAnimationEvent()
     {
-        audioPlayer.PlaySound(FootStepSfx, gameObject);
+        audioPlayer.PlaySound(GetFootstepSfx(), gameObject);
     }
 
     private void OnHeadbuttAttackFrameAnimationEvent()

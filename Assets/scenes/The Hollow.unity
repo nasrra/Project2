@@ -9394,6 +9394,64 @@ MonoBehaviour:
   Loop: 1
   initialTimeMin: 0
   initialTimeMax: 0
+--- !u!1001 &15977004325942106
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 134.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -15.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 84.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284667159585018594, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844909004013583428, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+      propertyPath: m_Name
+      value: MushroomMinionPink
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 1706321646623889446, guid: ed5926d5557508444b514e0fafea188f, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed5926d5557508444b514e0fafea188f, type: 3}
 --- !u!1001 &2356353013845866027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10716,6 +10774,7 @@ SceneRoots:
   - {fileID: 1798000789}
   - {fileID: 511341640}
   - {fileID: 5557243495959589543}
+  - {fileID: 15977004325942106}
   - {fileID: 36969663}
   - {fileID: 1913438209}
   - {fileID: 5591985636388472934}

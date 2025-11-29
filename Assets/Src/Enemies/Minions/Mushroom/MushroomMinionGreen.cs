@@ -22,6 +22,7 @@ public class MushroomMinionGreen : MushroomMinion
     /// Unique Functions.
     /// 
 
+    protected override string GetFootstepSfx() => "FootstepGrassMedium";
 
     public void Shoot(Transform target)
     {
