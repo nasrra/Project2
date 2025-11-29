@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: StartShotTargeting
-  triggerTime: 0.0167
+  triggerTime: 0.064
 --- !u!1101 &6635446661077406539
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

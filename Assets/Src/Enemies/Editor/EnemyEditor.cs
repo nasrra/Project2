@@ -3,4 +3,4 @@ using UnityEngine;
 
 [CustomEditor(typeof(Enemy), editorForChildClasses: true)]
 [CanEditMultipleObjects]
-public class EnemyEditor : Entropek.UnityUtils.CustomEditor{}
+public class EnemyEditor : Entropek.UnityUtils.RuntimeEditor<Enemy>{}

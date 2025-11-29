@@ -10,6 +10,9 @@ namespace Entropek.Projectiles
         [TagSelector, SerializeField] private string[] ignoreTags;
         public string[] IgnoreTags => ignoreTags;
 
+        [SerializeField] private float sphereCastRadius;
+        public float SphereCastRadius => sphereCastRadius;
+
         [SerializeField] private int damageAmount;
         public int DamageAmount => damageAmount;
 

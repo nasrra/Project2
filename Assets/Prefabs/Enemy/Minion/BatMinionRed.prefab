@@ -359,6 +359,7 @@ MonoBehaviour:
   hitScans:
   - ignoreTags:
     - Enemy
+    sphereCastRadius: 0.5
     damageAmount: 1
     damageType: 1
     hitLayers:

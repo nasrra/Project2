@@ -13,12 +13,16 @@ public class BatMinionRed : BatMinion
     private const string StartShotTargetingAnimationEvent = "StartShotTargeting";
     private const string StopShotTargetingAnimationEvent = "StopShotTargeting";
 
+    private const float MinShotTargetingAccuracy = 8.5f;
+    private const float MaxShotTargetingAccuracy = 12.5f;
     private const int HitScanShotId = 0;
 
     [Header(nameof(BatMinionRed)+" Components")]
     
     [SerializeField] HitScanner hitScanner;
     [SerializeField] LineRendererController lineRendererController;
+        
+    [RuntimeField] float shotTargetingAccuracy = 0;
     
     [RuntimeField] Vector3 shotTargetPosition;
 
@@ -68,6 +72,8 @@ public class BatMinionRed : BatMinion
 
     private void OnStartShotTargetingAnimationEvent()
     {           
+        shotTargetingAccuracy = UnityEngine.Random.Range(MinShotTargetingAccuracy, MaxShotTargetingAccuracy);
+        
         // slowly lerp in the line renderer.
 
         lineRendererController.LerpColorAlpha(0.025f, 0.025f, 0.334f);
@@ -85,7 +91,7 @@ public class BatMinionRed : BatMinion
 
     private void UpdateShotTargeting()
     {
-        shotTargetPosition = target.position;
+        shotTargetPosition = Vector3.Lerp(shotTargetPosition, target.position, shotTargetingAccuracy * Time.deltaTime);
         lineRendererController.LineRenderer.SetPosition(0, lineRendererController.transform.position);
         lineRendererController.LineRenderer.SetPosition(1, shotTargetPosition);
     }

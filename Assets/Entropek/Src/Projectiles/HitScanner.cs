@@ -34,7 +34,7 @@ namespace Entropek.Projectiles
             ray.origin = transform.position;
             ray.direction = vectorDistance.normalized;
             
-            if(UnityEngine.Physics.RaycastNonAlloc(ray, hits, distance, hitScan.HitLayers, QueryTriggerInteraction.Collide) > 0)
+            if(UnityEngine.Physics.SphereCastNonAlloc(transform.position, hitScan.SphereCastRadius,  vectorDistance.normalized, hits, distance, hitScan.HitLayers, QueryTriggerInteraction.Collide) > 0)
             {
                 GameObject hit = hits[0].transform.gameObject;
 
