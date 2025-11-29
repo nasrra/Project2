@@ -26,14 +26,12 @@ public class MushroomMinionGreen : MushroomMinion
         
         currentProjectile.Pause();
         
-        // add the current projectile 
-        
+        // make the projectile follow this gameObject.
+
         currentProjectile.transform.parent = transform;
-        
         currentProjectile.transform.position = shootPoint.transform.position;
 
         shootTarget = target;
-
         shootDelayTimer.Begin();
     }
 
@@ -54,9 +52,8 @@ public class MushroomMinionGreen : MushroomMinion
     private void OnShootActionAgentOutome()
     {
         Shoot(target);
-        combatAgent.BeginEvaluationLoop();
-        combatAgent.BeginChosenActionCooldown();
     }
+
 
     /// 
     /// Linkage Override.
@@ -79,6 +76,10 @@ public class MushroomMinionGreen : MushroomMinion
     {
         currentProjectile.transform.parent = projectilePool.PoolContainer.transform;
         currentProjectile.transform.LookAt(shootTarget.position);
+
+        combatAgent.BeginEvaluationLoop();
+        combatAgent.BeginChosenActionCooldown();
+
         currentProjectile.Resume();
     }
 }
