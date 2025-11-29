@@ -109,10 +109,8 @@ public class Slink : Boss {
     }
 
     public override void ChaseState(){
+        base.ChaseState();
         FixedUpdateCallback = ChaseStateFixedUpdate;
-        combatAgent.BeginEvaluationLoop();
-        navAgentMovement.ResumePath();
-        navAgentMovement.StartPath(navAgentMovementTarget);
         animator.CrossFade(ChaseAnimation, 0.167f);
     }
 
@@ -150,14 +148,14 @@ public class Slink : Boss {
 
     private void OnBiteAttackFrameAnimationEvent()
     {
-        biteHitbox.Activate();
+        biteHitbox.Enable();
         biteVfx.Play();
         audioPlayer.PlaySound("SlinkBite", gameObject);
     }
 
     private void OnBiteLungeAttackFrameAnimationEvent()
     {
-        biteLungeHitbox.Activate();
+        biteLungeHitbox.Enable();
     }
 
     /// 
@@ -174,7 +172,7 @@ public class Slink : Boss {
     private void OnTailSwipeAttackFrameAnimationEvent()
     {
         tailSwipeVfx.Play();
-        tailHitbox.Activate();
+        tailHitbox.Enable();
         audioPlayer.PlaySound("SlinkTailSwipe", gameObject);
     }
 
@@ -212,7 +210,7 @@ public class Slink : Boss {
     private void OnClawSlashAttackFrameAnimationEvent()
     {
         audioPlayer.PlaySound("SlinkClawSlash", gameObject);
-        clawSlashHitbox.Activate();
+        clawSlashHitbox.Enable();
         clawSlashVfx.Play();
     }
 
@@ -258,16 +256,16 @@ public class Slink : Boss {
     /// 
 
 
-    protected override void OnCombatActionChosen(in string actionName)
+    protected override bool OnCombatActionChosen(in string actionName)
     {
         switch (actionName)
         {
-            case "Bite":            FaceTargetThenPerformAction(BiteAttack);    break;
-            case "TailSwipe":       TailSwipeAttack();                          break;
-            case "TestSwivel":      TestSwivel();                               break;
-            case "DashForward":     DashForward();                              break;
-            case "ClawSlash":       FaceTargetThenPerformAction(ClawSlash);     break;
-            default: throw new NotImplementedException(actionName);
+            case "Bite":            FaceTargetThenPerformAction(BiteAttack);    return true;
+            case "TailSwipe":       TailSwipeAttack();                          return true;
+            case "TestSwivel":      TestSwivel();                               return true;
+            case "DashForward":     DashForward();                              return true;
+            case "ClawSlash":       FaceTargetThenPerformAction(ClawSlash);     return true;
+            default: return false;
         }
     }
 

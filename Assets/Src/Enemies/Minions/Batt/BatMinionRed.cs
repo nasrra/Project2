@@ -29,23 +29,86 @@ public class BatMinionRed : BatMinion
     Action ShotTargetingState;
 
 
+    /// 
+    /// Base.
+    /// 
+
+
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
         ShotTargetingState?.Invoke();
     }
 
-    protected override void OnCombatActionChosen(in string actionName)
+
+    ///
+    /// Unique Functions.
+    /// 
+
+
+    public override void Shoot(Vector3 position)
+    {
+        // quickly fade in.
+
+        lineRendererController.LerpColorAlpha(
+            1, 1, 0.0835f, 
+            ()=>
+            {
+                // quickly fade out afterwards.
+
+                lineRendererController.LerpColorAlpha(
+                    0,0,0.167f
+                );
+            }
+        );
+
+        hitScanner.FireAt(position, HitScanShotId);
+    }
+
+    /// <summary>
+    /// A fixed time step for tracking the current target when preparing to shoot.
+    /// </summary>
+
+    private void UpdateShotTargeting()
+    {
+        // lerp to the target's position based on the current shot accuray.
+
+        shotTargetPosition = Vector3.Lerp(shotTargetPosition, target.position, shotTargetingAccuracy * Time.deltaTime);
+        
+        // sync the line renderer with the new shot target position.
+        
+        lineRendererController.LineRenderer.SetPosition(0, lineRendererController.transform.position);
+        lineRendererController.LineRenderer.SetPosition(1, shotTargetPosition);
+    }
+
+
+    /// 
+    /// Action Agent Outcomes.
+    /// 
+
+
+    protected override bool OnCombatActionChosen(in string actionName)
     {
         switch (actionName)
         {
             case ShootActionAgentOutome:
-                animator.Play(ShootAnimationName);
-                break;
+                OnShootActionAgentOutome();
+                return true;
             default:
-                break;
+                return false;
         }
     }
+
+    private void OnShootActionAgentOutome()
+    {
+        animator.Play(ShootAnimationName);
+    }
+
+
+    /// 
+    /// Animation Events.
+    /// 
+
 
     protected override bool OnAnimationEventTriggered(string eventName)
     {
@@ -89,34 +152,9 @@ public class BatMinionRed : BatMinion
         ShotTargetingState = UpdateShotTargeting; 
     }
 
-    private void UpdateShotTargeting()
-    {
-        shotTargetPosition = Vector3.Lerp(shotTargetPosition, target.position, shotTargetingAccuracy * Time.deltaTime);
-        lineRendererController.LineRenderer.SetPosition(0, lineRendererController.transform.position);
-        lineRendererController.LineRenderer.SetPosition(1, shotTargetPosition);
-    }
 
     private void OnStopShotTargetingAnimationEvent()
     {
         ShotTargetingState = null;
-    }
-
-    public override void Shoot(Vector3 position)
-    {
-        // quickly fade in.
-
-        lineRendererController.LerpColorAlpha(
-            1, 1, 0.0835f, 
-            ()=>
-            {
-                // quickly fade out afterwards.
-
-                lineRendererController.LerpColorAlpha(
-                    0,0,0.167f
-                );
-            }
-        );
-
-        hitScanner.FireAt(position, HitScanShotId);
     }
 }

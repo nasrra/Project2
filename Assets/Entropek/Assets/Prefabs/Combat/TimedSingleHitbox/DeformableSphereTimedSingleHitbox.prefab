@@ -48,7 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerCollider: {fileID: 6934940489417693209}
   ignoreTags: []
-  damage: 0
+  damageAmount: 0
+  damageType: 0
   timer: {fileID: 6194842533418049946}
 --- !u!114 &6194842533418049946
 MonoBehaviour:
@@ -62,9 +63,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorNameTag: cooldown
+  editorNameTag: Enabled Time
   initialTime: 0
-  BeginOnAwake: 0
+  BeginOnEnable: 0
 --- !u!64 &6934940489417693209
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -78,7 +79,7 @@ MeshCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 2047
+    m_Bits: 14335
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

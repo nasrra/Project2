@@ -29,13 +29,6 @@ public abstract class BatMinion : Minion
         navAgentMovement.StartPath(navAgentMovementTarget);
     }
 
-    public void FleeState()
-    {
-        combatAgent.BeginEvaluationLoop();
-        navAgentMovement.ResumePath();
-        navAgentMovement.MoveAway(navAgentMovementTarget, 24);
-    }
-
     public override void IdleState()
     {
     }

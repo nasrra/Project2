@@ -172,12 +172,12 @@ public class AttackSkill : Skill, IAnimatedSkill
         Player.AudioPlayer.PlaySound(AttackFrameSound, Player.transform.position);
         if (slashFlag == true)
         {
-            slashRightHitBox.Activate();
+            slashRightHitBox.Enable();
             Player.VfxPlayerSpawner.PlayVfx(LeftSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
         }
         else
         {
-            slashLeftHitBox.Activate();
+            slashLeftHitBox.Enable();
             Player.VfxPlayerSpawner.PlayVfx(RightSlashVfxId, transform.position + (transform.forward * 1.1f), transform.forward);
         }
     }

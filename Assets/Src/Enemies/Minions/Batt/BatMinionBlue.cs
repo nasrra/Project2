@@ -5,27 +5,45 @@ public class BatMinionBlue : BatMinion
 {
     private const string ShootAnimationName = "SA_Bat_Bite";
     private const string ShootAnimationEvent = "Shoot";
-    private const string ShootActionAgentOutome = "Shoot";
+    private const string ShootActionAgentOutcome = "Shoot";
 
     [Header(nameof(BatMinionBlue)+" Components")]
     [SerializeField] Entropek.Projectiles.ProjectileSpawner projectileSpawner;
+
 
     public override void Shoot(Vector3 position)
     {
         projectileSpawner.FireAtPosition(0, 0, position);
     }
 
-    protected override void OnCombatActionChosen(in string actionName)
+
+    /// 
+    /// Action Agent Outcomes.
+    /// 
+
+
+    protected override bool OnCombatActionChosen(in string actionName)
     {
         switch (actionName)
         {
-            case ShootActionAgentOutome:
-                animator.Play(ShootAnimationName);
-                break;
+            case ShootActionAgentOutcome:
+                OnShootActionAgentOutcome();
+                return true;
             default:
-                break;
+                return false;
         }
     }
+
+    private void OnShootActionAgentOutcome()
+    {
+        animator.Play(ShootAnimationName);
+    }
+
+
+    ///
+    /// Animation Events. 
+    ///
+
 
     protected override bool OnAnimationEventTriggered(string eventName)
     {
@@ -37,11 +55,16 @@ public class BatMinionBlue : BatMinion
         switch (eventName)
         {
             case ShootAnimationEvent:
-                Shoot(target.position);
+                OnShootAnimationEvent();
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void OnShootAnimationEvent()
+    {
+        Shoot(target.position);
     }
 
 }

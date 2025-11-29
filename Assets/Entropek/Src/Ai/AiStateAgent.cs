@@ -33,7 +33,10 @@ namespace Entropek.Ai
 
         void FixedUpdate()
         {
-            chosenStateCurrentLifetime += UnityEngine.Time.deltaTime;
+            if (halted == false)
+            {
+                chosenStateCurrentLifetime += UnityEngine.Time.deltaTime;
+            }
         }
 
         protected override void GeneratePossibleOutcomes()

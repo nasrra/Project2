@@ -32,9 +32,9 @@ namespace Entropek.Combat{
         /// Activates the trigger collider (for the amount of time specified as the intial time in the timer) for the hitbox, enabling detection of incoming hurtboxes.
         /// </summary>
         
-        public override void Activate()
+        public override void Enable()
         {
-            base.Activate();
+            base.Enable();
             timer.Begin();
         }        
 
@@ -54,7 +54,7 @@ namespace Entropek.Combat{
 
         private void OnTimerTimeout()
         {
-            Deactivate();
+            Disable();
         }
     }
 

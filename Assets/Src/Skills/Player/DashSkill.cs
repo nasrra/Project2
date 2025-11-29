@@ -181,7 +181,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
 
         // enable the dash hitbox.
 
-        hitbox.Activate();
+        hitbox.Enable();
     }
 
     public override bool CanUse()
@@ -309,7 +309,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
     
         // deacivate the hitbox.
 
-        hitbox.Deactivate();
+        hitbox.Disable();
 
         if(hitHealthObjectThisDash == false)
         {

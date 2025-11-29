@@ -27,13 +27,6 @@ public class TestMinion : Minion
         navAgentMovement.StartPath(navAgentMovementTarget);
     }
 
-    public void FleeState()
-    {
-        combatAgent.BeginEvaluationLoop();
-        navAgentMovement.ResumePath();
-        navAgentMovement.MoveAway(navAgentMovementTarget, 24);
-    }
-
     public override void IdleState()
     {
     }
@@ -57,15 +50,15 @@ public class TestMinion : Minion
     }
 
 
-    protected override void OnCombatActionChosen(in string actionName)
+    protected override bool OnCombatActionChosen(in string actionName)
     {
         switch (actionName)
         {
             case "Shoot":
                 Shoot(target);
-                break;
+                return true;
             default:
-                break;
+                return false;
         }
     }
 

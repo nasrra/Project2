@@ -82,9 +82,9 @@ namespace Entropek.Combat
             }
         }
 
-        public override void Activate()
+        public override void Enable()
         {
-            base.Activate();
+            base.Enable();
             hitGameObjectInstanceIds.Clear(); // clear the cached list for the next call.      
         }
 

@@ -96,7 +96,23 @@ public abstract class Enemy : MonoBehaviour
 
     public abstract void IdleState();
     public abstract void IdleState(float time);
-    public abstract void ChaseState();
+    
+    public virtual void ChaseState()
+    {
+        Debug.Log("Chase");
+        combatAgent.BeginEvaluationLoop();
+        navAgentMovement.ResumePath();
+        navAgentMovement.StartPath(navAgentMovementTarget);    
+    }
+
+    public virtual void FleeState()
+    {
+        Debug.Log("flee");
+        combatAgent.BeginEvaluationLoop();
+        navAgentMovement.ResumePath();
+        navAgentMovement.MoveAway(navAgentMovementTarget, 24);
+    }
+
     public abstract void AttackState();
 
     protected virtual void AttackEndedState()
@@ -231,7 +247,7 @@ public abstract class Enemy : MonoBehaviour
         OnCombatActionChosen(actionName);
     }
 
-    protected abstract void OnCombatActionChosen(in string actionName);
+    protected abstract bool OnCombatActionChosen(in string actionName);
     protected abstract void OnOpponentEngaged(Transform opponent);
 
 

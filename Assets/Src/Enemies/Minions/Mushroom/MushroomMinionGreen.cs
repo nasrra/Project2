@@ -9,13 +9,18 @@ public class MushroomMinionGreen : MushroomMinion
 
     private const int FireballProjectileId = 0;
 
-    [Header(nameof(MushroomMinionGreen)+"Components")]
+    [Header(nameof(MushroomMinionGreen)+" Components")]
     [SerializeField] private ProjectilePool projectilePool;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private OneShotTimer shootDelayTimer;
 
     private Projectile currentProjectile;
     private Transform shootTarget;
+
+
+    /// 
+    /// Unique Functions.
+    /// 
 
 
     public void Shoot(Transform target)
@@ -36,16 +41,24 @@ public class MushroomMinionGreen : MushroomMinion
     }
 
 
-    protected override void OnCombatActionChosen(in string actionName)
+    /// 
+    /// Action Agent Outcomes.
+    /// 
+
+
+    protected override bool OnCombatActionChosen(in string actionName)
     {
+        if(base.OnCombatActionChosen(actionName) == true)
+        {
+            return true;
+        }
         switch (actionName)
         {
             case ShootActionAgentOutcome:
                 OnShootActionAgentOutome();
-                break;
+                return true;
             default:
-                Debug.LogError($"Mushroom Minion does not implement action: {actionName}");
-                break;
+                return false;
         }
     }
 

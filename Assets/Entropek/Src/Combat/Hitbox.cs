@@ -33,7 +33,7 @@ namespace Entropek.Combat
         /// Activates the trigger collider for the hitbox, enabling detection of incoming hurtboxes.
         /// </summary>
 
-        public virtual void Activate(){
+        public virtual void Enable(){
             triggerCollider.enabled = true;
         }
 
@@ -41,7 +41,7 @@ namespace Entropek.Combat
         /// Deactivates the trigger collider for the hitbox, disabling detection of incoming hurtboxes.
         /// </summary>
 
-        public virtual void Deactivate(){
+        public virtual void Disable(){
             triggerCollider.enabled = false;            
         }
 

@@ -33,6 +33,8 @@ namespace Entropek.Ai
 
         protected List<AiPossibleOutcome> possibleOutcomes = new();
         public List<AiPossibleOutcome> PossibleOutcomes => possibleOutcomes;
+        
+        protected bool halted = false;
 
                 
 
@@ -144,6 +146,7 @@ namespace Entropek.Ai
         public virtual void HaltEvaluationLoop()
         {
             EvaluationIntervalTimer.Halt();
+            halted = true;
             // halt a linked AiAgent if there is one.
 
             if(aiAgentLinkedToEvaluationLoopToggle != null)
@@ -159,6 +162,7 @@ namespace Entropek.Ai
         public virtual void BeginEvaluationLoop()
         {
             EvaluationIntervalTimer.Begin();
+            halted = false;
             // begin a linked AiAgent if there is one.
 
             if(aiAgentLinkedToEvaluationLoopToggle != null)
