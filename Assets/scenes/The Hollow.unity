@@ -7730,7 +7730,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2129258622571067738, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3001001090442440332, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
       propertyPath: m_Height
@@ -9563,6 +9563,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3cd7a342076bdb4b8759bc2166a8934, type: 3}
+--- !u!1001 &5557243495959589543
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2156771524781745527, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_Name
+      value: MushroomMinionGreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 117.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 32.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187471303444513163, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
 --- !u!1001 &5591985636388472934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9713,7 +9770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7647912121843972715, guid: 0ba023a5387b1ba4d89978503fdba261, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8278663350071697223, guid: 0ba023a5387b1ba4d89978503fdba261, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10236,3 +10293,4 @@ SceneRoots:
   - {fileID: 511341640}
   - {fileID: 1913438209}
   - {fileID: 5591985636388472934}
+  - {fileID: 5557243495959589543}
