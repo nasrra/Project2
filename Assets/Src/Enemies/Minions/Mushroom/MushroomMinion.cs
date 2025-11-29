@@ -7,8 +7,6 @@ public abstract class MushroomMinion : Minion
     private const string FootStepAnimationEvent = "Footstep";
     private const string StunAnimationName = "SA_Mushroom_Damage";
 
-    private const string ShootActionAgentOutcome = "Shoot";
-
     private const string FleeStateAgentOutcome = "Flee";
     private const string ChaseStateAgentOutcome = "Chase";
 
@@ -131,24 +129,6 @@ public abstract class MushroomMinion : Minion
                 Debug.LogError($"Mushroom Minion does not implement state: {outcomeName}");
                 break;
         }
-    }
-
-    protected override void OnCombatActionChosen(in string actionName)
-    {
-        switch (actionName)
-        {
-            case ShootActionAgentOutcome:
-                OnShootActionAgentOutome();
-                break;
-            default:
-                Debug.LogError($"Mushroom Minion does not implement action: {actionName}");
-                break;
-        }
-    }
-
-    private void OnShootActionAgentOutome()
-    {
-        Debug.Log("shoot!");
     }
 
     protected override void OnHealthDamaged(DamageContext damageContext)

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7443612578652316951}
   - component: {fileID: 8848904470765713921}
   - component: {fileID: 3219795585765526427}
+  - component: {fileID: 3865158827413179507}
   m_Layer: 0
   m_Name: TestProjectile 1
   m_TagString: Untagged
@@ -50,11 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 588ee3a7018d80841adf24819756f8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfxPlayerSpawner: {fileID: 3219795585765526427}
-  audioPlayer: {fileID: 7443612578652316951}
   hitbox: {fileID: 3363200450605581301}
   speed: 48
-  lifetime: 0.5
+  lifetimeTimer: {fileID: 3865158827413179507}
   deactivateOnHitHealth: 0
   deactivateOnHitOther: 0
 --- !u!54 &3724215664907315535
@@ -123,6 +122,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxPool: {fileID: 8848904470765713921}
+--- !u!114 &3865158827413179507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2824496678240004254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: lifetime
+  initialTime: 6.66
+  BeginOnEnable: 0
 --- !u!1 &6769560507072968394
 GameObject:
   m_ObjectHideFlags: 0

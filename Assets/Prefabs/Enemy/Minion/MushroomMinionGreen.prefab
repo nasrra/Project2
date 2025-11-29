@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 296554524173289426}
   - component: {fileID: 1162826274920050634}
   - component: {fileID: 7240265649049141429}
+  - component: {fileID: 8752201115358789950}
+  - component: {fileID: 40633667182646638}
   m_Layer: 7
   m_Name: MushroomMinionGreen
   m_TagString: Untagged
@@ -209,6 +211,38 @@ MonoBehaviour:
   faceTargetDotThreshold: 0.9
   stunTimer: {fileID: 1162826274920050634}
   stateAgent: {fileID: 916197301601662466}
+  projectilePool: {fileID: 40633667182646638}
+  shootPoint: {fileID: 6945722459829467832}
+  shootDelayTimer: {fileID: 8752201115358789950}
+--- !u!114 &8752201115358789950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156771524781745527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Shoot Delay Timer
+  initialTime: 0.668
+  BeginOnEnable: 0
+--- !u!114 &40633667182646638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156771524781745527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c650a650511d3e644a2f23315312ba4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 4520280526215437209, guid: 837016ac5704d10428b232f23187cbff, type: 3}
 --- !u!1 &4801303406495348835
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +297,37 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!1 &5484757726357912815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6945722459829467832}
+  m_Layer: 0
+  m_Name: ProjectilePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6945722459829467832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5484757726357912815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8633199077980133135}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5550831252679125784
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,6 +598,9 @@ PrefabInstance:
       addedObject: {fileID: 8712170236679605497}
     - targetCorrespondingSourceObject: {fileID: 3760818565891861144, guid: 88716498407968c4abc511b0e063fb77, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6945722459829467832}
+    - targetCorrespondingSourceObject: {fileID: 3760818565891861144, guid: 88716498407968c4abc511b0e063fb77, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 5686409987882785696}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88716498407968c4abc511b0e063fb77, type: 3}
@@ -663,11 +731,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].fov.max
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].fov.min
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].idleTime
@@ -719,7 +787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].distanceToOpponentCurve.m_Curve.Array.data[1].inSlope
-      value: 0
+      value: -0.016682172
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].distanceToOpponentCurve.m_Curve.Array.data[0].inWeight
@@ -731,11 +799,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].distanceToOpponentCurve.m_Curve.Array.data[1].inWeight
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].distanceToOpponentCurve.m_Curve.Array.data[1].outSlope
-      value: 0
+      value: -0.016682172
       objectReference: {fileID: 0}
     - target: {fileID: 6968565582148828670, guid: 4326a13fe2d20f8ed9c0ecfed6b9c477, type: 3}
       propertyPath: managedReferences[5395954619543453776].distanceToOpponentCurve.m_Curve.Array.data[0].outWeight
@@ -787,7 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorNameTag: Shoot Cooldown
-  initialTime: 6.66
+  initialTime: 2.75
   BeginOnEnable: 0
 --- !u!114 &4159810964121813372 stripped
 MonoBehaviour:

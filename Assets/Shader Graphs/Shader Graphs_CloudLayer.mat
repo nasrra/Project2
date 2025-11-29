@@ -46,7 +46,7 @@ Material:
     - _ADDITIONAL_LIGHTS: 1
     - _ADDITIONAL_LIGHT_SHADOWS: 1
     - _Emission: 1
-    - _FullLight: 1
+    - _FullLight: 0
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _QueueControl: 0
@@ -54,24 +54,22 @@ Material:
     - _RimLightStrength: 0
     - _RimLightThreshold: 0
     - _SHADOWS_SOFT: 1
-    - _ShadowLight: 1
+    - _ShadowLight: 0
     - _SpecularStrength: 0
     - _SpecularThreshold: 0
     - _StepRamp: 3
-    - _StepRamp_1: 0
-    - _dispalcement: 100
-    - _fogFallOff: 0.66
-    - _size: 333.3
-    - _speed: 0.00167
+    - _dispalcement: 75
+    - _fogFallOff: 0.334
+    - _size: 333.33
+    - _speed: 0.0012
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.9411765, a: 0}
-    - _Direction1: {r: 1, g: 0.5, b: 0, a: 0}
-    - _Direction2: {r: 0.5, g: 1, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Direction1: {r: 1, g: 1, b: 0, a: 0}
+    - _Direction2: {r: 1, g: 0.8, b: 0, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _tint: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4449206039152172265
+--- !u!114 &2058108489398442386
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

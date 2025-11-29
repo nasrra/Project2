@@ -11,6 +11,7 @@ namespace Entropek.Collections
         [Header("Data")]
         
         protected GameObject poolContainer;
+        public GameObject PoolContainer => poolContainer;
         
         [SerializeField] private GameObject[] prefabs;
         

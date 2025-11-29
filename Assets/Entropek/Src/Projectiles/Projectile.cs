@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Entropek.Audio;
 using Entropek.Combat;
+using Entropek.Time;
 using Entropek.Vfx;
 using UnityEngine;
 
@@ -15,10 +16,11 @@ namespace Entropek.Projectiles
         [Header("Projectile Components")]
         [SerializeField] Hitbox hitbox;
         [SerializeField] private float speed;
-        [SerializeField] private float lifetime;
+        [SerializeField] private OneShotTimer lifetimeTimer;
         [SerializeField] private bool deactivateOnHitHealth = true;
         [SerializeField] private bool deactivateOnHitOther = true;
         public float Speed => speed;
+        private bool paused = false;
 
 
         /// 
@@ -33,11 +35,16 @@ namespace Entropek.Projectiles
 
         protected virtual void OnEnable()
         {
-            StartCoroutine(Lifetime());
+            lifetimeTimer.Begin();
         }
 
-        private void LateUpdate()
+        protected virtual void FixedUpdate()
         {
+            if(paused == true)
+            {   
+                return;
+            }
+
             transform.position += transform.forward * speed * UnityEngine.Time.deltaTime;
         }
 
@@ -53,21 +60,16 @@ namespace Entropek.Projectiles
             UnlinkEvents();
         }
 
-
-        ///
-        /// Lifetime.
-        /// 
-
-
-        /// <summary>
-        /// The IEnumerator (Unity Coroutine) that determines how long a projectile will be active for.
-        /// </summary>
-        /// <returns></returns>
-
-        private IEnumerator Lifetime()
+        public void Pause()
         {
-            yield return new WaitForSeconds(lifetime);
-            Deactivate();
+            lifetimeTimer.Pause();
+            paused = true;
+        }
+
+        public void Resume()
+        {
+            lifetimeTimer.Resume();            
+            paused = false;
         }
 
 

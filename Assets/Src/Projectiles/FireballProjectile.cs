@@ -26,8 +26,10 @@ public class FireballProjectile : Projectile, IDeactivatable
         base.OnDisable();
     }
 
-    protected void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
+
         if (vfxPlayer != null)
         {
             vfxPlayer.transform.position = transform.position;
