@@ -13,8 +13,8 @@ public class BatMinionRed : BatMinion
     private const string StartShotTargetingAnimationEvent = "StartShotTargeting";
     private const string StopShotTargetingAnimationEvent = "StopShotTargeting";
 
-    private const float MinShotTargetingAccuracy = 8.5f;
-    private const float MaxShotTargetingAccuracy = 12.5f;
+    private const float MinShotTargetingAccuracy = 8f;
+    private const float MaxShotTargetingAccuracy = 10.5f;
     private const int HitScanShotId = 0;
 
     [Header(nameof(BatMinionRed)+" Components")]
@@ -112,7 +112,7 @@ public class BatMinionRed : BatMinion
                 // quickly fade out afterwards.
 
                 lineRendererController.LerpColorAlpha(
-                    0,0,0.334f
+                    0,0,0.167f
                 );
             }
         );

@@ -36,28 +36,37 @@ namespace Entropek.Projectiles
             
             if(UnityEngine.Physics.SphereCastNonAlloc(transform.position, hitScan.SphereCastRadius,  vectorDistance.normalized, hits, distance, hitScan.HitLayers, QueryTriggerInteraction.Collide) > 0)
             {
-                GameObject hit = hits[0].transform.gameObject;
-
-                // check if the hit gameobjects layer is any one of the
-                // set obstruction layers and does not have a tag too ignore.
-
-                int hitLayer = 1 << hit.layer;
-                if((hitLayer & hitScan.ObstructionLayers) == 0
-                && IgnoreHit(hit, ref hitScan) == false)
+                for(int i = 0; i < MaximumHits; i++)
                 {
-
-                    // damage the hit gameobject if it wasnt an obstruction.
-
-                    DamageContext damageContext = new DamageContext(transform.position, hitScan.DamageAmount, hitScan.DamageType);
-
-                    if(hit.TryGetComponent(out Hurtbox hurtbox))
+                    if (hits[i].transform == null)
                     {
-                        hurtbox.Health.Damage(damageContext);
+                        break;
                     }
-                    else if(hit.TryGetComponent(out HealthSystem healthSystem))
+                    GameObject hit = hits[i].transform.gameObject;
+
+                    // check if the hit gameobjects layer is any one of the
+                    // set obstruction layers and does not have a tag too ignore.
+
+                    int hitLayer = 1 << hit.layer;
+                    if((hitLayer & hitScan.ObstructionLayers) == 0
+                    && IgnoreHit(hit, ref hitScan) == false)
                     {
-                        healthSystem.Damage(damageContext);
-                    }
+
+                        // damage the hit gameobject if it wasnt an obstruction.
+
+                        DamageContext damageContext = new DamageContext(transform.position, hitScan.DamageAmount, hitScan.DamageType);
+
+                        if(hit.TryGetComponent(out Hurtbox hurtbox))
+                        {
+                            hurtbox.Health.Damage(damageContext);
+                        }
+                        else if(hit.TryGetComponent(out HealthSystem healthSystem))
+                        {
+                            healthSystem.Damage(damageContext);
+                        }
+                    
+                        break;
+                    }                    
                 }
             }
         }
