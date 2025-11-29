@@ -30,6 +30,11 @@ namespace Entropek.Audio
         /// Base.
         /// 
 
+        void OnDisable()
+        {
+            StopAllSounds(false);
+        }
+
         void OnDestroy()
         {
             Clear();

@@ -1,17 +1,13 @@
 using Entropek.Combat;
 using UnityEngine;
 
-public class BatMinion : Minion
+public abstract class BatMinion : Minion
 {
     private const string WingsFlapSfx = "SmallWingsFlap";
     private const string WingsFlapAnimationEvent = "WingsFlap";
-    private const string ShootAnimationEvent = "Shoot";
-    private const string ShootActionAgentOutome = "Shoot";
-    private const string ShootAnimationName = "SA_Bat_Bite";
     private const string StunAnimationName = "SA_Bat_Damage";
 
-    [Header(nameof(TestMinion)+" Components")]
-    [SerializeField] Entropek.Projectiles.ProjectileSpawner projectileSpawner;
+    [Header(nameof(BatMinion)+" Components")]
     [SerializeField] protected Entropek.Ai.AiStateAgent stateAgent;
 
     const DamageType StaggerDamageType = DamageType.Light | DamageType.Heavy;
@@ -56,23 +52,7 @@ public class BatMinion : Minion
         Destroy(gameObject);
     }
 
-    public void Shoot(Transform target)
-    {
-        projectileSpawner.FireAtTarget(0, 0, target);
-    }
-
-
-    protected override void OnCombatActionChosen(in string actionName)
-    {
-        switch (actionName)
-        {
-            case ShootActionAgentOutome:
-                animator.Play(ShootAnimationName);
-                break;
-            default:
-                break;
-        }
-    }
+    public abstract void Shoot(Transform target);
 
     protected override void OnHealthDeath()
     {
@@ -131,9 +111,6 @@ public class BatMinion : Minion
             case WingsFlapAnimationEvent:
                 audioPlayer.PlaySound(WingsFlapSfx, gameObject);
                 return true;
-            case ShootAnimationEvent:
-                Shoot(target);
-                return true;
             default: 
                 return false;
         }
@@ -150,7 +127,7 @@ public class BatMinion : Minion
                 FleeState();
                 break;
             default:
-                Debug.LogError($"Test Minion does not implment state: {outcomeName}");
+                Debug.LogError($"Test Minion does not implement state: {outcomeName}");
                 break;
         }
     }

@@ -31,7 +31,7 @@ namespace Entropek.Projectiles
             LinkEvents();
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             StartCoroutine(Lifetime());
         }
@@ -41,7 +41,7 @@ namespace Entropek.Projectiles
             transform.position += transform.forward * speed * UnityEngine.Time.deltaTime;
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             // stop lifetime coroutine.
 
@@ -126,7 +126,7 @@ namespace Entropek.Projectiles
 
         protected virtual void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
         {
-            if (deactivateOnHitOther)
+            if (deactivateOnHitOther == true)
             {
                 Deactivate();
             }

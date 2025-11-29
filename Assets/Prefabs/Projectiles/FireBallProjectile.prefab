@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitbox: {fileID: 2952783466885691917}
   speed: 24
-  lifetime: 33.4
+  lifetime: 6.66
   deactivateOnHitHealth: 1
   deactivateOnHitOther: 1
   vfxPlayerSpawner: {fileID: 8782340447221625964}

@@ -53,7 +53,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3193454198381479763}
-  - component: {fileID: 2440520092089512463}
   - component: {fileID: 8220533152704142039}
   - component: {fileID: 8205888393155489441}
   - component: {fileID: 1143017733417432476}
@@ -62,9 +61,9 @@ GameObject:
   - component: {fileID: 2361049522273831519}
   - component: {fileID: 4697224406505011640}
   - component: {fileID: 6131493110936356892}
-  - component: {fileID: 9043223255715445503}
+  - component: {fileID: 8267745432914004676}
   m_Layer: 7
-  m_Name: BatMinion
+  m_Name: BatMinionBlue
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -79,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 2129258622571067738}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -15.28}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -87,36 +86,6 @@ Transform:
   - {fileID: 3468882802732361381}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2440520092089512463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2129258622571067738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b881a0035f9d10449b1cb684a63e7a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  graphicsObject: {fileID: 3631081636222139235}
-  navAgentMovementTarget: {fileID: 0}
-  target: {fileID: 0}
-  health: {fileID: 8220533152704142039}
-  animator: {fileID: 5463702672336787808}
-  combatAgent: {fileID: 1923347564281524974}
-  animationEventReciever: {fileID: 1013078540204348639}
-  navAgentMovement: {fileID: 6131493110936356892}
-  audioPlayer: {fileID: 8205888393155489441}
-  stateQeueue: {fileID: 1143017733417432476}
-  groundChecker: {fileID: 1474273528425992561}
-  faceTargetDirectionSpeed: 3.33
-  faceMoveDirectionSpeed: 3.33
-  faceTargetDotThreshold: 0.9
-  stunTimer: {fileID: 4697224406505011640}
-  projectileSpawner: {fileID: 5619058912123936695}
-  attackStateTimer: {fileID: 9043223255715445503}
-  stateAgent: {fileID: 4422368455172307927}
 --- !u!114 &8220533152704142039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorNameTag: 
+  editorNameTag: Stun Timer
   initialTime: 0.5
   BeginOnEnable: 0
 --- !u!114 &6131493110936356892
@@ -259,7 +228,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   hoverSpeed: 0.0167
---- !u!114 &9043223255715445503
+--- !u!114 &8267745432914004676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,12 +237,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 2129258622571067738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 695916fb6a49747b59bd98a99478cc4c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d67d14463ae90a46881f20f92d529ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorNameTag: Attack State
-  initialTime: 0
-  BeginOnEnable: 0
+  graphicsObject: {fileID: 3631081636222139235}
+  navAgentMovementTarget: {fileID: 0}
+  target: {fileID: 0}
+  health: {fileID: 8220533152704142039}
+  animator: {fileID: 5463702672336787808}
+  combatAgent: {fileID: 1923347564281524974}
+  animationEventReciever: {fileID: 1013078540204348639}
+  navAgentMovement: {fileID: 6131493110936356892}
+  audioPlayer: {fileID: 8205888393155489441}
+  stateQeueue: {fileID: 1143017733417432476}
+  groundChecker: {fileID: 1474273528425992561}
+  faceTargetDirectionSpeed: 3.33
+  faceMoveDirectionSpeed: 3.33
+  faceTargetDotThreshold: 0.9
+  stunTimer: {fileID: 4697224406505011640}
+  stateAgent: {fileID: 4422368455172307927}
+  projectileSpawner: {fileID: 5619058912123936695}
 --- !u!1 &7111816295649535380
 GameObject:
   m_ObjectHideFlags: 0
