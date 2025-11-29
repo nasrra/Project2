@@ -12,7 +12,7 @@ public abstract class BatMinion : Minion
 
     const DamageType StaggerDamageType = DamageType.Light | DamageType.Heavy;
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         FaceMoveDirection();
     }
@@ -52,7 +52,12 @@ public abstract class BatMinion : Minion
         Destroy(gameObject);
     }
 
-    public abstract void Shoot(Transform target);
+    /// <summary>
+    /// shoot at a position in world space.
+    /// </summary>
+    /// <param name="position">The specified position in world space.</param>
+
+    public abstract void Shoot(Vector3 position);
 
     protected override void OnHealthDeath()
     {

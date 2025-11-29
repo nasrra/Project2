@@ -10,9 +10,9 @@ public class BatMinionBlue : BatMinion
     [Header(nameof(BatMinionBlue)+" Components")]
     [SerializeField] Entropek.Projectiles.ProjectileSpawner projectileSpawner;
 
-    public override void Shoot(Transform target)
+    public override void Shoot(Vector3 position)
     {
-        projectileSpawner.FireAtTarget(0, 0, target);
+        projectileSpawner.FireAtPosition(0, 0, position);
     }
 
     protected override void OnCombatActionChosen(in string actionName)
@@ -37,7 +37,7 @@ public class BatMinionBlue : BatMinion
         switch (eventName)
         {
             case ShootAnimationEvent:
-                Shoot(target);
+                Shoot(target.position);
                 return true;
             default:
                 return false;

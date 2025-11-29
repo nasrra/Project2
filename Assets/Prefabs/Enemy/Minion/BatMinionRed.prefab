@@ -311,6 +311,7 @@ MonoBehaviour:
   stunTimer: {fileID: 3142788823512376452}
   stateAgent: {fileID: 7125024026775479123}
   hitScanner: {fileID: 3372407604579006724}
+  lineRendererController: {fileID: 6714136114228226342}
 --- !u!1 &7899729685831770180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1327,6 +1328,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8800185551969547488, guid: 98fa33403960a984bb11bc60d3b14b0a, type: 3}
   m_PrefabInstance: {fileID: 4327860650862294096}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6714136114228226342 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6999369448846548342, guid: 98fa33403960a984bb11bc60d3b14b0a, type: 3}
+  m_PrefabInstance: {fileID: 4327860650862294096}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d441eae38ff54f34e9db312b6400cd9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8548095564608590392 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5381601394981594728, guid: 98fa33403960a984bb11bc60d3b14b0a, type: 3}
