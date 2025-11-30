@@ -66,7 +66,6 @@ public abstract class Enemy : MonoBehaviour
         Entropek.Ai.Contexts.AiAgentContext combatContext = combatAgent.AiAgentContext;
 
         target = Opponent.Singleton.transform;
-        Debug.Log(Opponent.Singleton);
         navAgentMovementTarget = Opponent.Singleton.NavAgentMovementTarget;
 
         switch (combatContext)
@@ -99,7 +98,6 @@ public abstract class Enemy : MonoBehaviour
     
     public virtual void ChaseState()
     {
-        Debug.Log("Chase");
         combatAgent.BeginEvaluationLoop();
         navAgentMovement.ResumePath();
         navAgentMovement.StartPath(navAgentMovementTarget);    
@@ -107,7 +105,6 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void FleeState()
     {
-        Debug.Log("flee");
         combatAgent.BeginEvaluationLoop();
         navAgentMovement.ResumePath();
         navAgentMovement.MoveAway(navAgentMovementTarget, 24);
