@@ -4,6 +4,7 @@ using Entropek.Combat;
 using Entropek.Projectiles;
 using Entropek.Time;
 using Entropek.UnityUtils.Attributes;
+using Entropek.Vfx;
 using UnityEngine;
 
 public class GolemMinion : Minion
@@ -11,6 +12,7 @@ public class GolemMinion : Minion
     private const string StunAnimation = "SA_Golem_Damage";
     private const string AttackAnimation = "SA_Golem_Hit";
 
+    private const string AttackAnimationEvent = "AttackFrame";
     private const string FootstepAnimationEvent = "Footstep";
     private const string FootstepSfx = "FootstepGrassHeavy";
 
@@ -27,6 +29,7 @@ public class GolemMinion : Minion
     [SerializeField] HitScanner hitScanner;
     [SerializeField] LineRendererController lineRendererController;
     [SerializeField] OneShotTimer shootDelayTimer;
+    [SerializeField] SingleVfxPlayer attackSmokeVfx;
 
     [RuntimeField] Vector3 shotTargetPosition;
     [RuntimeField] float shotTargetingAccuracy = 0;    
@@ -198,6 +201,9 @@ public class GolemMinion : Minion
             case FootstepAnimationEvent:
                 OnFootstepAnimationEvent();
                 return true;
+            case AttackAnimationEvent:
+                OnAttackAnimationEvent();
+                return true;
             default: 
                 return false;
         }
@@ -206,6 +212,11 @@ public class GolemMinion : Minion
     private void OnFootstepAnimationEvent()
     {
         audioPlayer.PlaySound(FootstepSfx, transform.position);
+    }
+
+    private void OnAttackAnimationEvent()
+    {
+        attackSmokeVfx.Play();
     }
 
 
