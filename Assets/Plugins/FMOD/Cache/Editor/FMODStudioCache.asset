@@ -368,7 +368,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 639001833087285784
+  lastModified: 639001980532661016
   FileSizes: []
   Exists: 1
 --- !u!114 &-2854114135667232134
@@ -440,7 +440,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639001024899193532
+  lastModified: 639001979148397464
   FileSizes: []
   Exists: 1
 --- !u!114 &-2267910940784852343
@@ -563,13 +563,14 @@ MonoBehaviour:
   - {fileID: -1134125873721042992}
   - {fileID: 4591951661939271914}
   - {fileID: -7680224050637624132}
+  - {fileID: 5133052498661002240}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2519853073427545565}
   StringsBanks:
   - {fileID: 8146968385664048423}
   cacheVersion: 131849
-  cacheTime: 639001833087285784
+  cacheTime: 639001980532661016
   SerializableEventsDict:
   - key: event:/Sfx/Enemies/Slink/SlinkGrowl
     index: 0
@@ -615,6 +616,8 @@ MonoBehaviour:
     index: 20
   - key: event:/Sfx/Movement/Footsteps/FootstepGrassHeavy
     index: 21
+  - key: event:/Sfx/Enemies/GolemAttack
+    index: 22
 --- !u!114 &292067498568191822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,6 +915,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 30
   Length: 19192
+--- !u!114 &5133052498661002240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Enemies/GolemAttack
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Enemies/GolemAttack
+  Guid:
+    Data1: 198645704
+    Data2: 1185284903
+    Data3: 1813971360
+    Data4: 993459694
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 55
+  Length: 2640
 --- !u!114 &6198180318605954092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,10 +1038,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639001024899203554
+  lastModified: 639001979148421193
   FileSizes:
   - Name: 
-    Value: 2074
+    Value: 2128
   Exists: 1
 --- !u!114 &8248852890597649268
 MonoBehaviour:

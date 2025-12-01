@@ -12,6 +12,8 @@ public class GolemMinion : Minion
     private const string StunAnimation = "SA_Golem_Damage";
     private const string AttackAnimation = "SA_Golem_Hit";
 
+    private const string AttackSfx = "GolemAttack";
+
     private const string AttackAnimationEvent = "AttackFrame";
     private const string FootstepAnimationEvent = "Footstep";
     private const string FootstepSfx = "FootstepGrassHeavy";
@@ -217,6 +219,7 @@ public class GolemMinion : Minion
     private void OnAttackAnimationEvent()
     {
         attackSmokeVfx.Play();
+        audioPlayer.PlaySound(AttackSfx, transform.position);
     }
 
 
@@ -241,6 +244,7 @@ public class GolemMinion : Minion
     {
         Shoot(shotTargetPosition);
     }
+
 
     /// 
     /// Health Linkage.
