@@ -1,15 +1,19 @@
 using Entropek.Interaction;
+using Entropek.UnityUtils.AnimatorUtils;
 using TMPro;
 using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+    private const string DropItemAnimationEvent = "DropItem";
+    private const string OpenAnimation = "chest_opening";
+
     [Header("Components")]
     [SerializeField] private ItemDropper itemDropper;
     [SerializeField] private Interactable interactable;
     [SerializeField] private CurrencyRequirement currencyRequirement;
-    [SerializeField] private TextLookAt textLookAt;
-    [SerializeField] private TextMeshPro text;
+    [SerializeField] private Animator animator;
+    [SerializeField] private AnimationEventReciever animationEventReciever;
 
 
     /// 
@@ -28,23 +32,6 @@ public class Chest : MonoBehaviour
     }
 
 
-    ///
-    /// Functions.
-    /// 
-
-
-    private void EnableCurrencyRequirementText(Transform target)
-    {
-        text.gameObject.SetActive(true);
-        textLookAt.LookAtTarget = target;
-    }
-
-    private void DisableCurrencyRequirementText()
-    {
-        text.gameObject.SetActive(false);
-    }
-
-
     /// 
     /// Event Linkage.
     /// 
@@ -53,56 +40,68 @@ public class Chest : MonoBehaviour
     private void LinkEvents()
     {
         LinkInteractableEvents();
+        LinkAnimationEventRecieverEvents();
     }
 
     private void UnlinkEvents()
     {
         UnlinkInteractableEvents();
+        UnlinkAnimationEventRecieverEvents();
     }
+
+
+    /// 
+    /// Interactable Linkage.
+    /// 
+
 
     private void LinkInteractableEvents()
     {
         interactable.Interacted += OnInteracted; 
-        interactable.EnteredInteractorSight += OnEnteredInteractorSight;
-        interactable.ExitedInteractorSight += OnExitedInteractorSight;
-        interactable.DisabledInteraction += OnDisabledInteraction;
     }
 
     private void UnlinkInteractableEvents()
     {
         interactable.Interacted -= OnInteracted;
-        interactable.EnteredInteractorSight -= OnEnteredInteractorSight;
-        interactable.ExitedInteractorSight -= OnExitedInteractorSight;
     }
 
     private void OnInteracted(Interactor interactor)
     {
         if (currencyRequirement.FullfillRequirement(interactor.RootGameObject) == true)
         {            
-            itemDropper.DropItem();
+            animator.Play(OpenAnimation);
             interactable.DisableInteraction();
-            DisableCurrencyRequirementText();
         }
     }
 
-    private void OnEnteredInteractorSight(Interactor interactor)
+
+    ///
+    /// Animation Event Linkage.
+    /// 
+
+    private void LinkAnimationEventRecieverEvents()
     {
-        if (interactable.IsInteractable)
+        animationEventReciever.AnimationEventTriggered += OnAnimationEventTriggered;
+    }
+
+    private void UnlinkAnimationEventRecieverEvents()
+    {
+        animationEventReciever.AnimationEventTriggered -= OnAnimationEventTriggered;        
+    }
+
+    private void OnAnimationEventTriggered(string eventName)
+    {
+        switch (eventName)
         {
-            EnableCurrencyRequirementText(interactor.transform);
+            case DropItemAnimationEvent:
+                OnDropItemAnimationEvent();
+            break;
         }
     }
 
-    private void OnExitedInteractorSight(Interactor interactor)
+    private void OnDropItemAnimationEvent()
     {
-        if (interactable.IsInteractable)
-        {
-            DisableCurrencyRequirementText();
-        }
+        itemDropper.DropItem();
     }
 
-    private void OnDisabledInteraction()
-    {
-        DisableCurrencyRequirementText();        
-    }
 }

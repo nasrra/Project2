@@ -110,13 +110,7 @@ public class EnemyDirector : MonoBehaviour
     public void Evaluate()
     {
 
-        // if (x >= 100)
-        // {
-        //     return;
-        // }
-
-
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < 1; j++)
         {            
             SpawnMinion();
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class InteractableGraphics : MonoBehaviour
 {
     [SerializeField] Interactable interactable;
-    [SerializeField] MeshRenderer meshRenderer;
+    [SerializeField] MeshRenderer[] meshRenderers;
     [SerializeField] Outline outline;
 
     private void Awake()
@@ -20,14 +20,30 @@ public class InteractableGraphics : MonoBehaviour
 
     private void EnterInRangeState()
     {
-        meshRenderer.materials[0].SetFloat("_OverlayAmount", 0.167f);
-        outline.renderers[0].materials[2].SetFloat("_OutlineWidth", 10);        
+        for(int i = 0; i < meshRenderers.Length; i++)
+        {
+            MeshRenderer meshRenderer = meshRenderers[i];
+            meshRenderer.materials[0].SetFloat("_OverlayAmount", 0.24f);
+        }
+
+        for(int i = 0; i < outline.renderers.Length; i++)
+        {
+            outline.renderers[i].materials[2].SetFloat("_OutlineWidth", 10);        
+        }
     }
 
     private void ExitInRangeState()
     {
-        meshRenderer.materials[0].SetFloat("_OverlayAmount", 0);
-        outline.renderers[0].materials[2].SetFloat("_OutlineWidth", 0);        
+        for(int i = 0; i < meshRenderers.Length; i++)
+        {
+            MeshRenderer meshRenderer = meshRenderers[i];
+            meshRenderer.materials[0].SetFloat("_OverlayAmount", 0f);
+        }
+
+        for(int i = 0; i < outline.renderers.Length; i++)
+        {
+            outline.renderers[i].materials[2].SetFloat("_OutlineWidth", 0f);        
+        }
     }
 
     private void LinkEvents()
