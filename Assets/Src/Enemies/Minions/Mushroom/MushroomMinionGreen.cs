@@ -91,8 +91,8 @@ public class MushroomMinionGreen : MushroomMinion
         currentProjectile.transform.parent = projectilePool.PoolContainer.transform;
         currentProjectile.transform.LookAt(shootTarget.position);
 
-        combatAgent.BeginEvaluationLoop();
-        combatAgent.BeginChosenActionCooldown();
+        aiActionAgent.BeginEvaluationLoop();
+        aiActionAgent.BeginChosenActionCooldown();
 
         currentProjectile.Resume();
     }

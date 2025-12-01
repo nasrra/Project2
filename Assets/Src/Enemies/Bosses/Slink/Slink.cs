@@ -100,12 +100,8 @@ public class Slink : Boss {
 
     public override void AttackState()
     {
-        FixedUpdateCallback = AttackingStateFixedUpdate;
-        navAgentMovement.PausePath();
-    }
-
-    private void AttackingStateFixedUpdate(){
-        
+        base.AttackState();
+        FixedUpdateCallback = null;
     }
 
     public override void ChaseState(){

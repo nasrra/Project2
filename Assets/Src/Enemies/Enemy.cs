@@ -2,11 +2,22 @@ using UnityEngine;
 using Entropek.Combat;
 using Entropek.Physics;
 using Entropek.Time;
-using UnityEditor.Experimental.GraphView;
 using Entropek.EntityStats;
+using Entropek.Audio;
+using Entropek.UnityUtils.AnimatorUtils;
+using Entropek.Ai;
+using Entropek.Ai.Contexts;
 
 public abstract class Enemy : MonoBehaviour 
 {
+
+    /// 
+    /// Constants.
+    /// 
+
+
+    private const string FleeStateAgentOutcome = "Flee";
+    private const string ChaseStateAgentOutcome = "Chase";
 
 
     /// 
@@ -16,20 +27,34 @@ public abstract class Enemy : MonoBehaviour
 
     [Header(nameof(Enemy) + " Required Components")]
     [SerializeField] protected Transform graphicsObject; // gameobject that holds the enemy mesh, vfx, etc.
+    public Transform GraphicsObject => graphicsObject;
+    
     [SerializeField] protected NavAgentMovementTarget navAgentMovementTarget;
+    public NavAgentMovementTarget NavAgentMovementTarget => navAgentMovementTarget;
+
     [SerializeField] protected Transform target;
+    public Transform Target => target;
     
     [SerializeField] protected HealthSystem health;
     public HealthSystem Health => health;
 
     [SerializeField] protected Animator animator;
-    [SerializeField] protected Entropek.Ai.AiActionAgent combatAgent;
-    [SerializeField] protected Entropek.UnityUtils.AnimatorUtils.AnimationEventReciever animationEventReciever;
+    public Animator Animator => animator;
+
+    [SerializeField] protected AnimationEventReciever animationEventReciever;
+    public AnimationEventReciever AnimationEventReciever => animationEventReciever;
+    
     [SerializeField] protected NavAgentMovement navAgentMovement;
     public NavAgentMovement NavAgentMovement =>  navAgentMovement;
-    [SerializeField] protected Entropek.Audio.AudioPlayer audioPlayer;
-    [SerializeField] protected TimedActionQueue stateQeueue;
+    
+    [SerializeField] protected AudioPlayer audioPlayer;
+    public AudioPlayer AudioPlayer => audioPlayer; 
 
+    [SerializeField] protected TimedActionQueue stateQeueue;
+    public TimedActionQueue StateQueue => stateQeueue;
+
+    [SerializeField] protected AiActionAgent aiActionAgent;
+    public AiActionAgent AiActionAgent => aiActionAgent;
 
     /// 
     /// Optional Components.
@@ -37,7 +62,12 @@ public abstract class Enemy : MonoBehaviour
 
 
     [Header(nameof(Enemy) + " Optional Components")]
-    [SerializeField] protected GroundCheck groundChecker;
+    
+    [SerializeField] protected GroundCheck groundCheck;
+    public GroundCheck GroundCheck => groundCheck;
+    
+    [SerializeField] protected AiStateAgent aiStateAgent;
+    public AiStateAgent AiStateAgent => aiStateAgent;
 
 
     /// 
@@ -50,7 +80,6 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float faceMoveDirectionSpeed = 3.33f;
     [SerializeField] private float faceTargetDotThreshold = 0.9f;
 
-
     /// 
     /// Base.
     /// 
@@ -60,15 +89,28 @@ public abstract class Enemy : MonoBehaviour
     {
 
         LinkEvents();
+        InitialiseAiAgentContexts();
+    }
 
+    void OnDestroy()
+    {
+        UnlinkEvents();
+    }
+
+    ///
+    /// State Machine.
+    /// 
+
+    private void InitialiseAiAgentContexts()
+    {        
         // immediately start tracking the player.
 
-        Entropek.Ai.Contexts.AiAgentContext combatContext = combatAgent.AiAgentContext;
+        AiAgentContext actionContext = aiActionAgent.AiAgentContext;
 
         target = Opponent.Singleton.transform;
         navAgentMovementTarget = Opponent.Singleton.NavAgentMovementTarget;
 
-        switch (combatContext)
+        switch (actionContext)
         {
             
             // check IOpponentContext first as it implements the target context;
@@ -81,58 +123,67 @@ public abstract class Enemy : MonoBehaviour
                 targetContext.Target = Opponent.Singleton.transform;
             break;
         }
-
     }
-
-    void OnDestroy()
-    {
-        UnlinkEvents();
-    }
-
-    ///
-    /// State Machine.
-    /// 
 
     public abstract void IdleState();
     public abstract void IdleState(float time);
     
     public virtual void ChaseState()
     {
-        combatAgent.BeginEvaluationLoop();
+        aiActionAgent.BeginEvaluationLoop();
         navAgentMovement.ResumePath();
         navAgentMovement.StartPath(navAgentMovementTarget);    
     }
 
     public virtual void FleeState()
     {
-        combatAgent.BeginEvaluationLoop();
+        aiActionAgent.BeginEvaluationLoop();
         navAgentMovement.ResumePath();
         navAgentMovement.MoveAway(navAgentMovementTarget, 24);
     }
 
-    public abstract void AttackState();
+    public virtual void AttackState()
+    {
+        if (aiStateAgent != null)
+        {
+            aiStateAgent.HaltEvaluationLoop();
+        }
+    }
 
     protected virtual void AttackEndedState()
     {
-        combatAgent.BeginChosenActionCooldown();
+        aiActionAgent.BeginChosenActionCooldown();
 
         // get the attack that has just been completed. 
 
-        Entropek.Ai.AiAction endedAttack = combatAgent.ChosenAction;
+        Entropek.Ai.AiAction endedAttack = aiActionAgent.ChosenAction;
 
         // evaulate for a new action immediately up time out if set to true.
 
         if (endedAttack.EvaluateOnIdleTimeout == true)
         {
-            if (combatAgent.Evaluate() == true)
+            if (aiActionAgent.Evaluate() == true)
             {
                 return;
             }
         }
 
-        // start idle state.
+        // start idle state for however long it is defined for.
 
         IdleState(endedAttack.IdleTime);
+
+        // go back to the chosen state when the idle state has finished.
+        
+        if (aiStateAgent != null)
+        {
+            stateQeueue.Enqueue(
+                () =>
+                {
+                    OnStateAgentOutcomeChosen(aiStateAgent.ChosenState.Name);
+                    aiStateAgent.BeginEvaluationLoop();
+                }
+            );            
+        }
     }
 
     /// 
@@ -156,7 +207,7 @@ public abstract class Enemy : MonoBehaviour
 
         // Get the rotation needed to align up with the ground.
 
-        Quaternion alignToGround = Quaternion.FromToRotation(graphicsObject.up, groundChecker.GroundNormal) * graphicsObject.rotation;
+        Quaternion alignToGround = Quaternion.FromToRotation(graphicsObject.up, groundCheck.GroundNormal) * graphicsObject.rotation;
 
         // Extract Euler Angles.
 
@@ -207,6 +258,7 @@ public abstract class Enemy : MonoBehaviour
         LinkHealthEvents();
         LinkCombatAgentEvents();
         LinkAnimationEventRecieverEvents();
+        LinkAiStateAgentEvents();
     }
 
     protected virtual void UnlinkEvents()
@@ -214,8 +266,50 @@ public abstract class Enemy : MonoBehaviour
         UnlinkHealthEvents();
         UnlinkCombatAgentEvents();
         UnlinkAnimationEventRecieverEvents();
+        UnlinkAiStateAgentEvents();
     }
 
+
+    ///
+    /// State Agent Linkage.
+    /// 
+
+
+    protected void LinkAiStateAgentEvents()
+    {
+        if(aiStateAgent != null)
+        {
+            aiStateAgent.OutcomeChosen += OnStateAgentOutcomeChosenWrapper;
+        }
+    }
+
+    protected void UnlinkAiStateAgentEvents()
+    {
+        if(aiStateAgent != null)
+        {
+            aiStateAgent.OutcomeChosen -= OnStateAgentOutcomeChosenWrapper;
+        }
+    }
+    
+    private void OnStateAgentOutcomeChosenWrapper(string outcomeName)
+    {
+        OnStateAgentOutcomeChosen(outcomeName);
+    }
+
+    protected virtual bool OnStateAgentOutcomeChosen(string outcomeName)
+    {
+        switch (outcomeName)
+        {
+            case ChaseStateAgentOutcome:
+                ChaseState();
+                return true;
+            case FleeStateAgentOutcome:
+                FleeState();
+                return false;
+            default:
+                return false;
+        }
+    }
 
     /// 
     /// Combat Agent Linkage.
@@ -224,12 +318,12 @@ public abstract class Enemy : MonoBehaviour
 
     private void LinkCombatAgentEvents()
     {
-        combatAgent.OutcomeChosen += OnCombatActionChosenWrapper;
+        aiActionAgent.OutcomeChosen += OnCombatActionChosenWrapper;
     }
 
     private void UnlinkCombatAgentEvents()
     {
-        combatAgent.OutcomeChosen -= OnCombatActionChosenWrapper;
+        aiActionAgent.OutcomeChosen -= OnCombatActionChosenWrapper;
     }
 
     private void OnCombatActionChosenWrapper(string actionName)
@@ -244,7 +338,11 @@ public abstract class Enemy : MonoBehaviour
         OnCombatActionChosen(actionName);
     }
 
-    protected abstract bool OnCombatActionChosen(in string actionName);
+    protected virtual bool OnCombatActionChosen(in string actionName)
+    {
+        return false;
+    }
+
     protected abstract void OnOpponentEngaged(Transform opponent);
 
 

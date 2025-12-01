@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Entropek.Combat;
 using Entropek.Projectiles;
 using Entropek.Time;
@@ -8,12 +9,12 @@ using UnityEngine;
 public class GolemMinion : Minion
 {
     private const string StunAnimation = "SA_Golem_Damage";
+    private const string AttackAnimation = "SA_Golem_Hit";
 
     private const string FootstepAnimationEvent = "Footstep";
     private const string FootstepSfx = "FootstepGrassHeavy";
 
-    private const string FleeStateAgentOutcome = "Flee";
-    private const string ChaseStateAgentOutcome = "Chase";
+    private const string AttackActionAgentOutcome = "Attack";
     private const string ShootActionAgentOutcome = "Shoot";
 
     private const float MinShotTargetingAccuracy = 8f;
@@ -53,14 +54,8 @@ public class GolemMinion : Minion
 
     public override void AttackState()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ChaseState()
-    {
-        combatAgent.BeginEvaluationLoop();
-        navAgentMovement.ResumePath();
-        navAgentMovement.StartPath(navAgentMovementTarget);
+        base.AttackState();
+        navAgentMovement.PausePath();
     }
 
     public override void IdleState()
@@ -70,7 +65,7 @@ public class GolemMinion : Minion
     public override void IdleState(float time)
     {
         IdleState();
-        stateQeueue.Enqueue(combatAgent.BeginEvaluationLoop);
+        stateQeueue.Enqueue(aiActionAgent.BeginEvaluationLoop);
         stateQeueue.Begin(time);
     }
 
@@ -99,11 +94,11 @@ public class GolemMinion : Minion
 
         StopShotTargeting();
 
-        if(combatAgent.ChosenAction != null
-        && combatAgent.ChosenAction.Name == ShootActionAgentOutcome)
+        if(aiActionAgent.ChosenAction != null
+        && aiActionAgent.ChosenAction.Name == ShootActionAgentOutcome)
         {
-            combatAgent.BeginChosenActionCooldown();
-            combatAgent.BeginEvaluationLoop();
+            aiActionAgent.BeginChosenActionCooldown();
+            aiActionAgent.BeginEvaluationLoop();
         }
     }
 
@@ -154,7 +149,7 @@ public class GolemMinion : Minion
 
 
     /// 
-    /// Action Agent Outcomes.
+    /// Combat Ai Action Agent Outcomes.
     /// 
 
 
@@ -164,6 +159,9 @@ public class GolemMinion : Minion
         {
             case ShootActionAgentOutcome:
                 OnShootActionAgentOutcome();
+                return true;
+            case AttackActionAgentOutcome:
+                OnAttackActionAgentOutcome();
                 return true;
             default:
                 return false;
@@ -177,10 +175,17 @@ public class GolemMinion : Minion
         StartShotTargeting();
     }
 
+    private void OnAttackActionAgentOutcome()
+    {
+        animator.Play(AttackAnimation);
+        AttackState();
+    }
+
 
     ///
     /// Animation Events.
     /// 
+
 
     protected override bool OnAnimationEventTriggered(string eventName)
     {
@@ -201,45 +206,6 @@ public class GolemMinion : Minion
     private void OnFootstepAnimationEvent()
     {
         audioPlayer.PlaySound(FootstepSfx, transform.position);
-    }
-
-    /// 
-    /// State Agent Outcomes.
-    /// 
-
-
-    private void OnStateAgentOutcomeChosen(string outcomeName)
-    {
-        switch (outcomeName)
-        {
-            case ChaseStateAgentOutcome:
-                ChaseState();
-                break;
-            case FleeStateAgentOutcome:
-                FleeState();
-                break;
-            default:
-                Debug.LogError($"Golem Minion does not implement state: {outcomeName}");
-                break;
-        }
-    }
-
-
-    ///
-    /// Event Linkage.
-    /// 
-
-
-    protected override void LinkEvents()
-    {
-        base.LinkEvents();
-        LinkStateAgentEvents();
-    }
-
-    protected override void UnlinkEvents()
-    {
-        base.UnlinkEvents();
-        UnlinkStateAgentEvents();
     }
 
 
@@ -264,23 +230,6 @@ public class GolemMinion : Minion
     {
         Shoot(shotTargetPosition);
     }
-
-
-    /// 
-    /// State Agent Event Linkage.
-    /// 
-
-
-    protected void LinkStateAgentEvents()
-    {
-        stateAgent.OutcomeChosen += OnStateAgentOutcomeChosen;
-    }
-
-    protected void UnlinkStateAgentEvents()
-    {
-        stateAgent.OutcomeChosen -= OnStateAgentOutcomeChosen;        
-    }
-
 
     /// 
     /// Health Linkage.

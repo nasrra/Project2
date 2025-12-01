@@ -22,7 +22,7 @@ public class TestMinion : Minion
 
     public override void ChaseState()
     {
-        combatAgent.BeginEvaluationLoop();
+        aiActionAgent.BeginEvaluationLoop();
         navAgentMovement.ResumePath();
         navAgentMovement.StartPath(navAgentMovementTarget);
     }
@@ -34,7 +34,7 @@ public class TestMinion : Minion
     public override void IdleState(float time)
     {
         IdleState();
-        stateQeueue.Enqueue(combatAgent.BeginEvaluationLoop);
+        stateQeueue.Enqueue(aiActionAgent.BeginEvaluationLoop);
         stateQeueue.Begin(time);
     }
 
@@ -76,18 +76,6 @@ public class TestMinion : Minion
     /// Linkage.
     /// 
 
-    protected override void LinkEvents()
-    {
-        base.LinkEvents();
-        LinkStateAgentEvents();
-    }
-
-    protected override void UnlinkEvents()
-    {
-        base.UnlinkEvents();
-        UnlinkStateAgentEvents();
-    }
-
     protected override void LinkTimerEvents()
     {
         base.LinkTimerEvents();
@@ -98,32 +86,6 @@ public class TestMinion : Minion
     {
         base.UnlinkTimerEvents();
         attackStateTimer.Timeout -= AttackEndedState;        
-    }
-
-    protected void LinkStateAgentEvents()
-    {
-        stateAgent.OutcomeChosen += OnStateAgentOutcomeChosen;
-    }
-
-    protected void UnlinkStateAgentEvents()
-    {
-        stateAgent.OutcomeChosen -= OnStateAgentOutcomeChosen;        
-    }
-
-    private void OnStateAgentOutcomeChosen(string outcomeName)
-    {
-        switch (outcomeName)
-        {
-            case "Chase":
-                ChaseState();
-                break;
-            case "Flee":
-                FleeState();
-                break;
-            default:
-                Debug.LogError($"Test Minion does not implment state: {outcomeName}");
-                break;
-        }
     }
 
     protected override void OnHealthDamaged(DamageContext damageContext)

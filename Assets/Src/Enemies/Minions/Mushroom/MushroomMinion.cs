@@ -9,8 +9,6 @@ public abstract class MushroomMinion : Minion
     private const string HeadbuttAnimation = "SA_Mushroom_Headbutt";
     private const string HeadbuttAttackFrameAnimationEvent = "HeadbuttAttackFrame";
 
-    private const string FleeStateAgentOutcome = "Flee";
-    private const string ChaseStateAgentOutcome = "Chase";
     private const string HeadbuttActionAgentOutcome = "Headbutt";
 
     [Header(nameof(MushroomMinion)+" Components")]
@@ -37,8 +35,8 @@ public abstract class MushroomMinion : Minion
 
     public override void AttackState()
     {
+        base.AttackState();
         navAgentMovement.PausePath();
-        stateAgent.HaltEvaluationLoop();
     }
 
     public override void IdleState()
@@ -48,7 +46,7 @@ public abstract class MushroomMinion : Minion
     public override void IdleState(float time)
     {
         IdleState();
-        stateQeueue.Enqueue(combatAgent.BeginEvaluationLoop);
+        stateQeueue.Enqueue(aiActionAgent.BeginEvaluationLoop);
         stateQeueue.Begin(time);
     }
 
@@ -129,28 +127,6 @@ public abstract class MushroomMinion : Minion
     }
 
 
-    ///
-    /// State Agent Outcomes. 
-    ///
-
-
-    private void OnStateAgentOutcomeChosen(string outcomeName)
-    {
-        switch (outcomeName)
-        {
-            case ChaseStateAgentOutcome:
-                ChaseState();
-                break;
-            case FleeStateAgentOutcome:
-                FleeState();
-                break;
-            default:
-                Debug.LogError($"Mushroom Minion does not implement state: {outcomeName}");
-                break;
-        }
-    }
-
-
     /// 
     /// Action Agent Outcomes
     /// 
@@ -174,43 +150,4 @@ public abstract class MushroomMinion : Minion
         animator.Play(HeadbuttAnimation);
         AttackState();
     }
-
-
-    ///
-    /// Event Linkage Override.
-    /// 
-
-
-    protected override void LinkEvents()
-    {
-        base.LinkEvents();
-        LinkStateAgentEvents();
-    }
-
-    protected override void UnlinkEvents()
-    {
-        base.UnlinkEvents();
-        UnlinkStateAgentEvents();
-    }
-
-    protected override void LinkTimerEvents()
-    {
-        base.LinkTimerEvents();
-    }
-
-    protected override void UnlinkTimerEvents()
-    {
-        base.UnlinkTimerEvents();
-    }
-
-    protected void LinkStateAgentEvents()
-    {
-        stateAgent.OutcomeChosen += OnStateAgentOutcomeChosen;
-    }
-
-    protected void UnlinkStateAgentEvents()
-    {
-        stateAgent.OutcomeChosen -= OnStateAgentOutcomeChosen;        
-    }
-
 }

@@ -41,7 +41,7 @@ public abstract class Minion : Enemy
     public void EnterStunState(float time)
     {
         navAgentMovement.PausePath();
-        combatAgent.HaltEvaluationLoop();
+        aiActionAgent.HaltEvaluationLoop();
         stateQeueue.Halt();
         stunTimer.Begin(time);
 
@@ -58,7 +58,7 @@ public abstract class Minion : Enemy
     {
         navAgentMovement.ResumePath();
         navAgentMovement.RecalculatePath();
-        combatAgent.BeginEvaluationLoop();
+        aiActionAgent.BeginEvaluationLoop();
         stateQeueue.Begin();
         ExitStunStateInternal();
     }
