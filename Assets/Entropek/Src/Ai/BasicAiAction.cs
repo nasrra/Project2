@@ -18,6 +18,7 @@ namespace Entropek.Ai
         [SerializeField] private AnimationCurve distanceToOpponentCurve = new AnimationCurve(new Keyframe(0f,1f), new Keyframe(1f,0f));
         public AnimationCurve DistanceToOpponentCurve => distanceToOpponentCurve;
 
+
         ///
         /// Cache.
         /// 
@@ -29,7 +30,7 @@ namespace Entropek.Ai
         /// 
         /// Base.
         /// 
-        /// 
+
         public override float MaxScore => 1;
 
         protected override bool IsPossible()

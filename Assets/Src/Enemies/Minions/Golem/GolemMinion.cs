@@ -32,6 +32,8 @@ public class GolemMinion : Minion
     [SerializeField] LineRendererController lineRendererController;
     [SerializeField] OneShotTimer shootDelayTimer;
     [SerializeField] SingleVfxPlayer attackSmokeVfx;
+    [SerializeField] TimedSingleHitbox attackHitbox;
+
 
     [RuntimeField] Vector3 shotTargetPosition;
     [RuntimeField] float shotTargetingAccuracy = 0;    
@@ -220,6 +222,7 @@ public class GolemMinion : Minion
     {
         attackSmokeVfx.Play();
         audioPlayer.PlaySound(AttackSfx, transform.position);
+        attackHitbox.Enable();
     }
 
 
