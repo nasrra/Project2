@@ -54,6 +54,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7680224050637624132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Sfx/Movement/Footsteps/FootstepGrassHeavy
+  m_EditorClassIdentifier: 
+  Path: event:/Sfx/Movement/Footsteps/FootstepGrassHeavy
+  Guid:
+    Data1: -2019630306
+    Data2: 1089434570
+    Data3: 668582309
+    Data4: -479817668
+  Banks:
+  - {fileID: -2875021768336980086}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 50
+  Length: 1071
 --- !u!114 &-7194456693447418904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,7 +368,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Globals.bank
   Name: Globals
   StudioPath: bank:/Globals
-  lastModified: 638999467835378928
+  lastModified: 639001833087285784
   FileSizes: []
   Exists: 1
 --- !u!114 &-2854114135667232134
@@ -413,7 +440,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638999460283519890
+  lastModified: 639001024899193532
   FileSizes: []
   Exists: 1
 --- !u!114 &-2267910940784852343
@@ -535,13 +562,14 @@ MonoBehaviour:
   - {fileID: -6809821346968836308}
   - {fileID: -1134125873721042992}
   - {fileID: 4591951661939271914}
+  - {fileID: -7680224050637624132}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2519853073427545565}
   StringsBanks:
   - {fileID: 8146968385664048423}
   cacheVersion: 131849
-  cacheTime: 638999467835378928
+  cacheTime: 639001833087285784
   SerializableEventsDict:
   - key: event:/Sfx/Enemies/Slink/SlinkGrowl
     index: 0
@@ -585,6 +613,8 @@ MonoBehaviour:
     index: 19
   - key: event:/Sfx/Projectiles/FireballProjectileLoop
     index: 20
+  - key: event:/Sfx/Movement/Footsteps/FootstepGrassHeavy
+    index: 21
 --- !u!114 &292067498568191822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -978,10 +1008,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638999460283529902
+  lastModified: 639001024899203554
   FileSizes:
   - Name: 
-    Value: 2038
+    Value: 2074
   Exists: 1
 --- !u!114 &8248852890597649268
 MonoBehaviour:

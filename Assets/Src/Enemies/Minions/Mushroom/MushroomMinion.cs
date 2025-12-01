@@ -85,22 +85,6 @@ public abstract class MushroomMinion : Minion
         target = opponent;
     }
 
-    protected override void AttackEndedState()
-    {
-        base.AttackEndedState();
-        
-        // go back to the chosen state when the attack has finished.
-
-        stateQeueue.Enqueue(
-            () =>
-            {
-                OnStateAgentOutcomeChosen(stateAgent.ChosenState.Name);
-                stateAgent.BeginEvaluationLoop();
-            }
-        );
-    }
-
-
     ///
     /// Unique Functions.
     /// 
