@@ -7,10 +7,12 @@ public abstract class BatMinion : Minion
     private const string WingsFlapAnimationEvent = "WingsFlap";
     private const string StunAnimationName = "SA_Bat_Damage";
 
-    [Header(nameof(BatMinion)+" Components")]
-    [SerializeField] protected Entropek.Ai.AiStateAgent stateAgent;
-
     const DamageType StaggerDamageType = DamageType.Light | DamageType.Heavy;
+
+    void Start()
+    {
+        ChaseState();
+    }
 
     protected virtual void FixedUpdate()
     {

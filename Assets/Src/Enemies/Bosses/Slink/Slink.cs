@@ -102,6 +102,7 @@ public class Slink : Boss {
     {
         base.AttackState();
         FixedUpdateCallback = null;
+        navAgentMovement.PausePath();
     }
 
     public override void ChaseState(){

@@ -300,12 +300,13 @@ MonoBehaviour:
   target: {fileID: 0}
   health: {fileID: 2738760963459343777}
   animator: {fileID: 8986629738780773252}
-  combatAgent: {fileID: 8688992778745368098}
   animationEventReciever: {fileID: 2665265860684039108}
   navAgentMovement: {fileID: 3703964934597343235}
   audioPlayer: {fileID: 7094256526277102996}
   stateQeueue: {fileID: 832124239282627230}
-  groundChecker: {fileID: 7468587724477251535}
+  aiActionAgent: {fileID: 8688992778745368098}
+  groundCheck: {fileID: 7468587724477251535}
+  aiStateAgent: {fileID: 0}
   faceTargetDirectionSpeed: 3.33
   faceMoveDirectionSpeed: 3.33
   faceTargetDotThreshold: 0.975
