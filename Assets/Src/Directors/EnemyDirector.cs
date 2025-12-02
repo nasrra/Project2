@@ -135,13 +135,13 @@ public class EnemyDirector : MonoBehaviour
 
         Vector3 centerPosition = Opponent.Singleton.transform.position;
 
-        Vector3 randomPosition = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
+        bool foundPoint = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
             spawnCard.GetNavMeshQueryFilter(),
             centerPosition,
             SpawnRandomRadiusMin,
             SpawnRandomRadiusMax,
             SpawnQueryRadius,
-            out bool foundPoint,
+            out Vector3 randomPosition,
             iterations: 32
         );
 

@@ -332,7 +332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3904904473109671138, guid: 5f99439041be829448d19945a140b347, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3904904473109671138, guid: 5f99439041be829448d19945a140b347, type: 3}
       propertyPath: m_LocalPosition.z
@@ -443,6 +443,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChestNavAgent
       objectReference: {fileID: 0}
+    - target: {fileID: 8484112190405025224, guid: 1a2ca01d85c68dc40aad090ee392b005, type: 3}
+      propertyPath: m_BaseOffset
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -551,7 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 1
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 12
+  outlineWidth: 10.61
   outlineFalloff: 3.33
   precomputeOutline: 1
   bakeKeys:

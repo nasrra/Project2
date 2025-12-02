@@ -1,35 +1,12 @@
-using Entropek.UnityUtils.Attributes;
 using UnityEngine;
-using UnityEngine.AI;
 
-[CreateAssetMenu(menuName = "ScriptableObject/Directors/EnemySpawnCard")]
-public class EnemySpawnCard : ScriptableObject
+[CreateAssetMenu(menuName = CreateAssetMenuPath+nameof(EnemySpawnCard))]
+public class EnemySpawnCard : SpawnCard
 {
     [Header("Data")]
-    [Tooltip("The prefab to instantiate.")]
-    [SerializeField] private GameObject prefab;
-    public GameObject Prefab => prefab;
-
-    [Tooltip("The cost to instantiate the prefab.")]
-    [SerializeField] private float cost;
-    public float Cost => cost;
-
-    [Tooltip("The nav mesh used to find a position to place the prefab")]
-    [SerializeField, NavMeshAgentTypeField] private int navMeshAgentType;
-    public int NavMeshAgentType => navMeshAgentType;
-
     [SerializeField] private EnemyType enemyType;
     public EnemyType EnemyType => enemyType;
 
     [SerializeField] private EnemySpawnType spawnType;
     public EnemySpawnType SpawnType => spawnType;
-
-    public NavMeshQueryFilter GetNavMeshQueryFilter()
-    {
-        return new NavMeshQueryFilter()
-        {
-            areaMask =  NavMesh.AllAreas,
-            agentTypeID = navMeshAgentType  
-        };
-    }
 }

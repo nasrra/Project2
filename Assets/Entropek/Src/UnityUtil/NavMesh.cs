@@ -14,11 +14,18 @@ namespace Entropek.UnityUtils
         /// <param name="randomRadiusMin">The minimum area around the center point to try find a random point.</param>
         /// <param name="randomRadiusMax">The minimum area around the center point to try find a random point.</param>
         /// <param name="queryRadius">The area around a generated random point to try and connect to a NavMeshSurface</param>
-        /// <param name="foundPoint">Whether or not a point was successgully found.</param>
+        /// <param name="position">A random point on the NavMeshSurface; otherwise the center if foundPoint is returned as false.</param>
         /// <param name="iterations">The amount of iterations to find a random point.</param>
-        /// <returns>A random point on the NavMeshSurface; otherwise the center if foundPoint is returned as false.</returns>
+        /// <returns>true, if a point was successfully found; otherwise false.</returns>
 
-        public static Vector3 GetRandomPoint(in NavMeshQueryFilter navMeshQueryFilter, Vector3 center, float randomRadiusMin, float randomRadiusMax, float queryRadius, out bool foundPoint, byte iterations = 16)
+        public static bool GetRandomPoint(
+            in NavMeshQueryFilter navMeshQueryFilter, 
+            Vector3 center, 
+            float randomRadiusMin, 
+            float randomRadiusMax, 
+            float queryRadius, 
+            out Vector3 position, 
+            byte iterations = 16)
         {
 
             // try finding random point over max iterations.
@@ -44,15 +51,15 @@ namespace Entropek.UnityUtils
                     
                     // the random point was successfully validated.
                     
-                    foundPoint = true;
-                    return hit.position;
+                    position = hit.position;
+                    return true;
                 }
             }
 
             // no random point was found.
 
-            foundPoint = false;
-            return center;
+            position = center;
+            return false;
         }
     }    
 }
