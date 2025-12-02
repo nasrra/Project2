@@ -199,7 +199,7 @@ public class Player : MonoBehaviour {
         Vector3 moveDirection = characterControllerMovement.moveDirection;
         if (moveDirection != Vector3.zero)
         {
-            Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, characterControllerMovement.moveDirection, FaceMoveDirectionSpeed * Time.deltaTime);
+            Entropek.UnityUtils.TransformUtils.RotateYAxisToDirection(transform, characterControllerMovement.moveDirection, FaceMoveDirectionSpeed * Time.deltaTime);
         }
     }
 
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour {
 
         if (moveInput != Vector2.zero)
         {
-            Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput), 1);
+            Entropek.UnityUtils.TransformUtils.RotateYAxisToDirection(transform, GetMoveDirectionRelativeToCamera(InputManager.Singleton.moveInput), 1);
         }
     }
 
@@ -223,7 +223,7 @@ public class Player : MonoBehaviour {
 
     private void FaceAttackDirectionFixedUpdateCallback()
     {
-        Entropek.UnityUtils.Transform.RotateYAxisToDirection(transform, cameraController.transform.forward, FaceAttackDirectionSpeed * Time.deltaTime);
+        Entropek.UnityUtils.TransformUtils.RotateYAxisToDirection(transform, cameraController.transform.forward, FaceAttackDirectionSpeed * Time.deltaTime);
     }
 
 

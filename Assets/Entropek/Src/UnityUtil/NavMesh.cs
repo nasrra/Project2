@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.ProBuilder;
 
 namespace Entropek.UnityUtils
 {
@@ -24,7 +25,7 @@ namespace Entropek.UnityUtils
             float randomRadiusMin, 
             float randomRadiusMax, 
             float queryRadius, 
-            out Vector3 position, 
+            out NavMeshHit point, 
             byte iterations = 16)
         {
 
@@ -46,19 +47,24 @@ namespace Entropek.UnityUtils
                 
                 // check if that point is on (or near) the nav mesh surface.
 
-                if(NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, queryRadius, navMeshQueryFilter))
+                if (NavMesh.SamplePosition(randomPoint, out point, queryRadius, navMeshQueryFilter))
                 {
-                    
-                    // the random point was successfully validated.
-                    
-                    position = hit.position;
-                    return true;
+                    NavMeshHit edgeHit;
+                    if (NavMesh.FindClosestEdge(point.position, out edgeHit, navMeshQueryFilter))
+                    {
+
+                        // replace the returned point if you want the normal included
+                        point = edgeHit;
+
+                        return true;
+                    }
                 }
+
             }
 
             // no random point was found.
 
-            position = center;
+            point = new();
             return false;
         }
     }    

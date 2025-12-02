@@ -141,7 +141,7 @@ public class EnemyDirector : MonoBehaviour
             SpawnRandomRadiusMin,
             SpawnRandomRadiusMax,
             SpawnQueryRadius,
-            out Vector3 randomPosition,
+            out NavMeshHit point,
             iterations: 32
         );
 
@@ -150,7 +150,7 @@ public class EnemyDirector : MonoBehaviour
             return false;
         }
 
-        Vector3 spawnPosition = randomPosition;
+        Vector3 spawnPosition = point.position;
 
         // spawn aerial enemies at their base height value.
         

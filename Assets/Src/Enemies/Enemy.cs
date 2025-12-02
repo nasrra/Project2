@@ -198,7 +198,7 @@ public abstract class Enemy : MonoBehaviour
         Vector3 moveDirection = navAgentMovement.moveDirection;
         if (moveDirection != Vector3.zero)
         {
-            Entropek.UnityUtils.Transform.RotateYAxisToDirection(graphicsObject, navAgentMovement.moveDirection, faceMoveDirectionSpeed * Time.deltaTime);
+            Entropek.UnityUtils.TransformUtils.RotateYAxisToDirection(graphicsObject, navAgentMovement.moveDirection, faceMoveDirectionSpeed * Time.deltaTime);
         }
     }
 
@@ -231,7 +231,7 @@ public abstract class Enemy : MonoBehaviour
         float dot = Vector3.Dot(graphicsObject.transform.forward, directionToOther);
         if (dot < faceTargetDotThreshold)
         {
-            Entropek.UnityUtils.Transform.RotateYAxisToDirection(graphicsObject, directionToOther, faceTargetDirectionSpeed * Time.deltaTime);
+            Entropek.UnityUtils.TransformUtils.RotateYAxisToDirection(graphicsObject, directionToOther, faceTargetDirectionSpeed * Time.deltaTime);
             return false;
         }
         return true;

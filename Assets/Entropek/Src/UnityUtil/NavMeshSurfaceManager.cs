@@ -121,10 +121,9 @@ namespace Entropek.UnityUtils
             return midpoints;
         }
 
-        private Vector3 GetMidPoint(Vector3 a, Vector3 b)
+        public LayerMask GetNavMeshSurfaceLayerMask(int navMeshSurfaceId)
         {
-            Vector3 distance = a - b;
-            return a - distance * 0.5f;
+            return navMeshSurfaces[navMeshSurfaceId].layerMask;
         }
 
         private Vector3 GetMidPoint(Vector3 a, Vector3 b, Vector3 c)
