@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+
+
     private const string DropItemAnimationEvent = "DropItem";
     private const string OpenAnimation = "chest_opening";
+
 
     [Header("Components")]
     [SerializeField] private ItemDropper itemDropper;
@@ -78,6 +81,7 @@ public class Chest : MonoBehaviour
     ///
     /// Animation Event Linkage.
     /// 
+
 
     private void LinkAnimationEventRecieverEvents()
     {
