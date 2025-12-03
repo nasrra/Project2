@@ -4646,6 +4646,7 @@ MonoBehaviour:
   animator: {fileID: 837576835268179376}
   animationEventReciever: {fileID: 837576835268179375}
   sceneToLoad: The Hollow
+  useTransitions: 1
 --- !u!114 &837576835268179375 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6590822586538430859, guid: 2b128f9d050213148a045d118f40f095, type: 3}

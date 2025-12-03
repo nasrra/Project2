@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoadButton : MenuButton
 {
     [SerializeField] string sceneToLoad;
+    [SerializeField] bool useTransitions = true;
 
     protected override void OnPointerClick(PointerEventData eventData)
     {
@@ -14,7 +15,14 @@ public class SceneLoadButton : MenuButton
 
     protected override void OnPointerClickAnimationCompleted()
     {
-        CustomSceneManager.Singleton.LoadScene(sceneToLoad);
+        if (useTransitions == true)
+        {
+            CustomSceneManager.Singleton.LoadSceneWithTransitions(sceneToLoad);            
+        }
+        else
+        {
+            CustomSceneManager.Singleton.LoadScene(sceneToLoad);
+        }
     }
 
     protected override void OnPointerEnter(PointerEventData eventData)

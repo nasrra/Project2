@@ -59,9 +59,12 @@ public class ArcMonumentDirector : PointOfInterestDirector
     }
 
     private void UnlinkPlaythroughStopwatchEvents()
-    {        
-        PlaythroughStopwatch.Singleton.Started -= OnPlaythroughStopwatchStarted;
-        PlaythroughStopwatch.Singleton.Stopped -= OnPlaythroughStopwatchStopped;
+    {
+        if (PlaythroughStopwatch.Singleton != null)
+        {            
+            PlaythroughStopwatch.Singleton.Started -= OnPlaythroughStopwatchStarted;
+            PlaythroughStopwatch.Singleton.Stopped -= OnPlaythroughStopwatchStopped;
+        }
     }
 
     private void OnPlaythroughStopwatchStarted()

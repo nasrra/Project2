@@ -20,14 +20,10 @@ namespace Entropek.SceneManaging
             LoadScene();
         }
 
-        // public void LoadSceneWithTransitions(string _scene){
-        //     PrepareForSceneLoad(_scene);
-        //     StartCoroutine(load_scene_with_transitions_coroutine());
-        // } 
-        // public void LoadSceneWithTransitionsUnscaled(string _scene){
-        //     prepare_for_scene_load(_scene);
-        //     StartCoroutine(load_scene_with_transitions_unscaled_coroutine());
-        // }
+        public void LoadSceneWithTransitions(string _scene){
+            PrepareForSceneLoad(_scene);
+            StartCoroutine(LoadSceneWithTransitionsCoroutine());
+        } 
 
         private void PrepareForSceneLoad(string _scene){
             // InputManager.disable_ui_event_system_input();
@@ -63,30 +59,22 @@ namespace Entropek.SceneManaging
             loading_scene?.Invoke(scene_to_load);
             load = SceneManager.LoadSceneAsync(scene_to_load, LoadSceneMode.Single);
             yield return load;
-
+            
             loaded_scene?.Invoke();
+            ScreenTransitions.Singleton.FadeFromBlack();
             // AudioManager.restore_sfx_audio();
             yield break;
         }
 
-        // static IEnumerator LoadSceneWithTransitionsCoroutine(){
-        //     if(CameraEffects.instance != null){
-        //         CameraEffects.instance.completed_fade_to_black += load_scene; // has to be linked beforehand to ensure the IEnumerator instance of the action isnt null.
-        //         CameraEffects.instance?.fade_to_black(1);
-        //     }
-        //     else
-        //         load_scene();
-        //     yield break;
-        // } 
-        // static IEnumerator LoadSceneWithTransitionsUnscaledCoroutine(){
-        //     if(CameraEffects.instance != null){
-        //         CameraEffects.instance.completed_fade_to_black += load_scene; // has to be linked beforehand to ensure the IEnumerator instance of the action isnt null.
-        //         CameraEffects.instance?.fade_to_black_unscaled(1);
-        //     }
-        //     else
-        //         load_scene();
-        //     yield break;
-        // } 
+        private IEnumerator LoadSceneWithTransitionsCoroutine(){
+            if(ScreenTransitions.Singleton != null){
+                ScreenTransitions.Singleton.FadeToBlackCompleted += LoadScene; // has to be linked beforehand to ensure the IEnumerator instance of the action isnt null.
+                ScreenTransitions.Singleton.FadeToBlack();
+            }
+            else
+                LoadScene();
+            yield break;
+        } 
 
 
         /// 
