@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Entropek.UnityUtils;
 using Entropek.UnityUtils.Attributes;
@@ -17,10 +18,9 @@ public class PointOfInterestDirector : Director
     [RuntimeField] protected bool[] occupiedLocations;
 
 
-    void Awake()
+    protected virtual void Awake()
     {
         Initialise();
-        TestSpawn();
     }
 
     private void Initialise()
@@ -30,6 +30,10 @@ public class PointOfInterestDirector : Director
         InitialiseOccupiedLocations();
     }
 
+    protected virtual void OnDestroy()
+    {
+        
+    }
 
     private void InitialiaseLayerMask()
     {
@@ -77,7 +81,8 @@ public class PointOfInterestDirector : Director
             randomSpawnQueryRadius,
             navMeshLayerMask,
             out GameObject instantiatedGameObject,
-            out int locationId
+            out int locationId,
+            64
         ) == true)
         {
             PointOfInterst poi = instantiatedGameObject.GetComponent<PointOfInterst>();
@@ -95,9 +100,9 @@ public class PointOfInterestDirector : Director
         occupiedLocations[locationId] = false;
     }
 
-    private void TestSpawn()
+    protected void TestSpawn(int amount)
     {
-        for(int i = 0; i < 256; i++)
+        for(int i = 0; i < amount; i++)
         {
             SpawnPointOfInterestAtRandomPosition(0);
         }

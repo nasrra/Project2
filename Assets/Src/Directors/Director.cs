@@ -197,4 +197,29 @@ public abstract class Director : MonoBehaviour
 
         return true;
     }
+
+    protected bool EventShouldTrigger(System.Diagnostics.Stopwatch stopwatch, System.TimeSpan eventTimeSpan)
+    {
+        bool days = eventTimeSpan.Days > 0
+        ? stopwatch.Elapsed.Days % eventTimeSpan.Days == 0
+        : true; 
+
+        bool hours = eventTimeSpan.Hours > 0
+        ? stopwatch.Elapsed.Hours % eventTimeSpan.Hours == 0
+        : true; 
+
+        bool minutes = eventTimeSpan.Minutes > 0
+        ? stopwatch.Elapsed.Minutes % eventTimeSpan.Minutes == 0
+        : true; 
+
+        bool seconds = eventTimeSpan.Seconds > 0
+        ? stopwatch.Elapsed.Seconds % eventTimeSpan.Seconds == 0
+        : true; 
+
+        bool milliseconds = eventTimeSpan.Milliseconds > 0
+        ? stopwatch.Elapsed.Milliseconds % eventTimeSpan.Milliseconds == 0
+        : true;
+
+        return days && hours && minutes && seconds && milliseconds;
+    }
 }

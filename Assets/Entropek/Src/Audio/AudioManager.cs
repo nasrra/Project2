@@ -248,7 +248,7 @@ namespace Entropek.Audio
             {
                 string fileName = Path.GetFileNameWithoutExtension(filePath);
                 availableBanks.Add(fileName);
-                UnityEngine.Debug.Log("found bank: " + fileName);
+                // UnityEngine.Debug.Log("found bank: " + fileName);
             }
         }
 

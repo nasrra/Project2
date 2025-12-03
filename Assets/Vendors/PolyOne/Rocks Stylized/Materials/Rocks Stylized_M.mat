@@ -83,7 +83,7 @@ Material:
     - _SpecularThrreshold: 0
     - _StepRamp: 3
     m_Colors:
-    - _Tint: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+    - _Tint: {r: 0.8352942, g: 0.8352942, b: 0.68235296, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2067863974783365004

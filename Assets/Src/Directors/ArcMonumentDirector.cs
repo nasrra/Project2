@@ -1,85 +1,98 @@
-// using Entropek.UnityUtils;
-// using UnityEngine;
+using System;
+using System.Diagnostics;
+using Entropek.Time;
+using Entropek.UnityUtils;
+using UnityEngine;
 
-// public class ArcMonumentDirector : Director
-// {
-//     private const int NavMeshSurfaceId = 1;
-
-//     private const float MinRandomSpawnRadius = 1;
-//     private const float MaxRandomSpawnRadius = 24;
-//     private const float RandomSpawnQueryRadius = 0.5f;
-
-//     private const int MaxRandomSpawnIterations = 16;
-
-//     [SerializeField] private SpawnCard[] spawnCards;
-
-//     private LayerMask navMeshLayerMask;
-
-//     Vector3[] spawnLocations;
-//     bool[] occupiedSpawnLocations; // ordering is relative to spawn locations array.
+public class ArcMonumentDirector : PointOfInterestDirector
+{
+    [SerializeField] private LoopedTimer spawnEventTimer;
 
 
-//     ///
-//     /// Base.
-//     /// 
+    /// 
+    /// Base.
+    /// 
 
 
-//     void Awake()
-//     {
-//         Initialise();
-//         TestSpawn();
-//     }
+    protected override void Awake()
+    {
+        spawnEventTimer.Begin();
+        LinkEvents();    
+        base.Awake();
+        TestSpawn(128);
+    }
 
-//     void Initialise()
-//     {
+    protected override void OnDestroy()
+    {
+        UnlinkEvents();
+        base.OnDestroy();
+    }
 
-//         navMeshLayerMask = NavMeshSurfaceManager.Singleton.GetNavMeshSurfaceLayerMask(NavMeshSurfaceId);
 
-//         spawnLocations = NavMeshSurfaceManager.Singleton.GetNavMeshSurfaceMidpoints(NavMeshSurfaceId);
-//         occupiedSpawnLocations = new bool[spawnLocations.Length];
-//     }
+    /// 
+    /// Event Linkage.
+    /// 
 
-//     void TestSpawn()
-//     {
-//         for(int i = 0; i < 32; i++)
-//         {
-//             int x = 0;
-//             while(x <= MaxRandomSpawnIterations)
-//             {
-//                 x++;
 
-//                 if(SpawnAtRandomPosition(
-//                     spawnLocations, 
-//                     spawnCards[0],
-//                     MinRandomSpawnRadius,
-//                     MaxRandomSpawnRadius,
-//                     RandomSpawnQueryRadius,
-//                     navMeshLayerMask,
-//                     out GameObject instantiatedGameObject
-//                 ) == false)
-//                 {
-//                     continue;
-//                 }
-//                 else
-//                 {
-//                     break;
-//                 }
-//             }
-//         }
-//     }
+    private void LinkEvents()
+    {
+        LinkPlaythroughStopwatchEvents();
+        LinkTimerEvents();
+    }
 
-//     private void OnDrawGizmos()
-//     {
-//         if (Application.IsPlaying(this) == false)
-//         {
-//             return;
-//         }
-        
-//         Gizmos.color = Color.white;
-        
-//         for(int i = 0; i < spawnLocations.Length; i++)
-//         {                
-//             Gizmos.DrawCube(spawnLocations[i], Vector3.one);
-//         }
-//     }
-// }
+    private void UnlinkEvents()
+    {
+        UnlinkPlaythroughStopwatchEvents();
+        UnlinkTimerEvents();
+    }
+
+
+    /// 
+    /// PlaythroughStopwatch Event Linkage.
+    /// 
+
+
+    private void LinkPlaythroughStopwatchEvents()
+    {        
+        PlaythroughStopwatch.Singleton.Started += OnPlaythroughStopwatchStarted;
+        PlaythroughStopwatch.Singleton.Stopped += OnPlaythroughStopwatchStopped;
+    }
+
+    private void UnlinkPlaythroughStopwatchEvents()
+    {        
+        PlaythroughStopwatch.Singleton.Started -= OnPlaythroughStopwatchStarted;
+        PlaythroughStopwatch.Singleton.Stopped -= OnPlaythroughStopwatchStopped;
+    }
+
+    private void OnPlaythroughStopwatchStarted()
+    {
+        spawnEventTimer.Begin();
+    }
+
+    private void OnPlaythroughStopwatchStopped()
+    {
+        spawnEventTimer.Halt();
+    }
+
+
+    /// 
+    /// Timer Event Linkage.
+    /// 
+
+
+    private void LinkTimerEvents()
+    {
+        spawnEventTimer.Timeout += OnSpawnEventTimerTimeout;
+    }
+
+    private void UnlinkTimerEvents()
+    {
+        spawnEventTimer.Timeout -= OnSpawnEventTimerTimeout;        
+    }
+
+    private void OnSpawnEventTimerTimeout()
+    {
+        // TestSpawn(12);
+    }
+
+}

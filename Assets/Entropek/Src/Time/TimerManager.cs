@@ -262,17 +262,17 @@ namespace Entropek.Time{
 
 
         /// 
-        /// Bootstrapper - inject this to Unity PlayerLoop.
+        /// Bootstrapper
         /// 
 
 
         static class Bootstrap
         {
             [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-            internal static void Initialise()
+            private static void Initialise()
             {
                 GameObject main = new();
-                main.name = "Timer Manager";
+                main.name = nameof(TimerManager);
                 main.AddComponent<TimerManager>();
                 DontDestroyOnLoad(main);
                 Singleton = main.GetComponent<TimerManager>();
