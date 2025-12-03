@@ -2,7 +2,8 @@ using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class SpawnCard : ScriptableObject
+[CreateAssetMenu(menuName = CreateAssetMenuPath+nameof(SpawnCard))]
+public class SpawnCard : ScriptableObject
 {
     protected const string CreateAssetMenuPath = "ScriptableObject/Directors/";
 

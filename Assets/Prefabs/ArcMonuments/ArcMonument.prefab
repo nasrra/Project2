@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 122340998701158073}
   - component: {fileID: 5077474141767361196}
   - component: {fileID: 9130491434391971871}
+  - component: {fileID: 1055503554754148571}
   m_Layer: 0
   m_Name: ArcMonument
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1708937920149156040}
   - {fileID: 5140671261781679463}
@@ -93,6 +94,19 @@ MonoBehaviour:
   - {fileID: 4336362938848353974}
   outline: {fileID: 5077474141767361196}
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1055503554754148571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4016001448984058910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb4fe244e6dec8499ea8f503ceb3340, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocationId: 0
 --- !u!1001 &1231471756869273829
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200,15 +214,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1548837047316033901, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.44
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1548837047316033901, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.87
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1548837047316033901, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1548837047316033901, guid: ad22f56e0d27e9043a9987ae927861a6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -290,6 +304,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2836451927267690235}
     m_Modifications:
+    - target: {fileID: 1365888269200304858, guid: 5f99439041be829448d19945a140b347, type: 3}
+      propertyPath: m_Radius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3904904473109671138, guid: 5f99439041be829448d19945a140b347, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -366,6 +384,10 @@ PrefabInstance:
     - target: {fileID: 1262981853440371471, guid: 5ead8df5d35dca54dbbe40ed7ff45519, type: 3}
       propertyPath: m_Name
       value: ArcStone
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262981853440371471, guid: 5ead8df5d35dca54dbbe40ed7ff45519, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3271250687417163633, guid: 5ead8df5d35dca54dbbe40ed7ff45519, type: 3}
       propertyPath: m_LocalPosition.x

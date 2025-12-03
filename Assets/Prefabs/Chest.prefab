@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1883028565061059791}
   - component: {fileID: 2510406053015400893}
   - component: {fileID: 3722273601114259480}
+  - component: {fileID: 523506712290206041}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -73,6 +74,19 @@ MonoBehaviour:
   commonItemDropChance: 70
   rareItemDropChance: 25
   legendaryItemDropChance: 5
+--- !u!114 &523506712290206041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210343892321242792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb4fe244e6dec8499ea8f503ceb3340, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LocationId: 0
 --- !u!1 &3899370957325010451
 GameObject:
   m_ObjectHideFlags: 0

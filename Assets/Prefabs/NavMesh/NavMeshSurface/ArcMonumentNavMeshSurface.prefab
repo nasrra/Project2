@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2472974124599631534}
   - component: {fileID: 2777472823727176045}
   m_Layer: 0
-  m_Name: ChestNavMeshSurface
+  m_Name: ArcMonumentNavMeshSurface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SerializedVersion: 0
-  m_AgentTypeID: 287145453
+  m_AgentTypeID: 65107623
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}

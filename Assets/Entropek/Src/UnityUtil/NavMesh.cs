@@ -13,7 +13,7 @@ namespace Entropek.UnityUtils
         /// <param name="navMeshQueryFilter">The baked NavMeshSurface to target.</param>
         /// <param name="center">The point (in world-space) to start the random search at.</param>
         /// <param name="randomRadiusMin">The minimum area around the center point to try find a random point.</param>
-        /// <param name="randomRadiusMax">The minimum area around the center point to try find a random point.</param>
+        /// <param name="randomRadiusMax">The maximum area around the center point to try find a random point.</param>
         /// <param name="queryRadius">The area around a generated random point to try and connect to a NavMeshSurface</param>
         /// <param name="position">A random point on the NavMeshSurface; otherwise the center if foundPoint is returned as false.</param>
         /// <param name="iterations">The amount of iterations to find a random point.</param>
@@ -49,15 +49,18 @@ namespace Entropek.UnityUtils
 
                 if (NavMesh.SamplePosition(randomPoint, out point, queryRadius, navMeshQueryFilter))
                 {
-                    NavMeshHit edgeHit;
-                    if (NavMesh.FindClosestEdge(point.position, out edgeHit, navMeshQueryFilter))
-                    {
+                    return true;
 
-                        // replace the returned point if you want the normal included
-                        point = edgeHit;
 
-                        return true;
-                    }
+                    // NavMeshHit edgeHit;
+                    // if (NavMesh.FindClosestEdge(point.position, out edgeHit, navMeshQueryFilter))
+                    // {
+
+                    //     // replace the returned point if you want the normal included
+                    //     point = edgeHit;
+
+                    //     return true;
+                    // }
                 }
 
             }

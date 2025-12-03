@@ -7,16 +7,31 @@ using UnityEngine.AI;
 namespace Entropek.Physics
 {
     
-    [DefaultExecutionOrder(-10)]
+    [DefaultExecutionOrder(-5)] // <-- make sure this value is less then the NavMeshSurfaceManager.
     public class NavAgentMovementTarget : MonoBehaviour
     {
         [SerializeField] NavMeshSurface[] navMeshSurfacePrefabs;
         [SerializeField] NavMeshAgent[] navAgents;
+        
+        [Tooltip("The parent gameobject of all nav agents. This gameobject should also start as disabled")]
+        [SerializeField] GameObject navAgentsParent;
+        
         Dictionary<int, NavMeshAgent> targets = new Dictionary<int, NavMeshAgent>();
 
         void Awake()
         {
             InitialiseTargets();
+
+            // agents need to be manually set active because the NavMeshSurface dynamically loads 
+            // NavMeshSurfaces after a scene is loaded. 
+            
+            // This means that the nav agents would try
+            // to create themselves on a surface that doesnt exist; which is why this needs to be done manually.
+
+            // The NavAgents need to be enabled via a parent instead of individually because doing it one by one
+            //  doesn't work for some reason; possibly a bug with the Unity Engine idk but this works.
+
+            navAgentsParent.SetActive(true);
         }
 
         private void InitialiseTargets()
@@ -29,6 +44,7 @@ namespace Entropek.Physics
 
         private void FixedUpdate()
         {
+
             for(int i = 0; i < navMeshSurfacePrefabs.Length; i++)
             {
                 NavMeshSurface surface = navMeshSurfacePrefabs[i];

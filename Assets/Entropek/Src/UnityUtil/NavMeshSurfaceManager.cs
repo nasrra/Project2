@@ -28,6 +28,7 @@ namespace Entropek.UnityUtils
             }
 
             IntialiseArrays();
+            RemoveAllNavMeshSurfaceData();
             CalculateAllNavMeshSurfacesTriangulation();
             AddAllNavMeshSurfaceData();
         }
@@ -95,7 +96,9 @@ namespace Entropek.UnityUtils
 
 
         /// <summary>
-        /// Calculates the midpoints of vertices for a nav mesh surface's data. 
+        /// Calculates the midpoints of vertices of a area triangle for a nav mesh surface's data.
+        /// Note:
+        ///     this function may return duplicate values and requires external data cleaning. 
         /// </summary>
         /// <param name="navMeshSurfaceId">The index of the nav mesh suraface in the internal array.</param>
         /// <returns>A new Vector3 array of the midpoint locations.</returns>
@@ -112,9 +115,6 @@ namespace Entropek.UnityUtils
                 Vector3 b = triangulation.vertices[triangulation.indices[i+1]];
                 Vector3 c = triangulation.vertices[triangulation.indices[i+2]];
 
-                // midpoints[i] = GetMidPoint(a,b);
-                // midpoints[i+1] = GetMidPoint(b,c);
-                // midpoints[i+2] = GetMidPoint(c,a);
                 midpoints[i/3] = GetMidPoint(a,b,c);
             }
 
