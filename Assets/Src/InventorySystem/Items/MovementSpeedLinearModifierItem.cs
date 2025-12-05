@@ -1,9 +1,14 @@
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CreateAssetMenu(menuName = Item.EditorAssetMenuName+nameof(MovementSpeedLinearModifierItem))]
+#endif
+
 public class MovementSpeedLinearModifierItem : Item
 {
-    [Tooltip("+10% = 0.1")]
+    #if UNITY_EDITOR
+    [Tooltip(Item.EditorLinearModifierTooltip)]
+    #endif
     [SerializeField] float modifierValue;
 
     public override void ApplyModifier(PlayerStats playerStats)

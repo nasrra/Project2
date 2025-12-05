@@ -1,10 +1,15 @@
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CreateAssetMenu(menuName = Item.EditorAssetMenuName+nameof(AttackSpeedLinearModifierItem))]
+#endif
 public class AttackSpeedLinearModifierItem : Item
 {
-    [SerializeField] float modifierValue;
+
+    #if UNITY_EDITOR
     [Tooltip(Item.EditorLinearModifierTooltip)]
+    #endif
+    [SerializeField] float modifierValue;
 
     public override void ApplyModifier(PlayerStats playerStats)
     {

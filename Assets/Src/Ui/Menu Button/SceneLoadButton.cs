@@ -8,11 +8,6 @@ public class SceneLoadButton : MenuButton
     [SerializeField] string sceneToLoad;
     [SerializeField] bool useTransitions = true;
 
-    protected override void OnPointerClick(PointerEventData eventData)
-    {
-        // do nothing.
-    }
-
     protected override void OnPointerClickAnimationCompleted()
     {
         if (useTransitions == true)
@@ -23,11 +18,6 @@ public class SceneLoadButton : MenuButton
         {
             CustomSceneManager.Singleton.LoadScene(sceneToLoad);
         }
-    }
-
-    protected override void OnPointerEnter(PointerEventData eventData)
-    {
-        // do nothing.
     }
 
     protected override void OnPointerEnterAnimationCompleted()

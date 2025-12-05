@@ -43,7 +43,12 @@ namespace Entropek.Time{
 
         public void DebugTimerState(Timer timer)
         {
-            switch (GetTimerListState(timer))
+            if(GetTimerListState(timer, out TimerState timerState) == false)
+            {
+                return;
+            }
+            
+            switch (timerState)
             {
                 case TimerState.Active:
                     Debug.Log("a");
@@ -59,7 +64,12 @@ namespace Entropek.Time{
 
         public void DeregisterTimer(Timer timer)
         {
-            switch (GetTimerListState(timer))
+            if(GetTimerListState(timer, out TimerState timerState) == false)
+            {
+                return;
+            }
+            
+            switch (timerState)
             {
                 case TimerState.Active:
                     RemoveTimerFromActiveList(timer);
@@ -75,7 +85,12 @@ namespace Entropek.Time{
 
         public bool BeginTimer(Timer timer)
         {
-            switch (GetTimerListState(timer))
+            if(GetTimerListState(timer, out TimerState timerState) == false)
+            {
+                return false;
+            }
+            
+            switch (timerState)
             {
                 case TimerState.Active:
                     return true; // already began (but return true as Begin may reset the initial time of the timer.)
@@ -93,7 +108,12 @@ namespace Entropek.Time{
 
         public bool HaltTimer(Timer timer)
         {
-            switch (GetTimerListState(timer))
+            if(GetTimerListState(timer, out TimerState timerState) == false)
+            {
+                return false;
+            }
+            
+            switch (timerState)
             {
                 case TimerState.Active:
                     RemoveTimerFromActiveList(timer);
@@ -111,7 +131,12 @@ namespace Entropek.Time{
 
         public bool PauseTimer(Timer timer)
         {
-            switch (GetTimerListState(timer))
+            if(GetTimerListState(timer, out TimerState timerState) == false)
+            {
+                return false;
+            }
+            
+            switch (timerState)
             {
                 case TimerState.Active:
                     RemoveTimerFromActiveList(timer);
@@ -140,22 +165,32 @@ namespace Entropek.Time{
         /// <returns>The timer state of the given timer.</returns>
         /// <exception cref="InvalidOperationException"></exception>
 
-        private TimerState GetTimerListState(Timer timer)
+        private bool GetTimerListState(Timer timer, out TimerState timerState)
         {
             if (activeTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID()))
             {
-                return TimerState.Active;
+                timerState = TimerState.Active;
+                return true;
             }
             else if (haltedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID()))
             {
-                return TimerState.Halted;
+                timerState = TimerState.Halted;
+                return true;
             }
             else if (pausedTimersIdToListIndexMap.ContainsKey(timer.GetInstanceID()))
             {
-                return TimerState.Paused;
+                timerState = TimerState.Paused;
+                return true;
             }
 
+            timerState = TimerState.Halted;
+            return false;
+
+            #if UNITY_EDITOR
+
             throw new InvalidOperationException($"{timer.name +" "+timer.EditorNameTag} timer with intstance id ({timer.GetInstanceID()}) has not been registered in this TimerManager.");
+        
+            #endif
         }
 
         /// 

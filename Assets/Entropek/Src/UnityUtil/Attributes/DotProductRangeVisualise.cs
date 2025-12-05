@@ -20,6 +20,8 @@ namespace Entropek.UnityUtils.Attributes
         private const string MaxFieldName = "max";
         private const string MinFieldName = "min";
 
+        #if UNITY_EDITOR
+
         public override void OnInspectorGUI(SerializedProperty serializedProperty)
         {
             EditorGUILayout.PropertyField(serializedProperty, true);
@@ -49,6 +51,7 @@ namespace Entropek.UnityUtils.Attributes
                 DrawVisualiser(target, maxAngle, minAngle);
             }     
         }
+
 
         private void DrawToggle()
         {
@@ -120,5 +123,6 @@ namespace Entropek.UnityUtils.Attributes
             // Draw around local right axis
             Handles.DrawSolidArc(transform.position, transform.right, minDir, maxAngle - minAngle, 1);
         }
+        #endif
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Entropek.UnityUtils.AnimatorUtils{
 
 
-[CustomEditor(typeof(AnimationEventStateBehaviour))]
+[UnityEditor.CustomEditor(typeof(AnimationEventStateBehaviour))]
 public class AnimationEventStateBehaviourEditor : Editor{
 
     // animation to preview on the gameobject.

@@ -4,7 +4,6 @@ using Entropek.Systems.Trails;
 using Entropek.Time;
 using Entropek.UnityUtils.AnimatorUtils;
 using Entropek.UnityUtils.Attributes;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill, ICooldownSkill

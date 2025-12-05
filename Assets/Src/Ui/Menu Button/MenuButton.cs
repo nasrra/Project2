@@ -1,3 +1,6 @@
+using System;
+using Entropek.Audio;
+using Entropek.Ui;
 using Entropek.UnityUtils.AnimatorUtils;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,12 +9,40 @@ public abstract class MenuButton : MonoBehaviour,
     IPointerEnterHandler,
     IPointerClickHandler
 {
+
+
+    /// 
+    /// Constants.
+    /// 
+
+
     private const string PointerEnterCompletedAnimationEvent = "PointerEnterCompleted";
     private const string PointerClickCompletedAnimationEvent = "PointerClickCompleted";
 
     private const string PointerEnterAnimation = "PointerEnter";
     private const string PointerClickAnimation = "PointerClick";
 
+    protected const string PointerEnterSfx = "PointerEnter";
+    protected const string PointerClickSfx = "PointerClick";
+
+
+    ///
+    /// Callbacks.
+    /// 
+
+
+    public event Action PointerClicked;
+    public event Action PointerEntered;
+    public event Action PointerEnterAnimationCompleted;
+    public event Action PointerClickAnimationCompleted;
+
+
+    /// 
+    /// Components.
+    /// 
+
+
+    [Header(nameof(MenuButton)+" Components")]
     [SerializeField] Animator animator;
     [SerializeField] AnimationEventReciever animationEventReciever;
 
@@ -37,21 +68,29 @@ public abstract class MenuButton : MonoBehaviour,
     /// 
 
 
-    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+   void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
-        animator.Play(PointerClickAnimation);
         OnPointerClick(eventData);
+        PointerClicked?.Invoke();
     }
 
-    protected abstract void OnPointerClick(PointerEventData eventData);
+    protected virtual void OnPointerClick(PointerEventData eventData)
+    {        
+        animator.Play(PointerClickAnimation);
+        UiManager.Singleton.AudioPlayer.PlaySound(PointerClickSfx);
+    }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        animator.Play(PointerEnterAnimation);
         OnPointerEnter(eventData);
+        PointerEntered?.Invoke();
     }
 
-    protected abstract void OnPointerEnter(PointerEventData eventData);
+    protected virtual void OnPointerEnter(PointerEventData eventData)
+    {        
+        animator.Play(PointerEnterAnimation);
+        UiManager.Singleton.AudioPlayer.PlaySound(PointerEnterSfx);
+    }
 
 
     /// 
@@ -95,16 +134,29 @@ public abstract class MenuButton : MonoBehaviour,
         switch (eventName)
         {
             case PointerEnterCompletedAnimationEvent:
-                OnPointerEnterAnimationCompleted();
+                OnPointerEnterAnimationCompletedWrapper();
                 return true;
             case PointerClickCompletedAnimationEvent:
-                OnPointerClickAnimationCompleted();
+                OnPointerClickAnimationCompletedWrapper();
                 return true;
             default:
                 return false;
         }
     }
 
-    protected abstract void OnPointerEnterAnimationCompleted();
-    protected abstract void OnPointerClickAnimationCompleted();
+    private void OnPointerEnterAnimationCompletedWrapper()
+    {
+        PointerEnterAnimationCompleted?.Invoke();
+        OnPointerEnterAnimationCompleted();
+    }
+
+    protected virtual void OnPointerEnterAnimationCompleted(){}
+    
+    private void OnPointerClickAnimationCompletedWrapper()
+    {
+        PointerClickAnimationCompleted?.Invoke();
+        OnPointerClickAnimationCompleted(); 
+    }
+    
+    protected virtual void OnPointerClickAnimationCompleted(){}
 }

@@ -10,8 +10,8 @@ namespace Entropek.SceneManaging
         public static CustomSceneManager Singleton {get; private set;}
 
         static string scene_to_load;
-        public static event Action preparing_scene_load, unloading_scene, loaded_scene, transitioning_scene, temp_scene;
-        public static event Action<string> loading_scene, unloaded_scene;
+        public static event Action PreparingSceneLoad, UnloadingScene, LoadedScene, TransitioningScene, LoadedTempScene;
+        public static event Action<string> LoadingScene, UnloadedScene;
 
         private const string TempSceneName = "Temp";
 
@@ -46,21 +46,21 @@ namespace Entropek.SceneManaging
             
             // load temp
             load = SceneManager.LoadSceneAsync(TempSceneName, LoadSceneMode.Additive);
-            preparing_scene_load?.Invoke();
+            PreparingSceneLoad?.Invoke();
             yield return load;
             
-            unloading_scene?.Invoke();
+            UnloadingScene?.Invoke();
             unload = SceneManager.UnloadSceneAsync(active);
             yield return unload;
 
             // load scene.
-            temp_scene?.Invoke(); // now in temp scene.
-            unloaded_scene?.Invoke(previous_scene);
-            loading_scene?.Invoke(scene_to_load);
+            LoadedTempScene?.Invoke(); // now in temp scene.
+            UnloadedScene?.Invoke(previous_scene);
+            LoadingScene?.Invoke(scene_to_load);
             load = SceneManager.LoadSceneAsync(scene_to_load, LoadSceneMode.Single);
             yield return load;
             
-            loaded_scene?.Invoke();
+            LoadedScene?.Invoke();
             ScreenTransitions.Singleton.FadeFromBlack();
             // AudioManager.restore_sfx_audio();
             yield break;

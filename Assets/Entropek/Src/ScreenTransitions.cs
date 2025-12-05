@@ -1,6 +1,5 @@
 using System;
 using Entropek.UnityUtils.AnimatorUtils;
-using Mono.Cecil;
 using UnityEngine;
 
 public class ScreenTransitions : MonoBehaviour
@@ -43,10 +42,18 @@ public class ScreenTransitions : MonoBehaviour
     /// 
 
 
+    /// <summary>
+    /// Fades the entire screen to black.
+    /// </summary>
+
     public void FadeToBlack()
     {
         animator.Play(FadeToBlackAnimation);
     }
+
+    /// <summary>
+    /// Fades the entire screen from black.
+    /// </summary>
 
     public void FadeFromBlack()
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(-10)]
-public class UiManager : MonoBehaviour
+public class HudManager : MonoBehaviour
 {
     [SerializeField] GameObject hud;
 

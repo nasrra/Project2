@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Entropek.Time
 {
 
-    [CustomEditor(typeof(TimerManager))]
+    [UnityEditor.CustomEditor(typeof(TimerManager))]
     public class TimerManagerEditor : Editor
     {
         private const int ParameterNamePixelWidth = 150;

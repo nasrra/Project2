@@ -17,14 +17,12 @@ namespace Entropek.Audio
 
         private Dictionary<BusHandle, Bus> audioBuses = new();
 
-        public enum BusHandle : byte
-        {
-            Master,
-            Sfx,
-            Music,
-            Voice,
-            Menu
-        }
+
+        private const string MasterBusName = "bus:/";
+        private const string MusicBusName = "bus:/Music";
+        private const string VoiceBusName = "bus:/Voice";
+        private const string MenuBusName = "bus:/Menu";
+        private const string SfxBusName = "bus:/Sfx";
 
 
         /// 
@@ -169,11 +167,11 @@ namespace Entropek.Audio
 
         private void RetrieveBuses()
         {
-            audioBuses.Add(BusHandle.Master, RuntimeManager.GetBus("bus:/"));
-            audioBuses.Add(BusHandle.Music, RuntimeManager.GetBus("bus:/Music"));
-            audioBuses.Add(BusHandle.Voice, RuntimeManager.GetBus("bus:/Voice"));
-            audioBuses.Add(BusHandle.Menu, RuntimeManager.GetBus("bus:/Menu"));
-            audioBuses.Add(BusHandle.Sfx, RuntimeManager.GetBus("bus:/Sfx"));
+            audioBuses.Add(BusHandle.Master, RuntimeManager.GetBus(MasterBusName));
+            audioBuses.Add(BusHandle.Music, RuntimeManager.GetBus(MusicBusName));
+            audioBuses.Add(BusHandle.Voice, RuntimeManager.GetBus(VoiceBusName));
+            audioBuses.Add(BusHandle.Menu, RuntimeManager.GetBus(MenuBusName));
+            audioBuses.Add(BusHandle.Sfx, RuntimeManager.GetBus(SfxBusName));
         }
 
         /// <summary>
@@ -214,7 +212,7 @@ namespace Entropek.Audio
         /// </summary>
         /// <param name="busHandle">The specified audio bus id.</param>
 
-        public void UnmuteMasterBus(BusHandle busHandle)
+        public void UnmuteBus(BusHandle busHandle)
         {
             audioBuses[busHandle].setMute(false);
         }
@@ -225,7 +223,7 @@ namespace Entropek.Audio
         /// <param name="busHandle">The specified audio bus id.</param>
         /// <returns>true, if muted and false if unmuted.</returns>
 
-        public bool IsMasterBusMuted(BusHandle busHandle)
+        public bool IsBusMuted(BusHandle busHandle)
         {
             audioBuses[busHandle].getMute(out bool muted);
             return muted;
