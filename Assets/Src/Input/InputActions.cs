@@ -217,6 +217,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8edfd6e-1a84-4c09-852b-d69a8fce71ce"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -637,6 +646,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SpecialSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d660d2a-bf5a-4cb3-9949-11ffa5baf78d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PauseToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -704,6 +724,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_NextInteractable = m_Gameplay.FindAction("NextInteractable", throwIfNotFound: true);
         m_Gameplay_PreviousInteractable = m_Gameplay.FindAction("PreviousInteractable", throwIfNotFound: true);
         m_Gameplay_RunToggle = m_Gameplay.FindAction("RunToggle", throwIfNotFound: true);
+        m_Gameplay_PauseToggle = m_Gameplay.FindAction("PauseToggle", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -798,6 +819,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_NextInteractable;
     private readonly InputAction m_Gameplay_PreviousInteractable;
     private readonly InputAction m_Gameplay_RunToggle;
+    private readonly InputAction m_Gameplay_PauseToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -866,6 +888,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @RunToggle => m_Wrapper.m_Gameplay_RunToggle;
         /// <summary>
+        /// Provides access to the underlying input action "Gameplay/PauseToggle".
+        /// </summary>
+        public InputAction @PauseToggle => m_Wrapper.m_Gameplay_PauseToggle;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
@@ -933,6 +959,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RunToggle.started += instance.OnRunToggle;
             @RunToggle.performed += instance.OnRunToggle;
             @RunToggle.canceled += instance.OnRunToggle;
+            @PauseToggle.started += instance.OnPauseToggle;
+            @PauseToggle.performed += instance.OnPauseToggle;
+            @PauseToggle.canceled += instance.OnPauseToggle;
         }
 
         /// <summary>
@@ -986,6 +1015,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @RunToggle.started -= instance.OnRunToggle;
             @RunToggle.performed -= instance.OnRunToggle;
             @RunToggle.canceled -= instance.OnRunToggle;
+            @PauseToggle.started -= instance.OnPauseToggle;
+            @PauseToggle.performed -= instance.OnPauseToggle;
+            @PauseToggle.canceled -= instance.OnPauseToggle;
         }
 
         /// <summary>
@@ -1176,5 +1208,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRunToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PauseToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPauseToggle(InputAction.CallbackContext context);
     }
 }

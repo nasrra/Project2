@@ -35,6 +35,8 @@ public class PlaythroughStopwatch : MonoBehaviour
         {
             throw new SingletonException("Only one Playthrough Stopwatch can exist at a time.");
         }
+
+        LinkEvents();
     }
 
     private void OnEnable()
@@ -62,6 +64,8 @@ public class PlaythroughStopwatch : MonoBehaviour
         {
             Singleton = null;
         }
+
+        UnlinkEvents();
     }
 
 
@@ -87,4 +91,43 @@ public class PlaythroughStopwatch : MonoBehaviour
         stopwatch.Stop();
         Stopped?.Invoke();
     }
+
+
+    ///
+    /// Event Linkage.
+    /// 
+
+
+    private void LinkEvents()
+    {
+        LinkGameManagerEvents();
+    }
+
+    private void UnlinkEvents()
+    {
+        UnlinkGameManagerEvents();
+    }
+
+    private void LinkGameManagerEvents()
+    {
+        GameManager.Singleton.GamePaused += OnGamePaused;
+        GameManager.Singleton.GameResumed += OnGameResumed;
+    }
+
+    private void UnlinkGameManagerEvents()
+    {
+        GameManager.Singleton.GamePaused -= OnGamePaused;
+        GameManager.Singleton.GameResumed -= OnGameResumed;        
+    }
+
+    private void OnGamePaused()
+    {
+        StopStopwatch();
+    }
+
+    private void OnGameResumed()
+    {
+        StartStopwatch();
+    }
+
 }

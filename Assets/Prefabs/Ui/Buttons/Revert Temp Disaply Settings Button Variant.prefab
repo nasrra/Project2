@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6111428054145060903
+--- !u!1001 &3790728540342586581
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -34,11 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 35
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 15
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58,19 +58,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -175
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 2400061408286033586, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -90,11 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4196244332400492639, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       propertyPath: m_Name
-      value: Revert Temp Display Settings Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 7991005486886010607, guid: 2b128f9d050213148a045d118f40f095, type: 3}
-      propertyPath: m_text
-      value: Accept
+      value: Revert Temp Disaply Settings Button Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -102,41 +98,41 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4196244332400492639, guid: 2b128f9d050213148a045d118f40f095, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3677988455484514853}
+      addedObject: {fileID: 5791598418699998453}
   m_SourcePrefab: {fileID: 100100000, guid: 2b128f9d050213148a045d118f40f095, type: 3}
---- !u!114 &1127986051740254636 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6590822586538430859, guid: 2b128f9d050213148a045d118f40f095, type: 3}
-  m_PrefabInstance: {fileID: 6111428054145060903}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7992810252390502520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e51f96e6c685c04ba87a68b00410343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!95 &1805333657423654501 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5610906835711655490, guid: 2b128f9d050213148a045d118f40f095, type: 3}
-  m_PrefabInstance: {fileID: 6111428054145060903}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7992810252390502520 stripped
+--- !u!1 &1055903317830683786 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4196244332400492639, guid: 2b128f9d050213148a045d118f40f095, type: 3}
-  m_PrefabInstance: {fileID: 6111428054145060903}
+  m_PrefabInstance: {fileID: 3790728540342586581}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3677988455484514853
+--- !u!114 &5791598418699998453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7992810252390502520}
+  m_GameObject: {fileID: 1055903317830683786}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de526802f7f69f94aa979401b9c48a2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1805333657423654501}
-  animationEventReciever: {fileID: 1127986051740254636}
+  animator: {fileID: 8738862960902501015}
+  animationEventReciever: {fileID: 8064840536146615646}
   TempSettingsConfirmationCanvas: {fileID: 0}
+--- !u!114 &8064840536146615646 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6590822586538430859, guid: 2b128f9d050213148a045d118f40f095, type: 3}
+  m_PrefabInstance: {fileID: 3790728540342586581}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055903317830683786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e51f96e6c685c04ba87a68b00410343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &8738862960902501015 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5610906835711655490, guid: 2b128f9d050213148a045d118f40f095, type: 3}
+  m_PrefabInstance: {fileID: 3790728540342586581}
+  m_PrefabAsset: {fileID: 0}

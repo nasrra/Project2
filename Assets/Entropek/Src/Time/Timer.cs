@@ -135,7 +135,7 @@ namespace Entropek.Time{
 
         public void Tick()
         {
-            currentTime -= UnityEngine.Time.deltaTime;
+            currentTime -= UnityEngine.Time.deltaTime * UnityEngine.Time.timeScale;
             normalisedCurrentTime = currentTime / initialTime;
             if (CurrentTime <= 0)
             {

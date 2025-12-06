@@ -79,8 +79,8 @@ namespace Entropek.Camera
         {
             camera.fieldOfView = InitialFov;
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            // Cursor.lockState = CursorLockMode.Locked;
+            // Cursor.visible = false;
 
             if (followTarget != null)
             {

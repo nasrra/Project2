@@ -10,8 +10,8 @@ namespace Entropek.SceneManaging
         public static CustomSceneManager Singleton {get; private set;}
 
         static string scene_to_load;
-        public static event Action PreparingSceneLoad, UnloadingScene, LoadedScene, TransitioningScene, LoadedTempScene;
-        public static event Action<string> LoadingScene, UnloadedScene;
+        public event Action PreparingSceneLoad, UnloadingScene, LoadedScene, TransitioningScene, LoadedTempScene;
+        public event Action<string> LoadingScene, UnloadedScene;
 
         private const string TempSceneName = "Temp";
 
@@ -68,13 +68,19 @@ namespace Entropek.SceneManaging
 
         private IEnumerator LoadSceneWithTransitionsCoroutine(){
             if(ScreenTransitions.Singleton != null){
-                ScreenTransitions.Singleton.FadeToBlackCompleted += LoadScene; // has to be linked beforehand to ensure the IEnumerator instance of the action isnt null.
+                ScreenTransitions.Singleton.FadeToBlackCompleted += OnFadeToBlackComplete; // has to be linked beforehand to ensure the IEnumerator instance of the action isnt null.
                 ScreenTransitions.Singleton.FadeToBlack();
             }
             else
                 LoadScene();
             yield break;
         } 
+
+        private void OnFadeToBlackComplete()
+        {
+            ScreenTransitions.Singleton.FadeToBlackCompleted -= OnFadeToBlackComplete; 
+            LoadScene();
+        }
 
 
         /// 
