@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Entropek.UnityUtils.Attributes;
 using UnityEditor;
 using UnityEngine;
@@ -6,16 +7,73 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
 [DefaultExecutionOrder(-10)]
-public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayActions{
+public class InputManager : Entropek.Input.InputSystem, 
+    InputActions.IGameplayActions, 
+    InputActions.IMenuActions
+{
     
     public static InputManager Singleton {get;private set;}
     public InputActions inputActions {get; private set;}
 
+
+    ///
+    /// Shared Events (events shared between input maps.)
+    /// 
+
+    public event Action PauseMenuToggle;
+    public bool BlockPauseMenuToggle = false;
+
+
+    /// 
+    /// Base.
+    /// 
+
+
     void Awake(){
         inputActions = new InputActions();
-        // inputActions.Enable(); <-- this enables all input action maps.
+        inputActions.Disable();
+        // inputActions.Enable(); // <-- this enables all input action maps.
         EnableGameplayInput();
     }
+
+
+
+
+    /// <summary>
+    /// Defers and Action callback to the next frame.
+    /// </summary>
+    /// <param name="action">The action - function call - to defer.</param>
+    
+    private void Defer(Action action)
+    {
+        StartCoroutine(DeferAction(action));
+    }
+
+    IEnumerator DeferAction(Action action)
+    {
+        yield return null;
+        action();    
+    }
+
+    private void OnPauseMenuToggle(InputAction.CallbackContext context)
+    {
+        if (BlockPauseMenuToggle == true)
+        {
+            return;
+        }
+
+        if (context.performed)
+        {
+            PauseMenuToggle?.Invoke();
+        }
+
+    }
+
+
+    /// 
+    /// Gameplay Input.
+    /// 
+
 
     public bool EnableGameplayInput(){
         
@@ -31,9 +89,17 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         inputActions.Gameplay.Enable();
         inputActions.Gameplay.SetCallbacks(this);
         inputActions.Gameplay.Get().actionTriggered += HandleInputActionDeviceType;
-        
+
         return true;
     }
+
+    /// <summary>
+    /// Disables the Gameplay Input Action Map next frame.
+    /// Note:
+    ///     Deffered calls are used for when swapping action maps, calling this after enabling
+    ///     the next action map.
+    /// </summary>
+    /// <returns>true, if the gameplay action map wasnt already disabled; otherwise false.</returns>
 
     public bool DisableGameplayInput(){
         
@@ -49,7 +115,27 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         inputActions.Gameplay.Disable();
         inputActions.Gameplay.RemoveCallbacks(this);
         inputActions.Gameplay.Get().actionTriggered -= HandleInputActionDeviceType;
-    
+
+        return true;
+    }
+
+    /// <summary>
+    /// Disables the Gameplay Input Action Map next frame.
+    /// Note:
+    ///     Deffered calls are used for when swapping action maps, calling this after enabling
+    ///     the next action map.
+    /// </summary>
+    /// <returns>true, if the gameplay action map wasnt already disabled; otherwise false.</returns>
+
+    public bool DisableGameplayInputDeferred()
+    {
+        if(inputActions.Gameplay.enabled == false)
+        {
+            return false;
+        }
+
+        Defer(()=>{DisableGameplayInput();});
+
         return true;
     }
 
@@ -199,19 +285,83 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         }
     }
 
-    public event Action PauseMenuToggle;
-    public bool BlockPauseMenuToggle = false;
     void InputActions.IGameplayActions.OnPauseMenuToggle(InputAction.CallbackContext context)
     {
-        if (BlockPauseMenuToggle == true)
+        OnPauseMenuToggle(context);
+    }
+
+    ///
+    /// Menu Input.
+    /// 
+
+    
+    /// <summary>
+    /// Enables the Menu Input Action Map. 
+    /// </summary>
+    /// <returns>true, if the menu action map wasn't already enabled; otherwise false.</returns>
+
+    public bool EnableMenuInput(){
+        
+        // short circuit if the input map is already enabled.
+        
+        if (inputActions.Menu.enabled == true)
         {
-            return;
+            return false;
         }
 
-        if (context.performed)
+        // enable.
+
+        inputActions.Menu.Enable();
+        inputActions.Menu.SetCallbacks(this);
+        inputActions.Menu.Get().actionTriggered += HandleInputActionDeviceType;        
+        return true;
+    }
+
+    /// <summary>
+    /// Disables the Menu Input Action Map.
+    /// </summary>
+    /// <returns>true, if the menu action map wasnt already disabled; otherwise false.</returns>
+
+    public bool DisableMenuInput(){
+        
+        // short circuit if alread disabled.
+
+        if(inputActions.Menu.enabled == false)
         {
-            PauseMenuToggle?.Invoke();
+            return false;
         }
+        
+        // disable.
+
+        inputActions.Menu.Disable();
+        inputActions.Menu.RemoveCallbacks(this);
+        inputActions.Menu.Get().actionTriggered -= HandleInputActionDeviceType;
+        return true;
+    }
+
+    /// <summary>
+    /// Disables the Menu Input Action Map next frame.
+    /// Note:
+    ///     Deffered calls are used for when swapping action maps, calling this after enabling
+    ///     the next action map.
+    /// </summary>
+    /// <returns>true, if the menu action map wasnt already disabled; otherwise false.</returns>
+
+    public bool DisableMenuInputDeferred()
+    {
+        if(inputActions.Menu.enabled == false)
+        {
+            return false;
+        }
+
+        Defer(()=>{DisableMenuInput();});
+
+        return true;
+    }
+
+    void InputActions.IMenuActions.OnPauseMenuToggle(InputAction.CallbackContext context)
+    {
+        OnPauseMenuToggle(context);
     }
 
 

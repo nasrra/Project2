@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Entropek.Exceptions;
 using UnityEngine;
 
@@ -74,6 +75,8 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Singleton.EnableCursor();
         menus[PauseMenuId].gameObject.SetActive(true);
+        InputManager.Singleton.EnableMenuInput();
+        InputManager.Singleton.DisableGameplayInputDeferred();
     }
 
     private void OnGameResumed()
@@ -86,6 +89,9 @@ public class MenuManager : MonoBehaviour
         {
             menus[i].gameObject.SetActive(false);        
         }
+
+        InputManager.Singleton.EnableGameplayInput();
+        InputManager.Singleton.DisableMenuInputDeferred();
     }
 
     private void OnGameStateSet(GameState gameState)

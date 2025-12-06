@@ -573,6 +573,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Menu",
+            "id": "7fb06601-0e11-48e7-8164-8b5f3a807f3e",
+            "actions": [
+                {
+                    "name": "PauseMenuToggle",
+                    "type": "Button",
+                    "id": "0c72b15c-d6bf-4bf1-b7bd-8a0a48278b54",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "88cd33fc-6f4d-406d-a589-effd60768101",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenuToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

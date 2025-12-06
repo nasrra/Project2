@@ -96,7 +96,13 @@ namespace Entropek.Input
 
         protected void HandleInputActionDeviceType(InputAction.CallbackContext context)
         {
-            if(context.control.device.name == "Keyboard" || context.control.device.name == "Mouse")
+            InputControl control = context.control; 
+            if(control == null)
+            {
+                return;
+            }
+
+            if(control.device.name == "Keyboard" || control.device.name == "Mouse")
             {
                 SetKeyboardAndMouseDeviceTypeState();
             }
