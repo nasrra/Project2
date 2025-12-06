@@ -186,8 +186,8 @@ MonoBehaviour:
   shakeTimer: {fileID: 8039839769496194426}
   lockOnTargetDetector: {fileID: 1810701130301359515}
   followOffset: {x: 0, y: 0, z: -4.44}
-  MouseSensitivity: {x: 33, y: 33}
-  JoystickSensitivity: {x: 130, y: 100}
+  MouseSensitivity: {x: 0.33, y: 0.33}
+  JoystickSensitivity: {x: 1.3, y: 1}
   obstructionLayer:
     serializedVersion: 2
     m_Bits: 64

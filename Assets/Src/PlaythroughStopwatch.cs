@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
-using System.Timers;
 using Entropek.Exceptions;
+using Entropek.UnityUtils.Attributes;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +11,8 @@ public class PlaythroughStopwatch : MonoBehaviour
 
     public event Action Stopped;
     public event Action Started;
+    public event Action<int> ElapsedMinute;
+    public event Action<int> ElapsedSecond;
 
     public static PlaythroughStopwatch Singleton{get; private set;}
 
@@ -18,6 +20,10 @@ public class PlaythroughStopwatch : MonoBehaviour
     Stopwatch stopwatch;
     [SerializeField] TextMeshProUGUI primaryTimeText;
     [SerializeField] TextMeshProUGUI millisecondsTimeText;
+
+    [Header("Data")]
+    [RuntimeField] private int elapsedMinutes; 
+    [RuntimeField] private int elapsedSeconds;
 
 
     /// 
@@ -51,6 +57,7 @@ public class PlaythroughStopwatch : MonoBehaviour
     private void LateUpdate()
     {
         UpdateUiText();
+        UpdateElapsedTime();
     }
 
     private void OnDisable()
@@ -90,6 +97,23 @@ public class PlaythroughStopwatch : MonoBehaviour
     {
         stopwatch.Stop();
         Stopped?.Invoke();
+    }
+
+    private void UpdateElapsedTime()
+    {
+        int stopwatchElapsedMinutes = stopwatch.Elapsed.Minutes;
+        if(stopwatchElapsedMinutes > elapsedMinutes)
+        {
+            elapsedMinutes = stopwatchElapsedMinutes;
+            ElapsedMinute?.Invoke(elapsedMinutes);
+        }
+
+        int stopwatchElapsedSeconds = stopwatch.Elapsed.Seconds;
+        if(stopwatchElapsedSeconds > elapsedSeconds)
+        {
+            elapsedSeconds = stopwatchElapsedSeconds;
+            ElapsedSecond?.Invoke(elapsedSeconds);
+        }
     }
 
 

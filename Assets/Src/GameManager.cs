@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
     [RuntimeField] public bool GameIsPaused {get; private set;} = false;
 
 
-
     void Start()
     {
         // link events in start instead of Awake as
@@ -80,15 +79,15 @@ public class GameManager : MonoBehaviour
 
     private void LinkInputManagerEvents()
     {
-        InputManager.Singleton.PauseToggle += OnPauseToggle;
+        InputManager.Singleton.PauseMenuToggle += OnPauseMenuToggle;
     }
 
     private void UnlinkInputManagerEvents()
     {
-        InputManager.Singleton.PauseToggle -= OnPauseToggle;        
+        InputManager.Singleton.PauseMenuToggle -= OnPauseMenuToggle;        
     }
 
-    private void OnPauseToggle()
+    private void OnPauseMenuToggle()
     {
         if(GameState == GameState.Gameplay
         || GameState == GameState.PauseMenu)
@@ -143,27 +142,17 @@ public class GameManager : MonoBehaviour
 
     private void SetGameState(GameState gameState)
     {
-        switch (gameState)
-        {
-            case GameState.Gameplay:
-                DisableCursor();
-            break;
-            default:
-                EnableCursor();
-            break;
-        }
-
         GameState = gameState;
         GameStateSet?.Invoke(gameState);
     }
 
-    private void EnableCursor()
+    public void EnableCursor()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    private void DisableCursor()
+    public void DisableCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;        

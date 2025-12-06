@@ -133,7 +133,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PauseToggle",
+                    "name": "PauseMenuToggle",
                     "type": "Button",
                     "id": "d8edfd6e-1a84-4c09-852b-d69a8fce71ce",
                     "expectedControlType": "",
@@ -568,7 +568,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "PauseToggle",
+                    "action": "PauseMenuToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

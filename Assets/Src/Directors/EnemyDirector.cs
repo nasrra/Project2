@@ -52,7 +52,13 @@ public class EnemyDirector : MonoBehaviour
     [SerializeField] RandomLoopedTimer evaluationTimer;
 
     [Header("Data")]
-    [SerializeField] EnemySpawnCard[] spawnCards;
+    
+    [Tooltip("The currently used enemy spawn card collection used for enemy spawning.")]
+    [SerializeField] EnemySpawnCardCollection enemySpawnCardCollection;
+    
+    [Tooltip("The enemy spawn card collection that is used depending upon an elapsed minute variable; E.g id 1 = minute 1, id 3 = minute 3")]
+    [SerializeField] EnemySpawnCardCollection[] enemySpawnCardCollectionPerElapsedMinute;
+    
     [SerializeField] Currency awardedCurrency;
 
 
@@ -75,6 +81,7 @@ public class EnemyDirector : MonoBehaviour
         LinkEvents();
     
         // FastState();
+        SlowState();
     }
 
     void OnDestroy()
@@ -123,6 +130,16 @@ public class EnemyDirector : MonoBehaviour
 
 
     /// <summary>
+    /// Sets the currently used enemy spawn card collection to a collection stored in the internal array.
+    /// </summary>
+    /// <param name="collectionId">The id of the collection in the internal array.</param>
+
+    public void SetEnemySpawnCardCollection(int collectionId)
+    {
+        enemySpawnCardCollection = enemySpawnCardCollectionPerElapsedMinute[collectionId];
+    }
+
+    /// <summary>
     /// Spawns the prefab stored within a EnemySpawn card at a random location determined by its nav agent AgentTypeId.
     /// </summary>
     /// <param name="spawnCard">The specified EnemySpawnCard to evaluatate.</param>
@@ -164,9 +181,9 @@ public class EnemyDirector : MonoBehaviour
 
     public void SpawnMiniboss()
     {
-        for(int i = 0; i < spawnCards.Length; i++)
+        for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
         {
-            EnemySpawnCard spawnCard = spawnCards[i];
+            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
             if(spawnCard.EnemyType == EnemyType.MiniBoss)
             {
 
@@ -189,9 +206,9 @@ public class EnemyDirector : MonoBehaviour
 
     public void SpawnMinion()
     {
-        for(int i = 0; i < spawnCards.Length; i++)
+        for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
         {
-            EnemySpawnCard spawnCard = spawnCards[i];
+            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
             if(spawnCard.EnemyType == EnemyType.Minion)
             {
                 // spawn enemy.
@@ -228,17 +245,25 @@ public class EnemyDirector : MonoBehaviour
     protected void LinkEvents()
     {
         LinkTimerEvents();
+        LinkPlaythroughStopwatchEvents();
     }
 
     protected void UnlinkEvents()
     {
         UnlinkTimerEvents();
+        UnlinkPlaythroughStopwatchEvents();
     }
 
     protected void ClearEvents()
     {
         AwardCurrency = null;
     }
+
+    
+    /// 
+    /// Timer Event Linkage.
+    /// 
+
 
     protected void LinkTimerEvents()
     {
@@ -248,5 +273,29 @@ public class EnemyDirector : MonoBehaviour
     protected void UnlinkTimerEvents()
     {
         evaluationTimer.Timeout -= Evaluate;         
+    }
+
+
+    /// 
+    /// PlaythroughStopwatch Event Linkage.
+    /// 
+
+
+    protected void LinkPlaythroughStopwatchEvents()
+    {
+        PlaythroughStopwatch.Singleton.ElapsedMinute += OnElapsedMinute;
+    }
+
+    protected void UnlinkPlaythroughStopwatchEvents()
+    {
+        PlaythroughStopwatch.Singleton.ElapsedMinute -= OnElapsedMinute;        
+    }
+
+    private void OnElapsedMinute(int elapsedMinutes)
+    {
+        if(elapsedMinutes < enemySpawnCardCollectionPerElapsedMinute.Length)
+        {
+            SetEnemySpawnCardCollection(elapsedMinutes);
+        }
     }
 }

@@ -68,6 +68,7 @@ namespace Entropek.Camera
         [SerializeField] private LayerMask obstructionLayer;
         private float shakeStrength;
         public bool isLockedOn { get; private set; }
+        private bool paused = false;
 
 
         /// 
@@ -78,9 +79,6 @@ namespace Entropek.Camera
         private void Awake()
         {
             camera.fieldOfView = InitialFov;
-
-            // Cursor.lockState = CursorLockMode.Locked;
-            // Cursor.visible = false;
 
             if (followTarget != null)
             {
@@ -100,6 +98,11 @@ namespace Entropek.Camera
 
         private void LateUpdate()
         {
+            if(paused == true)
+            {
+                return;
+            }
+
             // move towards the target look movement delta over delta time; to ensure camera sensitivity remains the same
             // across variable frame rates.
 
@@ -128,6 +131,11 @@ namespace Entropek.Camera
         int shakeCounter = 0;
         private void FixedUpdate()
         {
+            if(paused == true)
+            {
+                return;
+            }
+
             if(shakeCounter == 1)
             {
                 Shake?.Invoke();
@@ -352,7 +360,20 @@ namespace Entropek.Camera
 
         private void ApplyDeltaMovementToLookRotation(Vector2 deltaMovement)
         {
-            deltaMovement *= inputSensitivity * UnityEngine.Time.deltaTime;
+            
+            // to the camera frame rate independent:
+            // only apply time.delta to gamepad joystick's as the joystick
+            // input is constant; where as mouse input is not.
+            
+            if (InputManager.Singleton.IsGamepadConnected == true)
+            {
+                deltaMovement *= inputSensitivity * UnityEngine.Time.deltaTime;
+            }
+            else
+            {
+                deltaMovement *= inputSensitivity;
+            }
+
             Vector3 eulerAngles = lookRotation.eulerAngles;
 
             // Convert pitch (x) to -180..180 range
@@ -544,6 +565,7 @@ namespace Entropek.Camera
             LinkTimerEvents();
             LinkInputEvents();
             LinkLockOnTargetDetectorEvents();
+            LinkGameManagerEvents();
         }
 
 
@@ -552,6 +574,35 @@ namespace Entropek.Camera
             UnlinkTimerEvents();
             UnlinkInputEvents();
             UnlinkLockOnTargetDetectorEvents();
+            UnlinkGameManagerEvents();
+        }
+
+
+        ///
+        /// Game Manager Linkage.
+        /// 
+
+
+        private void LinkGameManagerEvents()
+        {
+            GameManager.Singleton.GamePaused += OnGamePaused;
+            GameManager.Singleton.GameResumed += OnGameResumed;
+        }
+
+        private void UnlinkGameManagerEvents()
+        {
+            GameManager.Singleton.GamePaused -= OnGamePaused;
+            GameManager.Singleton.GameResumed -= OnGameResumed;            
+        }
+
+        private void OnGamePaused()
+        {
+            paused = true;
+        }
+
+        private void OnGameResumed()
+        {
+            paused = false;
         }
 
 

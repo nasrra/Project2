@@ -60,21 +60,44 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Singleton.GamePaused += OnGamePaused;
         GameManager.Singleton.GameResumed += OnGameResumed;
+        GameManager.Singleton.GameStateSet += OnGameStateSet;
     }
 
     private void UnlinkGameManagerEvents()
     {
         GameManager.Singleton.GamePaused -= OnGamePaused;        
         GameManager.Singleton.GameResumed -= OnGameResumed;
+        GameManager.Singleton.GameStateSet -= OnGameStateSet;
     }
 
     private void OnGamePaused()
     {
+        GameManager.Singleton.EnableCursor();
         menus[PauseMenuId].gameObject.SetActive(true);
     }
 
     private void OnGameResumed()
     {
-        menus[PauseMenuId].gameObject.SetActive(false);        
+        // re-enable the cursor.
+
+        GameManager.Singleton.DisableCursor();
+
+        for(int i = 0; i < menus.Length; i++)
+        {
+            menus[i].gameObject.SetActive(false);        
+        }
+    }
+
+    private void OnGameStateSet(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.Gameplay:
+                GameManager.Singleton.DisableCursor();
+            break;
+            default:
+                GameManager.Singleton.EnableCursor();
+            break;
+        }
     }
 }

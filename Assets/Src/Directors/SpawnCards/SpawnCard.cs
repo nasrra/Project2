@@ -2,10 +2,16 @@ using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 using UnityEngine.AI;
 
+#if UNITY_EDITOR
 [CreateAssetMenu(menuName = CreateAssetMenuPath+nameof(SpawnCard))]
+#endif
+
 public class SpawnCard : ScriptableObject
 {
+
+#if UNITY_EDITOR
     protected const string CreateAssetMenuPath = "ScriptableObject/Directors/";
+#endif
 
     [Header(nameof(SpawnCard))]
     

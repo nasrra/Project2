@@ -199,12 +199,18 @@ public class InputManager : Entropek.Input.InputSystem, InputActions.IGameplayAc
         }
     }
 
-    public event Action PauseToggle;
-    void InputActions.IGameplayActions.OnPauseToggle(InputAction.CallbackContext context)
+    public event Action PauseMenuToggle;
+    public bool BlockPauseMenuToggle = false;
+    void InputActions.IGameplayActions.OnPauseMenuToggle(InputAction.CallbackContext context)
     {
+        if (BlockPauseMenuToggle == true)
+        {
+            return;
+        }
+
         if (context.performed)
         {
-            PauseToggle?.Invoke();
+            PauseMenuToggle?.Invoke();
         }
     }
 

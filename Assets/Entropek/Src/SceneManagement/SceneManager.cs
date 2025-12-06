@@ -9,7 +9,7 @@ namespace Entropek.SceneManaging
 
         public static CustomSceneManager Singleton {get; private set;}
 
-        static string scene_to_load;
+        static string sceneToLoad;
         public event Action PreparingSceneLoad, UnloadingScene, LoadedScene, TransitioningScene, LoadedTempScene;
         public event Action<string> LoadingScene, UnloadedScene;
 
@@ -20,14 +20,14 @@ namespace Entropek.SceneManaging
             LoadScene();
         }
 
-        public void LoadSceneWithTransitions(string _scene){
-            PrepareForSceneLoad(_scene);
+        public void LoadSceneWithTransitions(string scene){
+            PrepareForSceneLoad(scene);
             StartCoroutine(LoadSceneWithTransitionsCoroutine());
         } 
 
-        private void PrepareForSceneLoad(string _scene){
+        private void PrepareForSceneLoad(string scene){
             // InputManager.disable_ui_event_system_input();
-            scene_to_load = _scene;
+            sceneToLoad = scene;
             // AudioManager.dim_sfx_audio();
             // if(SceneInfo.instance.transition == true)
                 // transitioning_scene?.Invoke();
@@ -56,8 +56,8 @@ namespace Entropek.SceneManaging
             // load scene.
             LoadedTempScene?.Invoke(); // now in temp scene.
             UnloadedScene?.Invoke(previous_scene);
-            LoadingScene?.Invoke(scene_to_load);
-            load = SceneManager.LoadSceneAsync(scene_to_load, LoadSceneMode.Single);
+            LoadingScene?.Invoke(sceneToLoad);
+            load = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
             yield return load;
             
             LoadedScene?.Invoke();

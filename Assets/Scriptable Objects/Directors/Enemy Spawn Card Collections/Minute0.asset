@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c60dea65b40e254a9a20a644ec15233, type: 3}
+  m_Name: Minute0
+  m_EditorClassIdentifier: 
+  enemySpawnCards:
+  - {fileID: 11400000, guid: cddd52aa1cd6649448211edd98786d7f, type: 2}
+  - {fileID: 11400000, guid: c8cc47b04a693104ea7fad256409209c, type: 2}
