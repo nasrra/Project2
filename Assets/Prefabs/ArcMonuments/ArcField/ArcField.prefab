@@ -189,7 +189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1005227170011446746, guid: 71ada754c4f12884193ec16216b147af, type: 3}
       propertyPath: initialTime
-      value: 60
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5408454452346106862, guid: 71ada754c4f12884193ec16216b147af, type: 3}
       propertyPath: audioPlayer

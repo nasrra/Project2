@@ -5,6 +5,7 @@ public class ArcStone : MonoBehaviour
     [Header("Components")]
     [SerializeField] CurrencyPickup currencyPickup;
     [SerializeField] Entropek.Interaction.Interactable interactable;
+    public Entropek.Interaction.Interactable Interactable => interactable;
     [SerializeField] Entropek.Audio.AudioPlayer audioPlayer;
     [SerializeField] GameObject graphicsObject;
 
@@ -54,6 +55,6 @@ public class ArcStone : MonoBehaviour
     {
         audioPlayer.PlaySound("ArcStonePickup", transform.position);
         graphicsObject.SetActive(false);
-        Destroy(gameObject, 1.5f);
+        // Destroy(gameObject, 1.5f);
     }
 }

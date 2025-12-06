@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using Entropek.Collections;
 using Entropek.Combat;
@@ -6,6 +7,8 @@ using Entropek.Exceptions;
 using Entropek.Time;
 using UnityEngine;
 using UnityEngine.AI;
+using Entropek.UnityUtils.Attributes;
+using System.Collections.Generic;
 
 [DefaultExecutionOrder(-5)]
 public class EnemyDirector : MonoBehaviour
@@ -25,8 +28,8 @@ public class EnemyDirector : MonoBehaviour
     /// 
 
 
-    private const float SlowEvaluationTimeMin = 10;
-    private const float SlowEvaluationTimeMax = 20;
+    private const float SlowEvaluationTimeMin = 7.5f;
+    private const float SlowEvaluationTimeMax = 15;
     private const float FastEvaluationTimeMin = 5;
     private const float FastEvaluationTimeMax = 10;
 
@@ -50,12 +53,15 @@ public class EnemyDirector : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] RandomLoopedTimer evaluationTimer;
+    [SerializeField] CreditDirector creditDirector;
 
     [Header("Data")]
     
     [Tooltip("The currently used enemy spawn card collection used for enemy spawning.")]
-    [SerializeField] EnemySpawnCardCollection enemySpawnCardCollection;
+    [RuntimeField] EnemySpawnCardCollection enemySpawnCardCollection;
     
+    private List<int> spawnableEnemies = new();
+
     [Tooltip("The enemy spawn card collection that is used depending upon an elapsed minute variable; E.g id 1 = minute 1, id 3 = minute 3")]
     [SerializeField] EnemySpawnCardCollection[] enemySpawnCardCollectionPerElapsedMinute;
     
@@ -82,6 +88,7 @@ public class EnemyDirector : MonoBehaviour
     
         // FastState();
         SlowState();
+        SetEnemySpawnCardCollection(0);
     }
 
     void OnDestroy()
@@ -116,11 +123,41 @@ public class EnemyDirector : MonoBehaviour
     // int x = 0;
     public void Evaluate()
     {
+        float maxCost = enemySpawnCardCollection.MaxCost;
+        float minCost = enemySpawnCardCollection.MinCost;
+        maxCost = UnityEngine.Random.Range(minCost,maxCost*1.25f); // <-- add a 25% buffer so that the higher cost enemies are chosen more often.
+        minCost = UnityEngine.Random.Range(minCost,maxCost);
 
-        for(int j = 0; j < 1; j++)
-        {            
-            SpawnMinion();
+        enemySpawnCardCollection.SetSpawnCardsSpawnableByCostRange(minCost, maxCost);
+
+        bool spawnedEnemy = true;
+        while(creditDirector.Credits > 0 && spawnedEnemy)
+        {
+            spawnedEnemy = false;
+            for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
+            {
+                EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
+                if(spawnCard.Cost <= creditDirector.Credits)
+                {
+                    // spawn enemy.
+
+                    if(SpawnAtRandomPosition(spawnCard, out GameObject minion) == false)
+                    {
+                        continue;
+                    }
+
+                    Enemy enemy = minion.GetComponent<Enemy>();
+                    enemy.Health.Death += OnMinionDeath;
+                    
+                    creditDirector.Credits -= spawnCard.Cost;
+
+                    spawnedEnemy = true;
+
+                    Debug.Log($"Spawned {enemy.name}");
+                }
+            }
         }
+
     }
 
 
@@ -137,6 +174,7 @@ public class EnemyDirector : MonoBehaviour
     public void SetEnemySpawnCardCollection(int collectionId)
     {
         enemySpawnCardCollection = enemySpawnCardCollectionPerElapsedMinute[collectionId];
+        
     }
 
     /// <summary>
@@ -288,7 +326,10 @@ public class EnemyDirector : MonoBehaviour
 
     protected void UnlinkPlaythroughStopwatchEvents()
     {
-        PlaythroughStopwatch.Singleton.ElapsedMinute -= OnElapsedMinute;        
+        if (PlaythroughStopwatch.Singleton != null)
+        {
+            PlaythroughStopwatch.Singleton.ElapsedMinute -= OnElapsedMinute;        
+        }
     }
 
     private void OnElapsedMinute(int elapsedMinutes)

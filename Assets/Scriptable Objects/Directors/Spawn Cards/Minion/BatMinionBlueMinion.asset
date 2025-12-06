@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BatMinionBlueMinion
   m_EditorClassIdentifier: 
   prefab: {fileID: 2129258622571067738, guid: c3128c62ae37a77418971122cd7acfc2, type: 3}
-  cost: 1
+  cost: 10
   navMeshAgentType: 0
   enemyType: 0
   spawnType: 1

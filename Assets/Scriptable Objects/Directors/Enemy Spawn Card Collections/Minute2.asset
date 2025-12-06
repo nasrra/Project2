@@ -17,3 +17,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c8cc47b04a693104ea7fad256409209c, type: 2}
   - {fileID: 11400000, guid: 5528b3244a3c0fc47a2002a5399a5227, type: 2}
   - {fileID: 11400000, guid: 433545ff067c3a44fb49a2603b106427, type: 2}
+  maxCost: 33
+  minCost: 8

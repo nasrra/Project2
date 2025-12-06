@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MushroomMinionGreen
   m_EditorClassIdentifier: 
   prefab: {fileID: 2156771524781745527, guid: e4306e49278c0d3488682590bba6bfdb, type: 3}
-  cost: 1
+  cost: 11
   navMeshAgentType: -902729914
   enemyType: 0
   spawnType: 0

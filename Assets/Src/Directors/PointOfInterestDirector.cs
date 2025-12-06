@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Entropek.Time;
 using Entropek.UnityUtils;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
@@ -11,7 +12,9 @@ public class PointOfInterestDirector : Director
     [SerializeField] private float maxRandomSpawnRadius = 24;
     [SerializeField] private float randomSpawnQueryRadius = 0.5f;
     [SerializeField] private float duplicateThresholdSqrd = 3.33f;
-    [SerializeField] protected SpawnCard[] spawnCards;
+    [SerializeField] private int spawnAmount;
+    [SerializeField] protected SpawnCard spawnCard;
+    [SerializeField] private LoopedTimer spawnEventTimer;
 
     [RuntimeField] protected LayerMask navMeshLayerMask;
     [RuntimeField] protected List<Vector3> spawnLocations = new();
@@ -21,6 +24,9 @@ public class PointOfInterestDirector : Director
     protected virtual void Awake()
     {
         Initialise();
+        spawnEventTimer.Begin();
+        LinkEvents();
+        Spawn(spawnAmount);
     }
 
     private void Initialise()
@@ -32,7 +38,7 @@ public class PointOfInterestDirector : Director
 
     protected virtual void OnDestroy()
     {
-        
+        UnlinkEvents();
     }
 
     private void InitialiaseLayerMask()
@@ -69,13 +75,11 @@ public class PointOfInterestDirector : Director
         occupiedLocations = new bool[spawnLocations.Count];
     }
 
-    public bool SpawnPointOfInterestAtRandomPosition(
-        int spawnCardId
-    ){
+    public bool SpawnPointOfInterestAtRandomPosition(){
         if(SpawnAtRandomPosition(
             spawnLocations,
             occupiedLocations,
-            spawnCards[spawnCardId],
+            spawnCard,
             minRandomSpawnRadius,
             maxRandomSpawnRadius,
             randomSpawnQueryRadius,
@@ -95,18 +99,97 @@ public class PointOfInterestDirector : Director
         return false;
     }
 
+
+    /// <summary>
+    /// The callback for a Point Of Interest's Destroy event; marking its occupied location as free for other
+    /// Point of Interests to spawn at.
+    /// </summary>
+    /// <param name="locationId">The id of the location in the internal array where this Point of Interst is occupying.</param>
+
     private void OnPoiDestroyed(int locationId)
     {
         occupiedLocations[locationId] = false;
     }
 
-    protected void TestSpawn(int amount)
+    protected void Spawn(int amount)
     {
         for(int i = 0; i < amount; i++)
         {
-            SpawnPointOfInterestAtRandomPosition(0);
+            SpawnPointOfInterestAtRandomPosition();
         }
     }
+   
+
+    /// 
+    /// Event Linkage.
+    /// 
+
+
+    private void LinkEvents()
+    {
+        LinkPlaythroughStopwatchEvents();
+        LinkTimerEvents();
+    }
+
+    private void UnlinkEvents()
+    {
+        UnlinkPlaythroughStopwatchEvents();
+        UnlinkTimerEvents();
+    }
+
+
+    /// 
+    /// PlaythroughStopwatch Event Linkage.
+    /// 
+
+
+    private void LinkPlaythroughStopwatchEvents()
+    {        
+        PlaythroughStopwatch.Singleton.Started += OnPlaythroughStopwatchStarted;
+        PlaythroughStopwatch.Singleton.Stopped += OnPlaythroughStopwatchStopped;
+    }
+
+    private void UnlinkPlaythroughStopwatchEvents()
+    {
+        if (PlaythroughStopwatch.Singleton != null)
+        {            
+            PlaythroughStopwatch.Singleton.Started -= OnPlaythroughStopwatchStarted;
+            PlaythroughStopwatch.Singleton.Stopped -= OnPlaythroughStopwatchStopped;
+        }
+    }
+
+    private void OnPlaythroughStopwatchStarted()
+    {
+        spawnEventTimer.Begin();
+    }
+
+    private void OnPlaythroughStopwatchStopped()
+    {
+        spawnEventTimer.Halt();
+    }
+
+
+    /// 
+    /// Timer Event Linkage.
+    /// 
+
+
+    private void LinkTimerEvents()
+    {
+        spawnEventTimer.Timeout += OnSpawnEventTimerTimeout;
+    }
+
+    private void UnlinkTimerEvents()
+    {
+        spawnEventTimer.Timeout -= OnSpawnEventTimerTimeout;        
+    }
+
+    private void OnSpawnEventTimerTimeout()
+    {
+        Spawn(spawnAmount);
+    }
+
+#if UNITY_ENGINE
 
     private void OnDrawGizmos()
     {
@@ -122,4 +205,7 @@ public class PointOfInterestDirector : Director
             Gizmos.DrawCube(spawnLocations[i], Vector3.one);
         }
     }
+
+#endif
+
 }

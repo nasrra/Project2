@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using Entropek.UnityUtils.Attributes;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR;
 
 [DefaultExecutionOrder(-10)]
 public class InputManager : Entropek.Input.InputSystem, 

@@ -1,3 +1,6 @@
+using Entropek.Interaction;
+using Entropek.UnityUtils.Attributes;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ArcStoneMonument : MonoBehaviour
@@ -8,7 +11,9 @@ public class ArcStoneMonument : MonoBehaviour
     [SerializeField] private Entropek.Interaction.Interactable interactable;
     [SerializeField] private ArcField arcField;
     [Tooltip("The ArcStone should be disabled in the editor.")]
-    [SerializeField] private GameObject arcStone;
+    [SerializeField] private ArcStone arcStonePrefab;
+    [SerializeField] private Transform arcStoneSpawnPoint;
+    [RuntimeField] private ArcStone arcStone; 
 
 
     /// 
@@ -43,7 +48,8 @@ public class ArcStoneMonument : MonoBehaviour
     public void ChargedState()
     {
         EnemyDirector.Singleton.SlowState();
-        arcStone.SetActive(true);
+        arcStone = Instantiate(arcStonePrefab, arcStoneSpawnPoint.position, arcStoneSpawnPoint.rotation);
+        LinkArcStoneEvents();
     }
 
 
@@ -56,13 +62,21 @@ public class ArcStoneMonument : MonoBehaviour
     {
         LinkInteractableEvents();
         LinkArcFieldEvents();
+        LinkArcStoneEvents();
     }
 
     private void UnlinkEvents()
     {
         UnlinkInteractableEvents();
         UnlinkArcFieldEvents();
+        UnlinkArcStoneEvents();
     }
+
+
+    /// 
+    /// Interactable Events.
+    /// 
+
 
     private void LinkInteractableEvents()
     {
@@ -79,6 +93,12 @@ public class ArcStoneMonument : MonoBehaviour
         ActivatedState();
     }
 
+
+    /// 
+    /// Arcfield Events.
+    /// 
+
+
     private void LinkArcFieldEvents()
     {
         arcField.ChargeField.Charged += OnArcFieldCharged;
@@ -92,6 +112,34 @@ public class ArcStoneMonument : MonoBehaviour
     private void OnArcFieldCharged()
     {
         ChargedState();
+    }
+
+
+    ///
+    /// Arcstone Events.
+    /// 
+
+    
+    private void LinkArcStoneEvents()
+    {
+        if (arcStone != null)
+        {
+            arcStone.Interactable.Interacted += OnArcStoneInteracted;
+        }
+    }
+
+    private void UnlinkArcStoneEvents()
+    {
+        if (arcStone != null)
+        {
+            arcStone.Interactable.Interacted -= OnArcStoneInteracted;
+        }
+    }
+
+    private void OnArcStoneInteracted(Interactor interactor)
+    {
+        // Debug.Log(2);
+        Destroy(gameObject);
     }
 
 }

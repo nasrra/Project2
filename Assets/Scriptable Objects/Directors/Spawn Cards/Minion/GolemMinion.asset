@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GolemMinion
   m_EditorClassIdentifier: 
   prefab: {fileID: 777301287381677599, guid: 6adb510a999ad294ab9ca21247e173de, type: 3}
-  cost: 1
+  cost: 33
   navMeshAgentType: 1479372276
   enemyType: 0
   spawnType: 0

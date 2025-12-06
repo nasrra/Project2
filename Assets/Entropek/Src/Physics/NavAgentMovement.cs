@@ -428,8 +428,8 @@ namespace Entropek.Physics
 
             // fall back is to snap to this transforms position.
 
-            Vector3 position = new Vector3(transform.position.x, navHit.position.y, transform.position.z); 
-            agent.Warp(position);
+            // Vector3 position = new Vector3(transform.position.x, navHit.position.y, transform.position.z); 
+            // agent.Warp(position);
         }
 
 

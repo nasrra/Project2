@@ -320,7 +320,7 @@ public class Player : MonoBehaviour {
         if(verticalMoveState == CharacterVerticalMoveState.None)
         {
             animator.Play(moveAnimation);    
-            animator.Update(0);        
+            // animator.Update(0);        
         }
 
     }

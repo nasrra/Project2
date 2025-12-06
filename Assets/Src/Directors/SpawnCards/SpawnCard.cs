@@ -27,6 +27,8 @@ public class SpawnCard : ScriptableObject
     [SerializeField, NavMeshAgentTypeField] private int navMeshAgentType;
     public int NavMeshAgentType => navMeshAgentType;
 
+    [SerializeField] public bool Spawnable = true; 
+
     public NavMeshQueryFilter GetNavMeshQueryFilter()
     {
         return new NavMeshQueryFilter()
