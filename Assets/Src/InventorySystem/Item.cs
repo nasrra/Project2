@@ -30,9 +30,9 @@ public abstract class Item : ScriptableObject
     /// <param name="position">The position to spawn at.</param>
     /// <param name="rotation">The rotation to spawn at.</param>
 
-    public void SpawnItemPickupPrefab(Vector3 position, Quaternion rotation)
+    public ItemPickup SpawnItemPickupPrefab(Vector3 position, Quaternion rotation)
     {
-        Instantiate(itemPickupPrefab, position, rotation);
+        return Instantiate(itemPickupPrefab, position, rotation);
     }
 
     public override bool Equals(object obj)

@@ -153,7 +153,7 @@ public class Player : MonoBehaviour {
         CurrencyHudManager.Singleton.LinkHudsToInventory(inventory);
         HealthBarHud.Singleton.HealthBar.Activate(health);
 
-        Currency currency = Resources.Load<Currency>("ScriptableObject/Currency/Gold");
+        Currency currency = Resources.Load<Currency>("ScriptableObject/Currency/ArcStone");
         inventory.AddCurrency(currency, 999);
     }
 

@@ -1,9 +1,11 @@
+using Entropek.Interaction;
 using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Entropek.Interaction.Interactable interactable;
+    public Interactable Interactable => interactable;
 
     [Header("Data")]
     public Item Item;
@@ -53,12 +55,15 @@ public class ItemPickup : MonoBehaviour
 
     private void OnInteracted(Entropek.Interaction.Interactor interactor)
     {
+
         // access root gameobject as the interactor gameobject is not expected
         // to contain te inventory component.
 
         interactor.RootGameObject.GetComponent<Inventory>().AddItem(Item, Amount);
         Destroy(gameObject);
     }
+
+    
 }    
 
 

@@ -17,6 +17,7 @@ public class Chest : MonoBehaviour
     [SerializeField] private CurrencyRequirement currencyRequirement;
     [SerializeField] private Animator animator;
     [SerializeField] private AnimationEventReciever animationEventReciever;
+    private ItemPickup droppedItem;
 
 
     /// 
@@ -44,12 +45,14 @@ public class Chest : MonoBehaviour
     {
         LinkInteractableEvents();
         LinkAnimationEventRecieverEvents();
+        LinkItemDropperEvents();
     }
 
     private void UnlinkEvents()
     {
         UnlinkInteractableEvents();
         UnlinkAnimationEventRecieverEvents();
+        UnlinkItemDropperEvents();
     }
 
 
@@ -106,6 +109,34 @@ public class Chest : MonoBehaviour
     private void OnDropItemAnimationEvent()
     {
         itemDropper.DropItem();
+    }
+
+
+    /// 
+    /// Item Dropper Event Linkage.
+    /// 
+
+
+    private void LinkItemDropperEvents()
+    {
+        itemDropper.ItemDropped += OnItemDropped;
+    }
+
+    private void UnlinkItemDropperEvents()
+    {
+        itemDropper.ItemDropped -= OnItemDropped;        
+    }
+
+    private void OnItemDropped(ItemPickup itemPickup)
+    {
+        droppedItem = itemPickup; 
+        droppedItem.Interactable.Interacted += OnItemPickupInteracted;
+    }
+
+    private void OnItemPickupInteracted(Interactor interactor)
+    {
+        droppedItem.Interactable.Interacted -= OnItemPickupInteracted;
+        Destroy(gameObject);
     }
 
 }

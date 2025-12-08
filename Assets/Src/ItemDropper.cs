@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
 {
     private const float MaxDropChance = 100;
+
+    public event Action<ItemPickup> ItemDropped;
 
     [SerializeField] ItemDropPool itemDropPoolScriptableObject;
 
@@ -12,7 +15,7 @@ public class ItemDropper : MonoBehaviour
 
     public void DropItem()
     {
-        float rng = Random.Range(0, MaxDropChance+1); // add 1 because max is exclusive.        
+        float rng = UnityEngine.Random.Range(0, MaxDropChance);        
     
         Item droppedItem;
 
@@ -29,7 +32,7 @@ public class ItemDropper : MonoBehaviour
             droppedItem = itemDropPoolScriptableObject.GetRandomLegendaryItem();
         }
 
-        droppedItem.SpawnItemPickupPrefab(transform.position + Vector3.up * 2, Quaternion.identity);
+        ItemDropped?.Invoke(droppedItem.SpawnItemPickupPrefab(transform.position + Vector3.up * 2, Quaternion.identity));
     }
 
 
