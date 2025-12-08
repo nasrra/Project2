@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
     /// 
 
 
+    public event Action<GameState> GameStateSet;
     public event Action GamePaused;
     public event Action GameResumed;
-    public event Action<GameState> GameStateSet;
 
 
     /// 
@@ -54,6 +54,72 @@ public class GameManager : MonoBehaviour
     }
 
 
+    ///
+    /// State Machine.
+    /// 
+
+
+    public void WinState()
+    {
+        EnableCursor();
+        PauseGame();
+
+        InputManager.Singleton.EnableMenuInput();
+        InputManager.Singleton.DisableGameplayInputDeferred();
+    
+        GameState = GameState.Win;
+        GameStateSet?.Invoke(GameState.Win);        
+    }
+
+    public void DeathState()
+    {
+        EnableCursor();
+        PauseGame();
+
+        InputManager.Singleton.EnableMenuInput();
+        InputManager.Singleton.DisableGameplayInputDeferred();
+
+        GameState = GameState.Death;
+        GameStateSet?.Invoke(GameState.Death);
+    }
+
+    public void MainMenuState()
+    {
+        EnableCursor();
+        ResumeGame();
+
+        InputManager.Singleton.EnableMenuInput();
+        InputManager.Singleton.DisableGameplayInputDeferred();
+
+        GameState = GameState.MainMenu;
+        GameStateSet?.Invoke(GameState.MainMenu);
+    } 
+
+    public void GameplayState()
+    {
+        DisableCursor();
+        ResumeGame();
+
+        InputManager.Singleton.EnableGameplayInput();
+        InputManager.Singleton.DisableMenuInputDeferred();
+
+        GameState = GameState.Gameplay;
+        GameStateSet?.Invoke(GameState.Gameplay);
+    }
+
+    public void PauseMenuState()
+    {
+        EnableCursor();
+        PauseGame();
+        
+        InputManager.Singleton.EnableMenuInput();
+        InputManager.Singleton.DisableGameplayInputDeferred();
+
+        GameState = GameState.PauseMenu;
+        GameStateSet?.Invoke(GameState.PauseMenu);
+    }
+
+
     /// 
     /// Event Linkage.
     /// 
@@ -63,12 +129,16 @@ public class GameManager : MonoBehaviour
     {
         LinkInputManagerEvents();
         LinkSceneManagerEvents();
+        LinkPlayerEvents();
+        LinkPlaythroughStopwatchEvents();
     }
 
     private void UnlinkEvents()
     {
         UnlinkInputManagerEvents();
         UnlinkSceneManagerEvents();
+        UnlinkPlayerEvents();
+        UnlinkPlaythroughStopwatchEvents();
     }
 
 
@@ -94,25 +164,23 @@ public class GameManager : MonoBehaviour
         {
             if (GameIsPaused == false)
             {
-                PauseGame();
-                SetGameState(GameState.PauseMenu);
+                PauseMenuState();
             }
             else
             {
-                ResumeGame();
-                SetGameState(GameState.Gameplay);
+                GameplayState();
             }            
         }
     }
 
-    public void PauseGame()
+    private void PauseGame()
     {
         Time.timeScale = 0;
         GameIsPaused = true;
         GamePaused?.Invoke();
     }
 
-    public void ResumeGame()
+    private void ResumeGame()
     {
         Time.timeScale = 1;
         GameIsPaused = false;
@@ -129,10 +197,10 @@ public class GameManager : MonoBehaviour
         switch (sceneName)
         {
             case MainMenuSceneName:
-                SetGameState(GameState.MainMenu);
+                MainMenuState();
                 break;
             case TheHollowSceneName:
-                SetGameState(GameState.Gameplay);
+                GameplayState();
                 break;
             default:
                 SetGameState(GameState.None);
@@ -181,6 +249,48 @@ public class GameManager : MonoBehaviour
         {
             ResumeGame();
         }
+    }
+
+
+    ///
+    /// Player Event Linkage.
+    /// 
+
+    
+    private void LinkPlayerEvents()
+    {
+        Player.Death += OnPlayerDeath;
+    }
+
+    private void UnlinkPlayerEvents()
+    {
+        Player.Death -= OnPlayerDeath;        
+    }
+
+    private void OnPlayerDeath()
+    {
+        DeathState();   
+    }
+
+
+    ///
+    /// PlaythroughStopwatch link events.
+    /// 
+
+
+    private void LinkPlaythroughStopwatchEvents()
+    {
+        PlaythroughStopwatch.ElapsedWinTime += OnElapsedWinTime;
+    }
+
+    private void UnlinkPlaythroughStopwatchEvents()
+    {
+        PlaythroughStopwatch.ElapsedWinTime -= OnElapsedWinTime;        
+    }
+
+    private void OnElapsedWinTime()
+    {
+        WinState();
     }
 
 

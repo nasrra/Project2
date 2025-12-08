@@ -5,6 +5,7 @@ public enum GameState : byte
     None,
     MainMenu,
     PauseMenu,
-    DeathScreen,
+    Death,
+    Win,
     Gameplay
 }

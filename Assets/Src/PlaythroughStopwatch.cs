@@ -9,6 +9,10 @@ using UnityEngine;
 public class PlaythroughStopwatch : MonoBehaviour
 {
 
+    public static event Action ElapsedWinTime;
+
+    private const int WinConditionElapsedMinutes = 7;
+
     public event Action Stopped;
     public event Action Started;
     public event Action<int> ElapsedMinute;
@@ -104,9 +108,17 @@ public class PlaythroughStopwatch : MonoBehaviour
         int stopwatchElapsedMinutes = stopwatch.Elapsed.Minutes;
         if(stopwatchElapsedMinutes > elapsedMinutes)
         {
+
             elapsedMinutes = stopwatchElapsedMinutes;
+
+            if(elapsedMinutes >= WinConditionElapsedMinutes)
+            {
+                ElapsedWinTime?.Invoke();    
+            }
+
             ElapsedMinute?.Invoke(elapsedMinutes);
         }
+
 
         int stopwatchElapsedSeconds = stopwatch.Elapsed.Seconds;
         if(stopwatchElapsedSeconds > elapsedSeconds)
@@ -114,6 +126,7 @@ public class PlaythroughStopwatch : MonoBehaviour
             elapsedSeconds = stopwatchElapsedSeconds;
             ElapsedSecond?.Invoke(elapsedSeconds);
         }
+
     }
 
 

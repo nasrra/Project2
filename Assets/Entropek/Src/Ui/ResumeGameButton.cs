@@ -7,7 +7,7 @@ namespace Entropek.Ui
         protected override void OnPointerClickAnimationCompleted()
         {
             base.OnPointerClickAnimationCompleted();
-            GameManager.Singleton.ResumeGame();
+            GameManager.Singleton.GameplayState();
         }
     }
 }

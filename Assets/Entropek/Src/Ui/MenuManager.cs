@@ -8,6 +8,9 @@ public class MenuManager : MonoBehaviour
 
     
     private const int PauseMenuId = 0;
+    private const int DeathSreenId = 1;
+    private const int WinScreenId = 2;
+
     public static MenuManager Singleton {get; private set;}
     [SerializeField] private Canvas[] menus;
 
@@ -57,53 +60,62 @@ public class MenuManager : MonoBehaviour
         UnlinkGameManagerEvents();
     }
 
+
+    /// 
+    /// Game Manager Event Linkage.
+    /// 
+
+
     private void LinkGameManagerEvents()
     {
-        GameManager.Singleton.GamePaused += OnGamePaused;
-        GameManager.Singleton.GameResumed += OnGameResumed;
         GameManager.Singleton.GameStateSet += OnGameStateSet;
     }
 
     private void UnlinkGameManagerEvents()
     {
-        GameManager.Singleton.GamePaused -= OnGamePaused;        
-        GameManager.Singleton.GameResumed -= OnGameResumed;
         GameManager.Singleton.GameStateSet -= OnGameStateSet;
     }
 
-    private void OnGamePaused()
+    private void OnGameStatePauseMenu()
     {
-        GameManager.Singleton.EnableCursor();
         menus[PauseMenuId].gameObject.SetActive(true);
-        InputManager.Singleton.EnableMenuInput();
-        InputManager.Singleton.DisableGameplayInputDeferred();
     }
 
-    private void OnGameResumed()
+    private void OnGameStateGameplay()
     {
-        // re-enable the cursor.
-
-        GameManager.Singleton.DisableCursor();
-
         for(int i = 0; i < menus.Length; i++)
         {
             menus[i].gameObject.SetActive(false);        
         }
+    }
 
-        InputManager.Singleton.EnableGameplayInput();
-        InputManager.Singleton.DisableMenuInputDeferred();
+    private void OnGameStateDeath()
+    {
+        menus[DeathSreenId].gameObject.SetActive(true);
+    }
+    
+    private void OnGameStateWin()
+    {
+        menus[WinScreenId].gameObject.SetActive(true);
     }
 
     private void OnGameStateSet(GameState gameState)
     {
         switch (gameState)
         {
+            case GameState.PauseMenu:
+                OnGameStatePauseMenu();
+                break;
             case GameState.Gameplay:
-                GameManager.Singleton.DisableCursor();
-            break;
-            default:
-                GameManager.Singleton.EnableCursor();
-            break;
+                OnGameStateGameplay();
+                break;
+            case GameState.Death:
+                OnGameStateDeath();
+                break;
+            case GameState.Win:
+                OnGameStateWin();
+                break;
         }
     }
+
 }

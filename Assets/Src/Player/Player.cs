@@ -1,6 +1,5 @@
 using System;
 using Entropek.Interaction;
-using Entropek.Systems.Trails;
 using UnityEngine;
 using Entropek.Physics;
 using Entropek.Audio;
@@ -10,10 +9,16 @@ using Entropek.UnityUtils.Attributes;
 using Entropek.Combat;
 using Entropek.Camera;
 using Entropek.EntityStats;
-using UnityEditor;
-using FMOD.Studio;
 
 public class Player : MonoBehaviour {
+
+
+    /// 
+    /// Callbacks.
+    /// 
+
+
+    public static event Action Death;
 
 
     /// 
@@ -580,11 +585,13 @@ public class Player : MonoBehaviour {
     private void LinkHealthEvents()
     {
         health.Damaged += OnDamaged;
+        health.Death += OnDeath;
     }
 
     private void UnlinkHealthEvents()
     {
         health.Damaged -= OnDamaged;
+        health.Death -= OnDeath;
     }
 
     private void OnDamaged(DamageContext damageContext){
@@ -613,6 +620,11 @@ public class Player : MonoBehaviour {
         {
             EnterStagger();
         }
+    }
+
+    private void OnDeath()
+    {
+        Death?.Invoke();
     }
 
 
