@@ -5,7 +5,7 @@ public class CreditDirector : MonoBehaviour
 {
     [RuntimeField] public float Credits;
     private const float BaseCreditIncrement = 0.0668f;
-    [RuntimeField] private float coefficient = 10;
+    [RuntimeField] private float coefficient = 1;
     [RuntimeField] private float coefficientIncrement = 0.334f;
 
 

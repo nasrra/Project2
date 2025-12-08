@@ -29028,7 +29028,10 @@ MonoBehaviour:
   evaluationTimer: {fileID: 2139258493}
   creditDirector: {fileID: 456031859}
   enemySpawnCardCollectionPerElapsedMinute:
-  - {fileID: 11400000, guid: 8dc5d460ef2c9ec4aaedfd600b4263da, type: 2}
+  - {fileID: 11400000, guid: 3967da9a4934a7a4b8ff071af722d9b4, type: 2}
+  - {fileID: 11400000, guid: cfaac8db4bea98c45b6ed1cdbfe0e690, type: 2}
+  - {fileID: 11400000, guid: 33be25d1064525447ad85fc1ac747985, type: 2}
+  - {fileID: 11400000, guid: 7119731f6fd3d344a8879bd461121908, type: 2}
   awardedCurrency: {fileID: 11400000, guid: 2fd03f23fccdb8549b5ce061992b124c, type: 2}
 --- !u!114 &2139258493
 MonoBehaviour:
@@ -30407,6 +30410,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5823804296785317955, guid: 521e3af75ed495648b4685f20254d97f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4bd2e84c4e2dd334699f000d060beeb9, type: 2}
     - target: {fileID: 6893671359511530503, guid: 521e3af75ed495648b4685f20254d97f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.118

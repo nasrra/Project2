@@ -46,7 +46,6 @@ public class ArcStoneMonument : MonoBehaviour
         arcField.Activate();
         float credits = EnemyDirector.Singleton.CreditDirector.CalculateCreditIncrement(CreditIncrementTime); 
         EnemyDirector.Singleton.ExecuteSpawnBehaviour(transform.position, credits, UnityEngine.Random.Range(0,4), out _);   
-        Debug.Log(1);
     }
 
     public void ChargedState()

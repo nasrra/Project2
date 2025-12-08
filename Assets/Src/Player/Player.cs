@@ -153,8 +153,8 @@ public class Player : MonoBehaviour {
         CurrencyHudManager.Singleton.LinkHudsToInventory(inventory);
         HealthBarHud.Singleton.HealthBar.Activate(health);
 
-        Currency currency = Resources.Load<Currency>("ScriptableObject/Currency/ArcStone");
-        inventory.AddCurrency(currency, 999);
+        // Currency currency = Resources.Load<Currency>("ScriptableObject/Currency/ArcStone");
+        // inventory.AddCurrency(currency, 999);
     }
 
     private void Update() {
@@ -550,7 +550,7 @@ public class Player : MonoBehaviour {
         LinkAnimationEventRecieverEvents();
         LinkHealthEvents();
         LinkInventoryEvents();
-        LinkMinionEvents();
+        // LinkMinionEvents();
     }
 
 
@@ -568,7 +568,7 @@ public class Player : MonoBehaviour {
         UnlinkAnimationEventRecieverEvents();
         UnlinkHealthEvents();
         UnlinkInventoryEvents();
-        UnlinkMinionEvents();
+        // UnlinkMinionEvents();
     }
 
 
