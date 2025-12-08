@@ -1,3 +1,4 @@
+using System;
 using Entropek.UnityUtils.Attributes;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class EnemySpawnCardCollection : ScriptableObject
     private const string CreateAssetMenuPath = "ScriptableObject/Directors/";
 #endif
 
+    [Tooltip("The cost of enemy spawn cards should be arrange from lowest to highest: index 0 = lowest -> index MAX = highest.")]
     [SerializeField] private EnemySpawnCard[] enemySpawnCards;
     
     [SerializeField] private float maxCost;
@@ -31,11 +33,21 @@ public class EnemySpawnCardCollection : ScriptableObject
 
     public void SetSpawnCardsSpawnableByCostRange(float minCost, float maxCost)
     {
+        Debug.Log($"{minCost} min, {maxCost} max");
         for(int i = 0; i < enemySpawnCards.Length; i++)
         {
             SpawnCard spawnCard = enemySpawnCards[i];
             spawnCard.Spawnable = spawnCard.Cost >= minCost && spawnCard.Cost <= maxCost;
         }
+    }
+
+    /// <summary>
+    /// Sorts the enemy spawn cards array to be in descending order by their cost values.
+    /// </summary>
+
+    public void SortByCostDescending()
+    {
+        Array.Sort(enemySpawnCards, (a,b) => a.Cost.CompareTo(b.Cost));
     }
 
 

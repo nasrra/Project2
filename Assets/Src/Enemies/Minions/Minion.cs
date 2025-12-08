@@ -1,36 +1,47 @@
+using System;
 using Entropek.Time;
 using UnityEngine;
 
 public abstract class Minion : Enemy
 {
+
+
+    /// 
+    /// Constants & Statics.
+    /// 
+
+
+    private const int DeathCurrencyAwardMin = 10;
+    private const int DeathCurrencyAwardMax = 17;
+    public static Currency deathCurrency;
+
+
+    /// 
+    /// Callbacks.
+    /// 
+
+
+    public static event Action<Currency, int> AwardDeathCurrency;
+
+
+    /// 
+    /// Components. 
+    /// 
+
+
     [Header(nameof(Minion)+" Components")]
     [SerializeField] protected OneShotTimer stunTimer;
 
-    protected override void LinkEvents()
-    {
-        base.LinkEvents();
-        LinkTimerEvents();
-    }
 
-    protected override void UnlinkEvents()
-    {
-        base.UnlinkEvents();
-        UnlinkTimerEvents();
-    }
+    /// 
+    /// Base.
+    /// 
 
-    protected virtual void LinkTimerEvents()
-    {
-        stunTimer.Timeout += OnStunTimeout;
-    }
 
-    protected virtual void UnlinkTimerEvents()
+    public override void Kill()
     {
-        stunTimer.Timeout -= OnStunTimeout;
-    }
-
-    private void OnStunTimeout()
-    {
-        ExitStunState();
+        int amount = UnityEngine.Random.Range(DeathCurrencyAwardMin, DeathCurrencyAwardMax + 1); // add one as its exclusive.
+        AwardDeathCurrency?.Invoke(deathCurrency, amount);
     }
 
     /// <summary>
@@ -64,4 +75,46 @@ public abstract class Minion : Enemy
     }
 
     protected abstract void ExitStunStateInternal();
+
+
+    /// 
+    /// Event Linkage.
+    /// 
+
+
+    protected override void LinkEvents()
+    {
+        base.LinkEvents();
+        LinkTimerEvents();
+    }
+
+    protected override void UnlinkEvents()
+    {
+        base.UnlinkEvents();
+        UnlinkTimerEvents();
+    }
+
+    protected virtual void LinkTimerEvents()
+    {
+        stunTimer.Timeout += OnStunTimeout;
+    }
+
+    protected virtual void UnlinkTimerEvents()
+    {
+        stunTimer.Timeout -= OnStunTimeout;
+    }
+
+    private void OnStunTimeout()
+    {
+        ExitStunState();
+    }
+
+    private static class Bootstrap
+    {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Initalise()
+        {
+            deathCurrency = Resources.Load<Currency>("ScriptableObject/Currency/ArcStone");
+        }
+    }
 }

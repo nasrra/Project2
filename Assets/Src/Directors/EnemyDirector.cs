@@ -1,14 +1,11 @@
-using System.Net;
-using System;
-using Entropek.Collections;
 using Entropek.Combat;
-using Entropek.EntityStats;
 using Entropek.Exceptions;
 using Entropek.Time;
 using UnityEngine;
 using UnityEngine.AI;
 using Entropek.UnityUtils.Attributes;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 [DefaultExecutionOrder(-5)]
 public class EnemyDirector : MonoBehaviour
@@ -37,26 +34,26 @@ public class EnemyDirector : MonoBehaviour
     private const float SpawnRandomRadiusMax = 48;
     private const float SpawnQueryRadius = 3.33f;
 
-    private const int MinionDeathGoldAwardMin = 10;
-    private const int MinionDeathGoldAwardMax = 17;
     private const int MiniBossDeathGoldAwardMin = 25;
     private const int MiniBossDeathGoldAwardMax = 32; 
 
 
     /// 
-    /// Callbacks.
+    /// Components.
     /// 
-
-
-    public event Action<Currency, int> AwardCurrency;
 
 
     [Header("Components")]
     [SerializeField] RandomLoopedTimer evaluationTimer;
     [SerializeField] CreditDirector creditDirector;
 
+
+    /// 
+    /// Data.
+    /// 
+
+
     [Header("Data")]
-    
     [Tooltip("The currently used enemy spawn card collection used for enemy spawning.")]
     [RuntimeField] EnemySpawnCardCollection enemySpawnCardCollection;
     
@@ -99,7 +96,6 @@ public class EnemyDirector : MonoBehaviour
         }
 
         UnlinkEvents();
-        ClearEvents();
     }
 
 
@@ -123,21 +119,164 @@ public class EnemyDirector : MonoBehaviour
     // int x = 0;
     public void Evaluate()
     {
+        Debug.Log("Eval");
+
         float maxCost = enemySpawnCardCollection.MaxCost;
         float minCost = enemySpawnCardCollection.MinCost;
-        maxCost = UnityEngine.Random.Range(minCost,maxCost*1.25f); // <-- add a 25% buffer so that the higher cost enemies are chosen more often.
-        minCost = UnityEngine.Random.Range(minCost,maxCost);
+        maxCost = UnityEngine.Random.Range(minCost,maxCost*1.5f); // <-- add a 50% buffer so that the higher cost enemies are chosen more often.
+        enemySpawnCardCollection.SetSpawnCardsSpawnableByCostRange(
+            Mathf.FloorToInt(minCost), 
+            Mathf.CeilToInt(maxCost)
+        );
 
-        enemySpawnCardCollection.SetSpawnCardsSpawnableByCostRange(minCost, maxCost);
+        ExecuteSpawnBehaviour(UnityEngine.Random.Range(0,4));
+    
+    }
 
+    private void ExecuteSpawnBehaviour(int spawnBehvaiourId)
+    {        
+        switch (spawnBehvaiourId)
+        {
+            case 0:
+                // Debug.Log("Spawn Many");
+                if(SpawnManyOfRandomEnemy(
+                    creditDirector.Credits, 
+                    enemySpawnCardCollection.EnemySpawnCards.Length, 
+                    out creditDirector.Credits
+                ) == false)
+                {
+
+                    // execute another random spawn behvaiour if this one fails.
+
+                    ExecuteSpawnBehaviour(UnityEngine.Random.Range(1,4));
+                } 
+                break;
+            case 1:
+                // Debug.Log("Spawn High To Low");
+                SpawnHighestToLowestCostEnemiesBatched(creditDirector.Credits, out creditDirector.Credits);
+                break;
+            case 2:
+                // Debug.Log("Spawn Low To High");
+                SpawnLowestToHighestCostEnemiesBatched(creditDirector.Credits, out creditDirector.Credits);
+                break;
+            default:
+                // Debug.Log("Spawn Uniform");
+                SpawnAllEnemiesUniform(creditDirector.Credits, out creditDirector.Credits);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Spawns as many of a random spawnable enemy as possible.
+    /// </summary>
+    /// <param name="credits">The amount of credits to spend when spawning.</param>
+    /// <param name="iterations">The amount of iterations to perform for finding a random spawnable spawn card before failing.</param>
+    /// <param name="creditsRemainder">The amount credits at the end of this spawn operation.</param>
+    /// <returns>true, if a spawnable spawn card was found and spawned; otherwise false.</returns>
+    
+    private bool SpawnManyOfRandomEnemy(float credits, int iterations, out float creditsRemainder)
+    {
+        for(int i = 0; i <= iterations; i++)
+        {
+            int index = UnityEngine.Random.Range(0, enemySpawnCardCollection.EnemySpawnCards.Length);
+            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[index];
+
+            if (spawnCard.Spawnable == true && spawnCard.Cost <= credits)
+            {
+                while(credits >= spawnCard.Cost)
+                {
+                    if(SpawnAtRandomPosition(spawnCard, out GameObject instantiatedGameObject))
+                    {
+                        credits -= spawnCard.Cost;
+                    }
+                }
+                creditsRemainder = credits;
+                return true;
+            }
+        }
+
+        creditsRemainder = credits;
+        return false;
+
+    }
+
+    /// <summary>
+    /// Spawns spawnable enemy spawn cards from highest to lowest; spawning as many high cards as possible, then casacding down the list.
+    /// </summary>
+    /// <param name="credits">The amount of credits to spend when spawning spawn cards.</param>
+    /// <param name="creditsRemaineder">The amount credits at the end of this spawn operation.</param>
+    
+    private void SpawnHighestToLowestCostEnemiesBatched(float credits, out float creditsRemaineder)
+    {
+        for(int i = enemySpawnCardCollection.EnemySpawnCards.Length - 1; i > 0; i--)
+        {
+            
+            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i]; 
+            
+            if(spawnCard.Spawnable == false)
+            {
+                continue;
+            }
+
+            while(credits >= spawnCard.Cost)
+            {
+                SpawnAtRandomPosition(spawnCard, out GameObject minion);
+                credits -= spawnCard.Cost;
+            }
+        }
+
+        creditsRemaineder = credits;
+    }
+
+    /// <summary>
+    /// Spawns spawnable enemy spawn cards from lowest to highest; spawning as many high cards as possible, then casacding down the list.
+    /// </summary>
+    /// <param name="credits">The amount of credits to spend when spawning spawn cards.</param>
+    /// <param name="creditsRemainder">The amount credits at the end of this spawn operation.</param>
+    
+    private void SpawnLowestToHighestCostEnemiesBatched(float credits, out float creditsRemainder)
+    {
+        for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
+        {
+            
+            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i]; 
+            
+            if(spawnCard.Spawnable == false)
+            {
+                continue;
+            }
+
+            while(credits >= spawnCard.Cost)
+            {
+                SpawnAtRandomPosition(spawnCard, out GameObject minion);
+                credits -= spawnCard.Cost;
+            }
+        }
+
+        creditsRemainder = credits;
+    }
+
+    /// <summary>
+    /// Spawns all spawnable spawn cards in the stored enemy spawn card collection that are spawnable.
+    /// Spawning one of each spawn card from highest to lowest.
+    /// Note: 
+    ///  The spawns can be multiple when credits are high enough or none when credits are low enough.
+    ///  It is an approximation of a uniform spread across spawnable spawn cards.
+    /// </summary>
+    /// <param name="credits">The amount of credits to spend when spawning spawn cards.</param>
+    /// <param name="creditsRemained">The amount credits at the end of this spawn operation.</param>
+
+    private void SpawnAllEnemiesUniform(float credits, out float creditsRemained)
+    {
         bool spawnedEnemy = true;
-        while(creditDirector.Credits > 0 && spawnedEnemy)
+        while(credits > 0 && spawnedEnemy)
         {
             spawnedEnemy = false;
             for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
             {
                 EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
-                if(spawnCard.Cost <= creditDirector.Credits)
+                if( spawnCard.Spawnable == true
+                &&  spawnCard.Cost <= credits)
                 {
                     // spawn enemy.
 
@@ -145,19 +284,14 @@ public class EnemyDirector : MonoBehaviour
                     {
                         continue;
                     }
-
-                    Enemy enemy = minion.GetComponent<Enemy>();
-                    enemy.Health.Death += OnMinionDeath;
-                    
-                    creditDirector.Credits -= spawnCard.Cost;
-
+                    credits -= spawnCard.Cost;
                     spawnedEnemy = true;
-
-                    Debug.Log($"Spawned {enemy.name}");
+                    Debug.Log($"Spawned {minion.name}");
                 }
             }
         }
 
+        creditsRemained = credits;
     }
 
 
@@ -214,65 +348,34 @@ public class EnemyDirector : MonoBehaviour
         : Vector3.zero;
         
         instantiatedGameObject = Instantiate(spawnCard.Prefab, position: spawnPosition, rotation: Quaternion.identity);
+        // Debug.Log(instantiatedGameObject.name);
         return true;
     }
 
-    public void SpawnMiniboss()
-    {
-        for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
-        {
-            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
-            if(spawnCard.EnemyType == EnemyType.MiniBoss)
-            {
+    // public void SpawnMiniboss()
+    // {
+    //     for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
+    //     {
+    //         EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
+    //         if(spawnCard.EnemyType == EnemyType.MiniBoss)
+    //         {
 
-                // spawn miniboss.
+    //             // spawn miniboss.
                 
-                if(SpawnAtRandomPosition(spawnCard, out GameObject miniboss)==false)
-                {
-                    continue;
-                }
+    //             if(SpawnAtRandomPosition(spawnCard, out GameObject miniboss)==false)
+    //             {
+    //                 continue;
+    //             }
 
-                // display boss health bar hud.
+    //             // display boss health bar hud.
                 
-                Health health = miniboss.GetComponent<Health>();
-                BossHealthBarHud.Singleton.NamedHealthBar.Activate(health, miniboss.name.Replace("(Clone)", ""));
+    //             Health health = miniboss.GetComponent<Health>();
+    //             BossHealthBarHud.Singleton.NamedHealthBar.Activate(health, miniboss.name.Replace("(Clone)", ""));
                 
-                break;
-            }
-        }
-    }
-
-    public void SpawnMinion()
-    {
-        for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
-        {
-            EnemySpawnCard spawnCard = enemySpawnCardCollection.EnemySpawnCards[i];
-            if(spawnCard.EnemyType == EnemyType.Minion)
-            {
-                // spawn enemy.
-
-                if(SpawnAtRandomPosition(spawnCard, out GameObject minion) == false)
-                {
-                    continue;
-                }
-
-                Enemy enemy = minion.GetComponent<Enemy>();
-                enemy.Health.Death += OnMinionDeath;
-            }
-        }
-    }
-
-
-    ///
-    /// Enemy Death Handling.
-    /// 
-
-
-    private void OnMinionDeath()
-    {
-        int amount = UnityEngine.Random.Range(MinionDeathGoldAwardMin, MinionDeathGoldAwardMax + 1); // add one as its exclusive.
-        AwardCurrency?.Invoke(awardedCurrency, amount);
-    }
+    //             break;
+    //         }
+    //     }
+    // }
 
 
     /// 
@@ -290,11 +393,6 @@ public class EnemyDirector : MonoBehaviour
     {
         UnlinkTimerEvents();
         UnlinkPlaythroughStopwatchEvents();
-    }
-
-    protected void ClearEvents()
-    {
-        AwardCurrency = null;
     }
 
     

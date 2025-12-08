@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Minute0
   m_EditorClassIdentifier: 
   enemySpawnCards:
-  - {fileID: 11400000, guid: cddd52aa1cd6649448211edd98786d7f, type: 2}
   - {fileID: 11400000, guid: c8cc47b04a693104ea7fad256409209c, type: 2}
+  - {fileID: 11400000, guid: cddd52aa1cd6649448211edd98786d7f, type: 2}
   maxCost: 11
   minCost: 8

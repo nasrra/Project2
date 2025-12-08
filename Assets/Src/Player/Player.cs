@@ -550,8 +550,9 @@ public class Player : MonoBehaviour {
         LinkAnimationEventRecieverEvents();
         LinkHealthEvents();
         LinkInventoryEvents();
-        LinkEnemyDirectorEvents();
+        LinkMinionEvents();
     }
+
 
     /// <summary>
     /// Unlinks all component events from theiur respective callbacks.
@@ -567,7 +568,7 @@ public class Player : MonoBehaviour {
         UnlinkAnimationEventRecieverEvents();
         UnlinkHealthEvents();
         UnlinkInventoryEvents();
-        UnlinkEnemyDirectorEvents();
+        UnlinkMinionEvents();
     }
 
 
@@ -971,20 +972,14 @@ public class Player : MonoBehaviour {
     /// 
 
 
-    private void LinkEnemyDirectorEvents()
+    private void LinkMinionEvents()
     {
-        EnemyDirector.Singleton.AwardCurrency += OnAwardCurrency;
+        Minion.AwardDeathCurrency += OnAwardCurrency;
     }
 
-    private void UnlinkEnemyDirectorEvents()
+    private void UnlinkMinionEvents()
     {        
-        // this is fine as EnemyDirector sets AwardCurrency to null
-        // upon destruction; avoiding memory leaks.
-
-        if(EnemyDirector.Singleton != null)
-        {
-            EnemyDirector.Singleton.AwardCurrency -= OnAwardCurrency;
-        }
+        Minion.AwardDeathCurrency -= OnAwardCurrency;
     }
 
     private void OnAwardCurrency(Currency currency, int amount)

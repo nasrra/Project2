@@ -39,7 +39,7 @@ public class ArcStoneMonument : MonoBehaviour
     public void ActivatedState()
     {
         EnemyDirector.Singleton.FastState();
-        EnemyDirector.Singleton.SpawnMiniboss();
+        // EnemyDirector.Singleton.SpawnMiniboss();
         interactable.DisableInteraction();
         arcField.Activate();        
     }

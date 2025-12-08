@@ -6,7 +6,7 @@ public class CreditDirector : MonoBehaviour
     [RuntimeField] public float Credits;
     private const float BaseCreditIncrement = 0.0668f;
     [RuntimeField] private float coefficient = 1;
-    [RuntimeField] private float coefficientIncrement = 0.0668f;
+    [RuntimeField] private float coefficientIncrement = 0.334f;
 
     private void Awake()
     {
@@ -60,6 +60,6 @@ public class CreditDirector : MonoBehaviour
 
     private void OnElapsedMinute(int elapsedMinutes)
     {
-        coefficientIncrement += coefficientIncrement;
+        coefficient += coefficientIncrement;
     }
 }
