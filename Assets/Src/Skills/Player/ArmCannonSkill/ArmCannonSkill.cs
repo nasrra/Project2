@@ -174,7 +174,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 
         Player.CameraController.StartLerpingFov(PullCameraFov, PullCameraFovLerpInDuration);
 
-        Player.AudioPlayer.PlaySound(PullSfx, Player.gameObject);
+        Player.AudioPlayer.PlaySound(PullSfx, Player.transform);
     }
 
 
@@ -454,7 +454,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
 
     private void PlayBlastVfxAndSfx()
     {
-        Player.AudioPlayer.PlaySound(PushSfx, Player.gameObject);
+        Player.AudioPlayer.PlaySound(PushSfx, Player.transform);
         Player.CameraController.StartShaking(PushCameraShakeForce, PushCameraShakeTime);
 
         Player.CameraPostProcessingController.PulseLensDistortionIntensity(

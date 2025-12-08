@@ -147,7 +147,7 @@ public class Slink : Boss {
     {
         biteHitbox.Enable();
         biteVfx.Play();
-        audioPlayer.PlaySound("SlinkBite", gameObject);
+        audioPlayer.PlaySound("SlinkBite", transform);
     }
 
     private void OnBiteLungeAttackFrameAnimationEvent()
@@ -170,12 +170,12 @@ public class Slink : Boss {
     {
         tailSwipeVfx.Play();
         tailHitbox.Enable();
-        audioPlayer.PlaySound("SlinkTailSwipe", gameObject);
+        audioPlayer.PlaySound("SlinkTailSwipe", transform);
     }
 
     private void OnTailSwipeGrowlAnimationEvent()
     {
-        audioPlayer.PlaySound("SlinkGrowl", gameObject);
+        audioPlayer.PlaySound("SlinkGrowl", transform);
     }
 
 
@@ -206,7 +206,7 @@ public class Slink : Boss {
 
     private void OnClawSlashAttackFrameAnimationEvent()
     {
-        audioPlayer.PlaySound("SlinkClawSlash", gameObject);
+        audioPlayer.PlaySound("SlinkClawSlash", transform);
         clawSlashHitbox.Enable();
         clawSlashVfx.Play();
     }
@@ -233,12 +233,12 @@ public class Slink : Boss {
 
     private void OnWingFlapAnimationEvent()
     {
-        audioPlayer.PlaySound("SmallWingsFlap", gameObject);
+        audioPlayer.PlaySound("SmallWingsFlap", transform);
     }
 
     private void OnStartGrowlAnimationEvent()
     {        
-        audioPlayer.PlaySound("SlinkGrowl", gameObject);
+        audioPlayer.PlaySound("SlinkGrowl", transform);
     }
 
     private void OnStopGrowlAnimationEvent()

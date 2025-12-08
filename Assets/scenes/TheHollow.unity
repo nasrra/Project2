@@ -30054,6 +30054,10 @@ PrefabInstance:
       propertyPath: maxCharges
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2894243814148537508, guid: 2bf9e0e4aa938b94d9420c1c667a7a05, type: 3}
+      propertyPath: initialTime
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5416780846568395090, guid: 2bf9e0e4aa938b94d9420c1c667a7a05, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

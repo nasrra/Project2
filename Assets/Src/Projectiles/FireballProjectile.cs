@@ -54,9 +54,9 @@ public class FireballProjectile : Projectile, IDeactivatable
     IEnumerator DeferredActivate()
     {
         yield return null; // wait one frame.
-        audioPlayer.PlaySound(IgnitionSfxName, gameObject);
+        audioPlayer.PlaySound(IgnitionSfxName, transform);
         vfxPlayer = vfxPlayerSpawner.PlayVfx(FireballVfxId, transform.position, transform.forward);
-        audioPlayer.PlaySound(LoopSfxName, vfxPlayer.gameObject);
+        audioPlayer.PlaySound(LoopSfxName, vfxPlayer.transform);
         yield break;        
     }
 

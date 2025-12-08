@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Entropek.Collections;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -96,17 +97,17 @@ namespace Entropek.Audio
         /// Plays a sound event at an attached gameobjects position in world space; the sound following the gameobjects position.
         /// </summary>
         /// <param name="eventName">The name of the loaded event reference (sound) to play.</param>
-        /// <param name="attachedGameObject">The gameobject to attach this sound event to.</param>
+        /// <param name="attachedTransform">The transform to attach this sound event to.</param>
         /// <param name="release">Whether or not to immeditely release the event instanc - upon ending - for garbage collection.</param>
         /// <returns>An audio instance of the playing sound.</returns>
 
-        public AudioInstance PlayEvent(string eventName, GameObject attachedGameObject, bool release = true)
+        public AudioInstance PlayEvent(string eventName, Transform attachedTransform, bool release = true)
         {
             EventInstance instance = RuntimeManager.CreateInstance(loadedEventReferences[eventName]);
 
             FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
             {
-                position    = AudioManager.Singleton.UnityToFmodVector(attachedGameObject.transform.position),
+                position    = AudioManager.Singleton.UnityToFmodVector(attachedTransform.position),
                 velocity    = new FMOD.VECTOR { x = 0, y = 0, z = 0 },
                 forward     = new FMOD.VECTOR { x = 0, y = 0, z = 1},
                 up          = new FMOD.VECTOR { x = 0, y = 1, z = 0}
@@ -114,8 +115,6 @@ namespace Entropek.Audio
 
 
             instance.set3DAttributes(attributes);
-
-            RuntimeManager.AttachInstanceToGameObject(instance, attachedGameObject);
 
             instance.start();
 
@@ -127,7 +126,7 @@ namespace Entropek.Audio
                 instance.release();
             }
 
-            return new AudioInstance(instance, eventName, AudioInstanceType.Attached);
+            return new AudioInstance(instance, eventName, AudioInstanceType.Attached, attachedTransform);
         }
 
         /// <summary>

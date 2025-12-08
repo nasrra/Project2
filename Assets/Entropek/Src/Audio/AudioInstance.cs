@@ -1,4 +1,7 @@
 using System;
+using UnityEngine;
+using FMOD.Studio;
+using UnityEngine.UIElements;
 
 namespace Entropek.Audio
 {
@@ -15,12 +18,56 @@ namespace Entropek.Audio
         public FMOD.Studio.EventInstance EventInstance { get; private set; }
         public string Name { get; private set; }
         public AudioInstanceType Type { get; private set; }
+        public Transform AttatchedTransform;
 
-        public AudioInstance(FMOD.Studio.EventInstance eventInstance, string name, AudioInstanceType type)
+
+        public AudioInstance(FMOD.Studio.EventInstance eventInstance, string name, AudioInstanceType type, Transform attatchedTransform = null)
         {
             EventInstance = eventInstance;
             Name = name;
             Type = type;
+            AttatchedTransform = attatchedTransform;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
+            {
+                position    = AudioManager.Singleton.UnityToFmodVector(position),
+                velocity    = new FMOD.VECTOR { x = 0, y = 0, z = 0 },
+                forward     = new FMOD.VECTOR { x = 0, y = 0, z = 1},
+                up          = new FMOD.VECTOR { x = 0, y = 1, z = 0}
+            };
+
+
+            EventInstance.set3DAttributes(attributes);            
+        }
+
+
+        // override the audio instance to check if the event instances are the same.        
+        
+        public static bool operator ==(AudioInstance a, AudioInstance b)
+        {
+            return a.EventInstance.handle == b.EventInstance.handle;
+        }
+
+        public static bool operator !=(AudioInstance a, AudioInstance b)
+        {
+            return a.EventInstance.handle != b.EventInstance.handle;            
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is AudioInstance other)
+            {
+                return this == other;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return EventInstance.handle.GetHashCode();
         }
     }
 

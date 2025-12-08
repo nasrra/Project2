@@ -176,7 +176,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
-        Player.AudioPlayer.PlaySound(DashSound, Player.gameObject);
+        Player.AudioPlayer.PlaySound(DashSound, Player.transform);
 
         // enable the dash hitbox.
 
