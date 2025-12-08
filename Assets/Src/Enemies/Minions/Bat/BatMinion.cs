@@ -67,7 +67,7 @@ public abstract class BatMinion : Minion
         switch (eventName)
         {
             case WingsFlapAnimationEvent:
-                audioPlayer.PlaySound(WingsFlapSfx, transform);
+                audioPlayer.PlaySound(WingsFlapSfx, gameObject);
                 return true;
             default: 
                 return false;

@@ -122,7 +122,7 @@ public class DodgeSkill : Skill, IAnimatedSkill, IMovementSkill
 
         arcGhost.SpawnMeshes();
         dodgeTrail.EnableTrail();
-        Player.AudioPlayer.PlaySound(DodgeSound, Player.transform);
+        Player.AudioPlayer.PlaySound(DodgeSound, Player.gameObject);
         IAnimatedSkill.PlayAnimation();
     }
 

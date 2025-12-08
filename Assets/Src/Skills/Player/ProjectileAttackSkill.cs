@@ -105,7 +105,7 @@ public class ProjectileAttackSkill : Skill, ICooldownSkill, IBatchRechargeSkill
 
         inUse = true;
         IBatchRechargeSkill.RestoreCharges(MaxCharges);
-        Player.AudioPlayer.PlaySound(UseSfx, Player.transform);
+        Player.AudioPlayer.PlaySound(UseSfx, Player.gameObject);
     }
 
     protected override void GetInterfaceTypes()

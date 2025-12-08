@@ -18,7 +18,6 @@ namespace Entropek.Audio
         
         public SwapbackList<EVENT_CALLBACK> OneShotCallbacks   {get; private set;}= new();
         public SwapbackList<EVENT_CALLBACK> PooledCallbacks    {get; private set;}= new();
-        private SwapbackList<AudioInstance> AttatchedInstances = new ();
 
         private enum PlaySoundEvaluationResult : byte
         {
@@ -43,37 +42,6 @@ namespace Entropek.Audio
             Clear();
         }
 
-        void FixedUpdate()
-        {
-            UpdateAttatchedInstances();
-        }
-
-
-        private void UpdateAttatchedInstances()
-        {
-            for(int i = 0; i < AttatchedInstances.Count; i++)
-            {
-                AudioInstance attatchedInstance = AttatchedInstances[i];
-                // if(attatchedInstance.AttatchedTransform == null)
-                // {
-                //     continue;
-                // }
-
-                // If the transform is gone, STOP the FMOD event and remove it.
-                // if (attatchedInstance.AttatchedTransform == null)
-                // {
-                //     attatchedInstance.EventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-                //     continue;
-                // }
-                // else
-                // {
-                //     // Debug.Log(attatchedInstance.AttatchedTransform.position);
-
-                //     attatchedInstance.SetPosition(attatchedInstance.AttatchedTransform.position);                    
-                // }
-
-            }
-        }
 
         /// <summary>
         /// Emit a global sound event from this audio player.
@@ -162,10 +130,10 @@ namespace Entropek.Audio
         /// Emit a sound event that is attatched to a gameobject's position; following it.
         /// </summary>
         /// <param name="eventName">The name of the event reference.</param>
-        /// <param name="attachedTransform">The gameobject to be attatched to.</param>
+        /// <param name="attachedGameObject">The gameobject to be attatched to.</param>
         /// <param name="pooled">true, to pool the audio instance for later reuse. false, for one shot audio (e.g. music).</param>
 
-        public void PlaySound(string eventName, Transform attachedTransform, bool pooled = true)
+        public void PlaySound(string eventName, GameObject attachedGameObject, bool pooled = true)
         {
             
             if(transform == null)
@@ -186,22 +154,26 @@ namespace Entropek.Audio
                 case PlaySoundEvaluationResult.Reuse:
 
                     AudioInstance audioInstance = FreePooledAudioInstances[eventName][reuseIndex];
-                    audioInstance.SetPosition(attachedTransform.position);
+
+                    // swap the currently attached gameObject.
+
+                    FMODUnity.RuntimeManager.DetachInstanceFromGameObject(audioInstance.EventInstance);
+                    FMODUnity.RuntimeManager.AttachInstanceToGameObject(audioInstance.EventInstance, attachedGameObject);
+
                     audioInstance.EventInstance.start();
                     break;
 
                 // allocate a new audio instance to pool.
 
                 case PlaySoundEvaluationResult.Allocate:
-                    AudioInstance instance = AudioManager.Singleton.PlayEvent(eventName, attachedTransform, release);
-                    AttatchedInstances.Add(instance);
+                    AudioInstance instance = AudioManager.Singleton.PlayEvent(eventName, attachedGameObject, release);
                     ManagePooledEventInstanceLifetime(instance);
                     break;
 
                 // allocate a new one shot audio instance.
 
                 case PlaySoundEvaluationResult.OneShot:
-                    ManageOneShotEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, attachedTransform, release));
+                    ManageOneShotEventInstanceLifetime(AudioManager.Singleton.PlayEvent(eventName, attachedGameObject, release));
                     break;
             }
         }
@@ -443,9 +415,9 @@ namespace Entropek.Audio
             for (int i = 0; i < ActiveAudioInstances.Count; i++)
             {
                 AudioInstance instance = ActiveAudioInstances[i];
-                Debug.Log(instance.EventInstance.setCallback(null)); // remove the callbacks.
-                Debug.Log(instance.EventInstance.stop(STOP_MODE.IMMEDIATE));
-                Debug.Log(instance.EventInstance.release());
+                instance.EventInstance.setCallback(null); // remove the callbacks.
+                instance.EventInstance.stop(STOP_MODE.IMMEDIATE);
+                instance.EventInstance.release();
             }
 
             // clear the list of cached audio instances.
@@ -459,9 +431,9 @@ namespace Entropek.Audio
                 for (int i = 0; i < audioInstances.Count; i++)
                 {
                     AudioInstance instance = audioInstances[i];
-                    Debug.Log(instance.EventInstance.setCallback(null)); // remove the callbacks.
-                    Debug.Log(instance.EventInstance.stop(STOP_MODE.IMMEDIATE));    
-                    Debug.Log(instance.EventInstance.release());                    
+                    instance.EventInstance.setCallback(null); // remove the callbacks.
+                    instance.EventInstance.stop(STOP_MODE.IMMEDIATE);    
+                    instance.EventInstance.release();                    
                 }
             }
 
@@ -472,7 +444,6 @@ namespace Entropek.Audio
             OneShotCallbacks.Clear();
             PooledCallbacks.Clear();
 
-            AttatchedInstances.Clear();
         }
     }
 

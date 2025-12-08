@@ -29,21 +29,6 @@ namespace Entropek.Audio
             AttatchedTransform = attatchedTransform;
         }
 
-        public void SetPosition(Vector3 position)
-        {
-            FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
-            {
-                position    = AudioManager.Singleton.UnityToFmodVector(position),
-                velocity    = new FMOD.VECTOR { x = 0, y = 0, z = 0 },
-                forward     = new FMOD.VECTOR { x = 0, y = 0, z = 1},
-                up          = new FMOD.VECTOR { x = 0, y = 1, z = 0}
-            };
-
-
-            EventInstance.set3DAttributes(attributes);            
-        }
-
-
         // override the audio instance to check if the event instances are the same.        
         
         public static bool operator ==(AudioInstance a, AudioInstance b)

@@ -27,6 +27,7 @@ public abstract class MushroomMinion : Minion
         FaceMoveDirection();
     }
 
+
     /// 
     /// State Machine.
     /// 
@@ -111,7 +112,7 @@ public abstract class MushroomMinion : Minion
 
     private void OnFootstepAnimationEvent()
     {
-        audioPlayer.PlaySound(GetFootstepSfx(), transform);
+        audioPlayer.PlaySound(GetFootstepSfx(), gameObject);
     }
 
     private void OnHeadbuttAttackFrameAnimationEvent()
