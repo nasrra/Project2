@@ -144,9 +144,11 @@ namespace Entropek.Audio
 
                 case PlaySoundEvaluationResult.Reuse:
 
+                    AudioInstance audioInstance = FreePooledAudioInstances[eventName][reuseIndex];
                     // bind to the new gameobject.
-                    FMODUnity.RuntimeManager.AttachInstanceToGameObject(FreePooledAudioInstances[eventName][reuseIndex].EventInstance, attachedGameObject);
-                    FreePooledAudioInstances[eventName][reuseIndex].EventInstance.start();
+                    FMODUnity.RuntimeManager.DetachInstanceFromGameObject(audioInstance.EventInstance);
+                    FMODUnity.RuntimeManager.AttachInstanceToGameObject(audioInstance.EventInstance, attachedGameObject);
+                    audioInstance.EventInstance.start();
                     break;
 
                 // allocate a new audio instance to pool.
@@ -395,12 +397,20 @@ namespace Entropek.Audio
         public void Clear()
         {
 
+            // release all active pooled audio instances.
+            
             for (int i = 0; i < ActiveAudioInstances.Count; i++)
             {
-                // release all active pooled audio instances.
-                ActiveAudioInstances[i].EventInstance.setCallback(null); // remove the callbacks.
-                ActiveAudioInstances[i].EventInstance.stop(STOP_MODE.IMMEDIATE);
-                ActiveAudioInstances[i].EventInstance.release();
+                AudioInstance instance = ActiveAudioInstances[i];
+
+                if(instance.Type == AudioInstanceType.Attached)
+                {
+                    FMODUnity.RuntimeManager.DetachInstanceFromGameObject(instance.EventInstance);
+                }
+
+                Debug.Log(instance.EventInstance.setCallback(null)); // remove the callbacks.
+                Debug.Log(instance.EventInstance.stop(STOP_MODE.IMMEDIATE));
+                Debug.Log(instance.EventInstance.release());
             }
 
             // clear the list of cached audio instances.
@@ -413,9 +423,16 @@ namespace Entropek.Audio
             {
                 for (int i = 0; i < audioInstances.Count; i++)
                 {
-                    audioInstances[i].EventInstance.setCallback(null); // remove the callbacks.
-                    audioInstances[i].EventInstance.stop(STOP_MODE.IMMEDIATE);    
-                    audioInstances[i].EventInstance.release();
+                    AudioInstance instance = audioInstances[i];
+
+                    if(instance.Type == AudioInstanceType.Attached)
+                    {
+                        FMODUnity.RuntimeManager.DetachInstanceFromGameObject(instance.EventInstance);
+                    }
+
+                    Debug.Log(instance.EventInstance.setCallback(null)); // remove the callbacks.
+                    Debug.Log(instance.EventInstance.stop(STOP_MODE.IMMEDIATE));    
+                    Debug.Log(instance.EventInstance.release());                    
                 }
             }
 

@@ -45,7 +45,8 @@ public class EnemyDirector : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] RandomLoopedTimer evaluationTimer;
-    [SerializeField] CreditDirector creditDirector;
+    [SerializeField] private CreditDirector creditDirector;
+    public CreditDirector CreditDirector => creditDirector;
 
 
     /// 
@@ -116,7 +117,6 @@ public class EnemyDirector : MonoBehaviour
         evaluationTimer.Begin();
     }
 
-    // int x = 0;
     public void Evaluate()
     {
         Debug.Log("Eval");
@@ -129,52 +129,68 @@ public class EnemyDirector : MonoBehaviour
             Mathf.CeilToInt(maxCost)
         );
 
-        ExecuteSpawnBehaviour(UnityEngine.Random.Range(0,4));
+        ExecuteSpawnBehaviour(Opponent.Singleton.transform.position, creditDirector.Credits, UnityEngine.Random.Range(0,4), out creditDirector.Credits);
     
     }
 
-    private void ExecuteSpawnBehaviour(int spawnBehvaiourId)
+    /// <summary>
+    /// Performs a spawn enemy operation at a position in world-space.
+    /// Note:
+    ///     Each bevahiour spawns a random amount of enemies depending on the credits this directed has accumulated.
+    ///     0 -> Spawn Many of Random Enemy (may fall back to any other behvaiour when failing).
+    ///     1 -> Spawn High to Low Cost.
+    ///     2 -> Spawn Low to High Cost.
+    ///     4 etc -> Spawn All Uniform.
+    /// </summary>
+    /// <param name="centerPosition">The point (in world-space) to start the random search at.</param>
+    /// <param name="credits">The amount of credits to spend when spawning.</param>
+    /// <param name="spawnBehvaiourId">The id of the behvaiour to perform.</param>
+    /// <param name="creditsRemainder">The amount credits at the end of this spawn operation.</param>
+    
+    public void ExecuteSpawnBehaviour(Vector3 centerPosition, float credits, int spawnBehvaiourId, out float creditsRemainder)
     {        
         switch (spawnBehvaiourId)
         {
             case 0:
                 // Debug.Log("Spawn Many");
                 if(SpawnManyOfRandomEnemy(
-                    creditDirector.Credits, 
+                    centerPosition,
+                    credits, 
                     enemySpawnCardCollection.EnemySpawnCards.Length, 
-                    out creditDirector.Credits
+                    out creditsRemainder
                 ) == false)
                 {
 
                     // execute another random spawn behvaiour if this one fails.
 
-                    ExecuteSpawnBehaviour(UnityEngine.Random.Range(1,4));
+                    ExecuteSpawnBehaviour(centerPosition, credits, UnityEngine.Random.Range(1,4), out creditsRemainder);
                 } 
                 break;
             case 1:
                 // Debug.Log("Spawn High To Low");
-                SpawnHighestToLowestCostEnemiesBatched(creditDirector.Credits, out creditDirector.Credits);
+                SpawnHighestToLowestCostEnemiesBatched(centerPosition, credits, out creditsRemainder);
                 break;
             case 2:
                 // Debug.Log("Spawn Low To High");
-                SpawnLowestToHighestCostEnemiesBatched(creditDirector.Credits, out creditDirector.Credits);
+                SpawnLowestToHighestCostEnemiesBatched(centerPosition, credits, out creditsRemainder);
                 break;
             default:
                 // Debug.Log("Spawn Uniform");
-                SpawnAllEnemiesUniform(creditDirector.Credits, out creditDirector.Credits);
+                SpawnAllEnemiesUniform(centerPosition, credits, out creditsRemainder);
                 break;
         }
     }
-
+    
     /// <summary>
     /// Spawns as many of a random spawnable enemy as possible.
     /// </summary>
+    /// <param name="centerPosition">The point (in world-space) to start the random search at.</param>
     /// <param name="credits">The amount of credits to spend when spawning.</param>
     /// <param name="iterations">The amount of iterations to perform for finding a random spawnable spawn card before failing.</param>
     /// <param name="creditsRemainder">The amount credits at the end of this spawn operation.</param>
     /// <returns>true, if a spawnable spawn card was found and spawned; otherwise false.</returns>
     
-    private bool SpawnManyOfRandomEnemy(float credits, int iterations, out float creditsRemainder)
+    public bool SpawnManyOfRandomEnemy(Vector3 centerPosition, float credits, int iterations, out float creditsRemainder)
     {
         for(int i = 0; i <= iterations; i++)
         {
@@ -185,7 +201,7 @@ public class EnemyDirector : MonoBehaviour
             {
                 while(credits >= spawnCard.Cost)
                 {
-                    if(SpawnAtRandomPosition(spawnCard, out GameObject instantiatedGameObject))
+                    if(SpawnAtRandomPosition(spawnCard, centerPosition, out GameObject instantiatedGameObject))
                     {
                         credits -= spawnCard.Cost;
                     }
@@ -202,11 +218,12 @@ public class EnemyDirector : MonoBehaviour
 
     /// <summary>
     /// Spawns spawnable enemy spawn cards from highest to lowest; spawning as many high cards as possible, then casacding down the list.
-    /// </summary>
+    /// </summary>    
+    /// <param name="centerPosition">The point (in world-space) to start the random search at.</param>
     /// <param name="credits">The amount of credits to spend when spawning spawn cards.</param>
     /// <param name="creditsRemaineder">The amount credits at the end of this spawn operation.</param>
     
-    private void SpawnHighestToLowestCostEnemiesBatched(float credits, out float creditsRemaineder)
+    public void SpawnHighestToLowestCostEnemiesBatched(Vector3 centerPosition, float credits, out float creditsRemaineder)
     {
         for(int i = enemySpawnCardCollection.EnemySpawnCards.Length - 1; i > 0; i--)
         {
@@ -220,7 +237,7 @@ public class EnemyDirector : MonoBehaviour
 
             while(credits >= spawnCard.Cost)
             {
-                SpawnAtRandomPosition(spawnCard, out GameObject minion);
+                SpawnAtRandomPosition(spawnCard, centerPosition, out GameObject minion);
                 credits -= spawnCard.Cost;
             }
         }
@@ -231,10 +248,11 @@ public class EnemyDirector : MonoBehaviour
     /// <summary>
     /// Spawns spawnable enemy spawn cards from lowest to highest; spawning as many high cards as possible, then casacding down the list.
     /// </summary>
+    /// <param name="centerPosition">The point (in world-space) to start the random search at.</param>    
     /// <param name="credits">The amount of credits to spend when spawning spawn cards.</param>
     /// <param name="creditsRemainder">The amount credits at the end of this spawn operation.</param>
     
-    private void SpawnLowestToHighestCostEnemiesBatched(float credits, out float creditsRemainder)
+    public void SpawnLowestToHighestCostEnemiesBatched(Vector3 centerPosition, float credits, out float creditsRemainder)
     {
         for(int i = 0; i < enemySpawnCardCollection.EnemySpawnCards.Length; i++)
         {
@@ -248,7 +266,7 @@ public class EnemyDirector : MonoBehaviour
 
             while(credits >= spawnCard.Cost)
             {
-                SpawnAtRandomPosition(spawnCard, out GameObject minion);
+                SpawnAtRandomPosition(spawnCard, centerPosition, out GameObject minion);
                 credits -= spawnCard.Cost;
             }
         }
@@ -263,10 +281,11 @@ public class EnemyDirector : MonoBehaviour
     ///  The spawns can be multiple when credits are high enough or none when credits are low enough.
     ///  It is an approximation of a uniform spread across spawnable spawn cards.
     /// </summary>
+    /// <param name="centerPosition">The point (in world-space) to start the random search at.</param>
     /// <param name="credits">The amount of credits to spend when spawning spawn cards.</param>
     /// <param name="creditsRemained">The amount credits at the end of this spawn operation.</param>
 
-    private void SpawnAllEnemiesUniform(float credits, out float creditsRemained)
+    public void SpawnAllEnemiesUniform(Vector3 centerPosition, float credits, out float creditsRemained)
     {
         bool spawnedEnemy = true;
         while(credits > 0 && spawnedEnemy)
@@ -280,7 +299,7 @@ public class EnemyDirector : MonoBehaviour
                 {
                     // spawn enemy.
 
-                    if(SpawnAtRandomPosition(spawnCard, out GameObject minion) == false)
+                    if(SpawnAtRandomPosition(spawnCard, centerPosition, out GameObject minion) == false)
                     {
                         continue;
                     }
@@ -311,18 +330,20 @@ public class EnemyDirector : MonoBehaviour
         
     }
 
+
     /// <summary>
     /// Spawns the prefab stored within a EnemySpawn card at a random location determined by its nav agent AgentTypeId.
     /// </summary>
     /// <param name="spawnCard">The specified EnemySpawnCard to evaluatate.</param>
+    /// <param name="centerPosition">The point (in world-space) to start the random search at.</param>
     /// <param name="instantiatedGameObject">The instantiated enemy gameobject.</param>
     /// <returns>true, if a random point was found to spawn the enemy at.</returns>
-
-    public bool SpawnAtRandomPosition(EnemySpawnCard spawnCard, out GameObject instantiatedGameObject)
+    
+    public bool SpawnAtRandomPosition(EnemySpawnCard spawnCard, Vector3 centerPosition, out GameObject instantiatedGameObject)
     {
         instantiatedGameObject = null;
 
-        Vector3 centerPosition = Opponent.Singleton.transform.position;
+        // Vector3 centerPosition = Opponent.Singleton.transform.position;
 
         bool foundPoint = Entropek.UnityUtils.NavMeshUtils.GetRandomPoint(
             spawnCard.GetNavMeshQueryFilter(),

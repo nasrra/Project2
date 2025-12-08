@@ -60,11 +60,6 @@ public abstract class MushroomMinion : Minion
         // do nothing.
     }
 
-    public override void Kill()
-    {
-        Destroy(gameObject);
-    }
-
     protected override void OnHealthDeath()
     {
         Kill();
@@ -117,7 +112,7 @@ public abstract class MushroomMinion : Minion
 
     private void OnFootstepAnimationEvent()
     {
-        audioPlayer.PlaySound(GetFootstepSfx(), gameObject);
+        audioPlayer.PlaySound(GetFootstepSfx(), gameObject.transform.position);
     }
 
     private void OnHeadbuttAttackFrameAnimationEvent()

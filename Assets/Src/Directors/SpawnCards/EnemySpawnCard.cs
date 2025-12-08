@@ -1,6 +1,9 @@
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CreateAssetMenu(menuName = CreateAssetMenuPath+nameof(EnemySpawnCard))]
+#endif
+
 public class EnemySpawnCard : SpawnCard
 {
     [Header("Data")]

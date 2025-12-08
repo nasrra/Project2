@@ -33,7 +33,7 @@ public class EnemySpawnCardCollection : ScriptableObject
 
     public void SetSpawnCardsSpawnableByCostRange(float minCost, float maxCost)
     {
-        Debug.Log($"{minCost} min, {maxCost} max");
+        // Debug.Log($"{minCost} min, {maxCost} max");
         for(int i = 0; i < enemySpawnCards.Length; i++)
         {
             SpawnCard spawnCard = enemySpawnCards[i];

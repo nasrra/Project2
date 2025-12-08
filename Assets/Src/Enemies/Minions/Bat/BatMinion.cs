@@ -35,11 +35,6 @@ public abstract class BatMinion : Minion
         stateQeueue.Begin(time);
     }
 
-    public override void Kill()
-    {
-        Destroy(gameObject);
-    }
-
     /// <summary>
     /// shoot at a position in world space.
     /// </summary>

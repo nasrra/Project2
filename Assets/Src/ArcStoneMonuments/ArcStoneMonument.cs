@@ -5,6 +5,8 @@ using UnityEngine;
 public class ArcStoneMonument : MonoBehaviour
 {
 
+    private const int CreditIncrementTime = 30;
+
     [Header("Components")]
     [Tooltip("Note: The charge field gameObject should always start disabled.")]
     [SerializeField] private Entropek.Interaction.Interactable interactable;
@@ -41,7 +43,9 @@ public class ArcStoneMonument : MonoBehaviour
         EnemyDirector.Singleton.FastState();
         // EnemyDirector.Singleton.SpawnMiniboss();
         interactable.DisableInteraction();
-        arcField.Activate();        
+        arcField.Activate();
+        float credits = EnemyDirector.Singleton.CreditDirector.CalculateCreditIncrement(CreditIncrementTime); 
+        EnemyDirector.Singleton.ExecuteSpawnBehaviour(transform.position, credits, UnityEngine.Random.Range(0,4), out _);   
     }
 
     public void ChargedState()

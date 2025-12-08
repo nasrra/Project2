@@ -75,12 +75,7 @@ public class GolemMinion : Minion
         stateQeueue.Enqueue(aiActionAgent.BeginEvaluationLoop);
         stateQeueue.Begin(time);
     }
-
-    public override void Kill()
-    {
-        Destroy(gameObject);
-    }
-
+    
     public void Shoot(Vector3 position)
     {
         // quickly fade in.

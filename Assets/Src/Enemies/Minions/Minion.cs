@@ -40,8 +40,10 @@ public abstract class Minion : Enemy
 
     public override void Kill()
     {
+        // gameObject.SetActive(false);
         int amount = UnityEngine.Random.Range(DeathCurrencyAwardMin, DeathCurrencyAwardMax + 1); // add one as its exclusive.
         AwardDeathCurrency?.Invoke(deathCurrency, amount);
+        Destroy(gameObject);
     }
 
     /// <summary>

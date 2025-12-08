@@ -80,6 +80,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float faceMoveDirectionSpeed = 3.33f;
     [SerializeField] private float faceTargetDotThreshold = 0.9f;
 
+
     /// 
     /// Base.
     /// 
@@ -353,14 +354,14 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void LinkHealthEvents()
     {
-        health.Death += OnHealthDeath;
         health.Damaged += OnHealthDamaged;
+        health.Death += OnHealthDeath;
     }
 
     protected virtual void UnlinkHealthEvents()
     {
-        health.Death -= OnHealthDeath;
         health.Damaged -= OnHealthDamaged;
+        health.Death -= OnHealthDeath;
     }
 
     protected abstract void OnHealthDeath();

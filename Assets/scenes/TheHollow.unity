@@ -21762,17 +21762,6 @@ MonoBehaviour:
   m_Center: {x: 0, y: 0, z: 0}
   m_Area: 1
   m_AffectedAgents: ffffffff
---- !u!114 &1208914329 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5241775847270712172, guid: 521e3af75ed495648b4685f20254d97f, type: 3}
-  m_PrefabInstance: {fileID: 8112092323260250470}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e6aba0ce56ab0549b48935baa1bab90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1213214482
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29039,10 +29028,7 @@ MonoBehaviour:
   evaluationTimer: {fileID: 2139258493}
   creditDirector: {fileID: 456031859}
   enemySpawnCardCollectionPerElapsedMinute:
-  - {fileID: 11400000, guid: 3967da9a4934a7a4b8ff071af722d9b4, type: 2}
-  - {fileID: 11400000, guid: cfaac8db4bea98c45b6ed1cdbfe0e690, type: 2}
-  - {fileID: 11400000, guid: 33be25d1064525447ad85fc1ac747985, type: 2}
-  - {fileID: 11400000, guid: 7119731f6fd3d344a8879bd461121908, type: 2}
+  - {fileID: 11400000, guid: 8dc5d460ef2c9ec4aaedfd600b4263da, type: 2}
   awardedCurrency: {fileID: 11400000, guid: 2fd03f23fccdb8549b5ce061992b124c, type: 2}
 --- !u!114 &2139258493
 MonoBehaviour:
@@ -30356,7 +30342,7 @@ PrefabInstance:
     - target: {fileID: 122340998701158073, guid: 521e3af75ed495648b4685f20254d97f, type: 3}
       propertyPath: arcStone
       value: 
-      objectReference: {fileID: 1208914329}
+      objectReference: {fileID: 0}
     - target: {fileID: 1708937920149156040, guid: 521e3af75ed495648b4685f20254d97f, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.523

@@ -16,10 +16,10 @@ namespace Entropek.EntityStats{
         {
             // clear all callbacks to ensure GC.
 
-            Healed = null;
-            Damaged = null;
-            Death = null;
-            Restored = null;
+            // Healed = null;
+            // Damaged = null;
+            // Death = null;
+            // Restored = null;
         }
 
         public abstract int GetNormalisedValue();

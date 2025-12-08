@@ -38,11 +38,6 @@ public class TestMinion : Minion
         stateQeueue.Begin(time);
     }
 
-    public override void Kill()
-    {
-        Destroy(gameObject);
-    }
-
     public void Shoot(Transform target)
     {
         projectileSpawner.FireAtTarget(0, 0, target);
