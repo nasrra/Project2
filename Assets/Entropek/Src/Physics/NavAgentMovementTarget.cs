@@ -12,6 +12,7 @@ namespace Entropek.Physics
     {
         [SerializeField] NavMeshSurface[] navMeshSurfacePrefabs;
         [SerializeField] NavMeshAgent[] navAgents;
+        public NavMeshAgent[] NavMeshAgents => navAgents;
         
         [Tooltip("The parent gameobject of all nav agents. This gameobject should also start as disabled")]
         [SerializeField] GameObject navAgentsParent;

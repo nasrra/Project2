@@ -50,6 +50,32 @@
 
 ======== TODO ========
 
+7 common items
+
++ attack speed.
++ move speed.
++ heal after 2 seconds.
+- bleed.
+- crit chance.
+- More Damage When Closer.
+- block damage chance.
+
+7 rare items
+
+- Heal On Hit
+- burn on death
+- Chain Damage On Hit.
+- Reduce Damage Taken When Running.
+- explode on death.
+- secondary skill charge.
+
+4 legendary items.
+
+- lower special skill cooldown.
+- heal when running.
+- periodic chain attack field.
+- Homing Projectiles on death.
+
 
 ==== BACK BURNER =====
 

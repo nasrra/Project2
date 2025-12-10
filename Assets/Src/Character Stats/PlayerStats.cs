@@ -1,6 +1,10 @@
 using Entropek.EntityStats;
 using Entropek.Physics;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Entropek.Collections;
+using Entropek.UnityUtils.Attributes;
 
 // needs to be before all components stored in here; so that base value setting occurs before component Awake or OnEnable.
 // ensuring data is properly intialised.
@@ -10,6 +14,9 @@ public class PlayerStats : MonoBehaviour
 {
     private const string MovementSpeedAnimationParameter = "MovementSpeed";
     private const string AttackSpeedAnimationParameter = "AttackSpeed";
+
+
+    [RuntimeField] private Dictionary<byte, UniqueCharacterStat> uniqueCharacterStats = new(); 
 
 
     /// 
@@ -61,6 +68,12 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] CharacterStatFloat attackSpeed = new();
     public CharacterStatFloat AttackSpeed => attackSpeed;
 
+
+    /// 
+    /// Base.
+    /// 
+
+
     private void Awake()
     {
         LinkEvents();
@@ -71,6 +84,12 @@ public class PlayerStats : MonoBehaviour
     {
         UnlinkEvents();
     }
+
+
+    /// 
+    /// Functions.
+    /// 
+
 
     private void SetBaseValues()
     {
@@ -96,6 +115,53 @@ public class PlayerStats : MonoBehaviour
     {
         health.SetMaxValue(maxHealth.BaseValue);
     }
+
+    /// <summary>
+    /// Adds the unique character stat modifier to this player stats. 
+    /// Adding an amount modifier of 1 to the stat if this PlayerStats already contains the stat.
+    /// </summary>
+    /// <param name="modifier">A newly instantiated instance of a stat modifier.</param>
+
+    public void AddUniqueCharacterStat(UniqueCharacterStat uniqueCharacterStat)
+    {
+        if (uniqueCharacterStats.ContainsKey(uniqueCharacterStat.Id)==false)
+        {
+            UniqueCharacterStat instance = Instantiate(uniqueCharacterStat);
+            instance.Initialise(this);
+            instance.transform.parent = transform;
+            uniqueCharacterStats.Add(uniqueCharacterStat.Id, instance);
+        }
+        else
+        {
+            uniqueCharacterStats[uniqueCharacterStat.Id].AddModifier(1); 
+        }
+    }
+
+
+    /// <summary>
+    /// Removes the first found instance of a unique character stat modifier.
+    /// Remoeves and amount modifier of 1 from the stat if this PlayerStats instance has multiple ammounts of the stat.
+    /// </summary>
+    /// <param name="modifier"></param>
+
+    public void RemoveUniqueCharacterStat(UniqueCharacterStat uniqueCharacterStat)
+    {
+        if (uniqueCharacterStats.ContainsKey(uniqueCharacterStat.Id))
+        {
+            UniqueCharacterStat instance = uniqueCharacterStats[uniqueCharacterStat.Id];
+            
+            instance.RemoveModifier(1);
+            
+            // completely remove the modifier if there are no longer any instances of it.
+            
+            if(instance.Amount <= 0)
+            {            
+                uniqueCharacterStats.Remove(instance.Id);
+                Destroy(instance);
+            }
+        }
+    }
+
 
     /// 
     /// Linkage.

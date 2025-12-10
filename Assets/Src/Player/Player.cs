@@ -49,6 +49,7 @@ public class Player : MonoBehaviour {
     private const int UtilitySkillId = 2;
     private const int SpecialSkillId = 3;
     private const int MaxJumpCount = 2;
+    private const int SafeNavMeshAgentId = 0; // the id of the nav mesh agent that the player use as a safe position to return to.
     private const DamageType StaggerDamageType = DamageType.Heavy;
 
 
@@ -110,6 +111,10 @@ public class Player : MonoBehaviour {
     [SerializeField] private Inventory inventory;
     public Inventory Inventory => inventory;
 
+    [Tooltip("Ensure that this nav mesh agent is apart of the ")]
+    [SerializeField] private NavAgentMovementTarget navAgentMovementTarget;
+    public NavAgentMovementTarget NavAgentMovementTarget => navAgentMovementTarget;
+
     [Header("Timers")]
     [SerializeField] private Entropek.Time.OneShotTimer fallCoyoteTimer;
 
@@ -123,24 +128,17 @@ public class Player : MonoBehaviour {
     
     [SerializeField] SkillCollection skillCollection;
     public SkillCollection SkillCollection => skillCollection;
-
-    [RuntimeField] private bool blockRunToggleInput = false;
-    [RuntimeField] private bool blockMoveInput = false;
-    [RuntimeField] private bool blockJumpInput = false;
-
-
-    /// 
-    /// Runtime Fields
-    /// 
-
-
+    private string moveAnimation {get; set;} = WalkAnimation; // always start in the walk state.
+    [RuntimeField] private Vector3 lastSafePosition;
+    [RuntimeField] private int jumpCount;
     [RuntimeField] private CharacterHorizontalMoveState horizontalMoveState = CharacterHorizontalMoveState.Walk;
     [RuntimeField] private CharacterVerticalMoveState verticalMoveState = CharacterVerticalMoveState.None; 
     [RuntimeField] private CoyoteState coyoteState = CoyoteState.None;
     public CoyoteState CoyoteState => coyoteState;
-    private string moveAnimation {get; set;} = WalkAnimation; // always start in the walk state.
-    [RuntimeField] private int jumpCount;
     [RuntimeField] private bool staggered = false;
+    [RuntimeField] private bool blockRunToggleInput = false;
+    [RuntimeField] private bool blockMoveInput = false;
+    [RuntimeField] private bool blockJumpInput = false;
 
 
     /// 
@@ -166,6 +164,11 @@ public class Player : MonoBehaviour {
         FaceChosenDirection?.Invoke();
     }
 
+    private void FixedUpdate()
+    {
+        CheckLastSafePosition();
+    }
+
     private void OnDestroy()
     {
         UnlinkEvents();        
@@ -186,6 +189,19 @@ public class Player : MonoBehaviour {
     private void HandleFootstepEffects()
     {
         audioPlayer.PlaySound("FootstepGrassLight", transform.position);
+    }
+
+    private void CheckLastSafePosition()
+    {
+        if(groundCheck.IsGrounded == true)
+        {
+            lastSafePosition = navAgentMovementTarget.NavMeshAgents[SafeNavMeshAgentId].transform.position;
+        }
+    }
+
+    public void WarpToLastSafePosition()
+    {
+        CharacterControllerMovement.CharacterController.Move(lastSafePosition - transform.position);
     }
 
 
