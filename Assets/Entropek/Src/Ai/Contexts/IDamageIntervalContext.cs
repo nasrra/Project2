@@ -14,7 +14,7 @@ namespace Entropek.Ai.Contexts
 
 
         public Time.LoopedTimer DamageTakenIntervalTimer{get; protected set;}
-        public EntityStats.HealthSystem SelfHealth{get; protected set;}
+        public EntityStats.Health SelfHealth{get; protected set;}
 
 
         /// 

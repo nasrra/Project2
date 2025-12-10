@@ -1,6 +1,7 @@
 using System.Collections;
 using Entropek;
 using Entropek.Audio;
+using Entropek.Combat;
 using Entropek.Projectiles;
 using Entropek.Vfx;
 using UnityEngine;
@@ -36,13 +37,13 @@ public class FireballProjectile : Projectile, IDeactivatable
         }
     }
 
-    protected override void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
+    protected override void OnHitHealth(HitboxHitContext context)
     {
-        base.OnHitHealth(hitGameObject, hitPoint);
+        base.OnHitHealth(context);
     }
-    protected override void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
+    protected override void OnHitOther(HitboxHitContext context)
     {
-        base.OnHitOther(hitGameObject, hitPoint);
+        base.OnHitOther(context);
     }
 
     public override void Activate()

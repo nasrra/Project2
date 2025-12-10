@@ -262,7 +262,7 @@ public class ArmCannonSkill : Skill, ICooldownSkill, IAnimatedSkill
                 continue;
             }
 
-            if(other.TryGetComponent(out HealthSystem health))
+            if(other.TryGetComponent(out Health health))
             {
                 health.Damage(new DamageContext(transform.position, Damage, TypeOfDamage));
                 

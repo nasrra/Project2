@@ -71,7 +71,7 @@ namespace Entropek.Combat
 
                 HitHealthSystemComponent(hitCollider, hurtbox.Health);
             }
-            else if (hitGameObject.TryGetComponent(out EntityStats.HealthSystem health))
+            else if (hitGameObject.TryGetComponent(out EntityStats.Health health))
             {
                 HitHealthSystemComponent(hitCollider, health);
             }

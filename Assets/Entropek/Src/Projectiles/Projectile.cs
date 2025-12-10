@@ -118,7 +118,7 @@ namespace Entropek.Projectiles
             hitbox.HitOther -= OnHitOther;            
         }
 
-        protected virtual void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
+        protected virtual void OnHitHealth(HitboxHitContext context)
         {
             if (deactivateOnHitHealth == true)
             {
@@ -126,7 +126,7 @@ namespace Entropek.Projectiles
             }
         }
 
-        protected virtual void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
+        protected virtual void OnHitOther(HitboxHitContext context)
         {
             if (deactivateOnHitOther == true)
             {

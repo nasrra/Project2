@@ -214,7 +214,7 @@ public class AttackSkill : Skill, IAnimatedSkill
     /// 
 
 
-    private void OnAttackHit(GameObject other, Vector3 hitPoint)
+    private void OnAttackHit(HitboxHitContext context)
     {
         Player.CharacterControllerMovement.UseGravity = false;
         Player.CharacterControllerMovement.ClearGravityVelocity();
@@ -233,8 +233,8 @@ public class AttackSkill : Skill, IAnimatedSkill
             HitMotionBlurIntensity
         );
         
-        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
-        Player.AudioPlayer.PlaySound(HitSound, hitPoint);
+        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, context.HitPoint, transform.forward);
+        Player.AudioPlayer.PlaySound(HitSound, context.HitPoint);
     }
 
     private void LinkHitBoxEvents()

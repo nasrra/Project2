@@ -14,8 +14,8 @@ namespace Entropek.Combat
     public class Opponent : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] HealthSystem healthSystem;
-        public HealthSystem HealthSystem => healthSystem; 
+        [SerializeField] Health health;
+        public Health Health => health; 
 
         [SerializeField] NavAgentMovementTarget navAgentMovementTarget;
         public NavAgentMovementTarget NavAgentMovementTarget => navAgentMovementTarget; 

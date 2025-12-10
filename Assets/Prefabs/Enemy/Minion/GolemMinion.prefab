@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2149740342391724041}
   - component: {fileID: 4200452399513305928}
   - component: {fileID: 7672747183472369709}
+  - component: {fileID: 6445205838615665663}
   m_Layer: 7
   m_Name: GolemMinion
   m_TagString: Untagged
@@ -55,9 +56,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfed1db346d9a22418e8c87bc1ab3bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vulnerable: 1
+  bleedTickTimer: {fileID: 6445205838615665663}
   value: 3
   maxValue: 3
+  Vulnerable: 1
 --- !u!114 &2680361135054517317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +232,22 @@ MonoBehaviour:
   editorNameTag: shoot delay
   initialTime: 0.5
   BeginOnEnable: 0
+--- !u!114 &6445205838615665663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777301287381677599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6638d0eec5ccbf157829adc9861bba31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: bleed tick
+  initialTime: 0
+  BeginOnEnable: 0
+  Loop: 1
 --- !u!1 &1703321946997781173
 GameObject:
   m_ObjectHideFlags: 0

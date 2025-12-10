@@ -9,7 +9,7 @@ namespace Entropek.Ai.Contexts
         /// The opponents health system.
         /// </summary>
 
-        EntityStats.HealthSystem HealthSystem{get; set;}
+        EntityStats.Health Health{get; set;}
     }
 }
 

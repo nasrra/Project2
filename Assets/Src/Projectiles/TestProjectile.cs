@@ -1,4 +1,5 @@
 using Entropek.Audio;
+using Entropek.Combat;
 using Entropek.Projectiles;
 using Entropek.Vfx;
 using UnityEngine;
@@ -12,16 +13,16 @@ public class TestProjectile : Projectile
     [SerializeField] VfxPlayerSpawner vfxPlayerSpawner;
     [SerializeField] AudioPlayer audioPlayer;
 
-    protected override void OnHitHealth(GameObject hitGameObject, Vector3 hitPoint)
+    protected override void OnHitHealth(HitboxHitContext context)
     {
-        vfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
-        audioPlayer.PlaySound(HitSound, hitPoint);
-        base.OnHitHealth(hitGameObject, hitPoint);
+        vfxPlayerSpawner.PlayVfx(HitVfxId, context.HitPoint, transform.forward);
+        audioPlayer.PlaySound(HitSound, context.HitPoint);
+        base.OnHitHealth(context);
     }
 
-    protected override void OnHitOther(GameObject hitGameObject, Vector3 hitPoint)
+    protected override void OnHitOther(HitboxHitContext context)
     {
-        vfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
-        base.OnHitOther(hitGameObject, hitPoint);
+        vfxPlayerSpawner.PlayVfx(HitVfxId, context.HitPoint, transform.forward);
+        base.OnHitOther(context);
     }
 }

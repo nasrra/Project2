@@ -18,10 +18,15 @@ public class PlayerStats : MonoBehaviour
 
     [RuntimeField] private Dictionary<byte, UniqueCharacterStat> uniqueCharacterStats = new(); 
 
+    [Header("Components")]
+    [SerializeField] private Player player;
+    public Player Player => player;
+
 
     /// 
     /// Character Controller Movement Stats.
     /// 
+
 
     [Header("Character Controller Movement Stats.")]
 

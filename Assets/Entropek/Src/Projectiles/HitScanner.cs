@@ -60,7 +60,7 @@ namespace Entropek.Projectiles
                         {
                             hurtbox.Health.Damage(damageContext);
                         }
-                        else if(hit.TryGetComponent(out HealthSystem healthSystem))
+                        else if(hit.TryGetComponent(out Health healthSystem))
                         {
                             healthSystem.Damage(damageContext);
                         }

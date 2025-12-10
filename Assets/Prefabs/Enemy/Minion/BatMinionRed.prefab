@@ -62,6 +62,7 @@ GameObject:
   - component: {fileID: 3142788823512376452}
   - component: {fileID: 5033516973565031438}
   - component: {fileID: 868617950585067437}
+  - component: {fileID: 1685122063193033853}
   m_Layer: 7
   m_Name: BatMinionRed
   m_TagString: Untagged
@@ -98,9 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfed1db346d9a22418e8c87bc1ab3bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vulnerable: 1
+  bleedTickTimer: {fileID: 1685122063193033853}
   value: 3
   maxValue: 3
+  Vulnerable: 1
 --- !u!114 &9068147167672529474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +260,22 @@ MonoBehaviour:
   stunTimer: {fileID: 3142788823512376452}
   hitScanner: {fileID: 3372407604579006724}
   lineRendererController: {fileID: 6714136114228226342}
+--- !u!114 &1685122063193033853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7647912121843972715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6638d0eec5ccbf157829adc9861bba31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: BleedTickTimer
+  initialTime: 0
+  BeginOnEnable: 0
+  Loop: 1
 --- !u!1 &7899729685831770180
 GameObject:
   m_ObjectHideFlags: 0

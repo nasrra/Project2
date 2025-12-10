@@ -6,8 +6,8 @@ namespace Entropek.Combat
     public class Hurtbox : MonoBehaviour
     {
         [Header("Data")]
-        [SerializeField] private EntityStats.HealthSystem health;
-        public EntityStats.HealthSystem Health => health;
+        [SerializeField] private EntityStats.Health health;
+        public EntityStats.Health Health => health;
     }
 
 }

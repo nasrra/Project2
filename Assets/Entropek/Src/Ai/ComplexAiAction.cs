@@ -116,7 +116,7 @@ namespace Entropek.Ai{
 
             float opponentHealthScore
                 = normalisedOpponentHealthWeight > 0
-                ? normalisedOpponentHealthCurve.Evaluate(opponentContext.HealthSystem.GetNormalisedValue()) * normalisedOpponentHealthWeight
+                ? normalisedOpponentHealthCurve.Evaluate(opponentContext.Health.GetNormalisedValue()) * normalisedOpponentHealthWeight
                 : 0;
 
             float damageTakenIntervalScore

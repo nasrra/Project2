@@ -62,6 +62,7 @@ GameObject:
   - component: {fileID: 4697224406505011640}
   - component: {fileID: 6131493110936356892}
   - component: {fileID: 8267745432914004676}
+  - component: {fileID: -5213510949146993997}
   m_Layer: 7
   m_Name: BatMinionBlue
   m_TagString: Untagged
@@ -98,9 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfed1db346d9a22418e8c87bc1ab3bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vulnerable: 1
+  bleedTickTimer: {fileID: -5213510949146993997}
   value: 3
   maxValue: 3
+  Vulnerable: 1
 --- !u!114 &8205888393155489441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +259,22 @@ MonoBehaviour:
   faceTargetDotThreshold: 0.9
   stunTimer: {fileID: 4697224406505011640}
   projectileSpawner: {fileID: 5619058912123936695}
+--- !u!114 &-5213510949146993997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129258622571067738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6638d0eec5ccbf157829adc9861bba31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: BleedTickTimer
+  initialTime: 0
+  BeginOnEnable: 0
+  Loop: 1
 --- !u!1 &7111816295649535380
 GameObject:
   m_ObjectHideFlags: 0

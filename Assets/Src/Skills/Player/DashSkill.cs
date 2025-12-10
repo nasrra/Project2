@@ -229,7 +229,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
         Player.CharacterControllerMovement.UseGravity = true;
     }
 
-    private void OnHitHealth(GameObject other, Vector3 hitPoint)
+    private void OnHitHealth(HitboxHitContext context)
     {
 
         // queue another dash in the chain on the first hit of a health component.
@@ -241,7 +241,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
             hitHealthObjectThisDash = true;
         }
 
-        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, hitPoint, transform.forward);
+        Player.VfxPlayerSpawner.PlayVfx(HitVfxId, context.HitPoint, transform.forward);
         Player.CameraController.StartShaking(HitCameraShakeForce, HitCameraShakeTime);
 
         Player.CameraPostProcessingController.PulseLensDistortionIntensity(
@@ -254,7 +254,7 @@ public class DashSkill : Skill, IAnimatedSkill, IMovementSkill, ITimedStateSkill
             HitMotionBlurIntensity
         );
         
-        Player.AudioPlayer.PlaySound(HitSound, hitPoint);
+        Player.AudioPlayer.PlaySound(HitSound, context.HitPoint);
     }
 
     private void OnDashChainWindowTimeout()

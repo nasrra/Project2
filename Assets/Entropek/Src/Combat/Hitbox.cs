@@ -10,17 +10,8 @@ namespace Entropek.Combat
     // continous hitbox & timed hitbox are subclasses
     public abstract class Hitbox : MonoBehaviour
     {
-        /// <summary>
-        /// Returns the Gameobject (with a health component) hit as well as the position (in world space) that it was hit on.
-        /// </summary>
-
-        public event Action<GameObject, Vector3> HitHealth;
-
-        /// <summary>
-        /// Returns the Gamobject (without a health component) that was hit, as well as the position (in world space) that it was hit on.
-        /// </summary>
-
-        public event Action<GameObject, Vector3> HitOther;
+        public event Action<HitboxHitContext> HitHealth;
+        public event Action<HitboxHitContext> HitOther;
         
         [Header("Data")]
         [Tooltip("This trigger collider must always start disabled.")]
@@ -49,10 +40,10 @@ namespace Entropek.Combat
         /// Damages a health system, invoking the Hit callback.
         /// </summary>
         /// <param name="hitCollider">The specified collider to get the hit point on.</param>
-        /// <param name="healthSystem">The specified health system to damage.</param>
+        /// <param name="health">The specified health system to damage.</param>
         /// <exception cref="Exception">Thrown if there was no point found on the health system collider that classifies as a 'hit point'.</exception>
 
-        protected void HitHealthSystemComponent(Collider hitCollider, HealthSystem healthSystem)
+        protected void HitHealthSystemComponent(Collider hitCollider, Health health)
         {
             // get the hit point on the health collider. 
 
@@ -61,27 +52,33 @@ namespace Entropek.Combat
 
                 // damage the health component.
 
-                healthSystem.Damage(new DamageContext(transform.position, damageAmount, damageType));
+                health.Damage(new DamageContext(transform.position, damageAmount, damageType));
 
                 // return that we hit the health object.
 
-                HitHealth?.Invoke(healthSystem.gameObject, hitPoint);
+                InvokeHitHealth(health, hitPoint);
             }
             else
             {
-                throw new Exception($"'{name}' failed to retrieve a valid hit point to health compoonent collider on '{healthSystem.gameObject.name}'");
+                throw new Exception($"'{name}' failed to retrieve a valid hit point to health compoonent collider on '{health.gameObject.name}'");
             }
         }
 
         /// <summary>
         /// Invokes the HitHealth event Action callback.
         /// </summary>
-        /// <param name="hitGameObject">The gameobject that was hit.</param>
+        /// <param name="health">The health component that was hit.</param>
         /// <param name="hitPoint">The point along the hit colliders surface (in world space) that was hit.</param>
 
-        protected void InvokeHitHealth(GameObject hitGameObject, Vector3 hitPoint)
+        protected void InvokeHitHealth(Health health, Vector3 hitPoint)
         {
-            HitHealth?.Invoke(hitGameObject.gameObject, hitPoint);
+            HitHealth?.Invoke(
+                new HitboxHitContext(
+                    this,
+                    health.gameObject,
+                    hitPoint
+                )
+            );
         }
 
         /// <summary>
@@ -92,7 +89,13 @@ namespace Entropek.Combat
 
         protected void InvokeHitOther(GameObject hitGameObject, Vector3 hitPoint)
         {
-            HitOther?.Invoke(hitGameObject.gameObject, hitPoint);
+            HitOther?.Invoke(
+                new HitboxHitContext(
+                    this, 
+                    gameObject, 
+                    hitPoint
+                )
+            );
         }
 
         /// <summary>

@@ -35,8 +35,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Transform target;
     public Transform Target => target;
     
-    [SerializeField] protected HealthSystem health;
-    public HealthSystem Health => health;
+    [SerializeField] protected Health health;
+    public Health Health => health;
 
     [SerializeField] protected Animator animator;
     public Animator Animator => animator;
@@ -118,7 +118,7 @@ public abstract class Enemy : MonoBehaviour
 
             case Entropek.Ai.Contexts.IOpponentContext opponentContext:
                 opponentContext.Target = Opponent.Singleton.transform;
-                opponentContext.HealthSystem = Opponent.Singleton.HealthSystem;
+                opponentContext.Health = Opponent.Singleton.Health;
             break;
             case Entropek.Ai.Contexts.ITargetContext targetContext:
                 targetContext.Target = Opponent.Singleton.transform;

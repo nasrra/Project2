@@ -1,13 +1,25 @@
 using System;
 using Entropek.Combat;
+using Entropek.Time;
+using Entropek.UnityUtils.Attributes;
 using Unity.XR.OpenVR;
 using UnityEngine;
 
 namespace Entropek.EntityStats{
 
 
-    public class Health : HealthSystem{
+    public class Health : MonoBehaviour{
         
+
+        /// 
+        /// Bleed.
+        /// 
+
+
+        private const int BleedDamagePerStack = 3;
+        private const int MaxBleedTicksPerInterval = 3;
+        private const int BleedTickTimeInSeconds = 1;
+
 
         /// 
         /// Callbacks.
@@ -15,6 +27,19 @@ namespace Entropek.EntityStats{
 
 
         public event Action<int> MaxValueSet;
+        public event Action<int> Healed;
+        public event Action<DamageContext> Damaged;
+        public event Action Death;
+        public event Action Restored;
+
+
+        /// 
+        /// Components.
+        /// 
+
+
+        [Header("Components")]
+        [SerializeField] LoopedTimer bleedTickTimer;
 
 
         /// 
@@ -27,14 +52,11 @@ namespace Entropek.EntityStats{
         public int Value => value;
         [SerializeField] private int maxValue;
         public int MaxValue => maxValue;
+        [RuntimeField] private int bleedStacks = 0;
+        [RuntimeField] private int bleedCurrentTick = MaxBleedTicksPerInterval;
         [HideInInspector] protected HealthState healthState;
         public HealthState HealthState => healthState;
-
-        public override int GetNormalisedValue()
-        {
-            return value / maxValue;    
-        }
-        
+        public bool Vulnerable = true; 
 
 
 
@@ -43,9 +65,20 @@ namespace Entropek.EntityStats{
         /// 
 
 
+        private void Awake()
+        {
+            bleedTickTimer.SetInitialTime(BleedTickTimeInSeconds);
+            LinkEvents();
+        }
+
         protected virtual void OnEnable(){
             SetInitialHealthState();
             value = maxValue;
+        }
+
+        private void OnDestroy()
+        {
+            UnlinkEvents();
         }
 
 
@@ -78,7 +111,7 @@ namespace Entropek.EntityStats{
                 return;
             }
             healthState=HealthState.Full;
-            InvokeRestored();
+            Restored?.Invoke();
         }
 
         protected void DeathState(){
@@ -86,7 +119,7 @@ namespace Entropek.EntityStats{
                 return;
             }
             healthState=HealthState.Dead;
-            InvokeDeath();
+            Death?.Invoke();
         }
 
 
@@ -95,7 +128,18 @@ namespace Entropek.EntityStats{
         /// 
 
 
-        public override bool Damage(in DamageContext damageContext){
+        public int GetNormalisedValue()
+        {
+            return value / maxValue;    
+        }        
+
+        /// <summary>
+        /// Damages this Health instance
+        /// </summary>
+        /// <param name="damageContext">The context to apply damage with.</param>
+        /// <returns>true, if damage was succesfully dealt (in vulnerable state); otherwise false (invulneable state).</returns>
+
+        public bool Damage(in DamageContext damageContext){
             
             if(Vulnerable == false || healthState == HealthState.Dead){
                 return false;
@@ -107,20 +151,25 @@ namespace Entropek.EntityStats{
             }
             else{
                 AliveState();
-                InvokeDamaged(damageContext);
+                Damaged?.Invoke(damageContext);
             }
 
             return true;
         }
 
-        public override void Heal(int amount){
+        /// <summary>
+        /// Heals this Health instance.
+        /// </summary>
+        /// <param name="amount">The amount to heal.</param>
+        
+        public void Heal(int amount){
             value += amount;
             if(value >= maxValue){
                 RestoredState();
             }
             else{
                 AliveState();
-                InvokeHealed(amount);
+                Healed?.Invoke(amount);
             }
         }
 
@@ -137,6 +186,71 @@ namespace Entropek.EntityStats{
                 this.value = maxValue;
             }
             MaxValueSet?.Invoke(value);
+        }
+
+        ///
+        /// Functions.
+        /// 
+
+
+        public void ApplyBleedStacks(int amount)
+        {
+            bleedStacks += amount; 
+            if(bleedTickTimer.State == TimerState.Halted)
+            {
+                bleedTickTimer.Begin();
+            }
+        }
+
+
+        /// 
+        /// Linkage.
+        /// 
+
+
+        private void LinkEvents()
+        {
+            LinkTimerEvents();
+        }
+
+        private void UnlinkEvents()
+        {
+            UnlinkTimerEvents();
+        }
+
+        private void LinkTimerEvents()
+        {
+            bleedTickTimer.Timeout += OnBleedTickTimeout;   
+        }
+
+        private void UnlinkTimerEvents()
+        {
+            bleedTickTimer.Timeout -= OnBleedTickTimeout;               
+        }
+
+        private void OnBleedTickTimeout()
+        {
+            bleedCurrentTick -= 1;
+
+            Damage(
+                new DamageContext(
+                    transform.position,
+                    BleedDamagePerStack * bleedStacks,
+                    DamageType.Light
+                )
+            );
+
+            Debug.Log("bleed");
+
+            if(bleedCurrentTick <= 0)
+            {
+                bleedCurrentTick = MaxBleedTicksPerInterval;                
+                bleedStacks -= 1;
+                if(bleedStacks <= 0)
+                {
+                    bleedTickTimer.Halt();
+                }
+            }
         }
     }
 

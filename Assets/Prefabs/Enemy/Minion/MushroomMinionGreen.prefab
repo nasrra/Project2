@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 7240265649049141429}
   - component: {fileID: 8752201115358789950}
   - component: {fileID: 40633667182646638}
+  - component: {fileID: 235179291469579344}
   m_Layer: 7
   m_Name: MushroomMinionGreen
   m_TagString: Untagged
@@ -57,9 +58,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfed1db346d9a22418e8c87bc1ab3bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vulnerable: 1
+  bleedTickTimer: {fileID: 235179291469579344}
   value: 3
   maxValue: 3
+  Vulnerable: 1
 --- !u!114 &3156098799948150856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +248,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 4520280526215437209, guid: 837016ac5704d10428b232f23187cbff, type: 3}
+--- !u!114 &235179291469579344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156771524781745527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6638d0eec5ccbf157829adc9861bba31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorNameTag: Bleed Tick
+  initialTime: 0
+  BeginOnEnable: 0
+  Loop: 1
 --- !u!1 &2491232506833495032
 GameObject:
   m_ObjectHideFlags: 0

@@ -235,7 +235,7 @@ namespace Entropek.Time{
         /// <returns>true, if successfully set, false if failed.</returns>
         /// <exception cref="InvalidDataException">if the specified time value is less than zero.</exception>
 
-        private bool SetInitialTime(float time)
+        public bool SetInitialTime(float time)
         {
             if (time < 0)
             {

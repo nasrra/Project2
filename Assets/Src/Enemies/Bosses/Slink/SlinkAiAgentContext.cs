@@ -16,11 +16,11 @@ IDamageIntervalContext, IOpponentContext
 
 
     [Header("Runtime Data")]
-    [RuntimeField] protected HealthSystem opponentHealthSystem;
-    HealthSystem IOpponentContext.HealthSystem 
+    [RuntimeField] protected Health opponentHealth;
+    Health IOpponentContext.Health 
     { 
-        get => opponentHealthSystem; 
-        set => opponentHealthSystem =  value;
+        get => opponentHealth; 
+        set => opponentHealth =  value;
     }
     
     [RuntimeField] protected Transform target; 
@@ -65,8 +65,8 @@ IDamageIntervalContext, IOpponentContext
         set => damgeTakenIntervalTimer = value; 
     }
 
-    [SerializeField] protected HealthSystem selfHealth;
-    HealthSystem IDamageIntervalContext.SelfHealth 
+    [SerializeField] protected Health selfHealth;
+    Health IDamageIntervalContext.SelfHealth 
     { 
         get => selfHealth; 
         set => selfHealth = value; 
